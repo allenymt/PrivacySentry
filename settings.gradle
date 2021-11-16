@@ -1,0 +1,4 @@
+rootProject.name = "PrivacySentry"
+include ':app'
+//include ':plugin-sentry'
+include ':hook-sentry'
