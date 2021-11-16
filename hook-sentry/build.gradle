@@ -1,14 +1,11 @@
-plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-}
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.yl.lib.hook_sentry"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
@@ -18,6 +15,9 @@ android {
     }
 
     buildTypes {
+        debug{
+            debuggable true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

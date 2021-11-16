@@ -1,18 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_deviceId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试DeviceId" />
+
+            <Button
+                android:id="@+id/btn_imei"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试Imei" />
+
+            <Button
+                android:id="@+id/btn_imsi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试Imsi" />
+
+            <Button
+                android:id="@+id/btn_mac_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试mac地址" />
+
+            <Button
+                android:id="@+id/btn_iccid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试sim卡唯一标识符" />
+
+            <Button
+                android:id="@+id/btn_installed_packages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试已安装包列表" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

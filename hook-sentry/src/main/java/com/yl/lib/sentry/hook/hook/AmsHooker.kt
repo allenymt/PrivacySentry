@@ -1,4 +1,5 @@
 package com.yl.lib.sentry.hook.hook
+
 import android.app.ActivityManager
 import android.os.Build
 import com.yl.lib.sentry.hook.util.PrivacyUtil
@@ -41,36 +42,43 @@ class AmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHooker
             )
             mInstance[defaultSingleton] = proxy
             if (proxy === mInstance[defaultSingleton]) {
-                baseHookerHookBuilder?.doPrinter("hookSystemServices succeed : $proxy")
+                baseHookerHookBuilder?.doPrinter("hookSystemServices succeed : ${proxy.javaClass.name}")
             }
         } catch (e: Exception) {
             baseHookerHookBuilder?.doPrinter("hookSystemServices failed\"")
         }
     }
 
-    class AMSProxy internal constructor(
-        private val iActivityManager: Any,
-        private val baseHookerHookBuilder: BaseHookBuilder
-    ) : InvocationHandler {
-        @Throws(Throwable::class)
-        override fun invoke(obj: Any, method: Method, args: Array<Any>): Any {
-
-            if (baseHookerHookBuilder.blackList.contains(method.name)) {
-                try {
-                    baseHookerHookBuilder?.doPrinter(
-                        " method name is  ${method.name} args length is : ${if (args != null && args.isNotEmpty()) args[0] else ""}" + args.size
-                    )
-                    PrivacyUtil.Util.getStackTrace()?.let { baseHookerHookBuilder?.doPrinter(it) }
-                    return method.invoke(iActivityManager, *args)
-                } catch (e: Exception) {
-                    baseHookerHookBuilder?.doPrinter(
-                        "checkPermission hook failed!" + e.message
-                    )
-                }
-            }
-            return method.invoke(iActivityManager, *args)
-        }
-    }
-
-
+//    class AMSProxy internal constructor(
+//        private val iActivityManager: Any,
+//        private val baseHookerHookBuilder: BaseHookBuilder
+//    ) : InvocationHandler {
+//        @Throws(Throwable::class)
+//        override fun invoke(obj: Any, method: Method, args: Array<Any>): Any {
+//            try {
+//                if (baseHookerHookBuilder.blackList.contains(method.name)) {
+//                    try {
+//                        baseHookerHookBuilder?.doPrinter(
+//                            " method name is  ${method.name} args length is : ${if (args != null && args.isNotEmpty()) args[0] else ""}" + args.size
+//                        )
+//                        PrivacyUtil.Util.getStackTrace()
+//                            ?.let { baseHookerHookBuilder?.doPrinter(it) }
+//                        return method.invoke(iActivityManager, args)
+//                    } catch (e: Exception) {
+//                        baseHookerHookBuilder?.doPrinter(
+//                            "checkPermission hook failed!" + e.message
+//                        )
+//                    }
+//                }
+//                val res = method.invoke(iActivityManager, *args)
+//                //https://www.jianshu.com/p/078b8c6206b1 kotlin这里有毒，java是可变，kotlin不行啊
+//                return if("void" == method.genericReturnType.typeName) Unit else res
+////                return method.invoke(iActivityManager, *args)
+//            } catch (e: java.lang.Exception) {
+//                baseHookerHookBuilder.doPrinter("method is $method, args is $args")
+//                e.printStackTrace()
+//            }
+//            return obj
+//        }
+//    }
 }

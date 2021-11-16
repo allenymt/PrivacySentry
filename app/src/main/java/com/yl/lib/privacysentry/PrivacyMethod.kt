@@ -23,7 +23,7 @@ class PrivacyMethod {
         /**
          * test for device id
          */
-        private fun getDeviceId(context: Context?): String {
+         fun getDeviceId(context: Context?): String {
             if (context == null) {
                 return ""
             }
@@ -52,7 +52,7 @@ class PrivacyMethod {
          * imei
          */
         @RequiresApi(Build.VERSION_CODES.O)
-        private fun getIMEI(context: Context?): String {
+         fun getIMEI(context: Context?): String {
             if (context == null) {
                 return ""
             }
@@ -115,7 +115,7 @@ class PrivacyMethod {
          *  wifiInfo.macAddress
          *  networkInterface.hardwareAddress
          */
-        private fun getMacRaw(context: Context?): String? {
+         fun getMacRaw(context: Context?): String? {
             var mac: String? = MAC_DEFAULT
             if (context == null) {
                 return mac
@@ -183,7 +183,7 @@ class PrivacyMethod {
          * @return
          */
         @SuppressLint("HardwareIds")
-        private fun getICCID(context: Context?): String? {
+         fun getICCID(context: Context?): String? {
             if (context == null) {
                 return ""
             }
@@ -234,7 +234,7 @@ class PrivacyMethod {
          * @param context 上下文
          * @return 所有安装的app应用信息
          */
-        fun getInstalledPackages(@NonNull context: Context): List<PackageInfo> {
+        private fun getInstalledPackages(@NonNull context: Context): List<PackageInfo> {
             val packageManager = context.packageManager
             return packageManager.getInstalledPackages(0)
         }
