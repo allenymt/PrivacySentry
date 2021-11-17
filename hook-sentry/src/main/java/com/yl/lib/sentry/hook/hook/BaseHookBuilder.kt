@@ -5,6 +5,7 @@ import com.yl.lib.sentry.hook.printer.BasePrinter
 /**
  * @author yulun
  * @sinice 2021-09-24 14:51
+ * https://juejin.cn/post/6844903985258692621 locationManager
  */
 class BaseHookBuilder {
     // 敏感API名单

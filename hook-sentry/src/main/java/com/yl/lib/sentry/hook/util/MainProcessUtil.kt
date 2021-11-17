@@ -12,7 +12,7 @@ import android.text.TextUtils
  */
 class MainProcessUtil {
     object MainProcessChecker {
-        var currentProcessName = ""
+        private var currentProcessName = ""
 
         /**
          * 是否主进程
@@ -31,7 +31,7 @@ class MainProcessUtil {
         /**
          * 当前进程名
          */
-        private fun getProcessName(context: Context): String {
+        fun getProcessName(context: Context): String {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 // 9.0开始直接读
                 Application.getProcessName()

@@ -51,6 +51,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="测试已安装包列表" />
+
+            <Button
+                android:id="@+id/btn_main_process"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试当前进程是主进程" />
         </LinearLayout>
 
     </ScrollView>

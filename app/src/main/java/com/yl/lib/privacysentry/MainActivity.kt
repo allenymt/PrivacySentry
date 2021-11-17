@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.yl.lib.sentry.hook.PrivacySentry
+import com.yl.lib.sentry.hook.util.MainProcessUtil
 import com.yl.lib.sentry.hook.util.PrivacyLog
 
 class MainActivity : AppCompatActivity() {
@@ -45,6 +46,13 @@ class MainActivity : AppCompatActivity() {
                 PrivacyMethod.PrivacyMethod.isInstalled(this, "com.yl.lib.privacysentry123")
             PrivacyLog.i("privacySentryInstalled is $privacySentryInstalled")
         }
+
+        findViewById<Button>(R.id.btn_main_process).setOnClickListener {
+            var mainProcess = MainProcessUtil.MainProcessChecker.isMainProcess(this)
+            var currentProcessName = MainProcessUtil.MainProcessChecker.getProcessName(this)
+            PrivacyLog.i("mainProcess currentProcessName is $currentProcessName  is $mainProcess")
+        }
+
         PrivacySentry.Privacy.init()
 
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
