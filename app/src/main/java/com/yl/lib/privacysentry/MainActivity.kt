@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_installed_packages).setOnClickListener {
             var privacySentryInstalled =
-                PrivacyMethod.PrivacyMethod.isInstalled(this, "com.yl.lib.privacysentry123")
+                PrivacyMethod.PrivacyMethod.isInstalled(application, "com.yl.lib.privacysentry123")
             PrivacyLog.i("privacySentryInstalled is $privacySentryInstalled")
         }
 
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             PrivacyMethod.PrivacyMethod.testHookCms(this)
         }
 
-        PrivacySentry.Privacy.init()
+        PrivacySentry.Privacy.init(application)
 
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {

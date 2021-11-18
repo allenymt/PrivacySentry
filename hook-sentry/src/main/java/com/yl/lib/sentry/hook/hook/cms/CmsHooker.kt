@@ -11,9 +11,11 @@ import java.lang.reflect.Proxy
  * @author yulun
  * @sinice 2021-11-18 13:58
  * 剪贴板服务 hook
+ * 这种hook方式也有个问题，在hook前当前进程不能调用剪贴板服务，不然要到ContextIml的cache里去重置
+ * 所以整个SDK越早初始化越好
  */
 class CmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHookerHookBuilder) {
-    override fun hook() {
+    override fun hook(ctx: Context) {
         try {
             // 从ClipboardManager源码看，最终走的是ServiceManager mService = IClipboard.Stub.asInterface(
             //                ServiceManager.getServiceOrThrow(Context.CLIPBOARD_SERVICE));

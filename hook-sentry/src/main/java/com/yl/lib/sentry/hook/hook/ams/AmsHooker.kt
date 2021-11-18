@@ -1,6 +1,7 @@
 package com.yl.lib.sentry.hook.hook.ams
 
 import android.app.ActivityManager
+import android.content.Context
 import android.os.Build
 import com.yl.lib.sentry.hook.hook.BaseHookBuilder
 import com.yl.lib.sentry.hook.hook.BaseHooker
@@ -12,7 +13,7 @@ import java.lang.reflect.Proxy
  */
 class AmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHookerHookBuilder) {
 
-    override fun hook() {
+    override fun hook(ctx: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return
         }

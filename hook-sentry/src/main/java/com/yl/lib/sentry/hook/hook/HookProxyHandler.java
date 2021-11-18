@@ -31,7 +31,7 @@ public class HookProxyHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (mBaseHookerHookBuilder.getBlackList().contains(method.getName())) {
+        if (mBaseHookerHookBuilder.getBlackList().keySet().contains(method.getName())) {
             try {
                 mBaseHookerHookBuilder.doPrinter(" method name is  " + method.getName() + " , args length is : " + (args == null ? String.valueOf(0) : String.valueOf(args.length)));
                 mBaseHookerHookBuilder.doPrinter(PrivacyUtil.Util.INSTANCE.getStackTrace());

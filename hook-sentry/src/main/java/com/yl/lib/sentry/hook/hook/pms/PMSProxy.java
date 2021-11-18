@@ -1,22 +1,27 @@
-package com.yl.lib.sentry.hook.hook.ams;
+package com.yl.lib.sentry.hook.hook.pms;
+
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.IBinder;
 
 import com.yl.lib.sentry.hook.hook.BaseHookBuilder;
 import com.yl.lib.sentry.hook.util.PrivacyUtil;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
  * @author yulun
- * @sinice 2021-11-16 18:07
- * kotlin动态代理有点问题，用java实现
+ * @sinice 2021-11-18 17:16
  */
-public class AMSProxy implements InvocationHandler {
-    Object iActivityManager;
+class PMSProxy implements InvocationHandler {
+    Object proxyBinder;
     BaseHookBuilder baseHookerHookBuilder;
 
-    public AMSProxy(Object iActivityManager, BaseHookBuilder baseHookerHookBuilder) {
-        this.iActivityManager = iActivityManager;
+    public PMSProxy(Object proxyBinder, BaseHookBuilder baseHookerHookBuilder) {
+        this.proxyBinder = proxyBinder;
         this.baseHookerHookBuilder = baseHookerHookBuilder;
     }
 
@@ -26,11 +31,11 @@ public class AMSProxy implements InvocationHandler {
             try {
                 baseHookerHookBuilder.doPrinter(" method name is  " + method.getName() + "args length is : " + args == null ? String.valueOf(0) : String.valueOf(args.length));
                 baseHookerHookBuilder.doPrinter(PrivacyUtil.Util.INSTANCE.getStackTrace());
-                return method.invoke(iActivityManager, args);
+                return method.invoke(proxyBinder, args);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return method.invoke(iActivityManager, args);
+        return method.invoke(proxyBinder, args);
     }
 }

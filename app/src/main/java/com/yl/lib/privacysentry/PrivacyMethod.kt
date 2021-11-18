@@ -262,7 +262,7 @@ class PrivacyMethod {
             //获取剪切板数据对象
             val cd: ClipData? = cm?.primaryClip
             val clipStr = cd?.getItemAt(0)?.text.toString()
-            PrivacyLog.i("testHookCms cms data is :$clipStr")
+//            PrivacyLog.i("testHookCms cms data is :$clipStr")
         }
         /**CMS END================================**/
     }

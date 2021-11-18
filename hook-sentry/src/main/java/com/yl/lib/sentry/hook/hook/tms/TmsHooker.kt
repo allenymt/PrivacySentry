@@ -15,7 +15,7 @@ import java.lang.reflect.Proxy
  * @sinice 2021-09-24 14:50
  */
 class TmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHookerHookBuilder) {
-    override fun hook() {
+    override fun hook(ctx: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return
         }
@@ -23,6 +23,7 @@ class TmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHooker
             var smClass = Class.forName("android.os.ServiceManager")
             var smMethod = smClass.getDeclaredMethod("getService",String::class.java)
             var rawITelephonyBinder = smMethod.invoke(null, Context.TELEPHONY_SERVICE) as IBinder
+            // 别问我为什么写死，源码里就是这样的
             var rawPhoneSubBinder = smMethod.invoke(null, "iphonesubinfo") as IBinder
             hookITelephony(rawITelephonyBinder,smClass = smClass)
             hookIPhoneSubInfo(rawPhoneSubBinder,smClass)

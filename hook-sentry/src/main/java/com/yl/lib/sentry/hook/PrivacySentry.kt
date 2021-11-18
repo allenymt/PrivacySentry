@@ -1,8 +1,11 @@
 package com.yl.lib.sentry.hook
 
+import android.app.Application
+import android.content.Context
 import com.yl.lib.sentry.hook.hook.BaseHookBuilder
 import com.yl.lib.sentry.hook.hook.ams.AmsHooker
 import com.yl.lib.sentry.hook.hook.cms.CmsHooker
+import com.yl.lib.sentry.hook.hook.pms.PmsHooker
 import com.yl.lib.sentry.hook.hook.tms.TmsHooker
 import com.yl.lib.sentry.hook.printer.BasePrinter
 import com.yl.lib.sentry.hook.printer.DefaultLogPrint
@@ -16,12 +19,13 @@ class PrivacySentry {
     object Privacy {
         private var mBuilder: PrivacySentryBuilder? = null
         private val bInit = AtomicBoolean(false)
+        var bShowPrivacy = false
 
-        fun init() {
-            init(null)
+        fun init(ctx: Application) {
+            init(null,ctx)
         }
 
-        fun init(builder: PrivacySentryBuilder?) {
+        fun init(builder: PrivacySentryBuilder?,ctx: Context) {
             if (bInit.compareAndSet(false, true)) {
                 if (builder == null) {
                     mBuilder = PrivacySentryBuilder()
@@ -34,24 +38,36 @@ class PrivacySentry {
                 } else {
                     mBuilder = builder
                 }
-                initInner()
+                initInner(ctx)
             }
 
         }
 
-        private fun initInner() {
+        private fun initInner(ctx: Context) {
             mBuilder?.getAmsHookBuilder()?.let {
-                AmsHooker(it).hook()
+                AmsHooker(it).hook(ctx)
             }
 
             mBuilder?.getCmsHookBuilder()?.let {
-                CmsHooker(it).hook()
+                CmsHooker(it).hook(ctx)
             }
 
             mBuilder?.getTmsHookBuilder()?.let {
-                TmsHooker(it).hook()
+                TmsHooker(it).hook(ctx)
+            }
+
+            mBuilder?.getPmsHookBuilder()?.let {
+                PmsHooker(it).hook(ctx)
             }
         }
+
+        /**
+         * 记录展示隐私协议，调用时机一般为 隐私协议点击关闭的时候，必须调用
+         */
+        fun updatePrivacyShow() {
+            bShowPrivacy = true
+        }
+
 
         fun isDebug(): Boolean {
             return mBuilder?.debug!!
@@ -90,6 +106,7 @@ class PrivacySentry {
 
         fun defaultPmsHookBuilder(mBuilder: PrivacySentryBuilder): BaseHookBuilder {
             var pmsMethod = HashMap<String, String>()
+            pmsMethod.put("getInstalledPackages","getInstalledPackages")
             return BaseHookBuilder("pms", pmsMethod, mBuilder.getPrinterList())
         }
 

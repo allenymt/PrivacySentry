@@ -39,7 +39,7 @@ public class HookStubHandler implements InvocationHandler {
         if ("queryLocalInterface".equals(method.getName())) {
             //这里不能拦截具体的服务的方法，因为这是一个远程的Binder，也就是stub，还没有转化为本地Binder对象
             //所以先拦截我们所知的queryLocalInterface方法，返回一个本地Binder对象的代理
-            mBaseHookerHookBuilder.doPrinter("拦截queryLocalInterface");
+            mBaseHookerHookBuilder.doPrinter(mBaseHookerHookBuilder.getName()+" 拦截queryLocalInterface");
             return Proxy.newProxyInstance(rawServerBinder.getClass().getClassLoader(),
                     //iInterface就是当前aidl要实现的接口
                     new Class[]{this.iInterface},
