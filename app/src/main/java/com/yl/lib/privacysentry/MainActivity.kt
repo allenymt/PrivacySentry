@@ -53,6 +53,14 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("mainProcess currentProcessName is $currentProcessName  is $mainProcess")
         }
 
+        findViewById<Button>(R.id.btn_hook_cms).setOnClickListener {
+            HookCms.hook()
+        }
+
+        findViewById<Button>(R.id.btn_test_hook_cms).setOnClickListener {
+            PrivacyMethod.PrivacyMethod.testHookCms(this)
+        }
+
         PrivacySentry.Privacy.init()
 
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
@@ -61,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.READ_PHONE_STATE
             )
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                requestPermissions(permissions, 1000)
+                requestPermissions(permissions, 1000)
             }
         } else {
             PrivacyLog.i("requestPermissions ${Manifest.permission.READ_PHONE_STATE} fail")

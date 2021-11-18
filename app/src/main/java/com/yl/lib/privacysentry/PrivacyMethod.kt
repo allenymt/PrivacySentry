@@ -2,6 +2,8 @@ package com.yl.lib.privacysentry
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
@@ -12,18 +14,20 @@ import android.text.TextUtils
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.yl.lib.sentry.hook.util.PrivacyLog
 import java.net.NetworkInterface
+
 
 /**
  * @author yulun
  * @sinice 2021-11-16 15:08
  */
 class PrivacyMethod {
-    object PrivacyMethod{
+    object PrivacyMethod {
         /**
          * test for device id
          */
-         fun getDeviceId(context: Context?): String {
+        fun getDeviceId(context: Context?): String {
             if (context == null) {
                 return ""
             }
@@ -52,7 +56,7 @@ class PrivacyMethod {
          * imei
          */
         @RequiresApi(Build.VERSION_CODES.O)
-         fun getIMEI(context: Context?): String {
+        fun getIMEI(context: Context?): String {
             if (context == null) {
                 return ""
             }
@@ -115,7 +119,7 @@ class PrivacyMethod {
          *  wifiInfo.macAddress
          *  networkInterface.hardwareAddress
          */
-         fun getMacRaw(context: Context?): String? {
+        fun getMacRaw(context: Context?): String? {
             var mac: String? = MAC_DEFAULT
             if (context == null) {
                 return mac
@@ -183,7 +187,7 @@ class PrivacyMethod {
          * @return
          */
         @SuppressLint("HardwareIds")
-         fun getICCID(context: Context?): String? {
+        fun getICCID(context: Context?): String? {
             if (context == null) {
                 return ""
             }
@@ -237,6 +241,18 @@ class PrivacyMethod {
         private fun getInstalledPackages(@NonNull context: Context): List<PackageInfo> {
             val packageManager = context.packageManager
             return packageManager.getInstalledPackages(0)
+        }
+
+        fun testHookCms(@NonNull context: Context) {
+            //获取剪切板服务
+            val cm: ClipboardManager? =
+                context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            //设置剪切板内容
+            cm?.setPrimaryClip(ClipData.newPlainText("data", "yl_vd"))
+            //获取剪切板数据对象
+            val cd: ClipData? = cm?.primaryClip
+            val clipStr = cd?.getItemAt(0)?.text.toString()
+            PrivacyLog.i("testHookCms cms data is :$clipStr")
         }
     }
 }

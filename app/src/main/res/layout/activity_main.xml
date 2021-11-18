@@ -57,6 +57,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="测试当前进程是主进程" />
+
+            <Button
+                android:id="@+id/btn_hook_cms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="hook剪贴板服务" />
+
+            <Button
+                android:id="@+id/btn_test_hook_cms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试hook剪贴板服务" />
         </LinearLayout>
 
     </ScrollView>

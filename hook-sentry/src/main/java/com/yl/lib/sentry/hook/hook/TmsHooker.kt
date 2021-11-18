@@ -1,5 +1,9 @@
 package com.yl.lib.sentry.hook.hook
 
+import android.app.ActivityManager
+import android.os.Build
+import android.telephony.TelephonyManager
+
 
 /**
  * @author yulun
@@ -7,6 +11,14 @@ package com.yl.lib.sentry.hook.hook
  */
 class TmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHookerHookBuilder) {
     override fun hook() {
-        TODO("Not yet implemented")
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return
+        }
+        try {
+            val clazz: Class<*> = TelephonyManager::class.java
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
