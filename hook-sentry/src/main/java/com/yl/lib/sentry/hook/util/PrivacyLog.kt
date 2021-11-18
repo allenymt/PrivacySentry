@@ -19,13 +19,13 @@ class PrivacyLog {
 
         fun w(msg: String) {
             if (PrivacySentry.Privacy.isDebug()) {
-                android.util.Log.e(TAG, msg)
+                android.util.Log.w(TAG, msg)
             }
         }
 
         fun i(msg: String) {
             if (PrivacySentry.Privacy.isDebug()) {
-                android.util.Log.e(TAG, msg)
+                android.util.Log.i(TAG, msg)
             }
         }
     }
