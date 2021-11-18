@@ -24,6 +24,9 @@ import java.net.NetworkInterface
  */
 class PrivacyMethod {
     object PrivacyMethod {
+
+
+        /**TMS START================================**/
         /**
          * test for device id
          */
@@ -47,7 +50,7 @@ class PrivacyMethod {
                     imei = mTelephonyMgr.deviceId
                 }
             } catch (e: Throwable) {
-                e.printStackTrace()
+//                e.printStackTrace()
             }
             return imei ?: ""
         }
@@ -111,6 +114,39 @@ class PrivacyMethod {
             }
             return imsi ?: ""
         }
+
+        /**
+         * 获取sim卡唯一标示
+         *
+         * @param context
+         * @return
+         */
+        @SuppressLint("HardwareIds")
+        fun getICCID(context: Context?): String? {
+            if (context == null) {
+                return ""
+            }
+            var iccid = ""
+            try {
+                if (checkPermissions(
+                        context,
+                        Manifest.permission.READ_PHONE_STATE
+                    )
+                ) {
+                    val mTelephonyMgr = context
+                        .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                        ?: return ""
+                    iccid =
+                        mTelephonyMgr.simSerialNumber
+                }
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+            return iccid ?: ""
+        }
+        /**TMS END================================**/
+
+
 
         val MAC_DEFAULT = "00:00:00:00:00:00"
         val MAC_SYSTEM = "02:00:00:00:00:00"
@@ -180,36 +216,8 @@ class PrivacyMethod {
             ) == PackageManager.PERMISSION_GRANTED
         }
 
-        /**
-         * 获取sim卡唯一标示
-         *
-         * @param context
-         * @return
-         */
-        @SuppressLint("HardwareIds")
-        fun getICCID(context: Context?): String? {
-            if (context == null) {
-                return ""
-            }
-            var iccid = ""
-            try {
-                if (checkPermissions(
-                        context,
-                        Manifest.permission.READ_PHONE_STATE
-                    )
-                ) {
-                    val mTelephonyMgr = context
-                        .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
-                        ?: return ""
-                    iccid =
-                        mTelephonyMgr.simSerialNumber
-                }
-            } catch (e: Throwable) {
-                e.printStackTrace()
-            }
-            return iccid ?: ""
-        }
 
+        /**PMS START================================**/
         /**
          * 判断指定app应用是否已安装
          *
@@ -242,12 +250,13 @@ class PrivacyMethod {
             val packageManager = context.packageManager
             return packageManager.getInstalledPackages(0)
         }
+        /**PMS END================================**/
 
+        /**CMS START================================**/
         fun testHookCms(@NonNull context: Context) {
             //获取剪切板服务
             val cm: ClipboardManager? =
                 context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-            var data = cm?.primaryClip
             //设置剪切板内容
             cm?.setPrimaryClip(ClipData.newPlainText("data", "yl_vd"))
             //获取剪切板数据对象
@@ -255,5 +264,6 @@ class PrivacyMethod {
             val clipStr = cd?.getItemAt(0)?.text.toString()
             PrivacyLog.i("testHookCms cms data is :$clipStr")
         }
+        /**CMS END================================**/
     }
 }

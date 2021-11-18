@@ -1,22 +1,23 @@
-package com.yl.lib.sentry.hook.hook.cms;
+package com.yl.lib.sentry.hook.hook;
 
 import android.os.IBinder;
 
-import com.yl.lib.sentry.hook.hook.BaseHookBuilder;
 import com.yl.lib.sentry.hook.util.PrivacyUtil;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 /**
  * @author yulun
  * @sinice 2021-11-18 14:00
  */
-public class ClipboardProxyHandler implements InvocationHandler {
+public class HookProxyHandler implements InvocationHandler {
     private Object localProxyBinder;
     private BaseHookBuilder mBaseHookerHookBuilder;
 
-    public ClipboardProxyHandler(IBinder remoteBinder, Class<?> stubClass, BaseHookBuilder baseHookerHookBuilder) {
+    public HookProxyHandler(IBinder remoteBinder, Class<?> stubClass, BaseHookBuilder baseHookerHookBuilder) {
         try {
             // hook asInterface方法
             Method asInterfaceMethod = stubClass.getMethod("asInterface", IBinder.class);
@@ -32,11 +33,19 @@ public class ClipboardProxyHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (mBaseHookerHookBuilder.getBlackList().contains(method.getName())) {
             try {
-                mBaseHookerHookBuilder.doPrinter(" method name is  " + method.getName() + "args length is : " + (args == null ? String.valueOf(0) : String.valueOf(args.length)));
+                mBaseHookerHookBuilder.doPrinter(" method name is  " + method.getName() + " , args length is : " + (args == null ? String.valueOf(0) : String.valueOf(args.length)));
                 mBaseHookerHookBuilder.doPrinter(PrivacyUtil.Util.INSTANCE.getStackTrace());
                 return method.invoke(localProxyBinder, args);
             } catch (Exception e) {
-                e.printStackTrace();
+                if (!(mBaseHookerHookBuilder.getName().equals("tms")
+                        && e instanceof InvocationTargetException
+                        && ((InvocationTargetException) e).getTargetException() instanceof SecurityException)) {
+                    e.printStackTrace();
+                }
+                // 就目前项目而言，我们hook的方法大部分返回值都是String
+                if (method.getGenericReturnType() == String.class){
+                    return "";
+                }
             }
         }
 

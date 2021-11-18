@@ -2,6 +2,7 @@ package com.yl.lib.sentry.hook
 
 import com.yl.lib.sentry.hook.hook.ams.AmsHooker
 import com.yl.lib.sentry.hook.hook.BaseHookBuilder
+import com.yl.lib.sentry.hook.hook.tms.TmsHooker
 import com.yl.lib.sentry.hook.hook.cms.CmsHooker
 import com.yl.lib.sentry.hook.printer.BasePrinter
 import com.yl.lib.sentry.hook.printer.DefaultLogPrint
@@ -46,6 +47,10 @@ class PrivacySentry {
             mBuilder?.getCmsHookBuilder()?.let {
                 CmsHooker(it).hook()
             }
+
+            mBuilder?.getTmsHookBuilder()?.let {
+                TmsHooker(it).hook()
+            }
         }
 
         fun isDebug(): Boolean {
@@ -67,6 +72,22 @@ class PrivacySentry {
 
         fun defaultTmsHookBuilder(mBuilder: PrivacySentryBuilder): BaseHookBuilder {
             var tmsMethod = ArrayList<String>()
+
+
+
+            // getDeviceId
+            tmsMethod.add("getDeviceIdWithFeature") // 11
+            tmsMethod.add("getDeviceId") // 10 9
+
+            // getImei
+
+            tmsMethod.add("getImeiForSlot") // 9 10 11
+
+            // getIMSI
+            tmsMethod.add("getSubscriberIdForSubscriber") // 9
+
+            // getSimSerialNumber
+            tmsMethod.add("getIccSerialNumberForSubscriber")
             return BaseHookBuilder("tms", tmsMethod, mBuilder.getPrinterList())
         }
 

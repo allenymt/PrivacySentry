@@ -1,8 +1,7 @@
-package com.yl.lib.sentry.hook.hook.cms;
+package com.yl.lib.sentry.hook.hook;
 
 import android.os.IBinder;
 
-import com.yl.lib.sentry.hook.hook.BaseHookBuilder;
 import com.yl.lib.sentry.hook.util.PrivacyLog;
 
 import java.lang.reflect.InvocationHandler;
@@ -13,7 +12,7 @@ import java.lang.reflect.Proxy;
  * @author yulun
  * @sinice 2021-11-18 14:00
  */
-public class ClipboardStubHandler implements InvocationHandler {
+public class HookStubHandler implements InvocationHandler {
     // 原始的Server binder对象，
     private IBinder rawServerBinder;
     // 本地proxy对象待实现的接口,也就是本地aidl待实现的接口，在cms里就是android.content.IClipboard
@@ -22,11 +21,11 @@ public class ClipboardStubHandler implements InvocationHandler {
     private Class stubClass;
     private BaseHookBuilder mBaseHookerHookBuilder;
 
-    public ClipboardStubHandler(IBinder rawServerBinder, BaseHookBuilder baseHookerHookBuilder) {
+    public HookStubHandler(IBinder rawServerBinder, BaseHookBuilder baseHookerHookBuilder,Class iInterface,Class stubClass) {
         this.rawServerBinder = rawServerBinder;
         try {
-            this.iInterface = Class.forName("android.content.IClipboard");
-            this.stubClass = Class.forName("android.content.IClipboard$Stub");
+            this.iInterface = iInterface;
+            this.stubClass = stubClass;
             mBaseHookerHookBuilder = baseHookerHookBuilder;
         } catch (Exception e) {
             e.printStackTrace();
@@ -35,7 +34,6 @@ public class ClipboardStubHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        PrivacyLog.Log.i("ClipboardStubHandler " + method.getName() + " is invoked");
         // queryLocalInterface是每个binder都有的方法，一般是在asInterface里被调用，返回的就是aidl里的接口
         // asInterface这个方法在Server进程返回的就是aidl里的接口，如果是在client进程，返回的就是proxy对象
         if ("queryLocalInterface".equals(method.getName())) {
@@ -47,7 +45,7 @@ public class ClipboardStubHandler implements InvocationHandler {
                     new Class[]{this.iInterface},
                     // remoteBinder 原始binder
                     // stubClass 当前aidl生成的stub类
-                    new ClipboardProxyHandler(rawServerBinder, stubClass, mBaseHookerHookBuilder));
+                    new HookProxyHandler(rawServerBinder, stubClass, mBaseHookerHookBuilder));
         }
 
         return method.invoke(rawServerBinder, args);

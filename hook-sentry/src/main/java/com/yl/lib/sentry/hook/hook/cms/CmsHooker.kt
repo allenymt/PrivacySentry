@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.IBinder
 import com.yl.lib.sentry.hook.hook.BaseHookBuilder
 import com.yl.lib.sentry.hook.hook.BaseHooker
+import com.yl.lib.sentry.hook.hook.HookStubHandler
 import java.lang.reflect.Proxy
 
 /**
@@ -33,7 +34,12 @@ class CmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHooker
             // 主要下这里，为什么第二个参数传IBinder.class这个接口就行了，这就要看我们在动态代理生成的类里实际要拦截的方法是什么
             val hookedBinder = Proxy.newProxyInstance(
                 serviceManager.classLoader, arrayOf<Class<*>>(IBinder::class.java),
-                ClipboardStubHandler(rawBinder,baseHookerHookBuilder)
+                HookStubHandler(
+                    rawBinder,
+                    baseHookerHookBuilder,
+                    Class.forName("android.content.IClipboard"),
+                    Class.forName("android.content.IClipboard\$Stub")
+                )
             ) as IBinder
 
             //放回ServiceManager中，替换掉原有的
