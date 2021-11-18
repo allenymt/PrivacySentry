@@ -1,6 +1,5 @@
 package com.yl.lib.sentry.hook
 
-import com.yl.lib.privacy.PrivacySentryBuilder
 import com.yl.lib.sentry.hook.hook.ams.AmsHooker
 import com.yl.lib.sentry.hook.hook.BaseHookBuilder
 import com.yl.lib.sentry.hook.hook.cms.CmsHooker

@@ -1,4 +1,4 @@
-package com.yl.lib.privacy
+package com.yl.lib.sentry.hook
 
 import com.yl.lib.sentry.hook.hook.BaseHookBuilder
 import com.yl.lib.sentry.hook.printer.BasePrinter
