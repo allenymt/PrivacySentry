@@ -17,6 +17,8 @@ class PrivacySentryBuilder {
 
     private var tmsHookBuilder: BaseHookBuilder? = null
 
+    private var cmsHookBuilder: BaseHookBuilder? = null
+
     private var mPrinterList: ArrayList<BasePrinter>? = null
 
     fun getPrinterList(): ArrayList<BasePrinter>? {
@@ -33,6 +35,10 @@ class PrivacySentryBuilder {
 
     fun getTmsHookBuilder(): BaseHookBuilder? {
         return tmsHookBuilder
+    }
+
+    fun getCmsHookBuilder(): BaseHookBuilder? {
+        return cmsHookBuilder
     }
 
     fun addPrinter(basePrinter: BasePrinter): PrivacySentryBuilder {
@@ -71,5 +77,8 @@ class PrivacySentryBuilder {
         return this
     }
 
-
+    fun configCmsHook(cmsHookHookBuilder: BaseHookBuilder): PrivacySentryBuilder {
+        this.cmsHookBuilder = cmsHookHookBuilder
+        return this
+    }
 }

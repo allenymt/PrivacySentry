@@ -1,10 +1,9 @@
-package com.yl.lib.sentry.hook.hook
+package com.yl.lib.sentry.hook.hook.ams
 
 import android.app.ActivityManager
 import android.os.Build
-import com.yl.lib.sentry.hook.util.PrivacyUtil
-import java.lang.reflect.InvocationHandler
-import java.lang.reflect.Method
+import com.yl.lib.sentry.hook.hook.BaseHookBuilder
+import com.yl.lib.sentry.hook.hook.BaseHooker
 import java.lang.reflect.Proxy
 
 /**
@@ -35,10 +34,17 @@ class AmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHooker
             mInstance.isAccessible = true
             val iAMs = mInstance[defaultSingleton]
             val iAmClazz = Class.forName("android.app.IActivityManager")
+            // 前面搞了那么久就是要拿到原始的IActivityManager binder在当前进程的proxy对象
+
             val proxy = Proxy.newProxyInstance(
                 Thread.currentThread().contextClassLoader,
                 arrayOf(iAmClazz),
-                baseHookerHookBuilder?.let { AMSProxy(iAMs, it) }
+                baseHookerHookBuilder?.let {
+                    AMSProxy(
+                        iAMs,
+                        it
+                    )
+                }
             )
             mInstance[defaultSingleton] = proxy
             if (proxy === mInstance[defaultSingleton]) {

@@ -247,6 +247,7 @@ class PrivacyMethod {
             //获取剪切板服务
             val cm: ClipboardManager? =
                 context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            var data = cm?.primaryClip
             //设置剪切板内容
             cm?.setPrimaryClip(ClipData.newPlainText("data", "yl_vd"))
             //获取剪切板数据对象

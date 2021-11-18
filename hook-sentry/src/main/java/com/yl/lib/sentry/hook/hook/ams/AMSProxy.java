@@ -1,5 +1,6 @@
-package com.yl.lib.sentry.hook.hook;
+package com.yl.lib.sentry.hook.hook.ams;
 
+import com.yl.lib.sentry.hook.hook.BaseHookBuilder;
 import com.yl.lib.sentry.hook.util.PrivacyUtil;
 
 import java.lang.reflect.InvocationHandler;

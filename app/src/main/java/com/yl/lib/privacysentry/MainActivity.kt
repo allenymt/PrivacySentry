@@ -53,10 +53,6 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("mainProcess currentProcessName is $currentProcessName  is $mainProcess")
         }
 
-        findViewById<Button>(R.id.btn_hook_cms).setOnClickListener {
-            HookCms.hook()
-        }
-
         findViewById<Button>(R.id.btn_test_hook_cms).setOnClickListener {
             PrivacyMethod.PrivacyMethod.testHookCms(this)
         }

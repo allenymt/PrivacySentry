@@ -1,8 +1,9 @@
 package com.yl.lib.sentry.hook
 
 import com.yl.lib.privacy.PrivacySentryBuilder
-import com.yl.lib.sentry.hook.hook.AmsHooker
+import com.yl.lib.sentry.hook.hook.ams.AmsHooker
 import com.yl.lib.sentry.hook.hook.BaseHookBuilder
+import com.yl.lib.sentry.hook.hook.cms.CmsHooker
 import com.yl.lib.sentry.hook.printer.BasePrinter
 import com.yl.lib.sentry.hook.printer.DefaultLogPrint
 import java.util.concurrent.atomic.AtomicBoolean
@@ -28,6 +29,7 @@ class PrivacySentry {
                     mBuilder?.configAmsHook(defaultAmsHookBuilder(mBuilder!!))
                         ?.configPmsHook(defaultPmsHookBuilder(mBuilder!!))
                         ?.configTmsHook(defaultTmsHookBuilder(mBuilder!!))
+                        ?.configCmsHook(defaultCmsHookBuilder(mBuilder!!))
                         ?.syncDebug(true)
                 } else {
                     mBuilder = builder
@@ -40,6 +42,10 @@ class PrivacySentry {
         private fun initInner() {
             mBuilder?.getAmsHookBuilder()?.let {
                 AmsHooker(it).hook()
+            }
+
+            mBuilder?.getCmsHookBuilder()?.let {
+                CmsHooker(it).hook()
             }
         }
 
@@ -70,5 +76,10 @@ class PrivacySentry {
             return BaseHookBuilder("pms", pmsMethod, mBuilder.getPrinterList())
         }
 
+        fun defaultCmsHookBuilder(mBuilder: PrivacySentryBuilder): BaseHookBuilder {
+            var cmsMethod = ArrayList<String>()
+            cmsMethod.add("getPrimaryClip")
+            return BaseHookBuilder("cms", cmsMethod, mBuilder.getPrinterList())
+        }
     }
 }

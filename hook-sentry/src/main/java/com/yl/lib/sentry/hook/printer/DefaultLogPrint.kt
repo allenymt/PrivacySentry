@@ -8,6 +8,6 @@ import com.yl.lib.sentry.hook.util.PrivacyLog
 class DefaultLogPrint : BasePrinter() {
 
     override fun print(name: String, msg: String) {
-        PrivacyLog.i("name is $name, msg is $msg")
+        PrivacyLog.i("name : $name, msg : $msg")
     }
 }
