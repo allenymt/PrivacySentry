@@ -8,15 +8,19 @@ import com.yl.lib.sentry.hook.printer.BasePrinter
  * https://juejin.cn/post/6844903985258692621 locationManager
  */
 class BaseHookBuilder {
-    // 敏感API名单
-    val blackList: List<String>
+    // 敏感API名单 ,key是方法名，value是别名，方便劣迹
+    val blackList: Map<String, String>
 
     val name: String
 
     var mPrinterList: ArrayList<BasePrinter>? = null
 
 
-    constructor(name: String,blackList: List<String>,printerList: ArrayList<BasePrinter>?) {
+    constructor(
+        name: String,
+        blackList: Map<String, String>,
+        printerList: ArrayList<BasePrinter>?
+    ) {
         this.name = name
         this.blackList = blackList
         this.mPrinterList = printerList
