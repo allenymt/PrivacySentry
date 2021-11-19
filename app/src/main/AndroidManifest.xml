@@ -11,6 +11,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".APP"
         android:theme="@style/Theme.PrivacySentry">
         <activity
             android:name=".MainActivity"

@@ -57,8 +57,6 @@ class MainActivity : AppCompatActivity() {
             PrivacyMethod.PrivacyMethod.testHookCms(this)
         }
 
-        PrivacySentry.Privacy.init(application)
-
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             var permissions = arrayOf(

@@ -22,10 +22,10 @@ class PrivacySentry {
         var bShowPrivacy = false
 
         fun init(ctx: Application) {
-            init(null,ctx)
+            init(null, ctx)
         }
 
-        fun init(builder: PrivacySentryBuilder?,ctx: Context) {
+        fun init(builder: PrivacySentryBuilder?, ctx: Context) {
             if (bInit.compareAndSet(false, true)) {
                 if (builder == null) {
                     mBuilder = PrivacySentryBuilder()
@@ -70,7 +70,7 @@ class PrivacySentry {
 
 
         fun isDebug(): Boolean {
-            return mBuilder?.debug!!
+            return mBuilder?.debug ?: false
         }
 
 
@@ -106,7 +106,7 @@ class PrivacySentry {
 
         fun defaultPmsHookBuilder(mBuilder: PrivacySentryBuilder): BaseHookBuilder {
             var pmsMethod = HashMap<String, String>()
-            pmsMethod.put("getInstalledPackages","getInstalledPackages")
+            pmsMethod.put("getInstalledPackages", "getInstalledPackages")
             return BaseHookBuilder("pms", pmsMethod, mBuilder.getPrinterList())
         }
 
