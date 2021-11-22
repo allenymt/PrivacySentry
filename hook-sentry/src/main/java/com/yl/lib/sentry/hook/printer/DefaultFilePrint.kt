@@ -7,6 +7,7 @@ import java.io.FileOutputStream
 /**
  * @author yulun
  * @sinice 2021-09-24 15:47
+ * 为了可以更直观的查看统计结果，默认采用excel文件形式输出
  */
 class DefaultFilePrint : BasePrinter {
 

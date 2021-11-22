@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -58,17 +57,17 @@
                 android:layout_height="wrap_content"
                 android:text="测试当前进程是主进程" />
 
-<!--            <Button-->
-<!--                android:id="@+id/btn_hook_cms"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="hook剪贴板服务" />-->
-
             <Button
                 android:id="@+id/btn_test_hook_cms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="测试hook剪贴板服务" />
+
+            <Button
+                android:id="@+id/btn_export_excel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试导出excel" />
         </LinearLayout>
 
     </ScrollView>
