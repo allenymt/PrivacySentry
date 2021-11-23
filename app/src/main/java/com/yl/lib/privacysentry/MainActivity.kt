@@ -137,8 +137,8 @@ class MainActivity : AppCompatActivity() {
         privacyFunBeanList.add(demoBean4)
         var filePathNew = filePath + excelFileName
         var sheetIndex = 0
-//        ExcelUtil.instance.initExcel(filePathNew, sheetName, title, sheetIndex)
-//        ExcelUtil.instance.writeObjListToExcel(privacyFunBeanList, filePathNew, sheetIndex)
-//        PrivacyLog.i("导出excel成功")
+        ExcelUtil.instance.initExcel(filePathNew, arrayListOf(sheetName), title, arrayListOf(sheetIndex))
+        ExcelUtil.instance.writeObjListToExcel(privacyFunBeanList, filePathNew, sheetIndex)
+        PrivacyLog.i("导出excel成功")
     }
 }
