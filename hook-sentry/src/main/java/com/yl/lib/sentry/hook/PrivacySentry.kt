@@ -2,13 +2,17 @@ package com.yl.lib.sentry.hook
 
 import android.app.Application
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import com.yl.lib.sentry.hook.hook.BaseHookBuilder
+import com.yl.lib.sentry.hook.hook.BaseHooker
 import com.yl.lib.sentry.hook.hook.ams.AmsHooker
 import com.yl.lib.sentry.hook.hook.cms.CmsHooker
 import com.yl.lib.sentry.hook.hook.pms.PmsHooker
 import com.yl.lib.sentry.hook.hook.tms.TmsHooker
-import com.yl.lib.sentry.hook.printer.BasePrinter
-import com.yl.lib.sentry.hook.printer.DefaultLogPrint
+import com.yl.lib.sentry.hook.printer.*
+import com.yl.lib.sentry.hook.util.PrivacyLog
+import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -19,74 +23,102 @@ class PrivacySentry {
     object Privacy {
         private var mBuilder: PrivacySentryBuilder? = null
         private val bInit = AtomicBoolean(false)
+        private const val defaultWatchTime: Long = 55 * 1000
         var bShowPrivacy = false
+        private var ctx: Application? = null
 
         fun init(ctx: Application) {
             init(null, ctx)
         }
 
-        fun init(builder: PrivacySentryBuilder?, ctx: Context) {
+        fun init(builder: PrivacySentryBuilder?, ctx: Application) {
             if (bInit.compareAndSet(false, true)) {
                 if (builder == null) {
                     mBuilder = PrivacySentryBuilder()
-                    mBuilder?.addPrinter(defaultPrinter())
-                    mBuilder?.configAmsHook(defaultAmsHookBuilder(mBuilder!!))
-                        ?.configPmsHook(defaultPmsHookBuilder(mBuilder!!))
-                        ?.configTmsHook(defaultTmsHookBuilder(mBuilder!!))
-                        ?.configCmsHook(defaultCmsHookBuilder(mBuilder!!))
+                    mBuilder?.addPrinter(defaultPrinter(ctx))
+                    mBuilder?.configHook(defaultAmsHook(mBuilder!!))
+                        ?.configHook(defaultPmsHook(mBuilder!!))
+                        ?.configHook(defaultTmsHook(mBuilder!!))
+                        ?.configHook(defaultCmsHook(mBuilder!!))
+                        ?.configWatchTime(defaultWatchTime)
                         ?.syncDebug(true)
                 } else {
                     mBuilder = builder
                 }
                 initInner(ctx)
             }
-
         }
 
-        private fun initInner(ctx: Context) {
-            mBuilder?.getAmsHookBuilder()?.let {
-                AmsHooker(it).hook(ctx)
+        private fun initInner(ctx: Application) {
+            PrivacyLog.i("call initInner")
+            this.ctx = ctx
+            mBuilder?.getHookerList()?.forEach {
+                it.hook(ctx)
             }
+            mBuilder?.getWatchTime()?.let {
+                var handler = Handler(Looper.getMainLooper())
+                handler.postDelayed({
+                    stopWatch()
+                }, it)
+            }
+        }
 
-            mBuilder?.getCmsHookBuilder()?.let {
-                CmsHooker(it).hook(ctx)
+        fun stopWatch() {
+            PrivacyLog.i("call stopWatch")
+            mBuilder?.getHookerList()?.forEach {
+                it.reduction(ctx!!)
             }
-
-            mBuilder?.getTmsHookBuilder()?.let {
-                TmsHooker(it).hook(ctx)
-            }
-
-            mBuilder?.getPmsHookBuilder()?.let {
-                PmsHooker(it).hook(ctx)
-            }
+            mBuilder?.getPrinterList()?.filterIsInstance<BaseWatchPrinter>()?.forEach { it.flush() }
         }
 
         /**
          * 记录展示隐私协议，调用时机一般为 隐私协议点击关闭的时候，必须调用
          */
         fun updatePrivacyShow() {
+            if (bShowPrivacy) {
+                return
+            }
+            PrivacyLog.i("call updatePrivacyShow")
             bShowPrivacy = true
+            mBuilder?.getPrinterList()?.filterIsInstance<BaseWatchPrinter>()
+                ?.forEach { it.appendData("点击隐私协议确认", "点击隐私协议确认", "点击隐私协议确认") }
         }
 
+        fun hasShowPrivacy(): Boolean {
+            return bShowPrivacy
+        }
 
         fun isDebug(): Boolean {
             return mBuilder?.debug ?: false
         }
 
+        fun defaultPrinter(ctx: Context): List<BasePrinter> {
+            return listOf(
+                DefaultLogPrint(), DefaultFilePrint(
+                    "${ctx.externalCacheDir}${File.separator}privacy_result_${System.currentTimeMillis()}.xls",
+                    printCallBack = object : PrintCallBack {
+                        override fun checkPrivacyShow(): Boolean {
+                            return hasShowPrivacy()
+                        }
 
-        fun defaultPrinter(): List<BasePrinter> {
-            return listOf(DefaultLogPrint())
+                        override fun stopWatch() {
+                            PrivacyLog.i("stopWatch")
+                            stopWatch()
+                        }
+                    }, ctx = ctx
+                )
+            )
         }
 
-        fun defaultAmsHookBuilder(mBuilder: PrivacySentryBuilder): BaseHookBuilder {
+        fun defaultAmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
             var amsMethod = HashMap<String, String>()
-            amsMethod["checkPermission"] = "checkPermission"
+//            amsMethod["checkPermission"] = "checkPermission"
             amsMethod["getRunningTasks"] = "getRunningTasks"
             amsMethod["getRunningAppProcesses"] = "getRunningAppProcesses"
-            return BaseHookBuilder("ams", amsMethod, mBuilder.getPrinterList())
+            return AmsHooker(BaseHookBuilder("ams", amsMethod, mBuilder.getPrinterList()))
         }
 
-        fun defaultTmsHookBuilder(mBuilder: PrivacySentryBuilder): BaseHookBuilder {
+        fun defaultTmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
             var tmsMethod = HashMap<String, String>()
 
             // getDeviceId
@@ -101,19 +133,19 @@ class PrivacySentry {
 
             // getSimSerialNumber
             tmsMethod["getIccSerialNumberForSubscriber"] = "getSimSerialNumber"
-            return BaseHookBuilder("tms", tmsMethod, mBuilder.getPrinterList())
+            return TmsHooker(BaseHookBuilder("tms", tmsMethod, mBuilder.getPrinterList()))
         }
 
-        fun defaultPmsHookBuilder(mBuilder: PrivacySentryBuilder): BaseHookBuilder {
+        fun defaultPmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
             var pmsMethod = HashMap<String, String>()
             pmsMethod.put("getInstalledPackages", "getInstalledPackages")
-            return BaseHookBuilder("pms", pmsMethod, mBuilder.getPrinterList())
+            return PmsHooker(BaseHookBuilder("pms", pmsMethod, mBuilder.getPrinterList()))
         }
 
-        fun defaultCmsHookBuilder(mBuilder: PrivacySentryBuilder): BaseHookBuilder {
+        fun defaultCmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
             var cmsMethod = HashMap<String, String>()
             cmsMethod.put("getPrimaryClip", "getPrimaryClip")
-            return BaseHookBuilder("cms", cmsMethod, mBuilder.getPrinterList())
+            return CmsHooker(BaseHookBuilder("cms", cmsMethod, mBuilder.getPrinterList()))
         }
     }
 }

@@ -33,8 +33,7 @@ public class HookProxyHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (mBaseHookerHookBuilder.getBlackList().keySet().contains(method.getName())) {
             try {
-                mBaseHookerHookBuilder.doPrinter(" method name is  " + method.getName() + " , args length is : " + (args == null ? String.valueOf(0) : String.valueOf(args.length)));
-                mBaseHookerHookBuilder.doPrinter(PrivacyUtil.Util.INSTANCE.getStackTrace());
+                mBaseHookerHookBuilder.doPrinter(method.getName() , PrivacyUtil.Util.INSTANCE.getStackTrace());
                 return method.invoke(localProxyBinder, args);
             } catch (Exception e) {
                 if (!(mBaseHookerHookBuilder.getName().equals("tms")

@@ -1,6 +1,8 @@
 package com.yl.lib.sentry.hook.hook
 
+import android.app.Application
 import android.content.Context
+import android.os.Build
 
 /**
  * @author yulun
@@ -13,6 +15,21 @@ open abstract class BaseHooker {
         this.baseHookerHookBuilder = baseHookerHookBuilder
     }
 
-    abstract fun hook(ctx: Context)
+    fun legalAndroidVersion(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return false
+        }
+        return true
+    }
+
+    /**
+     * 开启hook
+     */
+    abstract fun hook(ctx: Application)
+
+    /**
+     * 日志监听结束后，还原反射hook的变量，避免anr等系统异常
+     */
+    abstract fun reduction(ctx: Application)
 
 }

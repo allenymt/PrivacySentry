@@ -1,6 +1,7 @@
 package com.yl.lib.sentry.hook.hook
 
 import com.yl.lib.sentry.hook.printer.BasePrinter
+import com.yl.lib.sentry.hook.printer.DefaultLogPrint
 
 /**
  * @author yulun
@@ -8,7 +9,7 @@ import com.yl.lib.sentry.hook.printer.BasePrinter
  * https://juejin.cn/post/6844903985258692621 locationManager
  */
 class BaseHookBuilder {
-    // 敏感API名单 ,key是方法名，value是别名，方便劣迹
+    // 敏感API名单 ,key是方法名，value是别名，方便理解
     val blackList: Map<String, String>
 
     val name: String
@@ -27,8 +28,12 @@ class BaseHookBuilder {
     }
 
     fun doPrinter(msg: String) {
+        mPrinterList?.find { it is DefaultLogPrint }?.print(msg)
+    }
+
+    fun doPrinter(key: String, msg: String) {
         mPrinterList?.forEach {
-            it.print(name!!, msg)
+            it.print(key!!, blackList[key]!!, "$name-$msg")
         }
     }
 }

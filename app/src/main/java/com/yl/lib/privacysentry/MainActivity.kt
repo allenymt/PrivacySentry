@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.util.*
 import java.io.File
 import java.util.*
@@ -59,7 +60,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btn_export_excel).setOnClickListener {
-            exportExcel(this,"$externalCacheDir${File.separator}testExcel")
+            exportExcel(this, "$externalCacheDir${File.separator}testExcel")
+        }
+
+        findViewById<Button>(R.id.btn_force_finish).setOnClickListener {
+            PrivacySentry.Privacy.stopWatch()
+        }
+
+        findViewById<Button>(R.id.btn_mock_privacy_click).setOnClickListener {
+            PrivacySentry.Privacy.updatePrivacyShow()
         }
 
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
@@ -88,26 +97,48 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun exportExcel(context: Context,filePath:String) {
+    private fun exportExcel(context: Context, filePath: String) {
         val file: File = File(filePath)
         if (!file.exists()) {
             file.mkdirs()
         }
         val excelFileName = "/demo.xls"
-        val title = arrayOf("别名", "函数名", "调用堆栈","调用次数")
+        val title = arrayOf("别名", "函数名", "调用堆栈", "调用次数")
         val sheetName = "demoSheetName"
         val privacyFunBeanList: MutableList<PrivacyFunBean> = ArrayList<PrivacyFunBean>()
-        val demoBean1 = PrivacyFunBean("imei", "getImei", arrayListOf(PrivacyUtil.Util.getStackTrace() ?: "",PrivacyUtil.Util.getStackTrace()?: "",PrivacyUtil.Util.getStackTrace()?: ""),10)
-        val demoBean2 = PrivacyFunBean("imsi", "getImei", arrayListOf(PrivacyUtil.Util.getStackTrace() ?: "",PrivacyUtil.Util.getStackTrace()?: "",PrivacyUtil.Util.getStackTrace()?: ""),1)
-        val demoBean3 = PrivacyFunBean("device", "device", arrayListOf(PrivacyUtil.Util.getStackTrace() ?: "",PrivacyUtil.Util.getStackTrace()?: "",PrivacyUtil.Util.getStackTrace()?: ""),2)
-        val demoBean4 = PrivacyFunBean("install", "install", arrayListOf(PrivacyUtil.Util.getStackTrace() ?: "",PrivacyUtil.Util.getStackTrace()?: "",PrivacyUtil.Util.getStackTrace()?: ""),0)
+        val demoBean1 = PrivacyFunBean(
+            "imei",
+            "getImei",
+            PrivacyUtil.Util.getStackTrace() ?: "",
+            10
+        )
+        val demoBean2 = PrivacyFunBean(
+            "imsi",
+            "getImei",
+            PrivacyUtil.Util.getStackTrace() ?: "",
+            1
+        )
+        val demoBean3 = PrivacyFunBean(
+            "device",
+            "device",
+            PrivacyUtil.Util.getStackTrace() ?: "",
+            2
+        )
+        val demoBean4 = PrivacyFunBean(
+            "install",
+            "install",
+
+            PrivacyUtil.Util.getStackTrace() ?: "",
+            0
+        )
         privacyFunBeanList.add(demoBean1)
         privacyFunBeanList.add(demoBean2)
         privacyFunBeanList.add(demoBean3)
         privacyFunBeanList.add(demoBean4)
         var filePathNew = filePath + excelFileName
-        ExcelUtil.instance.initExcel(filePathNew, sheetName, title)
-        ExcelUtil.instance.writeObjListToExcel(privacyFunBeanList, filePathNew, context)
-        PrivacyLog.i("导出excel成功")
+        var sheetIndex = 0
+//        ExcelUtil.instance.initExcel(filePathNew, sheetName, title, sheetIndex)
+//        ExcelUtil.instance.writeObjListToExcel(privacyFunBeanList, filePathNew, sheetIndex)
+//        PrivacyLog.i("导出excel成功")
     }
 }

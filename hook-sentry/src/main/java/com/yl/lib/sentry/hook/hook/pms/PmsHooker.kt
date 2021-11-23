@@ -1,5 +1,6 @@
 package com.yl.lib.sentry.hook.hook.pms
 
+import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import com.yl.lib.sentry.hook.hook.BaseHookBuilder
@@ -18,17 +19,20 @@ import java.lang.reflect.Proxy
  * 但是对于这个hook来说，application已经足够了
  */
 class PmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHookerHookBuilder) {
-    override fun hook(ctx: Context) {
+    var rawBinder: Any? = null
+
+    override fun hook(ctx: Application) {
         try {
             // 基于ActivityThread hook
             var atClass = Class.forName("android.app.ActivityThread")
             var pmsBinderField = atClass.getDeclaredField("sPackageManager")
             var pmsClass = Class.forName("android.content.pm.IPackageManager")
             pmsBinderField.isAccessible = true
+            rawBinder = pmsBinderField.get(null)
             var pmsProxy = Proxy.newProxyInstance(
                 pmsBinderField.javaClass.classLoader,
                 arrayOf(pmsClass),
-                PMSProxy(pmsBinderField.get(null), baseHookerHookBuilder)
+                PMSProxy(rawBinder, baseHookerHookBuilder)
             )
             pmsBinderField.set(null, pmsProxy)
 
@@ -36,12 +40,29 @@ class PmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHooker
             val pm: PackageManager = ctx.packageManager
             val mPmField = pm.javaClass.getDeclaredField("mPM")
             mPmField.isAccessible = true
-            mPmField.set(pm,pmsProxy)
+            mPmField.set(pm, pmsProxy)
 
-            baseHookerHookBuilder?.doPrinter("hookSystemServices succeed : ${pmsProxy.javaClass.name}")
+            baseHookerHookBuilder?.doPrinter("hookSystemServices pms succeed : ${pmsProxy.javaClass.name}")
 
         } catch (e: Exception) {
-            baseHookerHookBuilder?.doPrinter("hookSystemServices failed ")
+            baseHookerHookBuilder?.doPrinter("hookSystemServices pms failed ")
+        }
+    }
+
+    override fun reduction(ctx: Application) {
+        try {
+            var atClass = Class.forName("android.app.ActivityThread")
+            var pmsBinderField = atClass.getDeclaredField("sPackageManager")
+            pmsBinderField.isAccessible = true
+            pmsBinderField.set(null, rawBinder)
+
+            // 2. 替换 ApplicationPackageManager里面的 mPM对象
+            val pm: PackageManager = ctx.packageManager
+            val mPmField = pm.javaClass.getDeclaredField("mPM")
+            mPmField.isAccessible = true
+            mPmField.set(pm, rawBinder)
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
         }
     }
 }

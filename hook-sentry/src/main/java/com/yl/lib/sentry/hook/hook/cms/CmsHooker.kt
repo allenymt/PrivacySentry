@@ -1,5 +1,6 @@
 package com.yl.lib.sentry.hook.hook.cms
 
+import android.app.Application
 import android.content.Context
 import android.os.IBinder
 import com.yl.lib.sentry.hook.hook.BaseHookBuilder
@@ -15,7 +16,9 @@ import java.lang.reflect.Proxy
  * 所以整个SDK越早初始化越好
  */
 class CmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHookerHookBuilder) {
-    override fun hook(ctx: Context) {
+    var rawBinder: IBinder? = null
+
+    override fun hook(ctx: Application) {
         try {
             // 从ClipboardManager源码看，最终走的是ServiceManager mService = IClipboard.Stub.asInterface(
             //                ServiceManager.getServiceOrThrow(Context.CLIPBOARD_SERVICE));
@@ -29,7 +32,7 @@ class CmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHooker
             )
             //取得ServiceManager里的原始的clipboard binder对象
             //一般来说这是一个Binder代理对象
-            val rawBinder = getService.invoke(null, Context.CLIPBOARD_SERVICE) as IBinder
+            rawBinder = getService.invoke(null, Context.CLIPBOARD_SERVICE) as IBinder
 
             //Hook掉这个Binder代理的queryLocalInterface 方法
             //然后在queryLocalInterface返回一个IInterface对象，hook掉我们感兴趣的方法即可
@@ -54,5 +57,20 @@ class CmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHooker
             e.printStackTrace()
             baseHookerHookBuilder?.doPrinter("hookSystemServices cms failed")
         }
+    }
+
+    override fun reduction(ctx: Application) {
+        try{
+            val serviceManager = Class.forName("android.os.ServiceManager")
+            val cacheField = serviceManager.getDeclaredField("sCache")
+            cacheField.isAccessible = true
+            val cache = cacheField[null] as MutableMap<String, IBinder>
+            rawBinder?.let {
+                cache[Context.CLIPBOARD_SERVICE] = rawBinder!!
+            }
+        }catch (e:java.lang.Exception){
+            e.printStackTrace()
+        }
+
     }
 }

@@ -1,33 +1,18 @@
 package com.yl.lib.sentry.hook.util
 
 import android.content.Context
-import android.widget.Toast
-
 import jxl.Workbook
-
 import jxl.WorkbookSettings
 import jxl.format.Alignment
 import jxl.format.Border
 import jxl.format.BorderLineStyle
 import jxl.format.Colour
-
-import jxl.write.WritableWorkbook
-
-import jxl.write.WritableCell
-
-import jxl.write.WriteException
-
-import jxl.write.WritableCellFormat
-
-import jxl.write.WritableFont
-import java.lang.Exception
-
-import jxl.write.Label;
+import jxl.write.*
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
-import java.util.ArrayList
+import java.util.*
 
 
 /**
@@ -35,7 +20,7 @@ import java.util.ArrayList
  * @sinice 2021-11-19 15:14
  */
 class ExcelUtil {
-    object instance{
+    object instance {
         private var arial14font: WritableFont? = null
 
         private var arial14format: WritableCellFormat? = null
@@ -81,28 +66,30 @@ class ExcelUtil {
          * @param sheetName Excel表格的表名
          * @param colName   excel中包含的列名（可以有多个）
          */
-        fun initExcel(filePath: String, sheetName: String, colName: Array<String>) {
+        fun initExcel(filePath: String, sheetName: List<String>, colName: Array<String>, sheetIndex: List<Int>) {
             format()
             var workbook: WritableWorkbook? = null
             try {
                 val file = File(filePath)
                 if (!file.exists()) {
                     file.createNewFile()
-                } else {
-                    return
                 }
                 workbook = Workbook.createWorkbook(file)
-                //设置表格的名字
-                val sheet = workbook.createSheet(sheetName, 0)
-                //创建标题栏
-                sheet.addCell(Label(0, 0, filePath, arial14format) as WritableCell)
-                for (col in colName.indices) {
-                    sheet.addCell(Label(col, 0, colName[col], arial10format))
+                for (index in sheetName.indices) {
+                    //设置表格的名字
+                    val sheet = workbook.createSheet(sheetName[index], sheetIndex[index])
+                    //创建标题栏
+                    sheet.addCell(Label(0, 0, filePath, arial14format) as WritableCell)
+                    for (col in colName.indices) {
+                        sheet.addCell(Label(col, 0, colName[col], arial10format))
+                    }
+                    //设置行高
+                    sheet.setRowView(0, 340)
                 }
-                //设置行高
-                sheet.setRowView(0, 340)
                 workbook.write()
+                PrivacyLog.i("initExcel success")
             } catch (e: Exception) {
+                PrivacyLog.i("initExcel fail")
                 e.printStackTrace()
             } finally {
                 if (workbook != null) {
@@ -116,15 +103,10 @@ class ExcelUtil {
         }
 
         /**
-         * 将制定类型的List写入Excel中
          *
-         * @param objList  待写入的list
-         * @param fileName
-         * @param c
-         * @param <T>
-        </T> */
-        fun <T> writeObjListToExcel(objList: List<T>?, fileName: String?, c: Context?) {
-            if (objList != null && objList.size > 0) {
+         */
+        fun writeObjListToExcel(objList: List<PrivacyFunBean>?, fileName: String?, sheetIndex: Int) {
+            if (objList != null && objList.isNotEmpty()) {
                 var writebook: WritableWorkbook? = null
                 var `in`: InputStream? = null
                 try {
@@ -133,7 +115,7 @@ class ExcelUtil {
                     `in` = FileInputStream(File(fileName))
                     val workbook = Workbook.getWorkbook(`in`)
                     writebook = Workbook.createWorkbook(File(fileName), workbook)
-                    val sheet = writebook.getSheet(0)
+                    val sheet = writebook.getSheet(sheetIndex)
                     for (j in objList.indices) {
                         val privacyFunBean = objList[j] as PrivacyFunBean
                         val list: MutableList<String?> = ArrayList()
@@ -156,8 +138,10 @@ class ExcelUtil {
                     }
                     writebook.write()
                     workbook.close()
-                    Toast.makeText(c, "导出Excel成功", Toast.LENGTH_SHORT).show()
+                    PrivacyLog.i("导出Excel success file : $fileName")
+                    PrivacyLog.i("可执行  adb pull $fileName")
                 } catch (e: Exception) {
+                    PrivacyLog.i("导出Excel fail")
                     e.printStackTrace()
                 } finally {
                     if (writebook != null) {

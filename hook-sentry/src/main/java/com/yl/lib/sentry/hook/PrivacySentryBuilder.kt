@@ -1,6 +1,6 @@
 package com.yl.lib.sentry.hook
 
-import com.yl.lib.sentry.hook.hook.BaseHookBuilder
+import com.yl.lib.sentry.hook.hook.BaseHooker
 import com.yl.lib.sentry.hook.printer.BasePrinter
 
 /**
@@ -11,34 +11,26 @@ class PrivacySentryBuilder {
 
     var debug: Boolean = true
 
-    private var amsHookBuilder: BaseHookBuilder? = null
-
-    private var pmsHookBuilder: BaseHookBuilder? = null
-
-    private var tmsHookBuilder: BaseHookBuilder? = null
-
-    private var cmsHookBuilder: BaseHookBuilder? = null
+    private var hookList: ArrayList<BaseHooker>? = null
 
     private var mPrinterList: ArrayList<BasePrinter>? = null
+
+    private var watchTime: Long? = null
+
+    constructor() {
+        hookList = ArrayList()
+    }
 
     fun getPrinterList(): ArrayList<BasePrinter>? {
         return mPrinterList
     }
 
-    fun getAmsHookBuilder(): BaseHookBuilder? {
-        return amsHookBuilder
+    fun getHookerList(): ArrayList<BaseHooker>? {
+        return hookList
     }
 
-    fun getPmsHookBuilder(): BaseHookBuilder? {
-        return pmsHookBuilder
-    }
-
-    fun getTmsHookBuilder(): BaseHookBuilder? {
-        return tmsHookBuilder
-    }
-
-    fun getCmsHookBuilder(): BaseHookBuilder? {
-        return cmsHookBuilder
+    fun getWatchTime(): Long? {
+        return watchTime
     }
 
     fun addPrinter(basePrinter: BasePrinter): PrivacySentryBuilder {
@@ -62,23 +54,13 @@ class PrivacySentryBuilder {
         return this
     }
 
-    fun configAmsHook(amsHookHookBuilder: BaseHookBuilder): PrivacySentryBuilder {
-        this.amsHookBuilder = amsHookHookBuilder
+    fun configHook(baseHooker: BaseHooker): PrivacySentryBuilder {
+        hookList?.add(baseHooker!!)
         return this
     }
 
-    fun configPmsHook(pmsHookHookBuilder: BaseHookBuilder): PrivacySentryBuilder {
-        this.pmsHookBuilder = pmsHookHookBuilder
-        return this
-    }
-
-    fun configTmsHook(tmsHookHookBuilder: BaseHookBuilder): PrivacySentryBuilder {
-        this.tmsHookBuilder = tmsHookHookBuilder
-        return this
-    }
-
-    fun configCmsHook(cmsHookHookBuilder: BaseHookBuilder): PrivacySentryBuilder {
-        this.cmsHookBuilder = cmsHookHookBuilder
+    fun configWatchTime(watchTime: Long): PrivacySentryBuilder {
+        this.watchTime = watchTime
         return this
     }
 }
