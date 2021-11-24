@@ -12,6 +12,7 @@ import com.yl.lib.sentry.hook.hook.pms.PmsHooker
 import com.yl.lib.sentry.hook.hook.tms.TmsHooker
 import com.yl.lib.sentry.hook.printer.*
 import com.yl.lib.sentry.hook.util.PrivacyLog
+import com.yl.lib.sentry.hook.util.PrivacyUtil
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -72,7 +73,7 @@ class PrivacySentry {
         }
 
         /**
-         * 记录展示隐私协议，调用时机一般为 隐私协议点击关闭的时候，必须调用
+         * 记录展示隐私协议，调用时机一般为 隐私协议点击确定的时候，必须调用
          */
         fun updatePrivacyShow() {
             if (bShowPrivacy) {
@@ -95,7 +96,11 @@ class PrivacySentry {
         fun defaultPrinter(ctx: Context): List<BasePrinter> {
             return listOf(
                 DefaultLogPrint(), DefaultFilePrint(
-                    "${ctx.externalCacheDir}${File.separator}privacy_result_${System.currentTimeMillis()}.xls",
+                    "${ctx.externalCacheDir}${File.separator}privacy_result_${
+                        PrivacyUtil.Util.formatTime(
+                            System.currentTimeMillis()
+                        )
+                    }.xls",
                     printCallBack = object : PrintCallBack {
                         override fun checkPrivacyShow(): Boolean {
                             return hasShowPrivacy()
