@@ -29,20 +29,37 @@ class PrivacySentry {
         private var ctx: Application? = null
 
         fun init(ctx: Application) {
-            init(null, ctx,defaultWatchTime)
+            init(null, ctx, defaultWatchTime, null)
         }
 
         /**
          *  隐私方法拦截时间：watchTime ，单位ms
          */
-        fun init(ctx: Application, watchTime:Long) {
-            init(null, ctx,watchTime)
+        fun init(ctx: Application, watchTime: Long) {
+            init(null, ctx, watchTime, null)
+        }
+
+        /**
+         *  隐私方法拦截时间：watchTime ，单位ms
+         */
+        fun init(ctx: Application, privacyResultCallBack: PrivacyResultCallBack?) {
+            init(null, ctx, defaultWatchTime, privacyResultCallBack)
+        }
+
+        /**
+         *  隐私方法拦截时间：watchTime ，单位ms
+         */
+        fun init(ctx: Application, watchTime: Long, privacyResultCallBack: PrivacyResultCallBack?) {
+            init(null, ctx, watchTime, privacyResultCallBack)
         }
 
         /**
          *  builder 自定义配置，建议用默认的就行
          */
-        fun init(builder: PrivacySentryBuilder?, ctx: Application, watchTime:Long) {
+        fun init(
+            builder: PrivacySentryBuilder?, ctx: Application, watchTime: Long,
+            privacyResultCallBack: PrivacyResultCallBack?
+        ) {
             if (bInit.compareAndSet(false, true)) {
                 if (builder == null) {
                     mBuilder = PrivacySentryBuilder()
@@ -52,6 +69,7 @@ class PrivacySentry {
                         ?.configHook(defaultTmsHook(mBuilder!!))
                         ?.configHook(defaultCmsHook(mBuilder!!))
                         ?.configWatchTime(watchTime)
+                        ?.configResultCallBack(privacyResultCallBack)
                         ?.syncDebug(true)
                 } else {
                     mBuilder = builder
@@ -79,7 +97,10 @@ class PrivacySentry {
             mBuilder?.getHookerList()?.forEach {
                 it.reduction(ctx!!)
             }
-            mBuilder?.getPrinterList()?.filterIsInstance<BaseWatchPrinter>()?.forEach { it.flush() }
+            mBuilder?.getPrinterList()?.filterIsInstance<BaseWatchPrinter>()?.forEach {
+                it.flush()
+                mBuilder?.getResultCallBack()?.onResultCallBack(it.resultFileName)
+            }
         }
 
         /**
@@ -118,7 +139,7 @@ class PrivacySentry {
 
                         override fun stopWatch() {
                             PrivacyLog.i("stopWatch")
-                            stopWatch()
+                            Privacy.stopWatch()
                         }
                     }, ctx = ctx
                 )
@@ -163,4 +184,11 @@ class PrivacySentry {
             return CmsHooker(BaseHookBuilder("cms", cmsMethod, mBuilder.getPrinterList()))
         }
     }
+}
+
+/**
+ * 检测结果回调，业务方自行处理
+ */
+public interface PrivacyResultCallBack {
+    fun onResultCallBack(filePath: String)
 }

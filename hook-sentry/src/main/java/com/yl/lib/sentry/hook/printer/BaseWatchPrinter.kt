@@ -9,9 +9,11 @@ import com.yl.lib.sentry.hook.util.PrivacyLog
 abstract class BaseWatchPrinter : BasePrinter {
 
     val printCallBack: PrintCallBack
+    val resultFileName:String
 
-    constructor(printCallBack: PrintCallBack) {
+    constructor(printCallBack: PrintCallBack,resultFileName:String) {
         this.printCallBack = printCallBack
+        this.resultFileName = resultFileName
     }
 
     final override fun print(funName: String, funAlias: String, msg: String) {

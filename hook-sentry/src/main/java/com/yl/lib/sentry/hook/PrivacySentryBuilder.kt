@@ -17,6 +17,8 @@ class PrivacySentryBuilder {
 
     private var watchTime: Long? = null
 
+    private var privacyResultCallBack: PrivacyResultCallBack? = null
+
     constructor() {
         hookList = ArrayList()
     }
@@ -31,6 +33,10 @@ class PrivacySentryBuilder {
 
     fun getWatchTime(): Long? {
         return watchTime
+    }
+
+    fun getResultCallBack(): PrivacyResultCallBack? {
+        return privacyResultCallBack
     }
 
     fun addPrinter(basePrinter: BasePrinter): PrivacySentryBuilder {
@@ -63,4 +69,10 @@ class PrivacySentryBuilder {
         this.watchTime = watchTime
         return this
     }
+
+    fun configResultCallBack(privacyResultCallBack: PrivacyResultCallBack?): PrivacySentryBuilder {
+        this.privacyResultCallBack = privacyResultCallBack
+        return this
+    }
+
 }

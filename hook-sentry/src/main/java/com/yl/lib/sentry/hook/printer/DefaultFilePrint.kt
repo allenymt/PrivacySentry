@@ -11,9 +11,6 @@ import com.yl.lib.sentry.hook.util.PrivacyLog
  * 为了可以更直观的查看统计结果，默认采用excel文件形式输出
  */
 class DefaultFilePrint : BaseWatchPrinter {
-
-    private var fileName: String = ""
-
     private val title = arrayOf("别名", "函数名", "调用堆栈", "调用次数")
     private val sheetPrivacyCount = 1
     private val sheetPrivacyLegal = 0
@@ -26,8 +23,7 @@ class DefaultFilePrint : BaseWatchPrinter {
         fileName: String,
         printCallBack: PrintCallBack,
         ctx: Context
-    ) : super(printCallBack) {
-        this.fileName = fileName
+    ) : super(printCallBack,fileName) {
         this.ctx = ctx
         ExcelUtil.instance.initExcel(
             fileName,
@@ -37,11 +33,12 @@ class DefaultFilePrint : BaseWatchPrinter {
         )
     }
 
+
     override fun print(msg: String) {
     }
 
     override fun flush() {
-        assert(fileName != null)
+        assert(resultFileName != null)
         if (privacyFunBeanList.isEmpty())
             return
         flushSheetPrivacyLegal()
@@ -66,7 +63,7 @@ class DefaultFilePrint : BaseWatchPrinter {
             }
             ExcelUtil.instance.writeObjListToExcel(
                 privacyFunBeanMap?.map { it.value },
-                fileName,
+                resultFileName,
                 sheetPrivacyCount
             )
         } catch (e: java.lang.Exception) {
@@ -78,7 +75,7 @@ class DefaultFilePrint : BaseWatchPrinter {
     private fun flushSheetPrivacyLegal() {
         try {
             PrivacyLog.e("call flushSheetPrivacyLegal")
-            ExcelUtil.instance.writeObjListToExcel(privacyFunBeanList, fileName, sheetPrivacyLegal)
+            ExcelUtil.instance.writeObjListToExcel(privacyFunBeanList, resultFileName, sheetPrivacyLegal)
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
