@@ -28,6 +28,14 @@
 ```
 
 
+```
+    在隐私协议确认的时候调用
+    kotlin:PrivacySentry.Privacy.updatePrivacyShow()
+    java:PrivacySentry.Privacy.INSTANCE.updatePrivacyShow();
+```
+
+
+
 ## 隐私方法调用结果产出
 -     默认拦截隐私方法时间为1分钟，支持自定义设置时间。
 -     排查结果可参考目录下的demo_result.xls，排查结果支持两个维度查看，第一是结合隐私协议的展示时机和敏感方法的调用时机，第二是统计所有敏感函数的调用次数
@@ -41,7 +49,3 @@
 
 ## 结语
     整体代码很简单，有问题可以直接提~
-
-## 不要带到线上！！！！
-## 不要带到线上！！！！
-## 不要带到线上！！！！
