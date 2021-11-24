@@ -24,15 +24,25 @@ class PrivacySentry {
     object Privacy {
         private var mBuilder: PrivacySentryBuilder? = null
         private val bInit = AtomicBoolean(false)
-        private const val defaultWatchTime: Long = 55 * 1000
+        private const val defaultWatchTime: Long = 60 * 1000
         var bShowPrivacy = false
         private var ctx: Application? = null
 
         fun init(ctx: Application) {
-            init(null, ctx)
+            init(null, ctx,defaultWatchTime)
         }
 
-        fun init(builder: PrivacySentryBuilder?, ctx: Application) {
+        /**
+         *  隐私方法拦截时间：watchTime ，单位ms
+         */
+        fun init(ctx: Application, watchTime:Long) {
+            init(null, ctx,watchTime)
+        }
+
+        /**
+         *  builder 自定义配置，建议用默认的就行
+         */
+        fun init(builder: PrivacySentryBuilder?, ctx: Application, watchTime:Long) {
             if (bInit.compareAndSet(false, true)) {
                 if (builder == null) {
                     mBuilder = PrivacySentryBuilder()
@@ -41,7 +51,7 @@ class PrivacySentry {
                         ?.configHook(defaultPmsHook(mBuilder!!))
                         ?.configHook(defaultTmsHook(mBuilder!!))
                         ?.configHook(defaultCmsHook(mBuilder!!))
-                        ?.configWatchTime(defaultWatchTime)
+                        ?.configWatchTime(watchTime)
                         ?.syncDebug(true)
                 } else {
                     mBuilder = builder
