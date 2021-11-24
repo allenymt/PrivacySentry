@@ -24,53 +24,22 @@ class PrivacySentry {
     object Privacy {
         private var mBuilder: PrivacySentryBuilder? = null
         private val bInit = AtomicBoolean(false)
-        private const val defaultWatchTime: Long = 60 * 1000
         var bShowPrivacy = false
         private var ctx: Application? = null
-
         fun init(ctx: Application) {
-            init(null, ctx, defaultWatchTime, null)
+            init(ctx, null)
         }
 
         /**
-         *  隐私方法拦截时间：watchTime ，单位ms
-         */
-        fun init(ctx: Application, watchTime: Long) {
-            init(null, ctx, watchTime, null)
-        }
-
-        /**
-         *  隐私方法拦截时间：watchTime ，单位ms
-         */
-        fun init(ctx: Application, privacyResultCallBack: PrivacyResultCallBack?) {
-            init(null, ctx, defaultWatchTime, privacyResultCallBack)
-        }
-
-        /**
-         *  隐私方法拦截时间：watchTime ，单位ms
-         */
-        fun init(ctx: Application, watchTime: Long, privacyResultCallBack: PrivacyResultCallBack?) {
-            init(null, ctx, watchTime, privacyResultCallBack)
-        }
-
-        /**
-         *  builder 自定义配置，建议用默认的就行
+         *  builder 自定义配置
          */
         fun init(
-            builder: PrivacySentryBuilder?, ctx: Application, watchTime: Long,
-            privacyResultCallBack: PrivacyResultCallBack?
+            ctx: Application, builder: PrivacySentryBuilder?
         ) {
             if (bInit.compareAndSet(false, true)) {
                 if (builder == null) {
-                    mBuilder = PrivacySentryBuilder()
-                    mBuilder?.addPrinter(defaultPrinter(ctx))
-                    mBuilder?.configHook(defaultAmsHook(mBuilder!!))
-                        ?.configHook(defaultPmsHook(mBuilder!!))
-                        ?.configHook(defaultTmsHook(mBuilder!!))
-                        ?.configHook(defaultCmsHook(mBuilder!!))
-                        ?.configWatchTime(watchTime)
-                        ?.configResultCallBack(privacyResultCallBack)
-                        ?.syncDebug(true)
+                    mBuilder = PrivacySentryBuilder().addPrinter(defaultPrinter(ctx, mBuilder))
+                    mBuilder = defaultConfigHookBuilder(mBuilder!!)
                 } else {
                     mBuilder = builder
                 }
@@ -124,14 +93,24 @@ class PrivacySentry {
             return mBuilder?.debug ?: false
         }
 
-        fun defaultPrinter(ctx: Context): List<BasePrinter> {
+        fun defaultConfigHookBuilder(builder: PrivacySentryBuilder): PrivacySentryBuilder {
+            builder?.configHook(defaultAmsHook(builder!!))
+                ?.configHook(defaultPmsHook(builder!!))
+                ?.configHook(defaultTmsHook(builder!!))
+                ?.configHook(defaultCmsHook(builder!!))
+                ?.syncDebug(true)
+            return builder
+        }
+
+        fun defaultPrinter(ctx: Context, builder: PrivacySentryBuilder?): List<BasePrinter> {
+            var fileName = builder?.getResultFileName() ?: "privacy_result_${
+                PrivacyUtil.Util.formatTime(
+                    System.currentTimeMillis()
+                )
+            }"
             return listOf(
                 DefaultLogPrint(), DefaultFilePrint(
-                    "${ctx.externalCacheDir}${File.separator}privacy_result_${
-                        PrivacyUtil.Util.formatTime(
-                            System.currentTimeMillis()
-                        )
-                    }.xls",
+                    "${ctx.externalCacheDir}${File.separator}$fileName.xls",
                     printCallBack = object : PrintCallBack {
                         override fun checkPrivacyShow(): Boolean {
                             return hasShowPrivacy()

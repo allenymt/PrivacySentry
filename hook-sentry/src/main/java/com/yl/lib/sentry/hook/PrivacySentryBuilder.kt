@@ -12,12 +12,10 @@ class PrivacySentryBuilder {
     var debug: Boolean = true
 
     private var hookList: ArrayList<BaseHooker>? = null
-
     private var mPrinterList: ArrayList<BasePrinter>? = null
-
-    private var watchTime: Long? = null
-
+    private var watchTime: Long = 60 * 1000
     private var privacyResultCallBack: PrivacyResultCallBack? = null
+    private var resultFileName: String? = null
 
     constructor() {
         hookList = ArrayList()
@@ -37,6 +35,10 @@ class PrivacySentryBuilder {
 
     fun getResultCallBack(): PrivacyResultCallBack? {
         return privacyResultCallBack
+    }
+
+    fun getResultFileName(): String? {
+        return resultFileName
     }
 
     fun addPrinter(basePrinter: BasePrinter): PrivacySentryBuilder {
@@ -72,6 +74,11 @@ class PrivacySentryBuilder {
 
     fun configResultCallBack(privacyResultCallBack: PrivacyResultCallBack?): PrivacySentryBuilder {
         this.privacyResultCallBack = privacyResultCallBack
+        return this
+    }
+
+    fun configResultFileName(resultFileName: String): PrivacySentryBuilder {
+        this.resultFileName = resultFileName
         return this
     }
 

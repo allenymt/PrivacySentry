@@ -22,9 +22,30 @@
 
 
 ```
+    简易版初始化
     在代码中调用，越早越好，建议在application中调用
     kotlin:PrivacySentry.Privacy.init(this)
     java:PrivacySentry.Privacy.INSTANCE.init(this);
+```
+
+
+```
+     完成功能的初始化
+     // 完整版配置
+        var builder = PrivacySentryBuilder()
+            // 自定义文件结果的输出名
+            .configResultFileName("demo_test")
+            //自定义检测时间，也支持主动停止检测 PrivacySentry.Privacy.stopWatch()
+            .configWatchTime(5 * 60 * 1000)
+            // 文件输出后的回调
+            .configResultCallBack(object : PrivacyResultCallBack {
+                override fun onResultCallBack(filePath: String) {
+                    PrivacyLog.i("result file patch is $filePath")
+                }
+            })
+        // 添加默认结果输出，包含log输出和文件输出
+        builder.addPrinter(PrivacySentry.Privacy.defaultPrinter(this, builder))
+        PrivacySentry.Privacy.init(this, PrivacySentry.Privacy.defaultConfigHookBuilder(builder))
 ```
 
 
