@@ -126,7 +126,7 @@ class PrivacySentry {
             PrivacyLog.i("print fileName is $fileName")
             return listOf(
                 DefaultFilePrint(
-                    "${ctx.externalCacheDir}${File.separator}$fileName.xls",
+                    "${ctx.getExternalFilesDir(null)}${File.separator}$fileName.xls",
                     printCallBack = object : PrintCallBack {
                         override fun checkPrivacyShow(): Boolean {
                             return hasShowPrivacy()
