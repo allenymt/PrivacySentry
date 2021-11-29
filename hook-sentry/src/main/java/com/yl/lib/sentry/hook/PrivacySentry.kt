@@ -10,7 +10,10 @@ import com.yl.lib.sentry.hook.hook.ams.AmsHooker
 import com.yl.lib.sentry.hook.hook.cms.CmsHooker
 import com.yl.lib.sentry.hook.hook.pms.PmsHooker
 import com.yl.lib.sentry.hook.hook.tms.TmsHooker
-import com.yl.lib.sentry.hook.printer.*
+import com.yl.lib.sentry.hook.printer.BasePrinter
+import com.yl.lib.sentry.hook.printer.BaseWatchPrinter
+import com.yl.lib.sentry.hook.printer.DefaultFilePrint
+import com.yl.lib.sentry.hook.printer.PrintCallBack
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyUtil
 import java.io.File
@@ -26,6 +29,7 @@ class PrivacySentry {
         private val bInit = AtomicBoolean(false)
         var bShowPrivacy = false
         private var ctx: Application? = null
+
         fun init(ctx: Application) {
             init(ctx, null)
         }
@@ -38,7 +42,7 @@ class PrivacySentry {
         ) {
             if (bInit.compareAndSet(false, true)) {
                 if (builder == null) {
-                    mBuilder = PrivacySentryBuilder().addPrinter(defaultPrinter(ctx, mBuilder))
+                    mBuilder = PrivacySentryBuilder().addPrinter(defaultFilePrinter(ctx, mBuilder))
                     mBuilder = defaultConfigHookBuilder(mBuilder!!)
                 } else {
                     mBuilder = builder
@@ -56,9 +60,11 @@ class PrivacySentry {
             mBuilder?.getWatchTime()?.let {
                 var handler = Handler(Looper.getMainLooper())
                 handler.postDelayed({
+                    PrivacyLog.i("delay stop watch $it")
                     stopWatch()
                 }, it)
             }
+            mBuilder?.addPrinter(defaultFilePrinter(ctx, mBuilder))
         }
 
         fun stopWatch() {
@@ -90,7 +96,11 @@ class PrivacySentry {
         }
 
         fun isDebug(): Boolean {
-            return mBuilder?.debug ?: false
+            return mBuilder?.debug ?: true
+        }
+
+        fun getContext(): Application? {
+            return ctx ?: null
         }
 
         fun defaultConfigHookBuilder(builder: PrivacySentryBuilder): PrivacySentryBuilder {
@@ -102,14 +112,15 @@ class PrivacySentry {
             return builder
         }
 
-        fun defaultPrinter(ctx: Context, builder: PrivacySentryBuilder?): List<BasePrinter> {
+        fun defaultFilePrinter(ctx: Context, builder: PrivacySentryBuilder?): List<BasePrinter> {
             var fileName = builder?.getResultFileName() ?: "privacy_result_${
                 PrivacyUtil.Util.formatTime(
                     System.currentTimeMillis()
                 )
             }"
+            PrivacyLog.i("print fileName is $fileName")
             return listOf(
-                DefaultLogPrint(), DefaultFilePrint(
+                DefaultFilePrint(
                     "${ctx.externalCacheDir}${File.separator}$fileName.xls",
                     printCallBack = object : PrintCallBack {
                         override fun checkPrivacyShow(): Boolean {

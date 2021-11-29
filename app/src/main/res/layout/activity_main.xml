@@ -80,6 +80,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="测试导出excel" />
+
+            <Button
+                android:id="@+id/btn_test_processB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="启动进程B" />
         </LinearLayout>
 
     </ScrollView>

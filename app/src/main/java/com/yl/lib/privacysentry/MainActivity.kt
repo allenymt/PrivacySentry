@@ -2,10 +2,12 @@ package com.yl.lib.privacysentry
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.yl.lib.privacysentry.process.MultiProcessB
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
 import com.yl.lib.sentry.hook.util.*
@@ -70,6 +72,10 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_mock_privacy_click).setOnClickListener {
             PrivacySentry.Privacy.updatePrivacyShow()
+        }
+
+        findViewById<Button>(R.id.btn_test_processB).setOnClickListener {
+            startService(Intent(this, MultiProcessB::class.java))
         }
 
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
