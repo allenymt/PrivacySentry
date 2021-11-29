@@ -1,6 +1,6 @@
 package com.yl.lib.sentry.hook.util
 
-import android.content.Context
+import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
 import jxl.Workbook
 import jxl.WorkbookSettings
 import jxl.format.Alignment
@@ -12,7 +12,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
-import java.util.*
 
 
 /**
@@ -66,7 +65,12 @@ class ExcelUtil {
          * @param sheetName Excel表格的表名
          * @param colName   excel中包含的列名（可以有多个）
          */
-        fun initExcel(filePath: String, sheetName: List<String>, colName: Array<String>, sheetIndex: List<Int>) {
+        fun initExcel(
+            filePath: String,
+            sheetName: List<String>,
+            colName: List<Array<String>>,
+            sheetIndex: List<Int>
+        ) {
             format()
             var workbook: WritableWorkbook? = null
             try {
@@ -80,8 +84,9 @@ class ExcelUtil {
                     val sheet = workbook.createSheet(sheetName[index], sheetIndex[index])
                     //创建标题栏
                     sheet.addCell(Label(0, 0, filePath, arial14format) as WritableCell)
-                    for (col in colName.indices) {
-                        sheet.addCell(Label(col, 0, colName[col], arial10format))
+                    var currentColName = colName[index]
+                    for (col in currentColName.indices) {
+                        sheet.addCell(Label(col, 0, currentColName[col], arial10format))
                     }
                     //设置行高
                     sheet.setRowView(0, 340)
@@ -105,7 +110,12 @@ class ExcelUtil {
         /**
          *
          */
-        fun writeObjListToExcel(objList: List<PrivacyFunBean>?, fileName: String?, sheetIndex: Int) {
+        fun writeObjListToExcel(
+            objList: List<PrivacyFunBean>?,
+            fileName: String?,
+            sheetIndex: Int,
+            buildDataListener: ExcelBuildDataListener
+        ) {
             if (objList != null && objList.isNotEmpty()) {
                 var writebook: WritableWorkbook? = null
                 var `in`: InputStream? = null
@@ -118,11 +128,7 @@ class ExcelUtil {
                     val sheet = writebook.getSheet(sheetIndex)
                     for (j in objList.indices) {
                         val privacyFunBean = objList[j] as PrivacyFunBean
-                        val list: MutableList<String?> = ArrayList()
-                        list.add(privacyFunBean.funAlias)
-                        list.add(privacyFunBean.funName)
-                        list.add(privacyFunBean.buildStackTrace())
-                        list.add(privacyFunBean.count.toString())
+                        val list = buildDataListener.buildData(sheetIndex, privacyFunBean)
                         for (i in list.indices) {
                             sheet.addCell(Label(i, j + 1, list[i], arial12format))
                             if (list[i]!!.length <= 4) {

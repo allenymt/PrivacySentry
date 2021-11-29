@@ -1,6 +1,9 @@
 # PrivacySentry
     android隐私合规检测
 
+## TODO
+    1. 日志里加上时间戳 done
+    2. 
 ## 如何使用
 
 ```

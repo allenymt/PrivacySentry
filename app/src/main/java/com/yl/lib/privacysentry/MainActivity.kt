@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.yl.lib.sentry.hook.PrivacySentry
+import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
 import com.yl.lib.sentry.hook.util.*
 import java.io.File
 import java.util.*
@@ -137,8 +138,23 @@ class MainActivity : AppCompatActivity() {
         privacyFunBeanList.add(demoBean4)
         var filePathNew = filePath + excelFileName
         var sheetIndex = 0
-        ExcelUtil.instance.initExcel(filePathNew, arrayListOf(sheetName), title, arrayListOf(sheetIndex))
-        ExcelUtil.instance.writeObjListToExcel(privacyFunBeanList, filePathNew, sheetIndex)
+        ExcelUtil.instance.initExcel(
+            filePathNew,
+            arrayListOf(sheetName),
+            arrayListOf(title),
+            arrayListOf(sheetIndex)
+        )
+        ExcelUtil.instance.writeObjListToExcel(privacyFunBeanList, filePathNew, sheetIndex, object :
+            ExcelBuildDataListener {
+            override fun buildData(sheetIndex: Int, privacyFunBean: PrivacyFunBean): List<String> {
+                return listOf(
+                    privacyFunBean.funAlias.toString(),
+                    privacyFunBean.funName.toString(),
+                    privacyFunBean.buildStackTrace(),
+                    privacyFunBean.count.toString()
+                )
+            }
+        })
         PrivacyLog.i("导出excel成功")
     }
 }

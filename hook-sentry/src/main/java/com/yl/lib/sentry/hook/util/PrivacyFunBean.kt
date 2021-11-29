@@ -5,6 +5,9 @@ package com.yl.lib.sentry.hook.util
  * @sinice 2021-11-19 15:24
  */
 class PrivacyFunBean {
+
+    var appendTime: String? = null
+
     /**
      * 类似于我们正常理解中的别名，比如imsi在系统里的函数名并不是imsi
      */
@@ -15,6 +18,7 @@ class PrivacyFunBean {
 
 
     constructor(alias: String?, funName: String?, stackTrace: String?, count: Int) {
+        appendTime = PrivacyUtil.Util.formatTime(System.currentTimeMillis(), "MM-dd HH:mm:ss")
         this.funAlias = alias
         this.funName = funName
         this.stackTraces = stackTrace
@@ -26,7 +30,7 @@ class PrivacyFunBean {
         this.funName = funName
     }
 
-    fun addSelf(){
+    fun addSelf() {
         count++
     }
 
