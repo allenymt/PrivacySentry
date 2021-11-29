@@ -128,8 +128,8 @@ class PrivacySentry {
         fun defaultAmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
             var amsMethod = HashMap<String, String>()
 //            amsMethod["checkPermission"] = "checkPermission"
-            amsMethod["getRunningTasks"] = "getRunningTasks"
-            amsMethod["getRunningAppProcesses"] = "getRunningAppProcesses"
+            amsMethod["getRunningTasks"] = "获取当前运行任务-getRunningTasks"
+            amsMethod["getRunningAppProcesses"] = "获取当前运行进程-getRunningAppProcesses"
             return AmsHooker(BaseHookBuilder("ams", amsMethod, mBuilder.getPrinterList()))
         }
 
@@ -137,29 +137,29 @@ class PrivacySentry {
             var tmsMethod = HashMap<String, String>()
 
             // getDeviceId
-            tmsMethod["getDeviceIdWithFeature"] = "getDeviceId" // 11
-            tmsMethod["getDeviceId"] = "getDeviceId" // 10 9
+            tmsMethod["getDeviceIdWithFeature"] = "获取设备id-getDeviceId" // 11
+            tmsMethod["getDeviceId"] = "获取设备id-getDeviceId" // 10 9
 
             // getImei
-            tmsMethod["getImeiForSlot"] = "getImei" // 9 10 11
+            tmsMethod["getImeiForSlot"] = "获取IMEI-getImei" // 9 10 11
 
             // getIMSI
-            tmsMethod["getSubscriberIdForSubscriber"] = "getIMSI" // 9
+            tmsMethod["getSubscriberIdForSubscriber"] = "获取IMSI-getIMSI" // 9
 
             // getSimSerialNumber
-            tmsMethod["getIccSerialNumberForSubscriber"] = "getSimSerialNumber"
+            tmsMethod["getIccSerialNumberForSubscriber"] = "获取sim卡标识-getSimSerialNumber"
             return TmsHooker(BaseHookBuilder("tms", tmsMethod, mBuilder.getPrinterList()))
         }
 
         fun defaultPmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
             var pmsMethod = HashMap<String, String>()
-            pmsMethod.put("getInstalledPackages", "getInstalledPackages")
+            pmsMethod.put("getInstalledPackages", "获取安装包-getInstalledPackages")
             return PmsHooker(BaseHookBuilder("pms", pmsMethod, mBuilder.getPrinterList()))
         }
 
         fun defaultCmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
             var cmsMethod = HashMap<String, String>()
-            cmsMethod.put("getPrimaryClip", "getPrimaryClip")
+            cmsMethod.put("getPrimaryClip", "获取剪贴板内容-getPrimaryClip")
             return CmsHooker(BaseHookBuilder("cms", cmsMethod, mBuilder.getPrinterList()))
         }
     }
