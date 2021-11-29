@@ -140,7 +140,7 @@ class ExcelUtil {
                             }
                         }
                         //设置行高
-                        sheet.setRowView(j + 1, 350)
+                        sheet.setRowView(j + 1, 500)
                     }
                     writebook.write()
                     workbook.close()

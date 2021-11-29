@@ -27,6 +27,7 @@ class PrivacySentry {
     object Privacy {
         private var mBuilder: PrivacySentryBuilder? = null
         private val bInit = AtomicBoolean(false)
+        private val bfinish = AtomicBoolean(false)
         var bShowPrivacy = false
         private var ctx: Application? = null
 
@@ -58,9 +59,9 @@ class PrivacySentry {
                 it.hook(ctx)
             }
             mBuilder?.getWatchTime()?.let {
+                PrivacyLog.i("delay stop watch $it")
                 var handler = Handler(Looper.getMainLooper())
                 handler.postDelayed({
-                    PrivacyLog.i("delay stop watch $it")
                     stopWatch()
                 }, it)
             }
@@ -68,14 +69,18 @@ class PrivacySentry {
         }
 
         fun stopWatch() {
-            PrivacyLog.i("call stopWatch")
-            mBuilder?.getHookerList()?.forEach {
-                it.reduction(ctx!!)
+            if (bfinish.compareAndSet(false, true)) {
+                bfinish.set(true)
+                PrivacyLog.i("call stopWatch")
+                mBuilder?.getHookerList()?.forEach {
+                    it.reduction(ctx!!)
+                }
+                mBuilder?.getPrinterList()?.filterIsInstance<BaseWatchPrinter>()?.forEach {
+                    it.flush()
+                    mBuilder?.getResultCallBack()?.onResultCallBack(it.resultFileName)
+                }
             }
-            mBuilder?.getPrinterList()?.filterIsInstance<BaseWatchPrinter>()?.forEach {
-                it.flush()
-                mBuilder?.getResultCallBack()?.onResultCallBack(it.resultFileName)
-            }
+
         }
 
         /**

@@ -1,5 +1,8 @@
 package com.yl.lib.sentry.hook.util
 
+import android.text.TextUtils
+import java.lang.StringBuilder
+
 /**
  * @author yulun
  * @sinice 2021-11-19 15:24
@@ -21,7 +24,7 @@ class PrivacyFunBean {
         appendTime = PrivacyUtil.Util.formatTime(System.currentTimeMillis(), "MM-dd HH:mm:ss.SSS")
         this.funAlias = alias
         this.funName = funName
-        this.stackTraces = stackTrace
+        this.stackTraces = trimTrace(stackTrace)
         this.count = count
     }
 
@@ -39,5 +42,17 @@ class PrivacyFunBean {
             return ""
         }
         return stackTraces ?: ""
+    }
+
+    // 裁剪掉部分冗余重复的trace
+    private fun trimTrace(stackStrace: String?): String? {
+        if (TextUtils.isEmpty(stackStrace))
+            return ""
+        var sArray = stackStrace?.split("\n")
+        var delIndex = sArray?.indexOfFirst { it.contains("java.lang.reflect.Proxy.invoke") }
+        if (delIndex != null && delIndex <= 0) {
+            return stackStrace
+        }
+        return sArray?.subList(delIndex!!+1,sArray.size)?.joinToString(separator = "\n")
     }
 }
