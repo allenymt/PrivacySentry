@@ -27,7 +27,7 @@ class PrivacyUtil {
             return sbf.toString()
         }
 
-        fun formatTime(time: Long, formatStr: String? = "yy-MM-dd_HH-mm-ss"): String {
+        fun formatTime(time: Long, formatStr: String? = "yy-MM-dd_HH-mm-ss.SSS"): String {
             val sdr = SimpleDateFormat(formatStr, Locale.CHINA)
             return sdr.format(time)
         }

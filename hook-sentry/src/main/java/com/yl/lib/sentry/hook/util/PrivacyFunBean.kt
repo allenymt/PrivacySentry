@@ -18,7 +18,7 @@ class PrivacyFunBean {
 
 
     constructor(alias: String?, funName: String?, stackTrace: String?, count: Int) {
-        appendTime = PrivacyUtil.Util.formatTime(System.currentTimeMillis(), "MM-dd HH:mm:ss")
+        appendTime = PrivacyUtil.Util.formatTime(System.currentTimeMillis(), "MM-dd HH:mm:ss.SSS")
         this.funAlias = alias
         this.funName = funName
         this.stackTraces = stackTrace
