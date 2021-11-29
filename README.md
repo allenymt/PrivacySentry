@@ -53,7 +53,7 @@
 
 
 ```
-    在隐私协议确认的时候调用
+    在隐私协议确认的时候调用，这一步非常重要！，一定要加
     kotlin:PrivacySentry.Privacy.updatePrivacyShow()
     java:PrivacySentry.Privacy.INSTANCE.updatePrivacyShow();
 ```
