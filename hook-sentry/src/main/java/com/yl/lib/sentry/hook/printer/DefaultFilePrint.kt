@@ -32,6 +32,7 @@ class DefaultFilePrint : BaseWatchPrinter {
         ctx: Context
     ) : super(printCallBack, fileName) {
         this.ctx = ctx
+        PrivacyLog.i("file name is $fileName")
         ExcelUtil.instance.initExcel(
             fileName,
             arrayListOf("隐私合规", "调用次数"),
