@@ -75,9 +75,13 @@ class ExcelUtil {
             var workbook: WritableWorkbook? = null
             try {
                 val file = File(filePath)
-                if (!file.exists()) {
-                    file.createNewFile()
+                if (file.exists()) {
+                    file.deleteOnExit()
                 }
+                if (!file.parentFile.exists()) {
+                    file.parentFile.mkdirs()
+                }
+                file.createNewFile()
                 workbook = Workbook.createWorkbook(file)
                 for (index in sheetName.indices) {
                     //设置表格的名字
