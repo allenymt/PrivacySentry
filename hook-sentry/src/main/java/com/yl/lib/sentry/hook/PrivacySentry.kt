@@ -170,6 +170,8 @@ class PrivacySentry {
         fun defaultPmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
             var pmsMethod = HashMap<String, String>()
             pmsMethod.put("getInstalledPackages", "获取安装包-getInstalledPackages")
+            pmsMethod.put("queryIntentActivitiesAsUser", "读安装列表-queryIntentActivitiesAsUser")
+
             return PmsHooker(BaseHookBuilder("pms", pmsMethod, mBuilder.getPrinterList()))
         }
 
