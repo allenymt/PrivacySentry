@@ -52,6 +52,16 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("privacySentryInstalled is $privacySentryInstalled")
         }
 
+        findViewById<Button>(R.id.btn_installed_packages2).setOnClickListener {
+            var privacySentryInstalled =
+                PrivacyMethod.PrivacyMethod.isInstalled2(
+                    application,
+                    this,
+                    "com.yl.lib.privacysentry123"
+                )
+            PrivacyLog.i("privacySentryInstalled2 is $privacySentryInstalled")
+        }
+
         findViewById<Button>(R.id.btn_main_process).setOnClickListener {
             var mainProcess = MainProcessUtil.MainProcessChecker.isMainProcess(this)
             var currentProcessName = MainProcessUtil.MainProcessChecker.getProcessName(this)
