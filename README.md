@@ -23,6 +23,9 @@
    implementation 'com.wdian.android.lib:privacy:0.0.1-SNAPSHOT'
 ```
 
+```
+    初始化方法最好在attachBaseContext中第一个调用！！！
+```
 
 ```
     简易版初始化

@@ -1,6 +1,7 @@
 package com.yl.lib.privacysentry
 
 import android.app.Application
+import android.content.Context
 import com.yl.lib.sentry.hook.PrivacyResultCallBack
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.PrivacySentryBuilder
@@ -14,6 +15,15 @@ import com.yl.lib.sentry.hook.util.PrivacyLog
 class APP : Application() {
     override fun onCreate() {
         super.onCreate()
+
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        initPrivacy()
+    }
+
+    private fun initPrivacy(){
 
         // 完整版配置
         var builder = PrivacySentryBuilder()
