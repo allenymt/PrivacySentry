@@ -2,7 +2,6 @@ package com.yl.lib.sentry.hook.hook.ams
 
 import android.app.ActivityManager
 import android.app.Application
-import android.content.Context
 import android.os.Build
 import com.yl.lib.sentry.hook.hook.BaseHookBuilder
 import com.yl.lib.sentry.hook.hook.BaseHooker

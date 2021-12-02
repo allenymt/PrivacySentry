@@ -1,6 +1,6 @@
 package com.yl.lib.sentry.hook.util
 
-import android.content.Context
+import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
 import jxl.Workbook
 import jxl.WorkbookSettings
 import jxl.format.Alignment
@@ -12,7 +12,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
-import java.util.*
 
 
 /**
@@ -58,7 +57,17 @@ class ExcelUtil {
             }
         }
 
-
+        fun checkDelOldFile(filePath: String){
+            try {
+                val file = File(filePath)
+                if (file.exists()) {
+                    file.delete()
+                    PrivacyLog.i("del old file  name is $filePath")
+                }
+            }catch (e:java.lang.Exception){
+                e.printStackTrace()
+            }
+        }
         /**
          * 初始化Excel表格
          *
@@ -66,30 +75,40 @@ class ExcelUtil {
          * @param sheetName Excel表格的表名
          * @param colName   excel中包含的列名（可以有多个）
          */
-        fun initExcel(filePath: String, sheetName: List<String>, colName: Array<String>, sheetIndex: List<Int>) {
+        fun initExcel(
+            filePath: String,
+            sheetName: List<String>,
+            colName: List<Array<String>>,
+            sheetIndex: List<Int>
+        ) {
             format()
             var workbook: WritableWorkbook? = null
             try {
                 val file = File(filePath)
-                if (!file.exists()) {
-                    file.createNewFile()
+                if (file.exists()) {
+                    file.deleteOnExit()
                 }
+                if (!file.parentFile.exists()) {
+                    file.parentFile.mkdirs()
+                }
+                file.createNewFile()
                 workbook = Workbook.createWorkbook(file)
                 for (index in sheetName.indices) {
                     //设置表格的名字
                     val sheet = workbook.createSheet(sheetName[index], sheetIndex[index])
                     //创建标题栏
                     sheet.addCell(Label(0, 0, filePath, arial14format) as WritableCell)
-                    for (col in colName.indices) {
-                        sheet.addCell(Label(col, 0, colName[col], arial10format))
+                    var currentColName = colName[index]
+                    for (col in currentColName.indices) {
+                        sheet.addCell(Label(col, 0, currentColName[col], arial10format))
                     }
                     //设置行高
                     sheet.setRowView(0, 340)
                 }
                 workbook.write()
-                PrivacyLog.i("initExcel success")
+                PrivacyLog.e("initExcel success")
             } catch (e: Exception) {
-                PrivacyLog.i("initExcel fail")
+                PrivacyLog.e("initExcel fail")
                 e.printStackTrace()
             } finally {
                 if (workbook != null) {
@@ -105,7 +124,12 @@ class ExcelUtil {
         /**
          *
          */
-        fun writeObjListToExcel(objList: List<PrivacyFunBean>?, fileName: String?, sheetIndex: Int) {
+        fun writeObjListToExcel(
+            objList: List<PrivacyFunBean>?,
+            fileName: String?,
+            sheetIndex: Int,
+            buildDataListener: ExcelBuildDataListener
+        ) {
             if (objList != null && objList.isNotEmpty()) {
                 var writebook: WritableWorkbook? = null
                 var `in`: InputStream? = null
@@ -118,11 +142,7 @@ class ExcelUtil {
                     val sheet = writebook.getSheet(sheetIndex)
                     for (j in objList.indices) {
                         val privacyFunBean = objList[j] as PrivacyFunBean
-                        val list: MutableList<String?> = ArrayList()
-                        list.add(privacyFunBean.funAlias)
-                        list.add(privacyFunBean.funName)
-                        list.add(privacyFunBean.buildStackTrace())
-                        list.add(privacyFunBean.count.toString())
+                        val list = buildDataListener.buildData(sheetIndex, privacyFunBean)
                         for (i in list.indices) {
                             sheet.addCell(Label(i, j + 1, list[i], arial12format))
                             if (list[i]!!.length <= 4) {
@@ -134,14 +154,14 @@ class ExcelUtil {
                             }
                         }
                         //设置行高
-                        sheet.setRowView(j + 1, 350)
+                        sheet.setRowView(j + 1, 500)
                     }
                     writebook.write()
                     workbook.close()
-                    PrivacyLog.i("导出Excel success file : $fileName")
-                    PrivacyLog.i("可执行  adb pull $fileName")
+                    PrivacyLog.e("导出Excel success file : $fileName")
+                    PrivacyLog.e("可执行  adb pull $fileName")
                 } catch (e: Exception) {
-                    PrivacyLog.i("导出Excel fail")
+                    PrivacyLog.e("导出Excel fail")
                     e.printStackTrace()
                 } finally {
                     if (writebook != null) {

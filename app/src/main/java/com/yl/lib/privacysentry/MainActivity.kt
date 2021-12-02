@@ -2,16 +2,21 @@ package com.yl.lib.privacysentry
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.yl.lib.privacysentry.process.MultiProcessB
 import com.yl.lib.sentry.hook.PrivacySentry
+import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
 import com.yl.lib.sentry.hook.util.*
+import com.yl.lib.sentry.hook.watcher.DelayTimeWatcher
 import java.io.File
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -55,10 +60,6 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("mainProcess currentProcessName is $currentProcessName  is $mainProcess")
         }
 
-        findViewById<Button>(R.id.btn_test_hook_cms).setOnClickListener {
-            PrivacyMethod.PrivacyMethod.testHookCms(this)
-        }
-
         findViewById<Button>(R.id.btn_export_excel).setOnClickListener {
             exportExcel(this, "$externalCacheDir${File.separator}testExcel")
         }
@@ -69,6 +70,16 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_mock_privacy_click).setOnClickListener {
             PrivacySentry.Privacy.updatePrivacyShow()
+        }
+
+        findViewById<Button>(R.id.btn_test_processB).setOnClickListener {
+            startService(Intent(this, MultiProcessB::class.java))
+        }
+
+        findViewById<Button>(R.id.btn_void_fun).setOnClickListener {
+            var index = 0
+            DelayTimeWatcher(5 * 1000,
+                Runnable { PrivacyLog.i("DelayTimeWatcher ${index++}") }).start()
         }
 
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
@@ -83,6 +94,7 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("requestPermissions ${Manifest.permission.READ_PHONE_STATE} fail")
         }
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -137,8 +149,23 @@ class MainActivity : AppCompatActivity() {
         privacyFunBeanList.add(demoBean4)
         var filePathNew = filePath + excelFileName
         var sheetIndex = 0
-        ExcelUtil.instance.initExcel(filePathNew, arrayListOf(sheetName), title, arrayListOf(sheetIndex))
-        ExcelUtil.instance.writeObjListToExcel(privacyFunBeanList, filePathNew, sheetIndex)
+        ExcelUtil.instance.initExcel(
+            filePathNew,
+            arrayListOf(sheetName),
+            arrayListOf(title),
+            arrayListOf(sheetIndex)
+        )
+        ExcelUtil.instance.writeObjListToExcel(privacyFunBeanList, filePathNew, sheetIndex, object :
+            ExcelBuildDataListener {
+            override fun buildData(sheetIndex: Int, privacyFunBean: PrivacyFunBean): List<String> {
+                return listOf(
+                    privacyFunBean.funAlias.toString(),
+                    privacyFunBean.funName.toString(),
+                    privacyFunBean.buildStackTrace(),
+                    privacyFunBean.count.toString()
+                )
+            }
+        })
         PrivacyLog.i("导出excel成功")
     }
 }
