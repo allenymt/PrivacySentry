@@ -1,9 +1,11 @@
 # PrivacySentry
     android隐私合规检测
 
+## 更新日志
+    2021-12-02
+        
 ## TODO
-    1. 日志里加上时间戳 done
-    2. 多进程适配 done
+   1. 部分无法hook的函数，插桩实现
 ## 如何使用
 
 ```
@@ -20,7 +22,7 @@
 
 ```
     2. 在项目中的build.gralde下添加
-   implementation 'com.wdian.android.lib:privacy:0.0.1-SNAPSHOT'
+   implementation 'com.github.allenymt:PrivacySentry:0.0.5'
 ```
 
 ```

@@ -37,9 +37,7 @@ class APP : Application() {
                     PrivacyLog.i("result file patch is $filePath")
                 }
             })
-        PrivacyLog.i("yulun 1")
         // 添加默认结果输出，包含log输出和文件输出
-        PrivacyLog.i("yulun 2")
         PrivacySentry.Privacy.init(this, PrivacySentry.Privacy.defaultConfigHookBuilder(builder))
 
         // 简易版配置
