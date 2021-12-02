@@ -33,11 +33,11 @@
 ```
 
 ```
-    初始化方法最好在attachBaseContext中第一个调用！！！
+    3. 初始化方法最好在attachBaseContext中第一个调用！！！
 ```
 
 ```
-    简易版初始化
+    4.1 简易版初始化
     在代码中调用，越早越好，建议在application中调用
     kotlin:PrivacySentry.Privacy.init(this)
     java:PrivacySentry.Privacy.INSTANCE.init(this);
@@ -45,7 +45,7 @@
 
 
 ```
-    完成功能的初始化
+    4.2 完成功能的初始化
      // 完整版配置
         var builder = PrivacySentryBuilder()
             // 自定义文件结果的输出名
@@ -81,22 +81,22 @@
 
 
 ```
-    在隐私协议确认的时候调用，这一步非常重要！，一定要加
+    4.3 在隐私协议确认的时候调用，这一步非常重要！，一定要加
     kotlin:PrivacySentry.Privacy.updatePrivacyShow()
     java:PrivacySentry.Privacy.INSTANCE.updatePrivacyShow();
 ```
 
 
 ```
-    支持多进程，多进程产出的文件名前缀默认增加进程名
+    5 支持多进程，多进程产出的文件名前缀默认增加进程名
 ```
 
 
 
 ## 隐私方法调用结果产出
--     默认拦截隐私方法时间为1分钟，支持自定义设置时间。
+-     默认拦截隐私方法时间为3分钟，支持自定义设置时间。
 -     排查结果可参考目录下的demo_result.xls，排查结果支持两个维度查看，第一是结合隐私协议的展示时机和敏感方法的调用时机，第二是统计所有敏感函数的调用次数
--     排查结果可观察日志，结果文件会在 /storage/emulated/0/Android/data/yourPackgeName/cache/xx.xls，需要手动执行下adb pull
+-     排查结果可观察日志，结果文件会在 /storage/emulated/0/Android/data/yourPackgeName/files/privacy/yourFileName.xls，需要手动执行下adb pull
 
 ## 基本原理
 -     一期是运行期基于动态代理hook系统关键函数实现，二期计划是编译期代码插桩实现
