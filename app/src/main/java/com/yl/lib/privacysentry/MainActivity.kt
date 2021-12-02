@@ -11,10 +11,12 @@ import com.yl.lib.privacysentry.process.MultiProcessB
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
 import com.yl.lib.sentry.hook.util.*
+import com.yl.lib.sentry.hook.watcher.DelayTimeWatcher
 import java.io.File
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -52,24 +54,10 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("privacySentryInstalled is $privacySentryInstalled")
         }
 
-        findViewById<Button>(R.id.btn_installed_packages2).setOnClickListener {
-            var privacySentryInstalled =
-                PrivacyMethod.PrivacyMethod.isInstalled2(
-                    application,
-                    this,
-                    "com.yl.lib.privacysentry123"
-                )
-            PrivacyLog.i("privacySentryInstalled2 is $privacySentryInstalled")
-        }
-
         findViewById<Button>(R.id.btn_main_process).setOnClickListener {
             var mainProcess = MainProcessUtil.MainProcessChecker.isMainProcess(this)
             var currentProcessName = MainProcessUtil.MainProcessChecker.getProcessName(this)
             PrivacyLog.i("mainProcess currentProcessName is $currentProcessName  is $mainProcess")
-        }
-
-        findViewById<Button>(R.id.btn_test_hook_cms).setOnClickListener {
-            PrivacyMethod.PrivacyMethod.testHookCms(this)
         }
 
         findViewById<Button>(R.id.btn_export_excel).setOnClickListener {
@@ -88,6 +76,12 @@ class MainActivity : AppCompatActivity() {
             startService(Intent(this, MultiProcessB::class.java))
         }
 
+        findViewById<Button>(R.id.btn_void_fun).setOnClickListener {
+            var index = 0
+            DelayTimeWatcher(5 * 1000,
+                Runnable { PrivacyLog.i("DelayTimeWatcher ${index++}") }).start()
+        }
+
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             var permissions = arrayOf(
@@ -100,6 +94,7 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("requestPermissions ${Manifest.permission.READ_PHONE_STATE} fail")
         }
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

@@ -15,7 +15,7 @@ class PrivacySentryBuilder {
 
     private var hookList: ArrayList<BaseHooker>? = null
     private var mPrinterList: ArrayList<BasePrinter>? = null
-    private var watchTime: Long = 60 * 1000
+    private var watchTime: Long = 3 * 60 * 1000
     private var privacyResultCallBack: PrivacyResultCallBack? = null
     private var resultFileName: String? = null
 

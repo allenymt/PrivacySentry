@@ -117,7 +117,7 @@ class PrivacySentry {
             return builder
         }
 
-        fun defaultFilePrinter(ctx: Context, builder: PrivacySentryBuilder?): List<BasePrinter> {
+        private fun defaultFilePrinter(ctx: Context, builder: PrivacySentryBuilder?): List<BasePrinter> {
             var fileName = builder?.getResultFileName() ?: "privacy_result_${
                 PrivacyUtil.Util.formatTime(
                     System.currentTimeMillis()
@@ -136,7 +136,7 @@ class PrivacySentry {
                             PrivacyLog.i("stopWatch")
                             Privacy.stopWatch()
                         }
-                    }, ctx = ctx
+                    }, watchTime = builder?.getWatchTime()
                 )
             )
         }
@@ -171,7 +171,10 @@ class PrivacySentry {
             var pmsMethod = HashMap<String, String>()
             pmsMethod.put("getInstalledPackages", "获取安装包-getInstalledPackages")
             pmsMethod.put("queryIntentActivities", "读安装列表-queryIntentActivities")
-            pmsMethod.put("getLeanbackLaunchIntentForPackage", "读安装列表-getLeanbackLaunchIntentForPackage")
+            pmsMethod.put(
+                "getLeanbackLaunchIntentForPackage",
+                "读安装列表-getLeanbackLaunchIntentForPackage"
+            )
 //            pmsMethod.put("getActivityInfo", "读AC信息-getActivityInfo")
             pmsMethod.put("getInstalledPackagesAsUser", "读安装列表-getInstalledPackagesAsUser")
             pmsMethod.put("queryIntentActivitiesAsUser", "读安装列表-queryIntentActivitiesAsUser")

@@ -1,10 +1,10 @@
 package com.yl.lib.sentry.hook.printer
 
-import android.content.Context
 import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
 import com.yl.lib.sentry.hook.util.ExcelUtil
 import com.yl.lib.sentry.hook.util.PrivacyFunBean
 import com.yl.lib.sentry.hook.util.PrivacyLog
+import com.yl.lib.sentry.hook.watcher.DelayTimeWatcher
 
 /**
  * @author yulun
@@ -21,17 +21,14 @@ class DefaultFilePrint : BaseWatchPrinter {
     private val titlePrivacyCount = arrayOf("别名", "函数名", "调用堆栈", "调用次数")
     private val sheetPrivacyCount = 1
 
-    private val ctx: Context
 
-    var privacyFunBeanMap: HashMap<String, PrivacyFunBean> = HashMap()
-    var privacyFunBeanList: ArrayList<PrivacyFunBean> = ArrayList()
+    private var privacyFunBeanList: ArrayList<PrivacyFunBean> = ArrayList()
 
     constructor(
         fileName: String,
         printCallBack: PrintCallBack,
-        ctx: Context
+        watchTime: Long?
     ) : super(printCallBack, fileName) {
-        this.ctx = ctx
         PrivacyLog.i("file name is $fileName")
         ExcelUtil.instance.initExcel(
             fileName,
@@ -39,6 +36,9 @@ class DefaultFilePrint : BaseWatchPrinter {
             arrayListOf(titlePrivacyLegal, titlePrivacyCount),
             arrayListOf(sheetPrivacyLegal, sheetPrivacyCount)
         )
+        DelayTimeWatcher(watchTime ?: 60 * 60 * 1000, Runnable {
+            flush()
+        }).start()
     }
 
     override fun print(msg: String) {
@@ -48,8 +48,11 @@ class DefaultFilePrint : BaseWatchPrinter {
         assert(resultFileName != null)
         if (privacyFunBeanList.isEmpty())
             return
-        flushSheetPrivacyLegal()
-        flushSheetPrivacyCount()
+        var newFunBeanList = ArrayList<PrivacyFunBean>()
+        newFunBeanList.addAll(privacyFunBeanList)
+        flushSheetPrivacyLegal(newFunBeanList)
+        flushSheetPrivacyCount(newFunBeanList)
+        newFunBeanList.clear()
     }
 
     override fun appendData(funName: String, funAlias: String, msg: String) {
@@ -58,10 +61,11 @@ class DefaultFilePrint : BaseWatchPrinter {
         privacyFunBeanList.add(PrivacyFunBean(funAlias, funName, msg, 1))
     }
 
-    private fun flushSheetPrivacyCount() {
+    private fun flushSheetPrivacyCount(funBeanList: ArrayList<PrivacyFunBean>) {
         try {
+            var privacyFunBeanMap: HashMap<String, PrivacyFunBean> = HashMap()
             PrivacyLog.e("call flushSheetPrivacyCount")
-            privacyFunBeanList.filter { !it.funName.equals("点击隐私协议确认") }.forEach {
+            funBeanList.filter { !it.funName.equals("点击隐私协议确认") }.forEach {
                 if (privacyFunBeanMap[it.buildStackTrace()] == null) {
                     privacyFunBeanMap[it.buildStackTrace()] = it
                 } else {
@@ -83,7 +87,6 @@ class DefaultFilePrint : BaseWatchPrinter {
                             privacyFunBean.count.toString()
                         )
                     }
-
                 }
             )
         } catch (e: java.lang.Exception) {
@@ -92,11 +95,11 @@ class DefaultFilePrint : BaseWatchPrinter {
 
     }
 
-    private fun flushSheetPrivacyLegal() {
+    private fun flushSheetPrivacyLegal(funBeanList: ArrayList<PrivacyFunBean>) {
         try {
             PrivacyLog.e("call flushSheetPrivacyLegal")
             ExcelUtil.instance.writeObjListToExcel(
-                privacyFunBeanList,
+                funBeanList,
                 resultFileName,
                 sheetPrivacyLegal,
                 object : ExcelBuildDataListener {

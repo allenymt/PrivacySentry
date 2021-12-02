@@ -96,9 +96,9 @@ class ExcelUtil {
                     sheet.setRowView(0, 340)
                 }
                 workbook.write()
-                PrivacyLog.i("initExcel success")
+                PrivacyLog.e("initExcel success")
             } catch (e: Exception) {
-                PrivacyLog.i("initExcel fail")
+                PrivacyLog.e("initExcel fail")
                 e.printStackTrace()
             } finally {
                 if (workbook != null) {
@@ -148,10 +148,10 @@ class ExcelUtil {
                     }
                     writebook.write()
                     workbook.close()
-                    PrivacyLog.i("导出Excel success file : $fileName")
-                    PrivacyLog.i("可执行  adb pull $fileName")
+                    PrivacyLog.e("导出Excel success file : $fileName")
+                    PrivacyLog.e("可执行  adb pull $fileName")
                 } catch (e: Exception) {
-                    PrivacyLog.i("导出Excel fail")
+                    PrivacyLog.e("导出Excel fail")
                     e.printStackTrace()
                 } finally {
                     if (writebook != null) {
