@@ -21,7 +21,7 @@ class DefaultFilePrint : BaseWatchPrinter {
     private val titlePrivacyCount = arrayOf("别名", "函数名", "调用堆栈", "调用次数")
     private val sheetPrivacyCount = 1
 
-
+    private var hasInit = false
     private var privacyFunBeanList: ArrayList<PrivacyFunBean> = ArrayList()
 
     constructor(
@@ -30,12 +30,7 @@ class DefaultFilePrint : BaseWatchPrinter {
         watchTime: Long?
     ) : super(printCallBack, fileName) {
         PrivacyLog.i("file name is $fileName")
-        ExcelUtil.instance.initExcel(
-            fileName,
-            arrayListOf("隐私合规", "调用次数"),
-            arrayListOf(titlePrivacyLegal, titlePrivacyCount),
-            arrayListOf(sheetPrivacyLegal, sheetPrivacyCount)
-        )
+        ExcelUtil.instance.checkDelOldFile(fileName)
         DelayTimeWatcher(watchTime ?: 60 * 60 * 1000, Runnable {
             flush()
         }).start()
@@ -48,6 +43,15 @@ class DefaultFilePrint : BaseWatchPrinter {
         assert(resultFileName != null)
         if (privacyFunBeanList.isEmpty())
             return
+        if (!hasInit) {
+            hasInit = true
+            ExcelUtil.instance.initExcel(
+                resultFileName,
+                arrayListOf("隐私合规", "调用次数"),
+                arrayListOf(titlePrivacyLegal, titlePrivacyCount),
+                arrayListOf(sheetPrivacyLegal, sheetPrivacyCount)
+            )
+        }
         var newFunBeanList = ArrayList<PrivacyFunBean>()
         newFunBeanList.addAll(privacyFunBeanList)
         flushSheetPrivacyLegal(newFunBeanList)

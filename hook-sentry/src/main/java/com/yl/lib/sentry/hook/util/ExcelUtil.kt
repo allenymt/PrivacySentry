@@ -57,7 +57,17 @@ class ExcelUtil {
             }
         }
 
-
+        fun checkDelOldFile(filePath: String){
+            try {
+                val file = File(filePath)
+                if (file.exists()) {
+                    file.delete()
+                    PrivacyLog.i("del old file  name is $filePath")
+                }
+            }catch (e:java.lang.Exception){
+                e.printStackTrace()
+            }
+        }
         /**
          * 初始化Excel表格
          *
