@@ -10,6 +10,8 @@
 
 ## TODO
 1. 部分无法hook的函数，插桩实现
+2. 每个Context的实例就持有了一个PMS代理对象的引用,理论上只要hook application的就够了，这里用asm拦截比较好
+
 
 ## 如何使用
 
