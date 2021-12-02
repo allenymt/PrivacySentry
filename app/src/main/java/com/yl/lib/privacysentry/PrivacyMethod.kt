@@ -2,9 +2,12 @@ package com.yl.lib.privacysentry
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Application
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.wifi.WifiManager
@@ -14,7 +17,6 @@ import android.text.TextUtils
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.yl.lib.sentry.hook.util.PrivacyLog
 import java.net.NetworkInterface
 
 
@@ -144,8 +146,8 @@ class PrivacyMethod {
             }
             return iccid ?: ""
         }
-        /**TMS END================================**/
 
+        /**TMS END================================**/
 
 
         val MAC_DEFAULT = "00:00:00:00:00:00"
@@ -237,6 +239,26 @@ class PrivacyMethod {
                     return true
                 }
             }
+            return false
+        }
+
+        fun isInstalled2(
+            context: Application,
+            @NonNull activity: Activity,
+            pkgName: String
+        ): Boolean {
+            if (TextUtils.isEmpty(pkgName)) {
+                return false
+            }
+            // 获取所有已安装程序的包信息
+            val packageManager = context.packageManager
+            packageManager.queryIntentActivities(
+                Intent(
+                    activity,
+                    MainActivity::javaClass.javaClass
+                ), 0
+            )
+
             return false
         }
 

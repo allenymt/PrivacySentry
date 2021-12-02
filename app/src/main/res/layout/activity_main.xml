@@ -63,23 +63,30 @@
                 android:layout_height="wrap_content"
                 android:text="测试当前进程是主进程" />
 
-            <Button
-                android:id="@+id/btn_test_hook_cms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="测试hook剪贴板服务" />
 
             <Button
                 android:id="@+id/btn_force_finish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="强制结束当前检测" />
+                android:text="结束当前检测-导出结果" />
 
             <Button
                 android:id="@+id/btn_export_excel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="测试导出excel" />
+
+            <Button
+                android:id="@+id/btn_test_processB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="启动进程B" />
+
+            <Button
+                android:id="@+id/btn_void_fun"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="预留的空方法测试" />
         </LinearLayout>
 
     </ScrollView>

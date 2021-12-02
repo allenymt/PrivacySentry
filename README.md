@@ -1,6 +1,9 @@
 # PrivacySentry
     android隐私合规检测
 
+## TODO
+    1. 日志里加上时间戳 done
+    2. 多进程适配 done
 ## 如何使用
 
 ```
@@ -17,9 +20,12 @@
 
 ```
     2. 在项目中的build.gralde下添加
-    implementation 'com.github.allenymt:PrivacySentry:0.0.4'
+   implementation 'com.wdian.android.lib:privacy:0.0.1-SNAPSHOT'
 ```
 
+```
+    初始化方法最好在attachBaseContext中第一个调用！！！
+```
 
 ```
     简易版初始化
@@ -30,7 +36,7 @@
 
 
 ```
-     完成功能的初始化
+    完成功能的初始化
      // 完整版配置
         var builder = PrivacySentryBuilder()
             // 自定义文件结果的输出名
@@ -43,16 +49,37 @@
                     PrivacyLog.i("result file patch is $filePath")
                 }
             })
-        // 添加默认结果输出，包含log输出和文件输出
-        builder.addPrinter(PrivacySentry.Privacy.defaultPrinter(this, builder))
         PrivacySentry.Privacy.init(this, PrivacySentry.Privacy.defaultConfigHookBuilder(builder))
+        
+        
+        java
+         // 完整版配置
+        PrivacySentryBuilder builder = new PrivacySentryBuilder()
+                // 自定义文件结果的输出名
+                .configResultFileName("buyer_privacy")
+                //自定义检测时间，也支持主动停止检测 PrivacySentry.Privacy.stopWatch()
+                .configWatchTime(30 * 1000)
+                // 文件输出后的回调
+                .configResultCallBack(new PrivacyResultCallBack() {
+
+                    @Override
+                    public void onResultCallBack(@NonNull String s) {
+
+                    }
+                });
+        PrivacySentry.Privacy.INSTANCE.init(this, PrivacySentry.Privacy.INSTANCE.defaultConfigHookBuilder(builder));
 ```
 
 
 ```
-    在隐私协议确认的时候调用
+    在隐私协议确认的时候调用，这一步非常重要！，一定要加
     kotlin:PrivacySentry.Privacy.updatePrivacyShow()
     java:PrivacySentry.Privacy.INSTANCE.updatePrivacyShow();
+```
+
+
+```
+    支持多进程，多进程产出的文件名前缀默认增加进程名
 ```
 
 

@@ -2,6 +2,8 @@ package com.yl.lib.sentry.hook
 
 import com.yl.lib.sentry.hook.hook.BaseHooker
 import com.yl.lib.sentry.hook.printer.BasePrinter
+import com.yl.lib.sentry.hook.printer.DefaultLogPrint
+import com.yl.lib.sentry.hook.util.MainProcessUtil
 
 /**
  * @author yulun
@@ -13,12 +15,13 @@ class PrivacySentryBuilder {
 
     private var hookList: ArrayList<BaseHooker>? = null
     private var mPrinterList: ArrayList<BasePrinter>? = null
-    private var watchTime: Long = 60 * 1000
+    private var watchTime: Long = 3 * 60 * 1000
     private var privacyResultCallBack: PrivacyResultCallBack? = null
     private var resultFileName: String? = null
 
     constructor() {
         hookList = ArrayList()
+        addPrinter(DefaultLogPrint())
     }
 
     fun getPrinterList(): ArrayList<BasePrinter>? {
@@ -38,7 +41,15 @@ class PrivacySentryBuilder {
     }
 
     fun getResultFileName(): String? {
-        return resultFileName
+        // 这里可能是多进程
+        return if (MainProcessUtil.MainProcessChecker.isMainProcess(PrivacySentry.Privacy.getContext())) {
+            resultFileName
+        } else {
+            var processName = PrivacySentry.Privacy.getContext()?.let {
+                MainProcessUtil.MainProcessChecker.getProcessName(PrivacySentry.Privacy.getContext()!!)
+            } ?: ""
+            "${processName}_$resultFileName"
+        }
     }
 
     fun addPrinter(basePrinter: BasePrinter): PrivacySentryBuilder {
