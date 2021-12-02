@@ -3,9 +3,14 @@
 
 ## 更新日志
     2021-12-02
-        
+        1. 支持多进程
+        2. 日志加上时间戳，方便阅读
+        3. 优化文件分时段写入
+        4. pms增加部分hook方法
+
 ## TODO
-   1. 部分无法hook的函数，插桩实现
+1. 部分无法hook的函数，插桩实现
+
 ## 如何使用
 
 ```
@@ -22,7 +27,7 @@
 
 ```
     2. 在项目中的build.gralde下添加
-   implementation 'com.github.allenymt:PrivacySentry:0.0.5'
+   implementation 'com.wdian.android.lib:privacy:0.0.1-SNAPSHOT'
 ```
 
 ```
@@ -95,6 +100,19 @@
 -     一期是运行期基于动态代理hook系统关键函数实现，二期计划是编译期代码插桩实现
 -     为什么不用xposed等框架？ 因为想做本地自动化定期排查，第三方hook框架外部依赖性太大
 -     为什么不搞基于lint的排查方式？ 工信部对于运行期 敏感函数的调用时机和次数都有限制，代码扫描解决不了这些问题
+
+
+## 支持的hook函数列表
+
+敏感函数 | 函数说明 | 归属的系统服务
+---|---|---
+getRunningTasks getRunningAppProcesses | 获取运行中的进程，多进程的APP中一般都有调用 | ActivityManagerService(AMS)
+getInstalledPackages queryIntentActivities getLeanbackLaunchIntentForPackage getInstalledPackagesAsUser queryIntentActivitiesAsUser queryIntentActivityOptions | 获取手机上已安装的APP  | PackageManager(PMS)
+getSimSerialNumber getDeviceId getSubscriberId getDeviceId | 设备和硬件标识  | TelephonyManager(TMS)
+getPrimaryClip | 剪贴板内容，Android12开始，读取剪贴板会通知用户，因此这里也加一个 | ClipboardManager(CMS)
+
+
+
 
 
 ## 结语
