@@ -52,10 +52,10 @@ class CmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHooker
             cacheField.isAccessible = true
             val cache = cacheField[null] as MutableMap<String, IBinder>
             cache[Context.CLIPBOARD_SERVICE] = hookedBinder
-            baseHookerHookBuilder?.doPrinter("hookSystemServices cms succeed : ${hookedBinder.javaClass.name}")
+            baseHookerHookBuilder?.doLogPrinter("hookSystemServices cms succeed : ${hookedBinder.javaClass.name}")
         } catch (e: Exception) {
             e.printStackTrace()
-            baseHookerHookBuilder?.doPrinter("hookSystemServices cms failed")
+            baseHookerHookBuilder?.doLogPrinter("hookSystemServices cms failed")
         }
     }
 

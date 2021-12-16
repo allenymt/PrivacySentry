@@ -10,8 +10,8 @@ import com.yl.lib.sentry.hook.hook.ams.AmsHooker
 import com.yl.lib.sentry.hook.hook.cms.CmsHooker
 import com.yl.lib.sentry.hook.hook.pms.PmsHooker
 import com.yl.lib.sentry.hook.hook.tms.TmsHooker
+import com.yl.lib.sentry.hook.printer.BaseFilePrinter
 import com.yl.lib.sentry.hook.printer.BasePrinter
-import com.yl.lib.sentry.hook.printer.BaseWatchPrinter
 import com.yl.lib.sentry.hook.printer.DefaultFilePrint
 import com.yl.lib.sentry.hook.printer.PrintCallBack
 import com.yl.lib.sentry.hook.util.PrivacyLog
@@ -75,8 +75,8 @@ class PrivacySentry {
                 mBuilder?.getHookerList()?.forEach {
                     it.reduction(ctx!!)
                 }
-                mBuilder?.getPrinterList()?.filterIsInstance<BaseWatchPrinter>()?.forEach {
-                    it.flush()
+                mBuilder?.getPrinterList()?.filterIsInstance<BaseFilePrinter>()?.forEach {
+                    it.flushToFile()
                     mBuilder?.getResultCallBack()?.onResultCallBack(it.resultFileName)
                 }
             }
@@ -92,7 +92,7 @@ class PrivacySentry {
             }
             PrivacyLog.i("call updatePrivacyShow")
             bShowPrivacy = true
-            mBuilder?.getPrinterList()?.filterIsInstance<BaseWatchPrinter>()
+            mBuilder?.getPrinterList()?.filterIsInstance<BaseFilePrinter>()
                 ?.forEach { it.appendData("点击隐私协议确认", "点击隐私协议确认", "点击隐私协议确认") }
         }
 
@@ -108,6 +108,10 @@ class PrivacySentry {
             return ctx ?: null
         }
 
+        fun getBuilder(): PrivacySentryBuilder? {
+            return mBuilder ?: null
+        }
+
         fun defaultConfigHookBuilder(builder: PrivacySentryBuilder): PrivacySentryBuilder {
             builder?.configHook(defaultAmsHook(builder!!))
                 ?.configHook(defaultPmsHook(builder!!))
@@ -117,7 +121,10 @@ class PrivacySentry {
             return builder
         }
 
-        private fun defaultFilePrinter(ctx: Context, builder: PrivacySentryBuilder?): List<BasePrinter> {
+        private fun defaultFilePrinter(
+            ctx: Context,
+            builder: PrivacySentryBuilder?
+        ): List<BasePrinter> {
             var fileName = builder?.getResultFileName() ?: "privacy_result_${
                 PrivacyUtil.Util.formatTime(
                     System.currentTimeMillis()
@@ -142,50 +149,19 @@ class PrivacySentry {
         }
 
         fun defaultAmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
-            var amsMethod = HashMap<String, String>()
-//            amsMethod["checkPermission"] = "checkPermission"
-            amsMethod["getRunningTasks"] = "获取当前运行任务-getRunningTasks"
-            amsMethod["getRunningAppProcesses"] = "获取当前运行进程-getRunningAppProcesses"
-            return AmsHooker(BaseHookBuilder("ams", amsMethod, mBuilder.getPrinterList()))
+            return AmsHooker(BaseHookBuilder("ams", mBuilder.getPrinterList()))
         }
 
         fun defaultTmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
-            var tmsMethod = HashMap<String, String>()
-
-            // getDeviceId
-            tmsMethod["getDeviceIdWithFeature"] = "获取设备id-getDeviceId" // 11
-            tmsMethod["getDeviceId"] = "获取设备id-getDeviceId" // 10 9
-
-            // getImei
-            tmsMethod["getImeiForSlot"] = "获取IMEI-getImei" // 9 10 11
-
-            // getIMSI
-            tmsMethod["getSubscriberIdForSubscriber"] = "获取IMSI-getIMSI" // 9
-
-            // getSimSerialNumber
-            tmsMethod["getIccSerialNumberForSubscriber"] = "获取sim卡标识-getSimSerialNumber"
-            return TmsHooker(BaseHookBuilder("tms", tmsMethod, mBuilder.getPrinterList()))
+            return TmsHooker(BaseHookBuilder("tms", mBuilder.getPrinterList()))
         }
 
         fun defaultPmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
-            var pmsMethod = HashMap<String, String>()
-            pmsMethod.put("getInstalledPackages", "获取安装包-getInstalledPackages")
-            pmsMethod.put("queryIntentActivities", "读安装列表-queryIntentActivities")
-            pmsMethod.put(
-                "getLeanbackLaunchIntentForPackage",
-                "读安装列表-getLeanbackLaunchIntentForPackage"
-            )
-//            pmsMethod.put("getActivityInfo", "读AC信息-getActivityInfo")
-            pmsMethod.put("getInstalledPackagesAsUser", "读安装列表-getInstalledPackagesAsUser")
-            pmsMethod.put("queryIntentActivitiesAsUser", "读安装列表-queryIntentActivitiesAsUser")
-            pmsMethod.put("queryIntentActivityOptions", "读安装列表-queryIntentActivityOptions")
-            return PmsHooker(BaseHookBuilder("pms", pmsMethod, mBuilder.getPrinterList()))
+            return PmsHooker(BaseHookBuilder("pms", mBuilder.getPrinterList()))
         }
 
         fun defaultCmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
-            var cmsMethod = HashMap<String, String>()
-            cmsMethod.put("getPrimaryClip", "获取剪贴板内容-getPrimaryClip")
-            return CmsHooker(BaseHookBuilder("cms", cmsMethod, mBuilder.getPrinterList()))
+            return CmsHooker(BaseHookBuilder("cms", mBuilder.getPrinterList()))
         }
     }
 }

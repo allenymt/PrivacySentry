@@ -71,7 +71,7 @@ class TmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHooker
         cacheField.isAccessible = true
         val cache = cacheField[null] as MutableMap<String, IBinder>
         cache[Context.TELEPHONY_SERVICE] = hookedBinder
-        baseHookerHookBuilder?.doPrinter("hookSystemServices tms hookITelephony succeed : ${hookedBinder.javaClass.name}")
+        baseHookerHookBuilder?.doLogPrinter("hookSystemServices tms hookITelephony succeed : ${hookedBinder.javaClass.name}")
     }
 
     // getIMSI
@@ -92,7 +92,7 @@ class TmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHooker
         cacheField.isAccessible = true
         val cache = cacheField[null] as MutableMap<String, IBinder>
         cache["iphonesubinfo"] = hookedBinder
-        baseHookerHookBuilder?.doPrinter("hookSystemServices tms hookITelephony succeed : ${hookedBinder.javaClass.name}")
+        baseHookerHookBuilder?.doLogPrinter("hookSystemServices tms hookITelephony succeed : ${hookedBinder.javaClass.name}")
     }
 
 }

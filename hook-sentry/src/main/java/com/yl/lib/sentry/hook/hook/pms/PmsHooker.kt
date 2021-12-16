@@ -41,10 +41,10 @@ class PmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHooker
             mPmField.isAccessible = true
             mPmField.set(pm, pmsProxy)
 
-            baseHookerHookBuilder?.doPrinter("hookSystemServices pms succeed : ${pmsProxy.javaClass.name}")
+            baseHookerHookBuilder?.doLogPrinter("hookSystemServices pms succeed : ${pmsProxy.javaClass.name}")
 
         } catch (e: Exception) {
-            baseHookerHookBuilder?.doPrinter("hookSystemServices pms failed ")
+            baseHookerHookBuilder?.doLogPrinter("hookSystemServices pms failed ")
         }
     }
 

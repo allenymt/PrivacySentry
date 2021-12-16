@@ -40,6 +40,7 @@ dependencies {
     implementation("net.sourceforge.jexcelapi:jxl:2.6.12") {
         exclude module: 'log4j'
     }
+    implementation project(":base")
 //    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5")
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

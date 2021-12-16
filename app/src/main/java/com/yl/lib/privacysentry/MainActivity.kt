@@ -10,7 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.yl.lib.privacysentry.process.MultiProcessB
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
-import com.yl.lib.sentry.hook.util.*
+import com.yl.lib.sentry.hook.excel.ExcelUtil
+import com.yl.lib.sentry.hook.printer.PrivacyFunBean
+import com.yl.lib.sentry.hook.util.MainProcessUtil
+import com.yl.lib.sentry.hook.util.PrivacyLog
+import com.yl.lib.sentry.hook.util.PrivacyUtil
 import com.yl.lib.sentry.hook.watcher.DelayTimeWatcher
 import java.io.File
 import java.util.*
@@ -52,6 +56,15 @@ class MainActivity : AppCompatActivity() {
             var privacySentryInstalled =
                 PrivacyMethod.PrivacyMethod.isInstalled(application, "com.yl.lib.privacysentry123")
             PrivacyLog.i("privacySentryInstalled is $privacySentryInstalled")
+        }
+
+        findViewById<Button>(R.id.btn_test_cms).setOnClickListener {
+            PrivacyMethod.PrivacyMethod.testHookCms(application)
+            PrivacyLog.i("testHookCms")
+        }
+
+        findViewById<Button>(R.id.btn_test_ams_process).setOnClickListener {
+            PrivacyMethod.PrivacyMethod.testRunningProcess(application)
         }
 
         findViewById<Button>(R.id.btn_main_process).setOnClickListener {

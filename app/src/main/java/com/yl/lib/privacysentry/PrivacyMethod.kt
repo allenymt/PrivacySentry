@@ -3,6 +3,7 @@ package com.yl.lib.privacysentry
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ActivityManager
 import android.app.Application
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -286,6 +287,21 @@ class PrivacyMethod {
             val clipStr = cd?.getItemAt(0)?.text.toString()
 //            PrivacyLog.i("testHookCms cms data is :$clipStr")
         }
+
         /**CMS END================================**/
+
+        fun testRunningProcess(@NonNull context: Context) {
+            val manager = context
+                .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val runningAppProcesses = manager
+                .runningAppProcesses
+        }
+
+        fun testRunningTask(@NonNull context: Context) {
+            val manager = context
+                .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val runningAppProcesses = manager
+                .getRunningTasks(100)
+        }
     }
 }

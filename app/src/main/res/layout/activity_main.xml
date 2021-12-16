@@ -63,6 +63,17 @@
                 android:layout_height="wrap_content"
                 android:text="测试当前进程是主进程" />
 
+            <Button
+                android:id="@+id/btn_test_cms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试剪贴板服务" />
+
+            <Button
+                android:id="@+id/btn_test_ams_process"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试读取运行中的进程" />
 
             <Button
                 android:id="@+id/btn_force_finish"
