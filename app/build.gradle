@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
+apply plugin: 'privacy-sentry-plugin'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -41,4 +43,9 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
+
+
+privacy{
+    blackList=[]
 }

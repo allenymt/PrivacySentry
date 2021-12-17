@@ -3,8 +3,8 @@ apply plugin: 'kotlin'
 dependencies {
     implementation gradleApi()//gradle sdk
     implementation localGroovy()
-    api project(path:':base')
-    compileOnly 'com.android.tools.build:gradle:3.5.1'
+    implementation project(path:':base')
+    implementation 'com.android.tools.build:gradle:3.5.4'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     // ASM V7.1
@@ -15,8 +15,8 @@ dependencies {
 
 // 插件本地调试补充
 apply plugin: 'maven'
-group = 'com.wdian.android.lib'
-version = '0.0.1'
+group = 'com.yl.lib.plugin'
+version = '0.0.1.8-SNAPSHOT'
 uploadArchives {
     repositories {
         mavenDeployer {

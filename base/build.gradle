@@ -38,3 +38,15 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:${rootProject.ext.kotlin_version}"
 
 }
+
+//本地调试补充
+apply plugin: 'maven'
+group = 'com.yl.lib.privacy'
+version = '0.0.1'
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../plugin-sentry/plugins'))
+        }
+    }
+}
