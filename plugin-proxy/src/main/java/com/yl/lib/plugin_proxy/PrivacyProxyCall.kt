@@ -61,7 +61,7 @@ class PrivacyProxyCall : IPrivacyProxy {
     }
 
     override fun getMeid(manager: TelephonyManager): String? {
-        doFilePrinter("getMeid","()Ljava/lang/String;")
+        doFilePrinter("getMeid", "()Ljava/lang/String;")
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             manager.getMeid()
         } else {
@@ -70,7 +70,7 @@ class PrivacyProxyCall : IPrivacyProxy {
     }
 
     override fun getMeid(manager: TelephonyManager, index: Int): String? {
-        doFilePrinter("getMeid","(I)Ljava/lang/String;")
+        doFilePrinter("getMeid", "(I)Ljava/lang/String;")
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             manager.getMeid(index)
         } else {
@@ -79,7 +79,7 @@ class PrivacyProxyCall : IPrivacyProxy {
     }
 
     override fun getDeviceId(manager: TelephonyManager): String? {
-        doFilePrinter("getDeviceId","()Ljava/lang/String;")
+        doFilePrinter("getDeviceId", "()Ljava/lang/String;")
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             manager.getDeviceId()
         } else {
@@ -88,7 +88,7 @@ class PrivacyProxyCall : IPrivacyProxy {
     }
 
     override fun getDeviceId(manager: TelephonyManager, index: Int): String? {
-        doFilePrinter("getDeviceId","(I)Ljava/lang/String;")
+        doFilePrinter("getDeviceId", "(I)Ljava/lang/String;")
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             manager.getDeviceId(index)
         } else {
@@ -108,7 +108,7 @@ class PrivacyProxyCall : IPrivacyProxy {
     }
 
     override fun getImei(manager: TelephonyManager): String? {
-        doFilePrinter("getImei","()Ljava/lang/String;")
+        doFilePrinter("getImei", "()Ljava/lang/String;")
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             manager.getImei()
         } else {
@@ -117,7 +117,7 @@ class PrivacyProxyCall : IPrivacyProxy {
     }
 
     override fun getImei(manager: TelephonyManager, index: Int): String? {
-        doFilePrinter("getImei","(I)Ljava/lang/String;")
+        doFilePrinter("getImei", "(I)Ljava/lang/String;")
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             manager.getImei(index)
         } else {
@@ -179,7 +179,7 @@ class PrivacyProxyCall : IPrivacyProxy {
     override fun getString(contentResolver: ContentResolver?, type: String?): String? {
         var result = ""
         try {
-            doFilePrinter("getString")
+            doFilePrinter("getString", args = type)
             result = Settings.Secure.getString(
                 contentResolver,
                 type
@@ -190,7 +190,7 @@ class PrivacyProxyCall : IPrivacyProxy {
         return result
     }
 
-    private fun doFilePrinter(funName: String, methodReturnDesc: String = "") {
+    private fun doFilePrinter(funName: String, methodReturnDesc: String = "", args: String? = "") {
         var hookMethodItem: HookMethodItem? = HookMethodManager.MANAGER.findHookItemByName(
             funName,
             methodReturnDesc = methodReturnDesc
@@ -199,7 +199,7 @@ class PrivacyProxyCall : IPrivacyProxy {
             PrivacySentry.Privacy.getBuilder()?.getPrinterList()?.forEach {
                 it.filePrint(
                     hookMethodItem?.methodName!!,
-                    hookMethodItem?.methodDesc!!,
+                    hookMethodItem?.methodDesc!! + "--参数: $args",
                     PrivacyUtil.Util.getStackTrace()
                 )
             }
