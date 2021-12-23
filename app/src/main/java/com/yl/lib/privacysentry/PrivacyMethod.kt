@@ -43,17 +43,11 @@ class PrivacyMethod {
             var imei = ""
             // 在某些平板上可能会抛出异常
             try {
-                if (checkPermissions(
-                        context,
-                        Manifest.permission.READ_PHONE_STATE
-                    )
-                ) {
-                    val mTelephonyMgr = context
-                        .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
-                    imei = mTelephonyMgr.getDeviceId()
-                }
+                val mTelephonyMgr = context
+                    .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                imei = mTelephonyMgr.getDeviceId()
             } catch (e: Throwable) {
-//                e.printStackTrace()
+                e.printStackTrace()
             }
             return imei ?: ""
         }
@@ -157,17 +151,12 @@ class PrivacyMethod {
             }
             var iccid = ""
             try {
-                if (checkPermissions(
-                        context,
-                        Manifest.permission.READ_PHONE_STATE
-                    )
-                ) {
-                    val mTelephonyMgr = context
-                        .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
-                        ?: return ""
-                    iccid =
-                        mTelephonyMgr.simSerialNumber
-                }
+
+                val mTelephonyMgr = context
+                    .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                    ?: return ""
+                iccid =
+                    mTelephonyMgr.simSerialNumber
             } catch (e: Throwable) {
                 e.printStackTrace()
             }
