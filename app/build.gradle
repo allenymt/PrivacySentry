@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
-//apply plugin: 'privacy-sentry-plugin'
+apply plugin: 'privacy-sentry-plugin'
 
 android {
     compileSdkVersion 30
@@ -51,6 +51,6 @@ dependencies {
 }
 
 
-//privacy{
-//    blackList=["com.yl.lib.privacy_test"]
-//}
+privacy{
+    blackList=["com.yl.lib.privacy_test"]
+}

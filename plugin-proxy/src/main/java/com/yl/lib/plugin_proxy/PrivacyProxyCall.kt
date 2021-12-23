@@ -199,7 +199,7 @@ class PrivacyProxyCall : IPrivacyProxy {
             PrivacySentry.Privacy.getBuilder()?.getPrinterList()?.forEach {
                 it.filePrint(
                     hookMethodItem?.methodName!!,
-                    hookMethodItem?.methodDesc!! + "--参数: $args",
+                    hookMethodItem?.methodDesc!! + if (args?.isNotEmpty() == true) "--参数: $args" else "",
                     PrivacyUtil.Util.getStackTrace()
                 )
             }
