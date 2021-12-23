@@ -9,7 +9,6 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.yl.lib.privacy_test.TestMethod
 import com.yl.lib.privacysentry.process.MultiProcessB
-import com.yl.lib.sentry.base.HookMethodManager
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
 import com.yl.lib.sentry.hook.excel.ExcelUtil
@@ -107,16 +106,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            var permissions = arrayOf(
-                Manifest.permission.READ_PHONE_STATE
-            )
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(permissions, 1000)
-            }
-        } else {
-            PrivacyLog.i("requestPermissions ${Manifest.permission.READ_PHONE_STATE} fail")
+        var permissions = arrayOf(
+            Manifest.permission.READ_PHONE_STATE
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(permissions, 1000)
         }
+
     }
 
 
