@@ -39,14 +39,19 @@ dependencies {
 
 }
 
-//本地调试补充
-apply plugin: 'maven'
-group = 'com.yl.lib.privacy'
-version = '0.0.2'
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: uri('../plugin-sentry/plugins'))
+if (rootProject.ext.plugin_local_debug) {
+    //本地调试补充
+    apply plugin: 'maven'
+    group = 'com.yl.lib.privacy'
+    version = '0.0.2'
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: uri('../plugin-sentry/plugins'))
+            }
         }
     }
+} else {
+    apply plugin: 'android.publish'
 }
+
