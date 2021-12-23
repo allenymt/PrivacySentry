@@ -48,7 +48,7 @@ class PrivacyClassProcessor {
             return classWriter.toByteArray()
         }
 
-        fun processJar(project: Project, file: File) {
+        fun processJar(project: Project, file: File, extension: PrivacyExtension) {
             if (file == null || !file.exists() || !file.name.endsWith(".jar")) {
                 return
             }
@@ -71,7 +71,7 @@ class PrivacyClassProcessor {
                 var zipEntry = ZipEntry(entryName)
                 // 针对jarEntry构建输入流
                 var inputStream = jarFile.getInputStream(jarEntry)
-                if (shouldProcessClass(entryName)) {
+                if (shouldProcessClass(entryName, extension.blackList)) {
                     project.logger.info("deal with jar file is: $file.absolutePath entryName is $entryName")
                     jarOutputStream.putNextEntry(zipEntry)
                     // 使用 ASM 对 class 文件进行操控
@@ -94,8 +94,13 @@ class PrivacyClassProcessor {
             tmpFile.renameTo(file)
         }
 
-        fun processDirectory(project: Project, inputDir: File, inputFile: File) {
-            if (shouldProcessClass(inputFile.name)) {
+        fun processDirectory(
+            project: Project,
+            inputDir: File,
+            inputFile: File,
+            extension: PrivacyExtension
+        ) {
+            if (shouldProcessClass(inputFile.name, extension.blackList)) {
                 project.logger.info("deal with directory file is:" + inputFile.absolutePath)
                 var codeBytes = run(FileInputStream(inputFile), project)
                 // 构建输出流，这里是当前目录的原文件；也可以新建个临时文件，写完后再覆盖
@@ -108,7 +113,12 @@ class PrivacyClassProcessor {
         }
 
 
-        private fun shouldProcessClass(entryName: String): Boolean {
+        private fun shouldProcessClass(entryName: String, blackList: Set<String>?): Boolean {
+            val replaceEntryName = entryName.replace("/",".")
+            blackList?.forEach{
+                if (replaceEntryName.contains(it))
+                    return false
+            }
             if (!entryName.endsWith(".class")
 //                || entryName.contains("$") // kotlin object编译后都是内部类，因此这里要放开
                 || entryName.endsWith("R.class")
@@ -118,6 +128,10 @@ class PrivacyClassProcessor {
                 || entryName.contains("android/app/")
                 || entryName.contains("android/material")
                 || entryName.contains("androidx")
+                // 过滤掉库本身
+                || entryName.contains("com/yl/lib/sentry/hook")
+                || entryName.contains("com/yl/lib/plugin_proxy")
+                || entryName.contains("com/yl/lib/sentry/base")
             ) {
 //            print("checkClassFile className is $entryName false")
                 return false

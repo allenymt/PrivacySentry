@@ -19,7 +19,7 @@ class APP : Application() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
-        initPrivacyTransform()
+        initPrivacyRunTime()
     }
 
     private fun initPrivacyRunTime(){

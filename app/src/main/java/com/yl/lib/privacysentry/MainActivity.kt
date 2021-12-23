@@ -9,6 +9,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.yl.lib.privacy_test.TestMethod
 import com.yl.lib.privacysentry.process.MultiProcessB
+import com.yl.lib.sentry.base.HookMethodManager
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
 import com.yl.lib.sentry.hook.excel.ExcelUtil

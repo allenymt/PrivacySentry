@@ -3,6 +3,7 @@ package com.yl.lib.plugin.sentry.transform
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.utils.FileUtils
+import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import org.gradle.api.Project
 import org.gradle.util.GFileUtils
 import java.io.File
@@ -44,12 +45,21 @@ class PrivacySentryTransform : Transform {
             transformInvocation.outputProvider.deleteAll()
         }
 
+        var privacyExtension = project.extensions.findByType(
+            PrivacyExtension::class.java
+        ) as PrivacyExtension
+
         transformInvocation?.inputs?.forEach {
-            handleJar(it, transformInvocation.outputProvider, transformInvocation.isIncremental)
+            handleJar(
+                it,
+                transformInvocation.outputProvider,
+                transformInvocation.isIncremental,
+                privacyExtension
+            )
             handleDirectory(
                 it,
                 transformInvocation.outputProvider,
-                transformInvocation.isIncremental
+                transformInvocation.isIncremental, privacyExtension
             )
         }
     }
@@ -57,7 +67,8 @@ class PrivacySentryTransform : Transform {
     // 处理jar
     private fun handleJar(
         transformInput: TransformInput, outputProvider: TransformOutputProvider,
-        incremental: Boolean
+        incremental: Boolean,
+        extension: PrivacyExtension
     ) {
         transformInput.jarInputs.forEach {
             var output =
@@ -66,7 +77,7 @@ class PrivacySentryTransform : Transform {
                 when (it.status) {
                     Status.ADDED, Status.CHANGED -> {
                         project.logger.info("directory status is ${it.status}  file is:" + it.file.absolutePath)
-                        PrivacyClassProcessor.processJar(project, it.file)
+                        PrivacyClassProcessor.processJar(project, it.file, extension)
                         GFileUtils.deleteFileQuietly(output)
                         GFileUtils.copyFile(it.file, output)
                     }
@@ -77,7 +88,7 @@ class PrivacySentryTransform : Transform {
                 }
             } else {
                 project.logger.info("jar incremental false file is:" + it.file.absolutePath)
-                PrivacyClassProcessor.processJar(project, it.file)
+                PrivacyClassProcessor.processJar(project, it.file, extension)
                 GFileUtils.deleteFileQuietly(output)
                 GFileUtils.copyFile(it.file, output)
             }
@@ -88,7 +99,8 @@ class PrivacySentryTransform : Transform {
     private fun handleDirectory(
         transformInput: TransformInput,
         outputProvider: TransformOutputProvider,
-        incremental: Boolean
+        incremental: Boolean,
+        extension: PrivacyExtension
     ) {
         transformInput.directoryInputs.forEach {
             var inputDir = it.file
@@ -112,7 +124,12 @@ class PrivacySentryTransform : Transform {
                         }
                         Status.ADDED, Status.CHANGED -> {
                             project.logger.info("directory status is $status $ file is:" + inputFile.absolutePath)
-                            PrivacyClassProcessor.processDirectory(project, inputDir, inputFile)
+                            PrivacyClassProcessor.processDirectory(
+                                project,
+                                inputDir,
+                                inputFile,
+                                extension
+                            )
                             if (inputFile.exists()) {
                                 GFileUtils.deleteFileQuietly(outputFile)
                                 FileUtils.copyFile(inputFile, outputFile)
@@ -124,7 +141,7 @@ class PrivacySentryTransform : Transform {
                 project.logger.info("directory incremental false  file is:" + inputDir.absolutePath)
                 inputDir.walk().forEach { file ->
                     if (!file.isDirectory) {
-                        PrivacyClassProcessor.processDirectory(project, inputDir, file)
+                        PrivacyClassProcessor.processDirectory(project, inputDir, file, extension)
                     }
                 }
 

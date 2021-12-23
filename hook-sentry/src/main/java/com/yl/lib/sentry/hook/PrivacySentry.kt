@@ -35,8 +35,7 @@ class PrivacySentry {
          * 默认runtime 简单初始化
          */
         fun init(ctx: Application) {
-            var builder = PrivacySentryBuilder().addPrinter(defaultFilePrinter(ctx, mBuilder))
-                .configPrivacyType(PrivacySentryBuilder.PrivacyType.RUNTIME)
+            var builder = PrivacySentryBuilder().configPrivacyType(PrivacySentryBuilder.PrivacyType.RUNTIME)
             init(ctx, builder)
         }
 
@@ -44,8 +43,7 @@ class PrivacySentry {
          *  transform简单初始化，需要搭配插件使用
          */
         fun initTransform(ctx: Application) {
-            var builder = PrivacySentryBuilder().addPrinter(defaultFilePrinter(ctx, mBuilder))
-                .configPrivacyType(PrivacySentryBuilder.PrivacyType.TRANSFORM)
+            var builder = PrivacySentryBuilder().configPrivacyType(PrivacySentryBuilder.PrivacyType.TRANSFORM)
             init(ctx, builder)
         }
 
@@ -88,11 +86,15 @@ class PrivacySentry {
             if (bfinish.compareAndSet(false, true)) {
                 bfinish.set(true)
                 PrivacyLog.i("call stopWatch")
+                // 结束hook，还原
                 mBuilder?.getHookerList()?.forEach {
                     it.reduction(ctx!!)
                 }
+
                 mBuilder?.getPrinterList()?.filterIsInstance<BaseFilePrinter>()?.forEach {
+                    // 强制写入文件
                     it.flushToFile()
+                    // 结果回调
                     mBuilder?.getResultCallBack()?.onResultCallBack(it.resultFileName)
                 }
             }

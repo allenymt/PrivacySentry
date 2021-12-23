@@ -14,7 +14,6 @@ class SentryTraceClassAdapter : ClassVisitor {
 
 
     private var className: String = ""
-    private var needIntercept = false
 
     private var privacyExtension: PrivacyExtension? = null
 
@@ -37,11 +36,6 @@ class SentryTraceClassAdapter : ClassVisitor {
         if (name != null) {
             className = name.replace("/", ".")
         }
-        // 过滤掉库本身
-        if (className.contains("com.yl.lib.sentry.hook") || className.contains("com.yl.lib.plugin_proxy") ||
-            className.contains("com.yl.lib.sentry.base")) {
-            needIntercept = true
-        }
     }
 
     override fun visitMethod(
@@ -51,9 +45,6 @@ class SentryTraceClassAdapter : ClassVisitor {
         signature: String?,
         exceptions: Array<out String>?
     ): MethodVisitor {
-        if (needIntercept) {
-            return super.visitMethod(access, name, descriptor, signature, exceptions)
-        }
         var methodVisitor = cv.visitMethod(access, name, descriptor, signature, exceptions)
         return SentryTraceMethodAdapter(
             api,
