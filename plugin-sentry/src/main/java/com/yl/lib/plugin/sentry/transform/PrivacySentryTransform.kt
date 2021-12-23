@@ -13,9 +13,9 @@ import java.io.File
  */
 class PrivacySentryTransform : Transform {
 
-    private val project: Project
+    private var project: Project
 
-    constructor(project: Project){
+    constructor(project: Project) {
         this.project = project
     }
 
@@ -55,7 +55,7 @@ class PrivacySentryTransform : Transform {
     }
 
     // 处理jar
-    fun handleJar(
+    private fun handleJar(
         transformInput: TransformInput, outputProvider: TransformOutputProvider,
         incremental: Boolean
     ) {
@@ -66,7 +66,7 @@ class PrivacySentryTransform : Transform {
                 when (it.status) {
                     Status.ADDED, Status.CHANGED -> {
                         project.logger.info("directory status is ${it.status}  file is:" + it.file.absolutePath)
-                        // TODO process
+                        PrivacyClassProcessor.processJar(project, it.file)
                         GFileUtils.deleteFileQuietly(output)
                         GFileUtils.copyFile(it.file, output)
                     }
@@ -77,7 +77,7 @@ class PrivacySentryTransform : Transform {
                 }
             } else {
                 project.logger.info("jar incremental false file is:" + it.file.absolutePath)
-                // TODO process
+                PrivacyClassProcessor.processJar(project, it.file)
                 GFileUtils.deleteFileQuietly(output)
                 GFileUtils.copyFile(it.file, output)
             }
@@ -85,7 +85,7 @@ class PrivacySentryTransform : Transform {
     }
 
     // 处理directory
-    fun handleDirectory(
+    private fun handleDirectory(
         transformInput: TransformInput,
         outputProvider: TransformOutputProvider,
         incremental: Boolean
@@ -112,7 +112,7 @@ class PrivacySentryTransform : Transform {
                         }
                         Status.ADDED, Status.CHANGED -> {
                             project.logger.info("directory status is $status $ file is:" + inputFile.absolutePath)
-                            // TODO process
+                            PrivacyClassProcessor.processDirectory(project, inputDir, inputFile)
                             if (inputFile.exists()) {
                                 GFileUtils.deleteFileQuietly(outputFile)
                                 FileUtils.copyFile(inputFile, outputFile)
@@ -122,7 +122,12 @@ class PrivacySentryTransform : Transform {
                 }
             } else {
                 project.logger.info("directory incremental false  file is:" + inputDir.absolutePath)
-                // TODO process
+                inputDir.walk().forEach { file ->
+                    if (!file.isDirectory) {
+                        PrivacyClassProcessor.processDirectory(project, inputDir, file)
+                    }
+                }
+
                 // 保险起见，删一次
                 GFileUtils.deleteFileQuietly(outputDir)
                 FileUtils.copyDirectory(inputDir, outputDir)

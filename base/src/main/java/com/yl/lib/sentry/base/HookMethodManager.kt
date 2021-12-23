@@ -27,7 +27,7 @@ class HookMethodManager {
         fun findHookItemByName(
             methodName: String
         ): HookMethodItem? {
-            return findHookItemByName(methodName,"","")
+            return findHookItemByName(methodName, "", "")
         }
 
         fun findHookItemByName(
@@ -55,10 +55,14 @@ class HookMethodManager {
                 return false
             }
 
-            return if (classOwnerName.isEmpty() && methodReturnDesc.isEmpty()) {
-                methodName == hookItem.methodName
-            } else {
+            return if (classOwnerName.isEmpty() && methodReturnDesc.isNotEmpty()) {
+                methodName == hookItem.methodName && methodReturnDesc == hookItem.methodReturnDesc
+            } else if (classOwnerName.isNotEmpty() && methodReturnDesc.isEmpty()) {
+                methodName == hookItem.methodName && classOwnerName == hookItem.className
+            } else if (classOwnerName.isNotEmpty() && methodReturnDesc.isNotEmpty()) {
                 methodName == hookItem.methodName && classOwnerName == hookItem.className && methodReturnDesc == hookItem.methodReturnDesc
+            } else {
+                methodName == hookItem.methodName
             }
         }
 
@@ -82,7 +86,7 @@ class HookMethodManager {
                 HookMethodItem(
                     asmClsName,
                     "getRunningAppProcesses",
-                    "(I)Ljava/util/List;",
+                    "()Ljava/util/List;",
                     "获取当前运行进程-getRunningAppProcesses"
                 )
             )
@@ -98,34 +102,36 @@ class HookMethodManager {
                     "获取安装包-getInstalledPackages"
                 ),
                 HookMethodItem(
-                    asmClsName,
+                    pmsClsName,
                     "queryIntentActivities",
                     "(I)Ljava/util/List;",
                     "读安装列表-queryIntentActivities"
                 ),
                 HookMethodItem(
-                    asmClsName,
-                    "getLeanbackLaunchIntentForPackage",
-                    "",
-                    "读安装列表-getLeanbackLaunchIntentForPackage"
+                    pmsClsName,
+                    "queryIntentActivityOptions",
+                    "(Landroid/content/ComponentName;[Landroid/content/Intent;Landroid/content/Intent;I)Ljava/util/List;",
+                    "读安装列表-queryIntentActivityOptions"
                 ),
+
+                // 给runtime-hook用的，所以不需要方法返回信息
                 HookMethodItem(
-                    asmClsName,
-                    "getInstalledPackagesAsUser",
-                    "(I)Ljava/util/List;",
-                    "读安装列表-getInstalledPackagesAsUser"
-                ),
-                HookMethodItem(
-                    asmClsName,
+                    pmsClsName,
                     "queryIntentActivitiesAsUser",
                     "",
                     "读安装列表-queryIntentActivitiesAsUser"
                 ),
                 HookMethodItem(
-                    asmClsName,
-                    "queryIntentActivityOptions",
-                    "(I)Ljava/util/List;",
-                    "读安装列表-queryIntentActivityOptions"
+                    pmsClsName,
+                    "getLeanbackLaunchIntentForPackage",
+                    "",
+                    "读安装列表-getLeanbackLaunchIntentForPackage"
+                ),
+                HookMethodItem(
+                    pmsClsName,
+                    "getInstalledPackagesAsUser",
+                    "",
+                    "读安装列表-getInstalledPackagesAsUser"
                 )
             )
         }
@@ -192,10 +198,9 @@ class HookMethodManager {
                     "getSimSerialNumber",
                     "()Ljava/lang/String;",
                     "获取设备id-getSimSerialNumber"
-                )
+                ),
 
                 // for runtime hook
-                ,
                 HookMethodItem(
                     tmsClsName,
                     "getDeviceIdWithFeature",
@@ -302,7 +307,6 @@ class HookMethodManager {
                     "系统设置-Settings\$Secure"
                 )
             )
-
             return resultList
         }
     }

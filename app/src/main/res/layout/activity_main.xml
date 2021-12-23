@@ -94,10 +94,10 @@
                 android:text="启动进程B" />
 
             <Button
-                android:id="@+id/btn_void_fun"
+                android:id="@+id/btn_test_lib_method"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="预留的空方法测试" />
+                android:text="测试子lib的方法" />
         </LinearLayout>
 
     </ScrollView>

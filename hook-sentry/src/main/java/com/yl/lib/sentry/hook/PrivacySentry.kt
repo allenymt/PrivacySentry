@@ -31,22 +31,38 @@ class PrivacySentry {
         var bShowPrivacy = false
         private var ctx: Application? = null
 
+        /**
+         * 默认runtime 简单初始化
+         */
         fun init(ctx: Application) {
-            init(ctx, null)
+            var builder = PrivacySentryBuilder().addPrinter(defaultFilePrinter(ctx, mBuilder))
+                .configPrivacyType(PrivacySentryBuilder.PrivacyType.RUNTIME)
+            init(ctx, builder)
         }
 
         /**
-         *  builder 自定义配置
+         *  transform简单初始化，需要搭配插件使用
+         */
+        fun initTransform(ctx: Application) {
+            var builder = PrivacySentryBuilder().addPrinter(defaultFilePrinter(ctx, mBuilder))
+                .configPrivacyType(PrivacySentryBuilder.PrivacyType.TRANSFORM)
+            init(ctx, builder)
+        }
+
+        /**
+         *  完整版初始化
          */
         fun init(
             ctx: Application, builder: PrivacySentryBuilder?
         ) {
             if (bInit.compareAndSet(false, true)) {
                 if (builder == null) {
-                    mBuilder = PrivacySentryBuilder().addPrinter(defaultFilePrinter(ctx, mBuilder))
-                    mBuilder = defaultConfigHookBuilder(mBuilder!!)
+                    mBuilder = PrivacySentryBuilder().addPrinter(defaultFilePrinter(ctx, null))
                 } else {
                     mBuilder = builder
+                }
+                if (mBuilder?.getPrivacyType() == PrivacySentryBuilder.PrivacyType.RUNTIME) {
+                    mBuilder = defaultConfigHookBuilder(mBuilder!!)
                 }
                 initInner(ctx)
             }
@@ -112,12 +128,11 @@ class PrivacySentry {
             return mBuilder ?: null
         }
 
-        fun defaultConfigHookBuilder(builder: PrivacySentryBuilder): PrivacySentryBuilder {
+        private fun defaultConfigHookBuilder(builder: PrivacySentryBuilder): PrivacySentryBuilder {
             builder?.configHook(defaultAmsHook(builder!!))
                 ?.configHook(defaultPmsHook(builder!!))
                 ?.configHook(defaultTmsHook(builder!!))
                 ?.configHook(defaultCmsHook(builder!!))
-                ?.syncDebug(true)
             return builder
         }
 

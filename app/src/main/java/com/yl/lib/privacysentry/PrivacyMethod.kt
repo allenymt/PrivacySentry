@@ -50,7 +50,33 @@ class PrivacyMethod {
                 ) {
                     val mTelephonyMgr = context
                         .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
-                    imei = mTelephonyMgr.deviceId
+                    imei = mTelephonyMgr.getDeviceId()
+                }
+            } catch (e: Throwable) {
+//                e.printStackTrace()
+            }
+            return imei ?: ""
+        }
+
+
+        fun getDeviceId1(context: Context?): String {
+            if (context == null) {
+                return ""
+            }
+//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+//            return ""
+//        }
+            var imei = ""
+            // 在某些平板上可能会抛出异常
+            try {
+                if (checkPermissions(
+                        context,
+                        Manifest.permission.READ_PHONE_STATE
+                    )
+                ) {
+                    val mTelephonyMgr = context
+                        .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                    imei = mTelephonyMgr.getDeviceId(1)
                 }
             } catch (e: Throwable) {
 //                e.printStackTrace()

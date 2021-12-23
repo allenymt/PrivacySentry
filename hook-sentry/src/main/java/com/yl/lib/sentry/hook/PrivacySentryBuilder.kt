@@ -12,7 +12,6 @@ import com.yl.lib.sentry.hook.util.MainProcessUtil
 class PrivacySentryBuilder {
 
     var debug: Boolean = true
-
     private var hookList: ArrayList<BaseHooker>? = null
     private var mPrinterList: ArrayList<BasePrinter>? = null
     private var watchTime: Long = 3 * 60 * 1000
