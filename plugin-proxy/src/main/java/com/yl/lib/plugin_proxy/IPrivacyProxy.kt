@@ -73,5 +73,5 @@ interface IPrivacyProxy {
 
     fun getAddress(manager: BluetoothAdapter): String?
 
-    fun getSecureString(contentResolver: ContentResolver?, type: String?): String?
+    fun getString(contentResolver: ContentResolver?, type: String?): String?
 }

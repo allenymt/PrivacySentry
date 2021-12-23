@@ -168,7 +168,7 @@ public class PrivacyProxy {
         return iPrivacyProxy.getAddress(manager);
     }
 
-    public static String getSecureString(ContentResolver contentResolver, String type) {
-        return iPrivacyProxy.getSecureString(contentResolver, type);
+    public static String getString(ContentResolver contentResolver, String type) {
+        return iPrivacyProxy.getString(contentResolver, type);
     }
 }

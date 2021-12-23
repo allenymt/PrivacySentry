@@ -24,9 +24,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        findViewById<Button>(R.id.btn_androidId).setOnClickListener {
+            var androidId = PrivacyMethod.PrivacyMethod.getAndroidId(this)
+            PrivacyLog.i("androidId is $androidId")
+        }
+
+
         findViewById<Button>(R.id.btn_deviceId).setOnClickListener {
             var deviceId = PrivacyMethod.PrivacyMethod.getDeviceId(this)
             PrivacyLog.i("deviceId is $deviceId")
+
+            var deviceId1 = PrivacyMethod.PrivacyMethod.getDeviceId1(this)
+            PrivacyLog.i("deviceId is $deviceId1")
+
+            PrivacyLog.i("deviceId is ${PrivacyMethod.PrivacyMethod.getMeid(this)}")
         }
 
         findViewById<Button>(R.id.btn_mac_address).setOnClickListener {
@@ -56,6 +68,12 @@ class MainActivity : AppCompatActivity() {
             var privacySentryInstalled =
                 PrivacyMethod.PrivacyMethod.isInstalled(application, "com.yl.lib.privacysentry123")
             PrivacyLog.i("privacySentryInstalled is $privacySentryInstalled")
+
+            var privacySentryInstalled2 =
+                PrivacyMethod.PrivacyMethod.isInstalled2(application, this,"com.yl.lib.privacysentry123")
+            PrivacyLog.i("privacySentryInstalled2 is $privacySentryInstalled2")
+
+            PrivacyLog.i("privacySentryInstalled2 is ${PrivacyMethod.PrivacyMethod.queryActivityInfo(application, this)}")
         }
 
         findViewById<Button>(R.id.btn_test_cms).setOnClickListener {

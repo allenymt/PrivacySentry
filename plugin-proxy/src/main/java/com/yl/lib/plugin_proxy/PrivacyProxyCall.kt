@@ -176,10 +176,10 @@ class PrivacyProxyCall : IPrivacyProxy {
         return manager.address ?: ""
     }
 
-    override fun getSecureString(contentResolver: ContentResolver?, type: String?): String? {
+    override fun getString(contentResolver: ContentResolver?, type: String?): String? {
         var result = ""
         try {
-            doFilePrinter("getSecureString")
+            doFilePrinter("getString")
             result = Settings.Secure.getString(
                 contentResolver,
                 type

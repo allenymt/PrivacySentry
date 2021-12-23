@@ -47,7 +47,7 @@ dependencies {
 //本地调试补充
 apply plugin: 'maven'
 group = 'com.yl.lib.privacy.proxy'
-version = '0.0.2'
+version = '0.0.5'
 uploadArchives {
     repositories {
         mavenDeployer {
