@@ -20,7 +20,7 @@
 
 ```
     2. 在项目中的build.gralde下添加
-   implementation 'com.wdian.android.lib:privacy:0.0.1-SNAPSHOT'
+       implementation 'com.github.allenymt:PrivacySentry:0.0.7'
 ```
 
 ```
