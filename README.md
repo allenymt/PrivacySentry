@@ -4,7 +4,11 @@
 ## 更新日志
     2021-12-26
         1. Asm修改字节码，hook敏感函数
-
+    2021-12-02
+        1. 支持多进程
+        2. 日志加上时间戳，方便阅读
+        3. 优化文件分时段写入
+        4. pms增加部分hook方法
 
 ## TODO
 1. 反射调用敏感函数的情况是否需要考虑？
@@ -56,7 +60,7 @@
 ```
 
 ```
-    简易版初始化
+    3. 简易版初始化
     在代码中调用，越早越好，建议在application中调用
     // runtime-hook初始化
     kotlin:PrivacySentry.Privacy.init(this)
@@ -69,7 +73,7 @@
 
 
 ```
-    完成功能的初始化
+    4. 完成功能的初始化
      // 完整版配置
         var builder = PrivacySentryBuilder()
             // 自定义文件结果的输出名
@@ -111,14 +115,14 @@
 
 
 ```
-    在隐私协议确认的时候调用，这一步非常重要！，一定要加
+    5. 在隐私协议确认的时候调用，这一步非常重要！，一定要加
     kotlin:PrivacySentry.Privacy.updatePrivacyShow()
     java:PrivacySentry.Privacy.INSTANCE.updatePrivacyShow();
 ```
 
 
 ```
-    支持多进程，多进程产出的文件名前缀默认增加进程名
+    6.支持多进程，多进程产出的文件名前缀默认增加进程名
 ```
 
 
