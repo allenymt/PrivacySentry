@@ -16,6 +16,12 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/btn_androidId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试AndroidId" />
+
+            <Button
                 android:id="@+id/btn_deviceId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,8 +67,31 @@
                 android:id="@+id/btn_main_process"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="测试当前进程是主进程" />
+                android:text="判断主进程，跳过当前敏感函数" />
 
+            <Button
+                android:id="@+id/btn_test_cms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试剪贴板服务" />
+
+            <Button
+                android:id="@+id/btn_test_ams_process"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试读取运行中的进程" />
+
+            <Button
+                android:id="@+id/btn_test_processB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="启动进程B" />
+
+            <Button
+                android:id="@+id/btn_test_lib_method"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试子lib的方法" />
 
             <Button
                 android:id="@+id/btn_force_finish"
@@ -75,18 +104,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="测试导出excel" />
-
-            <Button
-                android:id="@+id/btn_test_processB"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="启动进程B" />
-
-            <Button
-                android:id="@+id/btn_void_fun"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="预留的空方法测试" />
         </LinearLayout>
 
     </ScrollView>

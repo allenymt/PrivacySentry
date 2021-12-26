@@ -1,6 +1,6 @@
 package com.yl.lib.sentry.hook.excel
 
-import com.yl.lib.sentry.hook.util.PrivacyFunBean
+import com.yl.lib.sentry.hook.printer.PrivacyFunBean
 
 /**
  * @author yulun

@@ -3,7 +3,8 @@ apply plugin: 'kotlin'
 dependencies {
     implementation gradleApi()//gradle sdk
     implementation localGroovy()
-    compileOnly 'com.android.tools.build:gradle:3.5.1'
+    implementation project(path: ':base')
+    implementation 'com.android.tools.build:gradle:3.5.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     // ASM V7.1
@@ -11,25 +12,23 @@ dependencies {
     implementation group: 'org.ow2.asm', name: 'asm-commons', version: '7.1'
 }
 
-repositories {
-    google()
-    jcenter()
-    mavenCentral()
-}
-
-// 插件本地调试补充
-apply plugin: 'maven'
-group='com.wdian.android.lib'
-version='0.0.1'
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: uri('plugins'))
+if (rootProject.ext.plugin_local_debug) {
+    // 插件本地调试补充
+    apply plugin: 'maven'
+    group = 'com.yl.lib.plugin'
+    version = '0.0.1.28-SNAPSHOT'
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: uri('plugins'))
+            }
         }
+    }
+} else {
+    apply plugin: 'android.publish'
+    pom {
+        exclude "com.android.tools.build:gradle"
     }
 }
 
-//apply plugin: 'android.publish'
-//pom {
-//    exclude "com.android.tools.build:gradle"
-//}
+

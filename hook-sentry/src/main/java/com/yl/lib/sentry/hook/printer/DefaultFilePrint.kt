@@ -1,8 +1,7 @@
 package com.yl.lib.sentry.hook.printer
 
 import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
-import com.yl.lib.sentry.hook.util.ExcelUtil
-import com.yl.lib.sentry.hook.util.PrivacyFunBean
+import com.yl.lib.sentry.hook.excel.ExcelUtil
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.watcher.DelayTimeWatcher
 
@@ -11,7 +10,7 @@ import com.yl.lib.sentry.hook.watcher.DelayTimeWatcher
  * @sinice 2021-09-24 15:47
  * 为了可以更直观的查看统计结果，默认采用excel文件形式输出
  */
-class DefaultFilePrint : BaseWatchPrinter {
+class DefaultFilePrint : BaseFilePrinter {
 
     // 隐私函数调用 堆栈跟踪
     private val titlePrivacyLegal = arrayOf("调用时间(倒序排序)", "别名", "函数名", "调用堆栈")
@@ -32,14 +31,14 @@ class DefaultFilePrint : BaseWatchPrinter {
         PrivacyLog.i("file name is $fileName")
         ExcelUtil.instance.checkDelOldFile(fileName)
         DelayTimeWatcher(watchTime ?: 60 * 60 * 1000, Runnable {
-            flush()
+            flushToFile()
         }).start()
     }
 
-    override fun print(msg: String) {
+    override fun logPrint(msg: String) {
     }
 
-    override fun flush() {
+    override fun flushToFile() {
         assert(resultFileName != null)
         if (privacyFunBeanList.isEmpty())
             return
@@ -62,6 +61,7 @@ class DefaultFilePrint : BaseWatchPrinter {
     override fun appendData(funName: String, funAlias: String, msg: String) {
         if (funName == null || funAlias == null)
             return
+        PrivacyLog.i("DefaultFilePrint appendData $funName-$funAlias-$msg")
         privacyFunBeanList.add(PrivacyFunBean(funAlias, funName, msg, 1))
     }
 
