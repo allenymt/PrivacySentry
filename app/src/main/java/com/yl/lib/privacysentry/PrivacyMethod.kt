@@ -3,7 +3,9 @@ package com.yl.lib.privacysentry
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ActivityManager
 import android.app.Application
+import android.bluetooth.BluetoothAdapter
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -12,12 +14,15 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.wifi.WifiManager
 import android.os.Build
+import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.text.TextUtils
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import java.net.NetworkInterface
+import java.net.SocketException
+import java.util.*
 
 
 /**
@@ -42,6 +47,26 @@ class PrivacyMethod {
             var imei = ""
             // 在某些平板上可能会抛出异常
             try {
+                val mTelephonyMgr = context
+                    .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                imei = mTelephonyMgr.getDeviceId()
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+            return imei ?: ""
+        }
+
+
+        fun getDeviceId1(context: Context?): String {
+            if (context == null) {
+                return ""
+            }
+//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+//            return ""
+//        }
+            var imei = ""
+            // 在某些平板上可能会抛出异常
+            try {
                 if (checkPermissions(
                         context,
                         Manifest.permission.READ_PHONE_STATE
@@ -49,10 +74,34 @@ class PrivacyMethod {
                 ) {
                     val mTelephonyMgr = context
                         .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
-                    imei = mTelephonyMgr.deviceId
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        imei = mTelephonyMgr.getDeviceId(1)
+                    }
                 }
             } catch (e: Throwable) {
 //                e.printStackTrace()
+            }
+            return imei ?: ""
+        }
+
+
+        fun getMeid(context: Context?): String {
+            if (context == null) {
+                return ""
+            }
+//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+//            return ""
+//        }
+            var imei = ""
+            // 在某些平板上可能会抛出异常
+            try {
+                val mTelephonyMgr = context
+                    .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    imei = mTelephonyMgr.getMeid()
+                }
+            } catch (e: Throwable) {
+                e.printStackTrace()
             }
             return imei ?: ""
         }
@@ -130,17 +179,12 @@ class PrivacyMethod {
             }
             var iccid = ""
             try {
-                if (checkPermissions(
-                        context,
-                        Manifest.permission.READ_PHONE_STATE
-                    )
-                ) {
-                    val mTelephonyMgr = context
-                        .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
-                        ?: return ""
-                    iccid =
-                        mTelephonyMgr.simSerialNumber
-                }
+
+                val mTelephonyMgr = context
+                    .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                    ?: return ""
+                iccid =
+                    mTelephonyMgr.simSerialNumber
             } catch (e: Throwable) {
                 e.printStackTrace()
             }
@@ -156,12 +200,21 @@ class PrivacyMethod {
         /**
          *  wifiInfo.macAddress
          *  networkInterface.hardwareAddress
+         *  BluetoothAdapter.address
          */
         fun getMacRaw(context: Context?): String? {
             var mac: String? = MAC_DEFAULT
             if (context == null) {
                 return mac
             }
+
+            // 蓝牙
+            try {
+                BluetoothAdapter.getDefaultAdapter().address
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
             try {
                 val wifiManager =
                     context.applicationContext.getSystemService(AppCompatActivity.WIFI_SERVICE) as WifiManager
@@ -181,35 +234,37 @@ class PrivacyMethod {
             }
 
             //7.0以上获取不到，获得的都是02:00:00:00:00:00
-            if (mac == null || TextUtils.equals(mac, MAC_DEFAULT) || TextUtils.equals(
-                    mac, MAC_SYSTEM
-                )
-            ) {
-                try {
-                    var networkInterface = NetworkInterface.getByName("eth1")
-                    if (networkInterface == null) {
-                        networkInterface = NetworkInterface.getByName("wlan0")
-                    }
-                    if (networkInterface == null) {
-                        return mac
-                    }
-                    val address = networkInterface.hardwareAddress ?: return mac
-                    val builder = StringBuilder()
-                    for (b in address) {
-                        builder.append(String.format("%02X:", b))
-                    }
-                    if (builder.length > 0) {
-                        builder.deleteCharAt(builder.length - 1)
-                    }
-                    mac = builder.toString()
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
+            getMacV2()
             return if (TextUtils.isEmpty(mac)) MAC_DEFAULT else mac
         }
 
 
+        fun getMacV2(): String? {
+            try {
+                val networkInterfaces: Enumeration<*> = NetworkInterface.getNetworkInterfaces()
+                while (networkInterfaces.hasMoreElements()) {
+                    val networkInterface = networkInterfaces.nextElement() as NetworkInterface
+                    val hardwareAddress = networkInterface.hardwareAddress
+                    if (hardwareAddress != null && hardwareAddress.size != 0) {
+                        val stringBuffer = java.lang.StringBuilder()
+                        val var5 = hardwareAddress.size
+                        for (var6 in 0 until var5) {
+                            val hardwareAddres = hardwareAddress[var6]
+                            stringBuffer.append(String.format("%02X:", hardwareAddres))
+                        }
+                        if (stringBuffer.length > 0) {
+                            stringBuffer.deleteCharAt(stringBuffer.length - 1)
+                        }
+                        return stringBuffer.toString()
+                    }
+                }
+            } catch (e: SocketException) {
+                e.printStackTrace()
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+            return ""
+        }
         private fun checkPermissions(context: Context, permission: String): Boolean {
             val localPackageManager = context.packageManager ?: return false
             return localPackageManager.checkPermission(
@@ -252,14 +307,28 @@ class PrivacyMethod {
             }
             // 获取所有已安装程序的包信息
             val packageManager = context.packageManager
-            packageManager.queryIntentActivities(
+            return (packageManager.queryIntentActivities(
                 Intent(
                     activity,
                     MainActivity::javaClass.javaClass
                 ), 0
-            )
+            )).isNotEmpty()
+        }
 
-            return false
+        fun queryActivityInfo(
+            context: Application,
+            @NonNull activity: Activity
+        ): Boolean {
+
+            // 获取所有已安装程序的包信息
+            val packageManager = context.packageManager
+            return (packageManager.queryIntentActivityOptions(
+                null, null,
+                Intent(
+                    activity,
+                    MainActivity::javaClass.javaClass
+                ), 0
+            )).isNotEmpty()
         }
 
         /**
@@ -281,11 +350,35 @@ class PrivacyMethod {
                 context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
             //设置剪切板内容
             cm?.setPrimaryClip(ClipData.newPlainText("data", "yl_vd"))
-            //获取剪切板数据对象
             val cd: ClipData? = cm?.primaryClip
+
+            cm?.text = ("yl_vd123")
+            //获取剪切板数据对象
+            cm?.text
+
+            cm?.primaryClipDescription
             val clipStr = cd?.getItemAt(0)?.text.toString()
 //            PrivacyLog.i("testHookCms cms data is :$clipStr")
         }
+
         /**CMS END================================**/
+
+        fun testRunningProcess(@NonNull context: Context) {
+            val manager = context
+                .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val runningAppProcesses = manager
+                .runningAppProcesses
+        }
+
+        fun testRunningTask(@NonNull context: Context) {
+            val manager = context
+                .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val runningAppProcesses = manager
+                .getRunningTasks(100)
+        }
+
+        fun getAndroidId(context: Context): String? {
+            return "" + Settings.Secure.getString(context.contentResolver, "android_id")
+        }
     }
 }

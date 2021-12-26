@@ -12,12 +12,12 @@ import com.yl.lib.sentry.hook.util.MainProcessUtil
 class PrivacySentryBuilder {
 
     var debug: Boolean = true
-
     private var hookList: ArrayList<BaseHooker>? = null
     private var mPrinterList: ArrayList<BasePrinter>? = null
     private var watchTime: Long = 3 * 60 * 1000
     private var privacyResultCallBack: PrivacyResultCallBack? = null
     private var resultFileName: String? = null
+    private var privacyType: PrivacyType = PrivacyType.RUNTIME
 
     constructor() {
         hookList = ArrayList()
@@ -50,6 +50,10 @@ class PrivacySentryBuilder {
             } ?: ""
             "${processName}_$resultFileName"
         }
+    }
+
+    fun getPrivacyType(): PrivacyType {
+        return privacyType
     }
 
     fun addPrinter(basePrinter: BasePrinter): PrivacySentryBuilder {
@@ -93,4 +97,15 @@ class PrivacySentryBuilder {
         return this
     }
 
+    fun configPrivacyType(privacyType: PrivacyType): PrivacySentryBuilder {
+        privacyType?.let {
+            this.privacyType = privacyType
+        }
+        return this
+    }
+
+    enum class PrivacyType {
+        RUNTIME,
+        TRANSFORM
+    }
 }

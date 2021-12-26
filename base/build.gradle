@@ -1,0 +1,57 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+compileKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += []
+        }
+        kotlin {
+            srcDirs += ['src/main/kotlin', 'src/main/java']
+        }
+    }
+    test {
+        java {
+            srcDirs += []
+        }
+        kotlin {
+            srcDirs += ['src/main/kotlin', 'src/main/java']
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.ext.kotlin_version}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext.kotlin_version}"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:${rootProject.ext.kotlin_version}"
+
+}
+
+if (rootProject.ext.plugin_local_debug) {
+    //本地调试补充
+    apply plugin: 'maven'
+    group = 'com.yl.lib.privacy'
+    version = '0.0.2'
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: uri('../plugin-sentry/plugins'))
+            }
+        }
+    }
+} else {
+    apply plugin: 'com.github.dcendents.android-maven'
+}
+
