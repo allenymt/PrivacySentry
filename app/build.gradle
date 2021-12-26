@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
-//apply plugin: 'privacy-sentry-plugin'
+apply plugin: 'privacy-sentry-plugin'
 
 android {
     compileSdkVersion 30
@@ -41,11 +41,17 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
 
-    def privacyVersion = "0.0.2-SNAPSHOT"
+    if (rootProject.ext.plugin_local_debug) {
+        implementation project(":hook-sentry")
+        implementation project(path: ':base')
+        implementation project(path: ':plugin-proxy')
+    } else {
+        def privacyVersion = "0.0.7.1"
+        implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
+        implementation "com.github.allenymt.PrivacySentry:base:$privacyVersion"
+        implementation "com.github.allenymt.PrivacySentry:plugin-proxy:$privacyVersion"
+    }
 
-    implementation project(":hook-sentry")
-    implementation project(path: ':base')
-    implementation project(path: ':plugin-proxy')
 
     implementation project(path: ':privacy-test')
 
@@ -56,6 +62,6 @@ dependencies {
 }
 
 
-//privacy{
-//    blackList=["com.yl.lib.privacy_test"]
-//}
+privacy {
+    blackList = ["com.yl.lib.privacy_test"]
+}
