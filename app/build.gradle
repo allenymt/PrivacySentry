@@ -46,7 +46,7 @@ dependencies {
         implementation project(path: ':base')
         implementation project(path: ':plugin-proxy')
     } else {
-        def privacyVersion = "0.0.7.1"
+        def privacyVersion = "1.0.0"
         implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
         implementation "com.github.allenymt.PrivacySentry:base:$privacyVersion"
         implementation "com.github.allenymt.PrivacySentry:plugin-proxy:$privacyVersion"
