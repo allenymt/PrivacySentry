@@ -2,12 +2,12 @@ package com.yl.lib.sentry.hook.hook;
 
 import android.os.IBinder;
 
+import com.yl.lib.sentry.base.HookMethodManager;
 import com.yl.lib.sentry.hook.util.PrivacyUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 
 /**
  * @author yulun
@@ -31,9 +31,9 @@ public class HookProxyHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (mBaseHookerHookBuilder.getBlackList().keySet().contains(method.getName())) {
+        if (HookMethodManager.MANAGER.INSTANCE.contains(method.getName(), "", "")) {
             try {
-                mBaseHookerHookBuilder.doPrinter(method.getName() , PrivacyUtil.Util.INSTANCE.getStackTrace());
+                mBaseHookerHookBuilder.doFilePrinter(HookMethodManager.MANAGER.INSTANCE.findHookItemByName(method.getName()), PrivacyUtil.Util.INSTANCE.getStackTrace());
                 return method.invoke(localProxyBinder, args);
             } catch (Exception e) {
                 if (!(mBaseHookerHookBuilder.getName().equals("tms")
@@ -42,7 +42,7 @@ public class HookProxyHandler implements InvocationHandler {
                     e.printStackTrace();
                 }
                 // 就目前项目而言，我们hook的方法大部分返回值都是String
-                if (method.getGenericReturnType() == String.class){
+                if (method.getGenericReturnType() == String.class) {
                     return "";
                 }
             }

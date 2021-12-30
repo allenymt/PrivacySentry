@@ -7,11 +7,15 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.yl.lib.privacy_test.TestMethod
 import com.yl.lib.privacysentry.process.MultiProcessB
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
-import com.yl.lib.sentry.hook.util.*
-import com.yl.lib.sentry.hook.watcher.DelayTimeWatcher
+import com.yl.lib.sentry.hook.excel.ExcelUtil
+import com.yl.lib.sentry.hook.printer.PrivacyFunBean
+import com.yl.lib.sentry.hook.util.MainProcessUtil
+import com.yl.lib.sentry.hook.util.PrivacyLog
+import com.yl.lib.sentry.hook.util.PrivacyUtil
 import java.io.File
 import java.util.*
 
@@ -20,9 +24,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        findViewById<Button>(R.id.btn_androidId).setOnClickListener {
+            var androidId = PrivacyMethod.PrivacyMethod.getAndroidId(this)
+            PrivacyLog.i("androidId is $androidId")
+        }
+
+
         findViewById<Button>(R.id.btn_deviceId).setOnClickListener {
             var deviceId = PrivacyMethod.PrivacyMethod.getDeviceId(this)
             PrivacyLog.i("deviceId is $deviceId")
+
+            var deviceId1 = PrivacyMethod.PrivacyMethod.getDeviceId1(this)
+            PrivacyLog.i("deviceId is $deviceId1")
+
+            PrivacyLog.i("deviceId is ${PrivacyMethod.PrivacyMethod.getMeid(this)}")
         }
 
         findViewById<Button>(R.id.btn_mac_address).setOnClickListener {
@@ -52,6 +68,22 @@ class MainActivity : AppCompatActivity() {
             var privacySentryInstalled =
                 PrivacyMethod.PrivacyMethod.isInstalled(application, "com.yl.lib.privacysentry123")
             PrivacyLog.i("privacySentryInstalled is $privacySentryInstalled")
+
+            var privacySentryInstalled2 =
+                PrivacyMethod.PrivacyMethod.isInstalled2(application, this,"com.yl.lib.privacysentry123")
+            PrivacyLog.i("privacySentryInstalled2 is $privacySentryInstalled2")
+
+            PrivacyLog.i("privacySentryInstalled2 is ${PrivacyMethod.PrivacyMethod.queryActivityInfo(application, this)}")
+        }
+
+        findViewById<Button>(R.id.btn_test_cms).setOnClickListener {
+            PrivacyMethod.PrivacyMethod.testHookCms(application)
+            PrivacyLog.i("testHookCms")
+        }
+
+        findViewById<Button>(R.id.btn_test_ams_process).setOnClickListener {
+            PrivacyMethod.PrivacyMethod.testRunningProcess(application)
+            PrivacyMethod.PrivacyMethod.testRunningTask(application)
         }
 
         findViewById<Button>(R.id.btn_main_process).setOnClickListener {
@@ -76,23 +108,29 @@ class MainActivity : AppCompatActivity() {
             startService(Intent(this, MultiProcessB::class.java))
         }
 
-        findViewById<Button>(R.id.btn_void_fun).setOnClickListener {
-            var index = 0
-            DelayTimeWatcher(5 * 1000,
-                Runnable { PrivacyLog.i("DelayTimeWatcher ${index++}") }).start()
+        findViewById<Button>(R.id.btn_test_lib_method).setOnClickListener {
+            TestMethod.PrivacyMethod.getDeviceId(applicationContext)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                TestMethod.PrivacyMethod.getDeviceId1(applicationContext)
+            }
+            TestMethod.PrivacyMethod.getICCID(applicationContext)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                TestMethod.PrivacyMethod.getIMEI(applicationContext)
+            }
+            TestMethod.PrivacyMethod.getIMSI(applicationContext)
+            TestMethod.PrivacyMethod.testHookCms(applicationContext)
+            TestMethod.PrivacyMethod.testRunningProcess(applicationContext)
+            TestMethod.PrivacyMethod.testRunningTask(applicationContext)
         }
 
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            var permissions = arrayOf(
-                Manifest.permission.READ_PHONE_STATE
-            )
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(permissions, 1000)
-            }
-        } else {
-            PrivacyLog.i("requestPermissions ${Manifest.permission.READ_PHONE_STATE} fail")
+        var permissions = arrayOf(
+            Manifest.permission.READ_PHONE_STATE
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(permissions, 1000)
         }
+
     }
 
 

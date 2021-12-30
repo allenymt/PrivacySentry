@@ -1,7 +1,8 @@
 package com.yl.lib.sentry.hook.hook.pms;
 
-import com.yl.lib.sentry.hook.hook.BaseHookBuilder;
+import com.yl.lib.sentry.base.HookMethodManager;
 import com.yl.lib.sentry.hook.util.PrivacyUtil;
+import com.yl.lib.sentry.hook.hook.BaseHookBuilder;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -21,9 +22,9 @@ class PMSProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (baseHookerHookBuilder.getBlackList().keySet().contains(method.getName())) {
+        if (HookMethodManager.MANAGER.INSTANCE.contains(method.getName(),"","")) {
             try {
-                baseHookerHookBuilder.doPrinter(method.getName(), PrivacyUtil.Util.INSTANCE.getStackTrace());
+                baseHookerHookBuilder.doFilePrinter(HookMethodManager.MANAGER.INSTANCE.findHookItemByName(method.getName()), PrivacyUtil.Util.INSTANCE.getStackTrace());
                 return method.invoke(proxyBinder, args);
             } catch (Exception e) {
                 e.printStackTrace();

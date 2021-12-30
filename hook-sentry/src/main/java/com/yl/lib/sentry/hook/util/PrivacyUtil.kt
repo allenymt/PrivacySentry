@@ -10,7 +10,7 @@ import java.util.*
  */
 class PrivacyUtil {
     object Util {
-        fun getStackTrace(): String? {
+        fun getStackTrace(): String{
             val st = Thread.currentThread().stackTrace
             val sbf = StringBuilder()
             for (e in st) {

@@ -8,7 +8,7 @@ abstract class BasePrinter {
 
     constructor()
 
-    abstract fun print(msg:String)
+    abstract fun logPrint(msg:String)
 
-    abstract fun print(funName:String,funAlias:String,msg:String)
+    abstract fun filePrint(funName:String, funAlias:String, msg:String)
 }

@@ -50,10 +50,10 @@ class AmsHooker(baseHookerHookBuilder: BaseHookBuilder?) : BaseHooker(baseHooker
             )
             mInstance[defaultSingleton] = amsProxy
             if (amsProxy === mInstance[defaultSingleton]) {
-                baseHookerHookBuilder?.doPrinter("hookSystemServices ams succeed : ${amsProxy?.javaClass?.name}")
+                baseHookerHookBuilder?.doLogPrinter("hookSystemServices ams succeed : ${amsProxy?.javaClass?.name}")
             }
         } catch (e: Exception) {
-            baseHookerHookBuilder?.doPrinter("hookSystemServices ams failed")
+            baseHookerHookBuilder?.doLogPrinter("hookSystemServices ams failed")
         }
     }
 
