@@ -89,7 +89,7 @@
                     PrivacyLog.i("result file patch is $filePath")
                 }
             })
-        PrivacySentry.Privacy.init(this, PrivacySentry.Privacy.defaultConfigHookBuilder(builder))
+        PrivacySentry.Privacy.init(this, builder)
         
         
         java
@@ -110,7 +110,7 @@
 
                     }
                 });
-        PrivacySentry.Privacy.INSTANCE.init(this, PrivacySentry.Privacy.INSTANCE.defaultConfigHookBuilder(builder));
+        PrivacySentry.Privacy.INSTANCE.init(this, builder);
 ```
 
 
