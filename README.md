@@ -25,6 +25,7 @@
 		}
 	}
 	
+	// 如果使用transform方案
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
@@ -37,7 +38,7 @@
 
 ```
     2. 在项目中的build.gralde下添加
-        // 在主项目里添加插件依赖
+        // 如果使用transform方案，在主项目里添加插件依赖
         apply plugin: 'privacy-sentry-plugin'
         
         dependencies {
