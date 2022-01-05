@@ -1,13 +1,13 @@
 package com.yl.lib.privacysentry
 
 import android.Manifest
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.yl.lib.privacy_test.TestMethod
 import com.yl.lib.privacysentry.process.MultiProcessB
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
@@ -39,6 +39,11 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("deviceId is $deviceId1")
 
             PrivacyLog.i("deviceId is ${PrivacyMethod.PrivacyMethod.getMeid(this)}")
+
+            PrivacyProxyCall2.getRunningTasks(
+                getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager,
+                1
+            )
         }
 
         findViewById<Button>(R.id.btn_mac_address).setOnClickListener {
@@ -70,10 +75,21 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("privacySentryInstalled is $privacySentryInstalled")
 
             var privacySentryInstalled2 =
-                PrivacyMethod.PrivacyMethod.isInstalled2(application, this,"com.yl.lib.privacysentry123")
+                PrivacyMethod.PrivacyMethod.isInstalled2(
+                    application,
+                    this,
+                    "com.yl.lib.privacysentry123"
+                )
             PrivacyLog.i("privacySentryInstalled2 is $privacySentryInstalled2")
 
-            PrivacyLog.i("privacySentryInstalled2 is ${PrivacyMethod.PrivacyMethod.queryActivityInfo(application, this)}")
+            PrivacyLog.i(
+                "privacySentryInstalled2 is ${
+                    PrivacyMethod.PrivacyMethod.queryActivityInfo(
+                        application,
+                        this
+                    )
+                }"
+            )
         }
 
         findViewById<Button>(R.id.btn_test_cms).setOnClickListener {
@@ -109,18 +125,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btn_test_lib_method).setOnClickListener {
-            TestMethod.PrivacyMethod.getDeviceId(applicationContext)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                TestMethod.PrivacyMethod.getDeviceId1(applicationContext)
-            }
-            TestMethod.PrivacyMethod.getICCID(applicationContext)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                TestMethod.PrivacyMethod.getIMEI(applicationContext)
-            }
-            TestMethod.PrivacyMethod.getIMSI(applicationContext)
-            TestMethod.PrivacyMethod.testHookCms(applicationContext)
-            TestMethod.PrivacyMethod.testRunningProcess(applicationContext)
-            TestMethod.PrivacyMethod.testRunningTask(applicationContext)
+//            TestMethod.PrivacyMethod.getDeviceId(applicationContext)
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                TestMethod.PrivacyMethod.getDeviceId1(applicationContext)
+//            }
+//            TestMethod.PrivacyMethod.getICCID(applicationContext)
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                TestMethod.PrivacyMethod.getIMEI(applicationContext)
+//            }
+//            TestMethod.PrivacyMethod.getIMSI(applicationContext)
+//            TestMethod.PrivacyMethod.testHookCms(applicationContext)
+//            TestMethod.PrivacyMethod.testRunningProcess(applicationContext)
+//            TestMethod.PrivacyMethod.testRunningTask(applicationContext)
         }
 
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框

@@ -1,0 +1,28 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation group: 'org.ow2.asm', name: 'asm', version: '7.1'
+}
+
+
+if (rootProject.ext.plugin_local_debug) {
+    //本地调试补充
+    apply plugin: 'maven'
+    group = 'com.yl.lib.privacy'
+    version = '0.0.2-SNAPSHOT'
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: uri('../plugin-sentry/plugins'))
+            }
+        }
+    }
+} else {
+    apply plugin: 'com.github.dcendents.android-maven'
+}

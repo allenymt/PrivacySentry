@@ -10,19 +10,18 @@ import java.io.File
 
 /**
  * @author yulun
- * @sinice 2021-12-13 17:10
+ * @sinice 2021-12-31 11:36
+ * 收集带有 com.yl.lib.privacy_annotation.PrivacyMethodProxy 的方法
  */
-class PrivacySentryTransform : Transform {
-
+class PrivacyCollectTransform : Transform {
     private var project: Project
 
     constructor(project: Project) {
         this.project = project
     }
 
-
     override fun getName(): String {
-        return "PrivacySentryPlugin"
+        return "PrivacyCollectTransform"
     }
 
     override fun getInputTypes(): MutableSet<QualifiedContent.ContentType> {
@@ -39,7 +38,6 @@ class PrivacySentryTransform : Transform {
 
     override fun transform(transformInvocation: TransformInvocation?) {
         super.transform(transformInvocation)
-
         // 非增量，删掉所有
         if (transformInvocation?.isIncremental == false) {
             transformInvocation.outputProvider.deleteAll()
@@ -64,6 +62,7 @@ class PrivacySentryTransform : Transform {
         }
     }
 
+
     // 处理jar
     private fun handleJar(
         transformInput: TransformInput, outputProvider: TransformOutputProvider,
@@ -82,7 +81,7 @@ class PrivacySentryTransform : Transform {
                             it.file,
                             extension,
                             runAsm = { input, project ->
-                                PrivacyClassProcessor.runHook(
+                                PrivacyClassProcessor.runCollect(
                                     input,
                                     project
                                 )
@@ -102,7 +101,7 @@ class PrivacySentryTransform : Transform {
                     it.file,
                     extension,
                     runAsm = { input, project ->
-                        PrivacyClassProcessor.runHook(
+                        PrivacyClassProcessor.runCollect(
                             input,
                             project
                         )
@@ -148,7 +147,7 @@ class PrivacySentryTransform : Transform {
                                 inputFile,
                                 extension,
                                 runAsm = { input, project ->
-                                    PrivacyClassProcessor.runHook(
+                                    PrivacyClassProcessor.runCollect(
                                         input,
                                         project
                                     )
@@ -171,7 +170,7 @@ class PrivacySentryTransform : Transform {
                             file,
                             extension,
                             runAsm = { input, project ->
-                                PrivacyClassProcessor.runHook(
+                                PrivacyClassProcessor.runCollect(
                                     input,
                                     project
                                 )

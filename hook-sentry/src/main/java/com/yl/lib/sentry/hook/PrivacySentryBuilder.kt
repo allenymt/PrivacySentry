@@ -1,6 +1,5 @@
 package com.yl.lib.sentry.hook
 
-import com.yl.lib.sentry.hook.hook.BaseHooker
 import com.yl.lib.sentry.hook.printer.BasePrinter
 import com.yl.lib.sentry.hook.printer.DefaultLogPrint
 import com.yl.lib.sentry.hook.util.MainProcessUtil
@@ -12,24 +11,18 @@ import com.yl.lib.sentry.hook.util.MainProcessUtil
 class PrivacySentryBuilder {
 
     var debug: Boolean = true
-    private var hookList: ArrayList<BaseHooker>? = null
     private var mPrinterList: ArrayList<BasePrinter>? = null
     private var watchTime: Long = 3 * 60 * 1000
     private var privacyResultCallBack: PrivacyResultCallBack? = null
     private var resultFileName: String? = null
-    private var privacyType: PrivacyType = PrivacyType.RUNTIME
+    private var privacyType: PrivacyType = PrivacyType.TRANSFORM
 
     constructor() {
-        hookList = ArrayList()
         addPrinter(DefaultLogPrint())
     }
 
     fun getPrinterList(): ArrayList<BasePrinter>? {
         return mPrinterList
-    }
-
-    fun getHookerList(): ArrayList<BaseHooker>? {
-        return hookList
     }
 
     fun getWatchTime(): Long? {
@@ -77,11 +70,6 @@ class PrivacySentryBuilder {
         return this
     }
 
-    fun configHook(baseHooker: BaseHooker): PrivacySentryBuilder {
-        hookList?.add(baseHooker!!)
-        return this
-    }
-
     fun configWatchTime(watchTime: Long): PrivacySentryBuilder {
         this.watchTime = watchTime
         return this
@@ -105,7 +93,7 @@ class PrivacySentryBuilder {
     }
 
     enum class PrivacyType {
-        RUNTIME,
+//        RUNTIME,
         TRANSFORM
     }
 }

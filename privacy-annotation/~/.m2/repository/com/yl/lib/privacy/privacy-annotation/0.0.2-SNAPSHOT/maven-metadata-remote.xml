@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>com.yl.lib.privacy</groupId>
+  <artifactId>privacy-annotation</artifactId>
+  <version>0.0.2-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20220104.074553</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20220104074553</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>0.0.2-20220104.074553-1</value>
+        <updated>20220104074553</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>0.0.2-20220104.074553-1</value>
+        <updated>20220104074553</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
