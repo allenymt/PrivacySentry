@@ -1,9 +1,9 @@
 package com.yl.lib.plugin.sentry.transform
 
+import com.yl.lib.plugin.sentry.extension.HookMethodItem
+import com.yl.lib.plugin.sentry.extension.HookMethodManager
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
-import com.yl.lib.sentry.base.HookMethodItem
-import com.yl.lib.sentry.base.HookMethodManager
 import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
@@ -88,7 +88,6 @@ class CollectHookMethodAdapter : AdviceAdapter {
     ) : super(api, methodVisitor, access, name, descriptor) {
         this.privacyExtension = privacyExtension
         this.className = className
-        HookMethodManager.MANAGER.setHookClassPath(className)
     }
 
 
@@ -128,8 +127,6 @@ class CollectHookAnnotationVisitor : AnnotationVisitor {
                 classSourceName.substring(1, classSourceName.length - 1)
         } else if (name.equals("originalMethod")) {
             hookMethodItem.originMethodName = value.toString()
-        } else if (name.equals("documentDesc")) {
-            hookMethodItem.documentMethodDesc = value.toString()
         }
     }
 
@@ -148,7 +145,8 @@ class CollectHookAnnotationVisitor : AnnotationVisitor {
             hookMethodItem.originMethodAccess == MethodInvokeOpcode.INVOKEINTERFACE.opcode
         ) {
             // 如果是调用实例方法，代理方法的描述会比原始方法多了一个实例，这里需要裁剪，方便做匹配 、、、
-            hookMethodItem.originMethodDesc = hookMethodItem.proxyMethodDesc.replace("L${hookMethodItem.originClassName};","")
+            hookMethodItem.originMethodDesc =
+                hookMethodItem.proxyMethodDesc.replace("L${hookMethodItem.originClassName};", "")
         }
         HookMethodManager.MANAGER.appendHookMethod(hookMethodItem)
     }

@@ -1,6 +1,5 @@
 rootProject.name = "PrivacySentry"
 include ':app'
-include ':base'
 include ':hook-sentry'
 include ':plugin-sentry'
 include ':privacy-test'

@@ -3,7 +3,6 @@ apply plugin: 'kotlin'
 dependencies {
     implementation gradleApi()//gradle sdk
     implementation localGroovy()
-    implementation project(path: ':base')
     implementation project(path: ':privacy-annotation')
     implementation 'com.android.tools.build:gradle:3.5.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -17,7 +16,7 @@ if (rootProject.ext.plugin_local_debug) {
     // 插件本地调试补充
     apply plugin: 'maven'
     group = 'com.yl.lib.plugin'
-    version = '0.0.1.44-SNAPSHOT'
+    version = '0.0.1.48-SNAPSHOT'
     uploadArchives {
         repositories {
             mavenDeployer {

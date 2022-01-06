@@ -1,7 +1,7 @@
 package com.yl.lib.plugin.sentry.transform
 
+import com.yl.lib.plugin.sentry.extension.HookMethodManager
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
-import com.yl.lib.sentry.base.HookMethodManager
 import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
@@ -97,7 +97,7 @@ class SentryTraceMethodAdapter : AdviceAdapter {
         if (methodItem != null) {
             mv.visitMethodInsn(
                 INVOKESTATIC,
-                HookMethodManager.MANAGER.getHookClassPath(),
+                methodItem.proxyClassName.replace(".","/"),
                 methodItem.proxyMethodName,
                 methodItem.proxyMethodDesc,
                 false
