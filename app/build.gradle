@@ -40,15 +40,15 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation "androidx.multidex:multidex:2.0.1"
+
     if (rootProject.ext.plugin_local_debug) {
         implementation project(":hook-sentry")
         implementation project(path: ':privacy-annotation')
     } else {
-        def privacyVersion = "1.0.0"
-        implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
-        implementation "com.github.allenymt.PrivacySentry:plugin-proxy:$privacyVersion"
+        def privacyVersion = "0.0.3-SNAPSHOT"
+        implementation "com.wdian.android.lib:privacy-hook:$privacyVersion"
+        implementation "com.wdian.android.lib:privacy-annotation:$privacyVersion"
     }
-
 
     implementation project(path: ':privacy-test')
     testImplementation 'junit:junit:4.+'
