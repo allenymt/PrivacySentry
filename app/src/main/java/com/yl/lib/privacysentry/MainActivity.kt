@@ -1,6 +1,7 @@
 package com.yl.lib.privacysentry
 
 import android.Manifest
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -39,6 +40,11 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("deviceId is $deviceId1")
 
             PrivacyLog.i("deviceId is ${PrivacyMethod.PrivacyMethod.getMeid(this)}")
+
+            PrivacyProxyCallJava.getRunningTasks(
+                getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager,
+                1
+            )
         }
 
         findViewById<Button>(R.id.btn_mac_address).setOnClickListener {
@@ -70,10 +76,21 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("privacySentryInstalled is $privacySentryInstalled")
 
             var privacySentryInstalled2 =
-                PrivacyMethod.PrivacyMethod.isInstalled2(application, this,"com.yl.lib.privacysentry123")
+                PrivacyMethod.PrivacyMethod.isInstalled2(
+                    application,
+                    this,
+                    "com.yl.lib.privacysentry123"
+                )
             PrivacyLog.i("privacySentryInstalled2 is $privacySentryInstalled2")
 
-            PrivacyLog.i("privacySentryInstalled2 is ${PrivacyMethod.PrivacyMethod.queryActivityInfo(application, this)}")
+            PrivacyLog.i(
+                "privacySentryInstalled2 is ${
+                    PrivacyMethod.PrivacyMethod.queryActivityInfo(
+                        application,
+                        this
+                    )
+                }"
+            )
         }
 
         findViewById<Button>(R.id.btn_test_cms).setOnClickListener {

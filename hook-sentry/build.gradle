@@ -40,10 +40,9 @@ dependencies {
     implementation("net.sourceforge.jexcelapi:jxl:2.6.12") {
         exclude module: 'log4j'
     }
-    implementation project(":base")
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
-apply plugin: 'android.publish'
+apply plugin: 'com.github.dcendents.android-maven'

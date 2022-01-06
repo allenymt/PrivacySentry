@@ -3,7 +3,7 @@ apply plugin: 'kotlin'
 dependencies {
     implementation gradleApi()//gradle sdk
     implementation localGroovy()
-    implementation project(path: ':base')
+    implementation project(path: ':privacy-annotation')
     implementation 'com.android.tools.build:gradle:3.5.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
@@ -16,7 +16,7 @@ if (rootProject.ext.plugin_local_debug) {
     // 插件本地调试补充
     apply plugin: 'maven'
     group = 'com.yl.lib.plugin'
-    version = '0.0.1.28-SNAPSHOT'
+    version = '0.0.1.48-SNAPSHOT'
     uploadArchives {
         repositories {
             mavenDeployer {
@@ -25,10 +25,7 @@ if (rootProject.ext.plugin_local_debug) {
         }
     }
 } else {
-    apply plugin: 'android.publish'
-    pom {
-        exclude "com.android.tools.build:gradle"
-    }
+    apply plugin: 'com.github.dcendents.android-maven'
 }
 
 

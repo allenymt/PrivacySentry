@@ -22,7 +22,7 @@ class PrivacyClassProcessor {
 
     companion object {
 
-        fun run(`is`: InputStream?, project: Project): ByteArray? {
+        fun runHook(`is`: InputStream?, project: Project): ByteArray? {
             val classReader = org.objectweb.asm.ClassReader(`is`)
 
             // 入参有两个，ClassWriter.COMPUTE_MAXS 和 COMPUTE_FRAMES
@@ -48,7 +48,33 @@ class PrivacyClassProcessor {
             return classWriter.toByteArray()
         }
 
-        fun processJar(project: Project, file: File, extension: PrivacyExtension) {
+        fun runCollect(`is`: InputStream?, project: Project): ByteArray? {
+            val classReader = org.objectweb.asm.ClassReader(`is`)
+
+            // 入参有两个，ClassWriter.COMPUTE_MAXS 和 COMPUTE_FRAMES
+            // 简单说 他们的区别是COMPUTE_MAXS的方式会帮助我们重新计算局部变量和操作数的size ， 慢10%
+            // COMPUTE_FRAMES既会计算栈size,也会计算StackMapFrame 慢20%
+            val classWriter =
+                org.objectweb.asm.ClassWriter(org.objectweb.asm.ClassWriter.COMPUTE_MAXS)
+            // 定义类访问者
+            val classVisitor: ClassVisitor =
+                CollectHookMethodClassAdapter(
+                    Opcodes.ASM7, classWriter, project.extensions.findByType(
+                        PrivacyExtension::class.java
+                    )
+                )
+            /**
+             * ClassReader.SKIP_DEBUG：表示不遍历调试内容，即跳过源文件，源码调试扩展，局部变量表，局部变量类型表和行号表属性，即以下方法既不会被解析也不会被访问（ClassVisitor.visitSource，MethodVisitor.visitLocalVariable，MethodVisitor.visitLineNumber）。使用此标识后，类文件调试信息会被去除，请警记。
+             * ClassReader.SKIP_CODE：设置该标识，则代码属性将不会被转换和访问，例如方法体代码不会进行解析和访问。
+             * ClassReader.SKIP_FRAMES：设置该标识，表示跳过栈图（StackMap）和栈图表（StackMapTable）属性，即MethodVisitor.visitFrame方法不会被转换和访问。当设置了ClassWriter.COMPUTE_FRAMES时，设置该标识会很有用，因为他避免了访问帧内容（这些内容会被忽略和重新计算，无需访问）。
+             * ClassReader.EXPAND_FRAMES：该标识用于设置扩展栈帧图。默认栈图以它们原始格式（V1_6以下使用扩展格式，其他使用压缩格式）被访问。如果设置该标识，栈图则始终以扩展格式进行访问（此标识在ClassReader和ClassWriter中增加了解压/压缩步骤，会大幅度降低性能）。
+             * 一般来说都选最全的，即使性能问题也是编译期
+             */
+            classReader.accept(classVisitor, org.objectweb.asm.ClassReader.EXPAND_FRAMES)
+            return classWriter.toByteArray()
+        }
+
+        fun processJar(project: Project, file: File, extension: PrivacyExtension,runAsm:(InputStream?,Project)->ByteArray?) {
             if (file == null || !file.exists() || !file.name.endsWith(".jar")) {
                 return
             }
@@ -75,7 +101,7 @@ class PrivacyClassProcessor {
                     project.logger.info("deal with jar file is: $file.absolutePath entryName is $entryName")
                     jarOutputStream.putNextEntry(zipEntry)
                     // 使用 ASM 对 class 文件进行操控
-                    jarOutputStream.write(run(inputStream, project))
+                    jarOutputStream.write(runAsm(inputStream, project))
                 } else {
                     project.logger.info("undeal with jar file is: $file.absolutePath entryName is $entryName")
                     // 如果命中黑名单，不做处理，直接输入
@@ -98,11 +124,12 @@ class PrivacyClassProcessor {
             project: Project,
             inputDir: File,
             inputFile: File,
-            extension: PrivacyExtension
+            extension: PrivacyExtension,
+            runAsm:(InputStream?,Project)->ByteArray?
         ) {
             if (shouldProcessClass(inputFile.name, extension.blackList)) {
                 project.logger.info("deal with directory file is:" + inputFile.absolutePath)
-                var codeBytes = run(FileInputStream(inputFile), project)
+                var codeBytes = runAsm(FileInputStream(inputFile), project)
                 // 构建输出流，这里是当前目录的原文件；也可以新建个临时文件，写完后再覆盖
                 var fileOutputStream = FileOutputStream(
                     "${inputFile.parent}${File.separator}${inputFile.name}"
@@ -130,7 +157,7 @@ class PrivacyClassProcessor {
                 || entryName.contains("androidx")
                 // 过滤掉库本身
                 || entryName.contains("com/yl/lib/sentry/hook")
-                || entryName.contains("com/yl/lib/plugin_proxy")
+                || entryName.contains("com/yl/lib/privacy_annotation")
                 || entryName.contains("com/yl/lib/sentry/base")
             ) {
 //            print("checkClassFile className is $entryName false")
