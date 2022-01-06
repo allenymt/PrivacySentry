@@ -19,7 +19,7 @@ buildscript {
         if (rootProject.ext.plugin_local_debug) {
             classpath "com.yl.lib.plugin:plugin-sentry:0.0.1.50-SNAPSHOT"
         } else {
-            classpath 'com.wdian.android.lib:privacy-plugin:0.0.3-SNAPSHOT'
+            classpath 'com.wdian.android.lib:privacy-plugin:0.0.3.1-SNAPSHOT'
         }
         classpath('com.vdian.android.lib:gradle-publish:1.5.8') { changing = true }
         // NOTE: Do not place your application dependencies here; they belong
