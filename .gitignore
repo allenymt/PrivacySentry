@@ -8,3 +8,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+/hook-sentry/~/.m2
+/plugin-sentry/~/.m2/

@@ -156,9 +156,7 @@ class PrivacyClassProcessor {
                 || entryName.contains("android/material")
                 || entryName.contains("androidx")
                 // 过滤掉库本身
-                || entryName.contains("com/yl/lib/sentry/hook")
                 || entryName.contains("com/yl/lib/privacy_annotation")
-                || entryName.contains("com/yl/lib/sentry/base")
             ) {
 //            print("checkClassFile className is $entryName false")
                 return false
