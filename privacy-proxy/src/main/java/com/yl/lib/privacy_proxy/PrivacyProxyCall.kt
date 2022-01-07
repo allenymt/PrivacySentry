@@ -30,20 +30,20 @@ open class PrivacyProxyCall {
     @Keep
     object Proxy {
 
-        // 这个方法的注册放在了PrivacyProxyCall2中，提供了一个java注册的例子
-//        @PrivacyMethodProxy(
-//            originalClass = ActivityManager::class,
-//            originalMethod = "getRunningTasks",
-//            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL,
-//        )
-//        @JvmStatic
-//        fun getRunningTasks(
-//            manager: ActivityManager,
-//            maxNum: Int
-//        ): List<ActivityManager.RunningTaskInfo?>? {
-//            doFilePrinter("getRunningTasks",methodDocumentDesc = "获取当前运行中的任务")
-//            return manager.getRunningTasks(maxNum)
-//        }
+//         这个方法的注册放在了PrivacyProxyCall2中，提供了一个java注册的例子
+        @PrivacyMethodProxy(
+            originalClass = ActivityManager::class,
+            originalMethod = "getRunningTasks",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        @JvmStatic
+        fun getRunningTasks(
+            manager: ActivityManager,
+            maxNum: Int
+        ): List<ActivityManager.RunningTaskInfo?>? {
+            doFilePrinter("getRunningTasks",methodDocumentDesc = "获取当前运行中的任务")
+            return manager.getRunningTasks(maxNum)
+        }
 
         @PrivacyMethodProxy(
             originalClass = Settings.Secure::class,

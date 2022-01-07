@@ -42,6 +42,7 @@ dependencies {
     implementation "androidx.multidex:multidex:2.0.1"
     if (rootProject.ext.plugin_local_debug) {
         implementation project(":hook-sentry")
+        implementation project(":privacy-proxy")
         implementation project(path: ':privacy-annotation')
     } else {
         def privacyVersion = "1.0.0"

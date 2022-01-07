@@ -29,7 +29,7 @@ class PrivacySentry {
          *  transform简单初始化，需要搭配插件使用
          */
         fun initTransform(ctx: Application) {
-            var builder = PrivacySentryBuilder().configPrivacyType(PrivacySentryBuilder.PrivacyType.TRANSFORM)
+            var builder = PrivacySentryBuilder()
             init(ctx, builder)
         }
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>com.yl.lib.privacy</groupId>
+  <artifactId>hook-sentry</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20220106.092704</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20220106092704</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>aar</extension>
+        <value>0.0.1-20220106.092704-1</value>
+        <updated>20220106092704</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>0.0.1-20220106.092704-1</value>
+        <updated>20220106092704</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
