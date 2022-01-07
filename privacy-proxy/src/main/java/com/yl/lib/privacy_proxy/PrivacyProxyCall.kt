@@ -89,7 +89,7 @@ open class PrivacyProxyCall {
 
         @PrivacyMethodProxy(
             originalClass = PackageManager::class,
-            originalMethod = "getInstalledPackages",
+            originalMethod = "queryIntentActivities",
             originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
         )
         @JvmStatic
@@ -107,7 +107,7 @@ open class PrivacyProxyCall {
 
         @PrivacyMethodProxy(
             originalClass = PackageManager::class,
-            originalMethod = "getInstalledPackages",
+            originalMethod = "queryIntentActivityOptions",
             originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
         )
         @JvmStatic
@@ -187,7 +187,7 @@ open class PrivacyProxyCall {
 
         @PrivacyMethodProxy(
             originalClass = TelephonyManager::class,
-            originalMethod = "getDeviceId",
+            originalMethod = "getSubscriberId",
             originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
         )
         @JvmStatic
@@ -198,7 +198,7 @@ open class PrivacyProxyCall {
 
         @PrivacyMethodProxy(
             originalClass = TelephonyManager::class,
-            originalMethod = "subscriberId",
+            originalMethod = "getSubscriberId",
             originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
         )
         @JvmStatic
