@@ -16,8 +16,7 @@ class TestInJava {
                 // 自定义文件结果的输出名
                 .configResultFileName("demo_test")
                 //自定义检测时间，也支持主动停止检测 PrivacySentry.Privacy.stopWatch()
-                .configWatchTime(10 * 60 * 1000)
-                .configPrivacyType(PrivacySentryBuilder.PrivacyType.TRANSFORM);
+                .configWatchTime(10 * 60 * 1000);
         // 添加默认结果输出，包含log输出和文件输出
         PrivacySentry.Privacy.INSTANCE.init(null, builder);
     }

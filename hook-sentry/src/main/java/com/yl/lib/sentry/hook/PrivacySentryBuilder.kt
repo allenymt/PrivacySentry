@@ -11,11 +11,20 @@ import com.yl.lib.sentry.hook.util.MainProcessUtil
 class PrivacySentryBuilder {
 
     var debug: Boolean = true
+    //日志输出 和 文件输出
     private var mPrinterList: ArrayList<BasePrinter>? = null
+
+    // 默认的监听时间
     private var watchTime: Long = 3 * 60 * 1000
+
+    // 结束回调
     private var privacyResultCallBack: PrivacyResultCallBack? = null
+
+    // 输出的文件名
     private var resultFileName: String? = null
-    private var privacyType: PrivacyType = PrivacyType.TRANSFORM
+
+    // 游客模式，拦截所有敏感方法
+    private var visitorModel:Boolean = false
 
     constructor() {
         addPrinter(DefaultLogPrint())
@@ -43,10 +52,6 @@ class PrivacySentryBuilder {
             } ?: ""
             "${processName}_$resultFileName"
         }
-    }
-
-    fun getPrivacyType(): PrivacyType {
-        return privacyType
     }
 
     fun addPrinter(basePrinter: BasePrinter): PrivacySentryBuilder {
@@ -83,17 +88,5 @@ class PrivacySentryBuilder {
     fun configResultFileName(resultFileName: String): PrivacySentryBuilder {
         this.resultFileName = resultFileName
         return this
-    }
-
-    fun configPrivacyType(privacyType: PrivacyType): PrivacySentryBuilder {
-        privacyType?.let {
-            this.privacyType = privacyType
-        }
-        return this
-    }
-
-    enum class PrivacyType {
-//        RUNTIME,
-        TRANSFORM
     }
 }
