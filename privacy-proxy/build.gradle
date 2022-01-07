@@ -41,4 +41,4 @@ dependencies {
     implementation project(path: ':privacy-annotation')
 }
 
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'android.publish'
