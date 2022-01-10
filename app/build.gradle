@@ -31,9 +31,12 @@ android {
             signingConfig signingConfigs.release //使用release签名
         }
         release {
-            minifyEnabled false
+            debuggable true
+            jniDebuggable false
+            shrinkResources false
+            minifyEnabled true
             signingConfig signingConfigs.release //使用release签
-            zipAlignEnabled true//签名
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
