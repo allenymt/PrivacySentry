@@ -15,12 +15,24 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file("../privacy")
+            storePassword "123456"
+            keyAlias "privacy"
+            keyPassword "123456"
+            v2SigningEnabled true
+        }
+    }
+
     buildTypes {
         debug {
             debuggable true
         }
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release //使用release签
+            zipAlignEnabled true//签名
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -31,6 +43,8 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+
 }
 
 dependencies {
