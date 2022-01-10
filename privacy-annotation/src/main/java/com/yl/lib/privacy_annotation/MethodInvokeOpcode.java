@@ -1,8 +1,5 @@
 package com.yl.lib.privacy_annotation;
 
-
-import org.objectweb.asm.Opcodes;
-
 /**
  * @author yulun
  * @sinice 2021-12-31 11:12
@@ -17,19 +14,19 @@ public enum MethodInvokeOpcode {
      *   int INVOKEDYNAMIC = 186; // visitInvokeDynamicInsn
      */
     // 调用对象的实例方法
-    INVOKEVIRTUAL(Opcodes.INVOKEVIRTUAL),
+    INVOKEVIRTUAL(0),
 
     // 调用特殊方法，比如初始化，私有方法，父类方法
-    INVOKESPECIAL(Opcodes.INVOKESPECIAL),
+    INVOKESPECIAL(1),
 
     // 调用类方法，也就是静态方法
-    INVOKESTATIC(Opcodes.INVOKESTATIC),
+    INVOKESTATIC(2),
 
     // 调用接口方法
-    INVOKEINTERFACE(Opcodes.INVOKEINTERFACE),
+    INVOKEINTERFACE(3),
 
     // 暂时还不清楚
-    INVOKEDYNAMIC(Opcodes.INVOKEDYNAMIC);
+    INVOKEDYNAMIC(4);
 
     private int opcode;
 
