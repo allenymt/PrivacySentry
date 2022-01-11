@@ -1,4 +1,4 @@
-package com.yl.lib.privacysentry
+package com.yl.lib.privacy_proxy
 
 import android.app.ActivityManager
 import android.bluetooth.BluetoothAdapter
@@ -30,7 +30,7 @@ open class PrivacyProxyCall {
     @Keep
     object Proxy {
 
-//         这个方法的注册放在了PrivacyProxyCall2中，提供了一个java注册的例子
+        // 这个方法的注册放在了PrivacyProxyCall2中，提供了一个java注册的例子
         @PrivacyMethodProxy(
             originalClass = ActivityManager::class,
             originalMethod = "getRunningTasks",
