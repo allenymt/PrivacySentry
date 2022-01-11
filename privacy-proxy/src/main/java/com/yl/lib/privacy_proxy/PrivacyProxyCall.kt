@@ -1,4 +1,4 @@
-package com.yl.lib.sentry.hook
+package com.yl.lib.privacy_proxy
 
 import android.app.ActivityManager
 import android.bluetooth.BluetoothAdapter
