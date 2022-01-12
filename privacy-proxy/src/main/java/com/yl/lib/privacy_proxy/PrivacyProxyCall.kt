@@ -3,6 +3,7 @@ package com.yl.lib.privacy_proxy
 import android.app.ActivityManager
 import android.bluetooth.BluetoothAdapter
 import android.content.*
+import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
@@ -15,6 +16,7 @@ import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
 import com.yl.lib.sentry.hook.PrivacySentry
+import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyUtil
 import java.net.NetworkInterface
 
@@ -41,7 +43,10 @@ open class PrivacyProxyCall {
             manager: ActivityManager,
             maxNum: Int
         ): List<ActivityManager.RunningTaskInfo?>? {
-            doFilePrinter("getRunningTasks",methodDocumentDesc = "获取当前运行中的任务")
+            doFilePrinter("getRunningTasks", methodDocumentDesc = "获取当前运行中的任务")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ArrayList<ActivityManager.RunningTaskInfo>()
+            }
             return manager.getRunningTasks(maxNum)
         }
 
@@ -55,6 +60,9 @@ open class PrivacyProxyCall {
             var result = ""
             try {
                 doFilePrinter("getString", "读取系统信息", args = type)
+                if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                    return ""
+                }
                 result = Settings.Secure.getString(
                     contentResolver,
                     type
@@ -73,6 +81,9 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getRunningAppProcesses(manager: ActivityManager): List<ActivityManager.RunningAppProcessInfo> {
             doFilePrinter("getRunningAppProcesses", methodDocumentDesc = "获取当前运行中的进程")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ArrayList<ActivityManager.RunningAppProcessInfo>()
+            }
             return manager.getRunningAppProcesses()
         }
 
@@ -84,6 +95,9 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getInstalledPackages(manager: PackageManager, flags: Int): List<PackageInfo> {
             doFilePrinter("getInstalledPackages", methodDocumentDesc = "获取安装包-getInstalledPackages")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ArrayList<PackageInfo>()
+            }
             return manager.getInstalledPackages(flags)
         }
 
@@ -102,6 +116,9 @@ open class PrivacyProxyCall {
                 "queryIntentActivities",
                 methodDocumentDesc = "读安装列表-queryIntentActivities"
             )
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ArrayList<ResolveInfo>()
+            }
             return manager.queryIntentActivities(intent, flags)
         }
 
@@ -122,6 +139,9 @@ open class PrivacyProxyCall {
                 "queryIntentActivityOptions",
                 methodDocumentDesc = "读安装列表-queryIntentActivityOptions"
             )
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ArrayList<ResolveInfo>()
+            }
             return manager.queryIntentActivityOptions(caller, specifics, intent, flags)
         }
 
@@ -133,6 +153,9 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getMeid(manager: TelephonyManager): String? {
             doFilePrinter("getMeid", methodDocumentDesc = "移动设备标识符-getMeid()")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 manager.getMeid()
             } else {
@@ -148,6 +171,9 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getMeid(manager: TelephonyManager, index: Int): String? {
             doFilePrinter("getMeid", "移动设备标识符-getMeid(I)")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 manager.getMeid(index)
             } else {
@@ -163,6 +189,9 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getDeviceId(manager: TelephonyManager): String? {
             doFilePrinter("getDeviceId", "获取设备id-getDeviceId()")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 manager.getDeviceId()
             } else {
@@ -178,6 +207,9 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getDeviceId(manager: TelephonyManager, index: Int): String? {
             doFilePrinter("getDeviceId", "获取设备id-getDeviceId(I)")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 manager.getDeviceId(index)
             } else {
@@ -192,7 +224,10 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getSubscriberId(manager: TelephonyManager): String? {
-            doFilePrinter("getSubscriberId","获取设备id-getSubscriberId(I)")
+            doFilePrinter("getSubscriberId", "获取设备id-getSubscriberId(I)")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
             return manager.subscriberId
         }
 
@@ -204,6 +239,9 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getSubscriberId(manager: TelephonyManager, index: Int): String? {
             doFilePrinter("getSubscriberId", "获取设备id-getSubscriberId()")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
             return manager.subscriberId
         }
 
@@ -214,7 +252,10 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getImei(manager: TelephonyManager): String? {
-            doFilePrinter("getImei",  "获取设备id-getImei()")
+            doFilePrinter("getImei", "获取设备id-getImei()")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 manager.getImei()
             } else {
@@ -230,6 +271,9 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getImei(manager: TelephonyManager, index: Int): String? {
             doFilePrinter("getImei", "获取设备id-getImei()")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 manager.getImei(index)
             } else {
@@ -244,7 +288,10 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getSimSerialNumber(manager: TelephonyManager): String? {
-            doFilePrinter("getSimSerialNumber","获取设备id-getSimSerialNumber()")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
+            doFilePrinter("getSimSerialNumber", "获取设备id-getSimSerialNumber()")
             return manager.getSimSerialNumber()
         }
 
@@ -255,7 +302,10 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getSimSerialNumber(manager: TelephonyManager, index: Int): String? {
-            doFilePrinter("getSimSerialNumber","获取设备id-getSimSerialNumber()")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
+            doFilePrinter("getSimSerialNumber", "获取设备id-getSimSerialNumber()")
             return manager.getSimSerialNumber()
         }
 
@@ -266,7 +316,10 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getPrimaryClip(manager: ClipboardManager): ClipData? {
-            doFilePrinter("getPrimaryClip","获取剪贴板内容-getPrimaryClip")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ClipData.newPlainText("Label", "")
+            }
+            doFilePrinter("getPrimaryClip", "获取剪贴板内容-getPrimaryClip")
             return manager.primaryClip
         }
 
@@ -277,7 +330,10 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getPrimaryClipDescription(manager: ClipboardManager): ClipDescription? {
-            doFilePrinter("getPrimaryClipDescription","获取剪贴板内容-getPrimaryClipDescription")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ClipDescription("", arrayOf(MIMETYPE_TEXT_PLAIN))
+            }
+            doFilePrinter("getPrimaryClipDescription", "获取剪贴板内容-getPrimaryClipDescription")
             return manager.primaryClipDescription
         }
 
@@ -288,7 +344,10 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getText(manager: ClipboardManager): CharSequence? {
-            doFilePrinter("getText","获取剪贴板内容-getText")
+            doFilePrinter("getText", "获取剪贴板内容-getText")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
             return manager.text
         }
 
@@ -299,7 +358,10 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun setPrimaryClip(manager: ClipboardManager, clip: ClipData) {
-            doFilePrinter("setPrimaryClip","设置剪贴板内容-setPrimaryClip")
+            doFilePrinter("setPrimaryClip", "设置剪贴板内容-setPrimaryClip")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return
+            }
             manager.setPrimaryClip(clip)
         }
 
@@ -310,7 +372,10 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun setText(manager: ClipboardManager, clip: CharSequence) {
-            doFilePrinter("setText","设置剪贴板内容-setText")
+            doFilePrinter("setText", "设置剪贴板内容-setText")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return
+            }
             manager.text = clip
         }
 
@@ -321,8 +386,11 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getMacAddress(manager: WifiInfo): String? {
-            doFilePrinter("getMacAddress","获取mac地址-getMacAddress")
-            return manager.getMacAddress();
+            doFilePrinter("getMacAddress", "获取mac地址-getMacAddress")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
+            return manager.getMacAddress()
         }
 
         @PrivacyMethodProxy(
@@ -332,7 +400,10 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getHardwareAddress(manager: NetworkInterface): ByteArray? {
-            doFilePrinter("getHardwareAddress","获取mac地址-getHardwareAddress")
+            doFilePrinter("getHardwareAddress", "获取mac地址-getHardwareAddress")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ByteArray(1)
+            }
             return manager.hardwareAddress
         }
 
@@ -343,7 +414,10 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getAddress(manager: BluetoothAdapter): String? {
-            doFilePrinter("getAddress","获取蓝牙地址-getAddress")
+            doFilePrinter("getAddress", "获取蓝牙地址-getAddress")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
             return manager.address ?: ""
         }
 
@@ -352,6 +426,10 @@ open class PrivacyProxyCall {
             methodDocumentDesc: String = "",
             args: String? = ""
         ) {
+            if (PrivacySentry.Privacy.getBuilder()?.isEnableFileResult() == false) {
+                PrivacyLog.e("disable print file: funName is $funName methodDocumentDesc is $methodDocumentDesc")
+                return
+            }
             PrivacySentry.Privacy.getBuilder()?.getPrinterList()?.forEach {
                 it.filePrint(
                     funName,

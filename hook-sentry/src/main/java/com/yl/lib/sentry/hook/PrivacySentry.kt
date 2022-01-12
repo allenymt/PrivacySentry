@@ -21,7 +21,7 @@ class PrivacySentry {
     object Privacy {
         private var mBuilder: PrivacySentryBuilder? = null
         private val bInit = AtomicBoolean(false)
-        private val bFinish = AtomicBoolean(false)
+        private val bFilePrintFinish = AtomicBoolean(false)
         var bShowPrivacy = false
         private var ctx: Application? = null
 
@@ -41,7 +41,7 @@ class PrivacySentry {
         ) {
             if (bInit.compareAndSet(false, true)) {
                 if (builder == null) {
-                    mBuilder = PrivacySentryBuilder().addPrinter(defaultFilePrinter(ctx, null))
+                    mBuilder = PrivacySentryBuilder()
                 } else {
                     mBuilder = builder
                 }
@@ -56,15 +56,21 @@ class PrivacySentry {
                 PrivacyLog.i("delay stop watch $it")
                 var handler = Handler(Looper.getMainLooper())
                 handler.postDelayed({
-                    stopWatch()
+                    stop()
                 }, it)
             }
-            mBuilder?.addPrinter(defaultFilePrinter(ctx, mBuilder))
+
+            if (mBuilder?.isEnableFileResult() == true){
+                mBuilder?.addPrinter(defaultFilePrinter(ctx, mBuilder))
+            }
         }
 
-        fun stopWatch() {
-            if (bFinish.compareAndSet(false, true)) {
-                bFinish.set(true)
+        /**
+         * 停止文件写入
+         */
+        fun stop() {
+            if (bFilePrintFinish.compareAndSet(false, true)) {
+                bFilePrintFinish.set(true)
                 PrivacyLog.i("call stopWatch")
                 mBuilder?.getPrinterList()?.filterIsInstance<BaseFilePrinter>()?.forEach {
                     // 强制写入文件
@@ -73,7 +79,6 @@ class PrivacySentry {
                     mBuilder?.getResultCallBack()?.onResultCallBack(it.resultFileName)
                 }
             }
-
         }
 
         /**
@@ -105,6 +110,28 @@ class PrivacySentry {
             return mBuilder ?: null
         }
 
+        /**
+         * 当前写入文件任务是否结束
+         * @return Boolean
+         */
+        fun isFilePrintFinish():Boolean{
+            return bFilePrintFinish.get()
+        }
+
+        /**
+         * 关闭游客模式
+         */
+        fun closeVisitorModel(){
+            mBuilder?.configVisitorModel(false)
+        }
+
+        /**
+         * 打开游客模式
+         */
+        fun openVisitorModel(){
+            mBuilder?.configVisitorModel(true)
+        }
+
         private fun defaultFilePrinter(
             ctx: Context,
             builder: PrivacySentryBuilder?
@@ -125,7 +152,7 @@ class PrivacySentry {
 
                         override fun stopWatch() {
                             PrivacyLog.i("stopWatch")
-                            Privacy.stopWatch()
+                            Privacy.stop()
                         }
                     }, watchTime = builder?.getWatchTime()
                 )

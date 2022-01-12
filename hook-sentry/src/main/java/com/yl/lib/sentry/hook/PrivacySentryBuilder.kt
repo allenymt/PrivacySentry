@@ -11,6 +11,7 @@ import com.yl.lib.sentry.hook.util.MainProcessUtil
 class PrivacySentryBuilder {
 
     var debug: Boolean = true
+
     //日志输出 和 文件输出
     private var mPrinterList: ArrayList<BasePrinter>? = null
 
@@ -23,8 +24,11 @@ class PrivacySentryBuilder {
     // 输出的文件名
     private var resultFileName: String? = null
 
+    // 是否激活输入日志到文件
+    private var enableFileResult: Boolean = true
+
     // 游客模式，拦截所有敏感方法
-    private var visitorModel:Boolean = false
+    private var visitorModel: Boolean = false
 
     constructor() {
         addPrinter(DefaultLogPrint())
@@ -88,5 +92,23 @@ class PrivacySentryBuilder {
     fun configResultFileName(resultFileName: String): PrivacySentryBuilder {
         this.resultFileName = resultFileName
         return this
+    }
+
+    fun configVisitorModel(visitorModel: Boolean): PrivacySentryBuilder {
+        this.visitorModel = visitorModel
+        return this
+    }
+
+    fun isVisitorModel(): Boolean {
+        return visitorModel
+    }
+
+    fun enableFileResult(enableFileResult: Boolean): PrivacySentryBuilder {
+        this.enableFileResult = enableFileResult
+        return this
+    }
+
+    fun isEnableFileResult(): Boolean {
+        return enableFileResult
     }
 }
