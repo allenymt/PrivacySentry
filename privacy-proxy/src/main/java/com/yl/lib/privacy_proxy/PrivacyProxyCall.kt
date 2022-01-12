@@ -1,5 +1,6 @@
 package com.yl.lib.privacy_proxy
 
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.bluetooth.BluetoothAdapter
 import android.content.*
@@ -7,9 +8,19 @@ import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.hardware.Sensor
+import android.hardware.SensorManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.net.DhcpInfo
+import android.net.wifi.ScanResult
+import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiInfo
+import android.net.wifi.WifiManager
 import android.os.Build
 import android.provider.Settings
+import android.telephony.CellInfo
 import android.telephony.TelephonyManager
 import androidx.annotation.Keep
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
@@ -45,9 +56,27 @@ open class PrivacyProxyCall {
         ): List<ActivityManager.RunningTaskInfo?>? {
             doFilePrinter("getRunningTasks", methodDocumentDesc = "获取当前运行中的任务")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                return ArrayList<ActivityManager.RunningTaskInfo>()
+                return emptyList()
             }
             return manager.getRunningTasks(maxNum)
+        }
+
+        @JvmStatic
+        @PrivacyMethodProxy(
+            originalClass = ActivityManager::class,
+            originalMethod = "getRecentTasks",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        fun getRecentTasks(
+            manager: ActivityManager,
+            maxNum: Int,
+            flags: Int
+        ): List<ActivityManager.RecentTaskInfo>? {
+            doFilePrinter("getRecentTasks", methodDocumentDesc = "获取最近运行中的任务")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return emptyList()
+            }
+            return manager.getRecentTasks(maxNum, flags)
         }
 
         @PrivacyMethodProxy(
@@ -82,7 +111,7 @@ open class PrivacyProxyCall {
         fun getRunningAppProcesses(manager: ActivityManager): List<ActivityManager.RunningAppProcessInfo> {
             doFilePrinter("getRunningAppProcesses", methodDocumentDesc = "获取当前运行中的进程")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                return ArrayList<ActivityManager.RunningAppProcessInfo>()
+                return emptyList()
             }
             return manager.getRunningAppProcesses()
         }
@@ -96,7 +125,7 @@ open class PrivacyProxyCall {
         fun getInstalledPackages(manager: PackageManager, flags: Int): List<PackageInfo> {
             doFilePrinter("getInstalledPackages", methodDocumentDesc = "获取安装包-getInstalledPackages")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                return ArrayList<PackageInfo>()
+                return emptyList()
             }
             return manager.getInstalledPackages(flags)
         }
@@ -117,7 +146,7 @@ open class PrivacyProxyCall {
                 methodDocumentDesc = "读安装列表-queryIntentActivities"
             )
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                return ArrayList<ResolveInfo>()
+                return emptyList()
             }
             return manager.queryIntentActivities(intent, flags)
         }
@@ -140,9 +169,28 @@ open class PrivacyProxyCall {
                 methodDocumentDesc = "读安装列表-queryIntentActivityOptions"
             )
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                return ArrayList<ResolveInfo>()
+                return emptyList()
             }
             return manager.queryIntentActivityOptions(caller, specifics, intent, flags)
+        }
+
+
+        /**
+         * 读取基站信息，需要开启定位
+         */
+        @JvmStatic
+        @SuppressLint("MissingPermission")
+        @PrivacyMethodProxy(
+            originalClass = TelephonyManager::class,
+            originalMethod = "getAllCellInfo",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        fun getAllCellInfo(manager: TelephonyManager): List<CellInfo>? {
+            doFilePrinter("getAllCellInfo", methodDocumentDesc = "读取基站信息，需要开启定位")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return emptyList()
+            }
+            return manager.getAllCellInfo()
         }
 
         @PrivacyMethodProxy(
@@ -391,6 +439,149 @@ open class PrivacyProxyCall {
                 return ""
             }
             return manager.getMacAddress()
+        }
+
+        /**
+         * 读取WIFI的SSID
+         */
+        @JvmStatic
+        @PrivacyMethodProxy(
+            originalClass = WifiInfo::class,
+            originalMethod = "getSSID",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        fun getSSID(manager: WifiInfo): String? {
+            doFilePrinter("getSSID", "802.11网络的服务集标识符")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
+            return manager.ssid
+        }
+
+        /**
+         * 读取WIFI的SSID
+         */
+        @JvmStatic
+        @PrivacyMethodProxy(
+            originalClass = WifiInfo::class,
+            originalMethod = "getBSSID",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        fun getBSSID(manager: WifiInfo): String? {
+            doFilePrinter("getBSSID", "802.11网络的服务集标识符")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
+            return manager.bssid
+        }
+
+        /**
+         * 读取WIFI扫描结果
+         */
+        @JvmStatic
+        @PrivacyMethodProxy(
+            originalClass = WifiManager::class,
+            originalMethod = "getScanResults",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        fun getScanResults(manager: WifiManager): List<ScanResult>? {
+            doFilePrinter("getScanResults", "读取WIFI扫描结果")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return emptyList()
+            }
+            return manager.getScanResults()
+        }
+
+
+        @JvmStatic
+        @PrivacyMethodProxy(
+            originalClass = SensorManager::class,
+            originalMethod = "getSensorList",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        fun getSensorList(manager: SensorManager, type: Int): List<Sensor>? {
+            doFilePrinter("getSensorList", "获取可用传感器")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return emptyList()
+            }
+            return manager.getSensorList(type)
+        }
+
+
+        /**
+         * 读取DHCP信息
+         */
+        @JvmStatic
+        @PrivacyMethodProxy(
+            originalClass = WifiManager::class,
+            originalMethod = "getDhcpInfo",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        fun getDhcpInfo(manager: WifiManager): DhcpInfo? {
+            doFilePrinter("getSensorList", "DHCP地址")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return null
+            }
+            return manager.getDhcpInfo()
+        }
+
+        /**
+         * 读取DHCP信息
+         */
+        @SuppressLint("MissingPermission")
+        @JvmStatic
+        @PrivacyMethodProxy(
+            originalClass = WifiManager::class,
+            originalMethod = "getConfiguredNetworks",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        fun getConfiguredNetworks(manager: WifiManager): List<WifiConfiguration>? {
+            doFilePrinter("getConfiguredNetworks", "前台用户配置的所有网络的列表")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return emptyList()
+            }
+            return manager.getConfiguredNetworks()
+        }
+
+
+        /**
+         * 读取位置信息
+         */
+        @JvmStatic
+        @SuppressLint("MissingPermission")
+        @PrivacyMethodProxy(
+            originalClass = LocationManager::class,
+            originalMethod = "getLastKnownLocation",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        fun getLastKnownLocation(
+            manager: LocationManager, provider: String
+        ): Location? {
+            doFilePrinter("getLastKnownLocation", "读取上一次获取的位置信息")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                // 这里直接写空可能有风险
+                return null
+            }
+            return manager.getLastKnownLocation(provider)
+        }
+
+
+        @SuppressLint("MissingPermission")
+        @JvmStatic
+        @PrivacyMethodProxy(
+            originalClass = LocationManager::class,
+            originalMethod = "requestLocationUpdates",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        fun requestLocationUpdates(
+            manager: LocationManager, provider: String, minTime: Long, minDistance: Float,
+            listener: LocationListener
+        ) {
+            doFilePrinter("requestLocationUpdates", "监视精细行动轨迹")
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return
+            }
+            manager.requestLocationUpdates(provider, minTime, minDistance, listener)
         }
 
         @PrivacyMethodProxy(
