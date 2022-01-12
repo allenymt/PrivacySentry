@@ -28,6 +28,7 @@ android {
     buildTypes {
         debug {
             debuggable true
+            signingConfig signingConfigs.release //使用release签名
         }
         release {
             minifyEnabled false

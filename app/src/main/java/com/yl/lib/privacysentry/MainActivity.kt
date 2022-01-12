@@ -114,11 +114,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btn_force_finish).setOnClickListener {
-            PrivacySentry.Privacy.stopWatch()
+            PrivacySentry.Privacy.stop()
         }
 
         findViewById<Button>(R.id.btn_mock_privacy_click).setOnClickListener {
             PrivacySentry.Privacy.updatePrivacyShow()
+            PrivacySentry.Privacy.closeVisitorModel()
         }
 
         findViewById<Button>(R.id.btn_test_processB).setOnClickListener {

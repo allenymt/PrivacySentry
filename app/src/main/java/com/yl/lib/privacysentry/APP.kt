@@ -21,7 +21,7 @@ class APP : Application() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this);
-        initPrivacyTransform()
+        initPrivacyTransformComplete()
     }
 
     private fun initPrivacyTransform(){
@@ -37,6 +37,10 @@ class APP : Application() {
             .configResultFileName("demo_test")
             //自定义检测时间，也支持主动停止检测 PrivacySentry.Privacy.stopWatch()
             .configWatchTime(10 * 60 * 1000)
+                // 打开写入文件开关
+            .enableFileResult(true)
+                // 打开游客模式
+            .configVisitorModel(true)
             // 文件输出后的回调
             .configResultCallBack(object : PrivacyResultCallBack {
                 override fun onResultCallBack(filePath: String) {
