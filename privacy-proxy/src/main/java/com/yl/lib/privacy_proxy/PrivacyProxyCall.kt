@@ -518,7 +518,7 @@ open class PrivacyProxyCall {
             originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
         )
         fun getDhcpInfo(manager: WifiManager): DhcpInfo? {
-            doFilePrinter("getSensorList", "DHCP地址")
+            doFilePrinter("getDhcpInfo", "DHCP地址")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return null
             }
