@@ -8,32 +8,37 @@ import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.database.Cursor
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.net.DhcpInfo
+import android.net.Uri
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
-import android.os.Build
+import android.os.*
 import android.provider.Settings
 import android.telephony.CellInfo
 import android.telephony.TelephonyManager
 import androidx.annotation.Keep
+import androidx.annotation.RequiresApi
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
+import com.yl.lib.privacy_proxy.PrivacyProxyUtil.Util.doFilePrinter
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyUtil
 import java.net.NetworkInterface
+import java.util.*
 
 /**
  * @author yulun
- * @sinice 2021-12-22 14:23
+ * @since 2021-12-22 14:23
  */
 @Keep
 open class PrivacyProxyCall {
@@ -79,28 +84,6 @@ open class PrivacyProxyCall {
             return manager.getRecentTasks(maxNum, flags)
         }
 
-        @PrivacyMethodProxy(
-            originalClass = Settings.Secure::class,
-            originalMethod = "getString",
-            originalOpcode = MethodInvokeOpcode.INVOKESTATIC
-        )
-        @JvmStatic
-        fun getString(contentResolver: ContentResolver?, type: String?): String? {
-            var result = ""
-            try {
-                doFilePrinter("getString", "读取系统信息", args = type)
-                if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                    return ""
-                }
-                result = Settings.Secure.getString(
-                    contentResolver,
-                    type
-                )
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            return result
-        }
 
         @PrivacyMethodProxy(
             originalClass = ActivityManager::class,
@@ -341,6 +324,21 @@ open class PrivacyProxyCall {
             }
             doFilePrinter("getSimSerialNumber", "获取设备id-getSimSerialNumber()")
             return manager.getSimSerialNumber()
+        }
+
+        @PrivacyMethodProxy(
+            originalClass = TelephonyManager::class,
+            originalMethod = "getLine1Number",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        @SuppressLint("MissingPermission")
+        @JvmStatic
+        fun getLine1Number(manager: TelephonyManager): String? {
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+            }
+            doFilePrinter("getLine1Number", "获取手机号-getLine1Number")
+            return manager.line1Number
         }
 
         @PrivacyMethodProxy(
@@ -612,22 +610,47 @@ open class PrivacyProxyCall {
             return manager.address ?: ""
         }
 
-        private fun doFilePrinter(
-            funName: String,
-            methodDocumentDesc: String = "",
-            args: String? = ""
-        ) {
-            if (PrivacySentry.Privacy.getBuilder()?.isEnableFileResult() == false) {
-                PrivacyLog.e("disable print file: funName is $funName methodDocumentDesc is $methodDocumentDesc")
-                return
+
+        @PrivacyMethodProxy(
+            originalClass = Settings.Secure::class,
+            originalMethod = "getString",
+            originalOpcode = MethodInvokeOpcode.INVOKESTATIC
+        )
+        @JvmStatic
+        fun getString(contentResolver: ContentResolver?, type: String?): String? {
+            var result = ""
+            doFilePrinter("getString", "读取系统信息", args = type)
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
             }
-            PrivacySentry.Privacy.getBuilder()?.getPrinterList()?.forEach {
-                it.filePrint(
-                    funName,
-                    methodDocumentDesc + if (args?.isNotEmpty() == true) "--参数: $args" else "",
-                    PrivacyUtil.Util.getStackTrace()
-                )
-            }
+            result = Settings.Secure.getString(
+                contentResolver,
+                type
+            )
+
+            return result
         }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        @PrivacyMethodProxy(
+            originalClass = android.os.Build::class,
+            originalMethod = "getSerial",
+            originalOpcode = MethodInvokeOpcode.INVOKESTATIC
+        )
+        @JvmStatic
+        fun getSerial(): String? {
+            var result = ""
+            try {
+                doFilePrinter("getSerial", "读取Serial")
+                if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                    return ""
+                }
+                result = Build.getSerial()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return result
+        }
+
     }
 }

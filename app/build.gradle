@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.yl.lib.privacysentry"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -47,8 +47,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
-
 }
 
 dependencies {

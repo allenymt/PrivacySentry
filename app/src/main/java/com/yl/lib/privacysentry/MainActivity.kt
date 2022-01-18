@@ -2,6 +2,7 @@ package com.yl.lib.privacysentry
 
 import android.Manifest
 import android.app.ActivityManager
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -9,16 +10,12 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.yl.lib.privacy_test.TestMethod
+import com.yl.lib.privacysentry.calendar.CalenderActivity
+import com.yl.lib.privacysentry.contact.ContactActivity
 import com.yl.lib.privacysentry.process.MultiProcessB
 import com.yl.lib.sentry.hook.PrivacySentry
-import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
-import com.yl.lib.sentry.hook.excel.ExcelUtil
-import com.yl.lib.sentry.hook.printer.PrivacyFunBean
 import com.yl.lib.sentry.hook.util.MainProcessUtil
 import com.yl.lib.sentry.hook.util.PrivacyLog
-import com.yl.lib.sentry.hook.util.PrivacyUtil
-import java.io.File
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,11 +37,6 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("deviceId is $deviceId1")
 
             PrivacyLog.i("deviceId is ${PrivacyMethod.PrivacyMethod.getMeid(this)}")
-
-            PrivacyProxyCallJava.getRunningTasks(
-                getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager,
-                1
-            )
         }
 
         findViewById<Button>(R.id.btn_mac_address).setOnClickListener {
@@ -107,19 +99,16 @@ class MainActivity : AppCompatActivity() {
             var mainProcess = MainProcessUtil.MainProcessChecker.isMainProcess(this)
             var currentProcessName = MainProcessUtil.MainProcessChecker.getProcessName(this)
             PrivacyLog.i("mainProcess currentProcessName is $currentProcessName  is $mainProcess")
+
+            PrivacyProxyCallJava.getRunningTasks(
+                getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager,
+                1
+            )
         }
 
-        findViewById<Button>(R.id.btn_export_excel).setOnClickListener {
-            exportExcel(this, "$externalCacheDir${File.separator}testExcel")
-        }
 
         findViewById<Button>(R.id.btn_force_finish).setOnClickListener {
             PrivacySentry.Privacy.stop()
-        }
-
-        findViewById<Button>(R.id.btn_mock_privacy_click).setOnClickListener {
-            PrivacySentry.Privacy.updatePrivacyShow()
-            PrivacySentry.Privacy.closeVisitorModel()
         }
 
         findViewById<Button>(R.id.btn_test_processB).setOnClickListener {
@@ -141,6 +130,21 @@ class MainActivity : AppCompatActivity() {
             TestMethod.PrivacyMethod.testRunningTask(applicationContext)
         }
 
+
+        findViewById<Button>(R.id.btn_test_sn).setOnClickListener {
+            var sn = PrivacyMethod.PrivacyMethod.getSerial()
+            PrivacyLog.i("Android SN is $sn")
+        }
+
+
+        findViewById<Button>(R.id.btn_to_calender).setOnClickListener {
+            startActivity(Intent(this, CalenderActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.btn_to_contact).setOnClickListener {
+            startActivity(Intent(this, ContactActivity::class.java))
+        }
+
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
         var permissions = arrayOf(
             Manifest.permission.READ_PHONE_STATE
@@ -149,6 +153,12 @@ class MainActivity : AppCompatActivity() {
             requestPermissions(permissions, 1000)
         }
 
+        AlertDialog.Builder(this).setMessage("确认隐私协议").setPositiveButton(
+            "确定"
+        ) { dialog, which ->
+            PrivacySentry.Privacy.updatePrivacyShow()
+            PrivacySentry.Privacy.closeVisitorModel()
+        }.create().show()
     }
 
 
@@ -163,65 +173,5 @@ class MainActivity : AppCompatActivity() {
         } else {
             PrivacyLog.i("requestPermissions ${Manifest.permission.READ_PHONE_STATE} fail")
         }
-    }
-
-    private fun exportExcel(context: Context, filePath: String) {
-        val file: File = File(filePath)
-        if (!file.exists()) {
-            file.mkdirs()
-        }
-        val excelFileName = "/demo.xls"
-        val title = arrayOf("别名", "函数名", "调用堆栈", "调用次数")
-        val sheetName = "demoSheetName"
-        val privacyFunBeanList: MutableList<PrivacyFunBean> = ArrayList<PrivacyFunBean>()
-        val demoBean1 = PrivacyFunBean(
-            "imei",
-            "getImei",
-            PrivacyUtil.Util.getStackTrace() ?: "",
-            10
-        )
-        val demoBean2 = PrivacyFunBean(
-            "imsi",
-            "getImei",
-            PrivacyUtil.Util.getStackTrace() ?: "",
-            1
-        )
-        val demoBean3 = PrivacyFunBean(
-            "device",
-            "device",
-            PrivacyUtil.Util.getStackTrace() ?: "",
-            2
-        )
-        val demoBean4 = PrivacyFunBean(
-            "install",
-            "install",
-
-            PrivacyUtil.Util.getStackTrace() ?: "",
-            0
-        )
-        privacyFunBeanList.add(demoBean1)
-        privacyFunBeanList.add(demoBean2)
-        privacyFunBeanList.add(demoBean3)
-        privacyFunBeanList.add(demoBean4)
-        var filePathNew = filePath + excelFileName
-        var sheetIndex = 0
-        ExcelUtil.instance.initExcel(
-            filePathNew,
-            arrayListOf(sheetName),
-            arrayListOf(title),
-            arrayListOf(sheetIndex)
-        )
-        ExcelUtil.instance.writeObjListToExcel(privacyFunBeanList, filePathNew, sheetIndex, object :
-            ExcelBuildDataListener {
-            override fun buildData(sheetIndex: Int, privacyFunBean: PrivacyFunBean): List<String> {
-                return listOf(
-                    privacyFunBean.funAlias.toString(),
-                    privacyFunBean.funName.toString(),
-                    privacyFunBean.buildStackTrace(),
-                    privacyFunBean.count.toString()
-                )
-            }
-        })
-        PrivacyLog.i("导出excel成功")
     }
 }
