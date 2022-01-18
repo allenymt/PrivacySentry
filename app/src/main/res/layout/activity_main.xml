@@ -27,11 +27,6 @@
                 android:layout_height="wrap_content"
                 android:text="测试DeviceId" />
 
-            <Button
-                android:id="@+id/btn_mock_privacy_click"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="模拟点击隐私协议确定" />
 
             <Button
                 android:id="@+id/btn_imei"
@@ -94,16 +89,28 @@
                 android:text="测试子lib的方法" />
 
             <Button
+                android:id="@+id/btn_test_sn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试Android SN" />
+
+            <Button
+                android:id="@+id/btn_to_calender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="跳转日历测试Ac" />
+
+            <Button
+                android:id="@+id/btn_to_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="跳转联系人测试Ac" />
+
+            <Button
                 android:id="@+id/btn_force_finish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="结束当前检测-导出结果" />
-
-            <Button
-                android:id="@+id/btn_export_excel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="测试导出excel" />
         </LinearLayout>
 
     </ScrollView>

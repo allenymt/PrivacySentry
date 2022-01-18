@@ -4,12 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import com.yl.lib.sentry.hook.hook.BaseHookBuilder
-import com.yl.lib.sentry.hook.hook.BaseHooker
-import com.yl.lib.sentry.hook.hook.ams.AmsHooker
-import com.yl.lib.sentry.hook.hook.cms.CmsHooker
-import com.yl.lib.sentry.hook.hook.pms.PmsHooker
-import com.yl.lib.sentry.hook.hook.tms.TmsHooker
 import com.yl.lib.sentry.hook.printer.BaseFilePrinter
 import com.yl.lib.sentry.hook.printer.BasePrinter
 import com.yl.lib.sentry.hook.printer.DefaultFilePrint
@@ -27,23 +21,15 @@ class PrivacySentry {
     object Privacy {
         private var mBuilder: PrivacySentryBuilder? = null
         private val bInit = AtomicBoolean(false)
-        private val bfinish = AtomicBoolean(false)
+        private val bFilePrintFinish = AtomicBoolean(false)
         var bShowPrivacy = false
         private var ctx: Application? = null
-
-        /**
-         * 默认runtime 简单初始化
-         */
-        fun init(ctx: Application) {
-            var builder = PrivacySentryBuilder().configPrivacyType(PrivacySentryBuilder.PrivacyType.RUNTIME)
-            init(ctx, builder)
-        }
 
         /**
          *  transform简单初始化，需要搭配插件使用
          */
         fun initTransform(ctx: Application) {
-            var builder = PrivacySentryBuilder().configPrivacyType(PrivacySentryBuilder.PrivacyType.TRANSFORM)
+            var builder = PrivacySentryBuilder()
             init(ctx, builder)
         }
 
@@ -55,12 +41,9 @@ class PrivacySentry {
         ) {
             if (bInit.compareAndSet(false, true)) {
                 if (builder == null) {
-                    mBuilder = PrivacySentryBuilder().addPrinter(defaultFilePrinter(ctx, null))
+                    mBuilder = PrivacySentryBuilder()
                 } else {
                     mBuilder = builder
-                }
-                if (mBuilder?.getPrivacyType() == PrivacySentryBuilder.PrivacyType.RUNTIME) {
-                    mBuilder = defaultConfigHookBuilder(mBuilder!!)
                 }
                 initInner(ctx)
             }
@@ -69,28 +52,26 @@ class PrivacySentry {
         private fun initInner(ctx: Application) {
             PrivacyLog.i("call initInner")
             this.ctx = ctx
-            mBuilder?.getHookerList()?.forEach {
-                it.hook(ctx)
-            }
             mBuilder?.getWatchTime()?.let {
                 PrivacyLog.i("delay stop watch $it")
                 var handler = Handler(Looper.getMainLooper())
                 handler.postDelayed({
-                    stopWatch()
+                    stop()
                 }, it)
             }
-            mBuilder?.addPrinter(defaultFilePrinter(ctx, mBuilder))
+
+            if (mBuilder?.isEnableFileResult() == true){
+                mBuilder?.addPrinter(defaultFilePrinter(ctx, mBuilder))
+            }
         }
 
-        fun stopWatch() {
-            if (bfinish.compareAndSet(false, true)) {
-                bfinish.set(true)
+        /**
+         * 停止文件写入
+         */
+        fun stop() {
+            if (bFilePrintFinish.compareAndSet(false, true)) {
+                bFilePrintFinish.set(true)
                 PrivacyLog.i("call stopWatch")
-                // 结束hook，还原
-                mBuilder?.getHookerList()?.forEach {
-                    it.reduction(ctx!!)
-                }
-
                 mBuilder?.getPrinterList()?.filterIsInstance<BaseFilePrinter>()?.forEach {
                     // 强制写入文件
                     it.flushToFile()
@@ -98,7 +79,6 @@ class PrivacySentry {
                     mBuilder?.getResultCallBack()?.onResultCallBack(it.resultFileName)
                 }
             }
-
         }
 
         /**
@@ -130,12 +110,26 @@ class PrivacySentry {
             return mBuilder ?: null
         }
 
-        private fun defaultConfigHookBuilder(builder: PrivacySentryBuilder): PrivacySentryBuilder {
-            builder?.configHook(defaultAmsHook(builder!!))
-                ?.configHook(defaultPmsHook(builder!!))
-                ?.configHook(defaultTmsHook(builder!!))
-                ?.configHook(defaultCmsHook(builder!!))
-            return builder
+        /**
+         * 当前写入文件任务是否结束
+         * @return Boolean
+         */
+        fun isFilePrintFinish():Boolean{
+            return bFilePrintFinish.get()
+        }
+
+        /**
+         * 关闭游客模式
+         */
+        fun closeVisitorModel(){
+            mBuilder?.configVisitorModel(false)
+        }
+
+        /**
+         * 打开游客模式
+         */
+        fun openVisitorModel(){
+            mBuilder?.configVisitorModel(true)
         }
 
         private fun defaultFilePrinter(
@@ -158,27 +152,11 @@ class PrivacySentry {
 
                         override fun stopWatch() {
                             PrivacyLog.i("stopWatch")
-                            Privacy.stopWatch()
+                            Privacy.stop()
                         }
                     }, watchTime = builder?.getWatchTime()
                 )
             )
-        }
-
-        fun defaultAmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
-            return AmsHooker(BaseHookBuilder("ams", mBuilder.getPrinterList()))
-        }
-
-        fun defaultTmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
-            return TmsHooker(BaseHookBuilder("tms", mBuilder.getPrinterList()))
-        }
-
-        fun defaultPmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
-            return PmsHooker(BaseHookBuilder("pms", mBuilder.getPrinterList()))
-        }
-
-        fun defaultCmsHook(mBuilder: PrivacySentryBuilder): BaseHooker {
-            return CmsHooker(BaseHookBuilder("cms", mBuilder.getPrinterList()))
         }
     }
 }

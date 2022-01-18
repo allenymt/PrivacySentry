@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.yl.lib.privacy</groupId>
+  <artifactId>privacy-annotation</artifactId>
+  <versioning>
+    <versions>
+      <version>0.0.1-SNAPSHOT</version>
+      <version>0.0.2-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20220104074553</lastUpdated>
+  </versioning>
+</metadata>
