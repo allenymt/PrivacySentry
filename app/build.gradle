@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.yl.lib.privacysentry"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -47,8 +47,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
-
 }
 
 dependencies {
@@ -64,7 +62,7 @@ dependencies {
         implementation project(":privacy-proxy")
         implementation project(path: ':privacy-annotation')
     } else {
-        def privacyVersion = "0.0.3.2-SNAPSHOT"
+        def privacyVersion = "0.0.3.4-SNAPSHOT"
         implementation "com.wdian.android.lib:privacy-hook:$privacyVersion"
         implementation "com.wdian.android.lib:privacy-annotation:$privacyVersion"
         implementation "com.wdian.android.lib:privacy-proxy:$privacyVersion"

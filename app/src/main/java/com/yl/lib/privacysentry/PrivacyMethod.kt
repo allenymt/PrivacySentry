@@ -12,8 +12,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.wifi.WifiManager
 import android.os.Build
+import android.provider.ContactsContract
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.text.TextUtils
@@ -23,6 +25,26 @@ import androidx.appcompat.app.AppCompatActivity
 import java.net.NetworkInterface
 import java.net.SocketException
 import java.util.*
+import android.content.ContentProviderResult
+
+import android.provider.ContactsContract.CommonDataKinds.Email
+
+import android.content.ContentProviderOperation
+
+import android.provider.ContactsContract.CommonDataKinds.Phone
+
+import android.provider.ContactsContract.CommonDataKinds.StructuredName
+
+import android.provider.ContactsContract.RawContacts
+
+import android.content.ContentUris
+
+import android.content.ContentValues
+
+import android.content.ContentResolver
+import android.net.Uri
+import com.yl.lib.sentry.hook.util.PrivacyLog
+import java.lang.StringBuilder
 
 
 /**
@@ -379,6 +401,15 @@ class PrivacyMethod {
 
         fun getAndroidId(context: Context): String? {
             return "" + Settings.Secure.getString(context.contentResolver, "android_id")
+        }
+
+        //读取 Android SN(Serial)
+        fun getSerial():String{
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                android.os.Build.getSerial()
+            } else {
+                android.os.Build.SERIAL
+            }
         }
     }
 }
