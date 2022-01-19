@@ -86,12 +86,12 @@ class PrivacyCollectTransform : Transform {
                                     project
                                 )
                             })
-                        GFileUtils.deleteFileQuietly(output)
+                        GFileUtils.deleteQuietly(output)
                         GFileUtils.copyFile(it.file, output)
                     }
                     Status.REMOVED -> {
                         project.logger.info("jar REMOVED file is:" + it.file.absolutePath)
-                        GFileUtils.deleteFileQuietly(output)
+                        GFileUtils.deleteQuietly(output)
                     }
                 }
             } else {
@@ -106,7 +106,7 @@ class PrivacyCollectTransform : Transform {
                             project
                         )
                     })
-                GFileUtils.deleteFileQuietly(output)
+                GFileUtils.deleteQuietly(output)
                 GFileUtils.copyFile(it.file, output)
             }
         }
@@ -137,7 +137,7 @@ class PrivacyCollectTransform : Transform {
                     when (status) {
                         Status.REMOVED -> {
                             project.logger.info("directory REMOVED file is:" + inputFile.absolutePath)
-                            GFileUtils.deleteFileQuietly(inputFile)
+                            GFileUtils.deleteQuietly(inputFile)
                         }
                         Status.ADDED, Status.CHANGED -> {
                             project.logger.info("directory status is $status $ file is:" + inputFile.absolutePath)
@@ -154,7 +154,7 @@ class PrivacyCollectTransform : Transform {
                                 }
                             )
                             if (inputFile.exists()) {
-                                GFileUtils.deleteFileQuietly(outputFile)
+                                GFileUtils.deleteQuietly(outputFile)
                                 FileUtils.copyFile(inputFile, outputFile)
                             }
                         }
@@ -179,7 +179,7 @@ class PrivacyCollectTransform : Transform {
                 }
 
                 // 保险起见，删一次
-                GFileUtils.deleteFileQuietly(outputDir)
+                GFileUtils.deleteQuietly(outputDir)
                 FileUtils.copyDirectory(inputDir, outputDir)
             }
         }
