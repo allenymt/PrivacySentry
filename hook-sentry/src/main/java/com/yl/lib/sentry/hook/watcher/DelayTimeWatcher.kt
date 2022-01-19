@@ -39,21 +39,4 @@ class DelayTimeWatcher {
         countDownTimer?.cancel()
     }
 
-
-    // 为什么不行？？
-//    fun countDownCoroutines(onTick:(Int)->Unit,onFinish:()->Unit,
-//                            scope: CoroutineScope = GlobalScope):Job{
-//        return flow{
-//            for (i in 5 downTo 0){
-//                emit(i)
-//                delay(1000)
-//            }
-//        }.flowOn(Dispatchers.Main)
-//            .onStart {  }
-//            .onCompletion { onFinish.invoke() }
-//            .onEach { onTick.invoke(it) }
-//            .launchIn(scope)
-//
-//    }
-
 }
