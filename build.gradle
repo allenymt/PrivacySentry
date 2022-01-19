@@ -6,10 +6,10 @@ buildscript {
         if (rootProject.ext.plugin_local_debug) {
             maven { url uri('plugin-sentry/plugins') }
         }
-       maven {
+        maven {
             url 'http://nexus.vdian.net/repository/android/'
         }
- mavenCentral()
+        mavenCentral()
         google()
         jcenter()
     }
@@ -32,12 +32,13 @@ allprojects {
         if (rootProject.ext.plugin_local_debug) {
             maven { url uri('plugin-sentry/plugins') }
         }
- maven {
+        maven {
             url 'http://nexus.vdian.net/repository/android/'
         }
- mavenCentral()
+        mavenCentral()
         google()
-        jcenter()    }
+        jcenter()
+    }
 }
 
 task clean(type: Delete) {
