@@ -1,8 +1,8 @@
 package com.yl.lib.plugin.sentry.transform
 
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
-import org.apache.commons.io.IOUtils
 import org.gradle.api.Project
+import org.apache.commons.io.IOUtils
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.Opcodes
 import java.io.File
