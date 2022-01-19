@@ -6,15 +6,15 @@ buildscript {
         if (rootProject.ext.plugin_local_debug) {
             maven { url uri('plugin-sentry/plugins') }
         }
-        maven {
+       maven {
             url 'http://nexus.vdian.net/repository/android/'
         }
-        maven { url 'https://jitpack.io' }
+ mavenCentral()
         google()
-        mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:3.5.4"
+        classpath "com.android.tools.build:gradle:4.0.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         if (rootProject.ext.plugin_local_debug) {
             classpath "com.yl.lib.plugin:plugin-sentry:0.0.1.50-SNAPSHOT"
@@ -32,13 +32,12 @@ allprojects {
         if (rootProject.ext.plugin_local_debug) {
             maven { url uri('plugin-sentry/plugins') }
         }
-        maven {
+ maven {
             url 'http://nexus.vdian.net/repository/android/'
         }
-        maven { url 'https://jitpack.io' }
-        maven { url "https://maven.google.com" }
-        mavenCentral()
-    }
+ mavenCentral()
+        google()
+        jcenter()    }
 }
 
 task clean(type: Delete) {

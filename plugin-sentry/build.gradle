@@ -16,7 +16,11 @@ if (rootProject.ext.plugin_local_debug) {
     // 插件本地调试补充
     apply plugin: 'maven'
     group = 'com.yl.lib.plugin'
+<<<<<<< HEAD
     version = '0.0.1.50-SNAPSHOT'
+=======
+    version = '0.0.1.51-SNAPSHOT'
+>>>>>>> c4b6f71 (fix gradle 6.1.1报错，升级demo到agp 4.0.1)
     uploadArchives {
         repositories {
             mavenDeployer {
