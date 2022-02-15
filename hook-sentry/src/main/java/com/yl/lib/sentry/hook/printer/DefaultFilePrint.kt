@@ -1,5 +1,6 @@
 package com.yl.lib.sentry.hook.printer
 
+import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
 import com.yl.lib.sentry.hook.excel.ExcelUtil
 import com.yl.lib.sentry.hook.util.PrivacyLog
@@ -40,6 +41,10 @@ class DefaultFilePrint : BaseFilePrinter {
 
     override fun flushToFile() {
         assert(resultFileName != null)
+
+        if (PrivacySentry.Privacy.getBuilder()?.isEnableFileResult() == false) {
+            return
+        }
         if (privacyFunBeanList.isEmpty())
             return
         if (!hasInit) {
@@ -61,6 +66,13 @@ class DefaultFilePrint : BaseFilePrinter {
     override fun appendData(funName: String, funAlias: String, msg: String) {
         if (funName == null || funAlias == null)
             return
+
+        if (PrivacySentry.Privacy.getBuilder()?.isEnableFileResult() == false) {
+            return
+        }
+        if (PrivacySentry.Privacy.isFilePrintFinish()) {
+            return
+        }
         PrivacyLog.i("DefaultFilePrint appendData $funName-$funAlias-$msg")
         privacyFunBeanList.add(PrivacyFunBean(funAlias, funName, msg, 1))
     }

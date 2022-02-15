@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.yl.lib.privacy</groupId>
+  <artifactId>hook-sentry</artifactId>
+  <versioning>
+    <versions>
+      <version>0.0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20220106092704</lastUpdated>
+  </versioning>
+</metadata>

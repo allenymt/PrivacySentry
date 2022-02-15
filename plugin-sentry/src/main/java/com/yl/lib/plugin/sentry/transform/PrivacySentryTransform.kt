@@ -77,19 +77,37 @@ class PrivacySentryTransform : Transform {
                 when (it.status) {
                     Status.ADDED, Status.CHANGED -> {
                         project.logger.info("directory status is ${it.status}  file is:" + it.file.absolutePath)
-                        PrivacyClassProcessor.processJar(project, it.file, extension)
-                        GFileUtils.deleteFileQuietly(output)
+                        PrivacyClassProcessor.processJar(
+                            project,
+                            it.file,
+                            extension,
+                            runAsm = { input, project ->
+                                PrivacyClassProcessor.runHook(
+                                    input,
+                                    project
+                                )
+                            })
+                        GFileUtils.deleteQuietly(output)
                         GFileUtils.copyFile(it.file, output)
                     }
                     Status.REMOVED -> {
                         project.logger.info("jar REMOVED file is:" + it.file.absolutePath)
-                        GFileUtils.deleteFileQuietly(output)
+                        GFileUtils.deleteQuietly(output)
                     }
                 }
             } else {
                 project.logger.info("jar incremental false file is:" + it.file.absolutePath)
-                PrivacyClassProcessor.processJar(project, it.file, extension)
-                GFileUtils.deleteFileQuietly(output)
+                PrivacyClassProcessor.processJar(
+                    project,
+                    it.file,
+                    extension,
+                    runAsm = { input, project ->
+                        PrivacyClassProcessor.runHook(
+                            input,
+                            project
+                        )
+                    })
+                GFileUtils.deleteQuietly(output)
                 GFileUtils.copyFile(it.file, output)
             }
         }
@@ -120,7 +138,7 @@ class PrivacySentryTransform : Transform {
                     when (status) {
                         Status.REMOVED -> {
                             project.logger.info("directory REMOVED file is:" + inputFile.absolutePath)
-                            GFileUtils.deleteFileQuietly(inputFile)
+                            GFileUtils.deleteQuietly(inputFile)
                         }
                         Status.ADDED, Status.CHANGED -> {
                             project.logger.info("directory status is $status $ file is:" + inputFile.absolutePath)
@@ -128,10 +146,16 @@ class PrivacySentryTransform : Transform {
                                 project,
                                 inputDir,
                                 inputFile,
-                                extension
+                                extension,
+                                runAsm = { input, project ->
+                                    PrivacyClassProcessor.runHook(
+                                        input,
+                                        project
+                                    )
+                                }
                             )
                             if (inputFile.exists()) {
-                                GFileUtils.deleteFileQuietly(outputFile)
+                                GFileUtils.deleteQuietly(outputFile)
                                 FileUtils.copyFile(inputFile, outputFile)
                             }
                         }
@@ -141,12 +165,22 @@ class PrivacySentryTransform : Transform {
                 project.logger.info("directory incremental false  file is:" + inputDir.absolutePath)
                 inputDir.walk().forEach { file ->
                     if (!file.isDirectory) {
-                        PrivacyClassProcessor.processDirectory(project, inputDir, file, extension)
+                        PrivacyClassProcessor.processDirectory(
+                            project,
+                            inputDir,
+                            file,
+                            extension,
+                            runAsm = { input, project ->
+                                PrivacyClassProcessor.runHook(
+                                    input,
+                                    project
+                                )
+                            })
                     }
                 }
 
                 // 保险起见，删一次
-                GFileUtils.deleteFileQuietly(outputDir)
+                GFileUtils.deleteQuietly(outputDir)
                 FileUtils.copyDirectory(inputDir, outputDir)
             }
         }

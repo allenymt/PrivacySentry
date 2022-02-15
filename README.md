@@ -1,26 +1,48 @@
 # PrivacySentry
     android隐私合规检测
 
-## TODO
-    1. 日志里加上时间戳 done
-    2. 多进程适配 done
+## 优势
+- 全面高效:  对于业务开发无感知，只需要配置一次即可生效
+- 全局监控：包括应用自身和第三方SDK，支持监控和修改敏感函数
+- 开发简单:   后续新增监控简单，只需配置一个方法注解即可，不仅仅是敏感函数，支持任意函数的监控
+- 可扩展性强：完全自定义和研发，支持输出调用堆栈记录，支持游客模式
+
+## 技术文档
+[传送门](http://docs.vdian.net/pages/viewpage.action?pageId=129578422)
+
 ## 如何使用
 
 ```
-    1. 在根目录的build.gralde下添加
-	allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
-	}
+   添加插件依赖
+    classpath "com.wdian.android.lib:privacy-plugin:0.0.3.5-SNAPSHOT"
 ```
 
-
-
 ```
-    2. 在项目中的build.gralde下添加
-   implementation 'com.wdian.android.lib:privacy:0.0.1-SNAPSHOT'
+   在主项目的build.gradle下依赖插件和配置
+   apply plugin: 'privacy-sentry-plugin'
+   
+   privacy {
+    // 设置免hook的名单
+    blackList = []
+   }
+
+
+   def privacyVersion = "0.0.3.5-SNAPSHOT"
+   implementation ("com.wdian.android.lib:privacy-hook:${privacyVersion}"){
+            exclude group: 'androidx.appcompat'
+            exclude group: 'androidx.core'
+            exclude group: 'com.google.android.material'
+        }
+    implementation ("com.wdian.android.lib:privacy-annotation:${privacyVersion}"){
+            exclude group: 'androidx.appcompat'
+            exclude group: 'androidx.core'
+            exclude group: 'com.google.android.material'
+        }
+    implementation ("com.wdian.android.lib:privacy-proxy:${privacyVersion}"){
+            exclude group: 'androidx.appcompat'
+            exclude group: 'androidx.core'
+            exclude group: 'com.google.android.material'
+        }
 ```
 
 ```
@@ -37,37 +59,26 @@
 
 ```
     完成功能的初始化
-     // 完整版配置
-        var builder = PrivacySentryBuilder()
-            // 自定义文件结果的输出名
-            .configResultFileName("demo_test")
-            //自定义检测时间，也支持主动停止检测 PrivacySentry.Privacy.stopWatch()
-            .configWatchTime(5 * 60 * 1000)
-            // 文件输出后的回调
-            .configResultCallBack(object : PrivacyResultCallBack {
-                override fun onResultCallBack(filePath: String) {
-                    PrivacyLog.i("result file patch is $filePath")
-                }
-            })
-        PrivacySentry.Privacy.init(this, PrivacySentry.Privacy.defaultConfigHookBuilder(builder))
-        
-        
-        java
-         // 完整版配置
-        PrivacySentryBuilder builder = new PrivacySentryBuilder()
-                // 自定义文件结果的输出名
-                .configResultFileName("buyer_privacy")
-                //自定义检测时间，也支持主动停止检测 PrivacySentry.Privacy.stopWatch()
-                .configWatchTime(30 * 1000)
-                // 文件输出后的回调
-                .configResultCallBack(new PrivacyResultCallBack() {
+      // 完整版配置
+                PrivacySentryBuilder builder = new PrivacySentryBuilder()
+                        // 自定义文件结果的输出名
+                        .configResultFileName("buyer_privacy")
+                        // 配置游客模式
+                        .configVisitorModel(BeforeApplicationInitHelper.getInstance(application.getApplicationContext()).isNewUser())
+                        // 配置写入文件日志
+                        .enableFileResult("true".equals(BuildConfig.enablePrivacyPrintFile))
+                        // 持续写入文件30分钟
+                        .configWatchTime(30 * 60 * 1000)
+                        // 文件输出后的回调
+                        .configResultCallBack(new PrivacyResultCallBack() {
 
-                    @Override
-                    public void onResultCallBack(@NonNull String s) {
+                            @Override
+                            public void onResultCallBack(@NonNull String s) {
 
-                    }
-                });
-        PrivacySentry.Privacy.INSTANCE.init(this, PrivacySentry.Privacy.INSTANCE.defaultConfigHookBuilder(builder));
+                            }
+                        });
+                // 添加默认结果输出，包含log输出和文件输出
+                PrivacySentry.Privacy.INSTANCE.init(application, builder);
 ```
 
 
@@ -77,6 +88,73 @@
     java:PrivacySentry.Privacy.INSTANCE.updatePrivacyShow();
 ```
 
+
+```
+    关闭游客模式
+    PrivacySentry.Privacy.INSTANCE.closeVisitorModel();
+```
+
+
+```
+    支持自定义配置hook函数
+    /**
+ * @author yulun
+ * @since 2022-01-13 17:57
+ * 主要是两个注解PrivacyClassProxy和PrivacyMethodProxy，PrivacyClassProxy代表要解析的类，PrivacyMethodProxy代表要hook的方法配置
+ */
+@Keep
+open class PrivacyProxyResolver {
+     
+    // kotlin里实际解析的是这个PrivacyProxyCall$Proxy 内部类
+    @PrivacyClassProxy
+    @Keep
+    object Proxy {
+ 
+        // 查询
+        @SuppressLint("MissingPermission")
+        @PrivacyMethodProxy(
+            originalClass = ContentResolver::class,   // hook的方法所在的类名
+            originalMethod = "query",   // hook的方法名
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL //hook的方法调用，一般是静态调用和实例调用
+        )
+        @JvmStatic
+        fun query(
+            contentResolver: ContentResolver?, //实例调用的方法需要把声明调用对象，我们默认把对象参数放在第一位
+            uri: Uri,
+            projection: Array<String?>?, selection: String?,
+            selectionArgs: Array<String?>?, sortOrder: String?
+        ): Cursor? {
+            doFilePrinter("query", "查询服务: ${uriToLog(uri)}") // 输入日志到文件
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) { //游客模式开关
+                return null
+            }
+            return contentResolver?.query(uri, projection, selection, selectionArgs, sortOrder)
+        }
+  
+        @RequiresApi(Build.VERSION_CODES.O)
+        @PrivacyMethodProxy(
+            originalClass = android.os.Build::class,
+            originalMethod = "getSerial",
+            originalOpcode = MethodInvokeOpcode.INVOKESTATIC //静态调用
+        )
+        @JvmStatic
+        fun getSerial(): String? {
+            var result = ""
+            try {
+                doFilePrinter("getSerial", "读取Serial")
+                if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return ""
+                }
+            result = Build.getSerial()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        return result
+        }
+    }
+}
+
+```
 
 ```
     支持多进程，多进程产出的文件名前缀默认增加进程名
@@ -90,7 +168,7 @@
 -     排查结果可观察日志，结果文件会在 /storage/emulated/0/Android/data/yourPackgeName/cache/xx.xls，需要手动执行下adb pull
 
 ## 基本原理
--     一期是运行期基于动态代理hook系统关键函数实现，二期计划是编译期代码插桩实现
+-     编译期注解+hook方案，第一个transform收集需要拦截的敏感函数，第二个transform替换敏感函数，运行期收集日志，同时支持游客模式
 -     为什么不用xposed等框架？ 因为想做本地自动化定期排查，第三方hook框架外部依赖性太大
 -     为什么不搞基于lint的排查方式？ 工信部对于运行期 敏感函数的调用时机和次数都有限制，代码扫描解决不了这些问题
 

@@ -1,6 +1,5 @@
 package com.yl.lib.sentry.hook
 
-import com.yl.lib.sentry.hook.hook.BaseHooker
 import com.yl.lib.sentry.hook.printer.BasePrinter
 import com.yl.lib.sentry.hook.printer.DefaultLogPrint
 import com.yl.lib.sentry.hook.util.MainProcessUtil
@@ -12,24 +11,31 @@ import com.yl.lib.sentry.hook.util.MainProcessUtil
 class PrivacySentryBuilder {
 
     var debug: Boolean = true
-    private var hookList: ArrayList<BaseHooker>? = null
+
+    //日志输出 和 文件输出
     private var mPrinterList: ArrayList<BasePrinter>? = null
+
+    // 默认的监听时间
     private var watchTime: Long = 3 * 60 * 1000
+
+    // 结束回调
     private var privacyResultCallBack: PrivacyResultCallBack? = null
+
+    // 输出的文件名
     private var resultFileName: String? = null
-    private var privacyType: PrivacyType = PrivacyType.RUNTIME
+
+    // 是否激活输入日志到文件
+    private var enableFileResult: Boolean = true
+
+    // 游客模式，拦截所有敏感方法
+    private var visitorModel: Boolean = false
 
     constructor() {
-        hookList = ArrayList()
         addPrinter(DefaultLogPrint())
     }
 
     fun getPrinterList(): ArrayList<BasePrinter>? {
         return mPrinterList
-    }
-
-    fun getHookerList(): ArrayList<BaseHooker>? {
-        return hookList
     }
 
     fun getWatchTime(): Long? {
@@ -50,10 +56,6 @@ class PrivacySentryBuilder {
             } ?: ""
             "${processName}_$resultFileName"
         }
-    }
-
-    fun getPrivacyType(): PrivacyType {
-        return privacyType
     }
 
     fun addPrinter(basePrinter: BasePrinter): PrivacySentryBuilder {
@@ -77,11 +79,6 @@ class PrivacySentryBuilder {
         return this
     }
 
-    fun configHook(baseHooker: BaseHooker): PrivacySentryBuilder {
-        hookList?.add(baseHooker!!)
-        return this
-    }
-
     fun configWatchTime(watchTime: Long): PrivacySentryBuilder {
         this.watchTime = watchTime
         return this
@@ -97,15 +94,21 @@ class PrivacySentryBuilder {
         return this
     }
 
-    fun configPrivacyType(privacyType: PrivacyType): PrivacySentryBuilder {
-        privacyType?.let {
-            this.privacyType = privacyType
-        }
+    fun configVisitorModel(visitorModel: Boolean): PrivacySentryBuilder {
+        this.visitorModel = visitorModel
         return this
     }
 
-    enum class PrivacyType {
-        RUNTIME,
-        TRANSFORM
+    fun isVisitorModel(): Boolean {
+        return visitorModel
+    }
+
+    fun enableFileResult(enableFileResult: Boolean): PrivacySentryBuilder {
+        this.enableFileResult = enableFileResult
+        return this
+    }
+
+    fun isEnableFileResult(): Boolean {
+        return enableFileResult
     }
 }

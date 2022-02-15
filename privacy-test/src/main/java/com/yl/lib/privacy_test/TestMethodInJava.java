@@ -28,6 +28,7 @@ public class TestMethodInJava {
     }
 
 
+
     public static void testRunningProcess(Context context) {
         ActivityManager manager = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
