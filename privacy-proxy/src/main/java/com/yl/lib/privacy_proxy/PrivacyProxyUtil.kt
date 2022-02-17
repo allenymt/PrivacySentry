@@ -48,6 +48,9 @@ Android_id
 以上只是做个粗略的划分，接下来对于所有字段，
 1. 单进程内只能读取一次的固定字段，做静态缓存，避免重复读取
 2. 部分字段设置时长有效性，超过时长后再生效
+
+ TODO 缓存要考虑多线程的情况
+ 测试机子老一点，最好在9以下
  */
 class PrivacyProxyUtil {
     object Util {
@@ -104,8 +107,8 @@ class PrivacyProxyUtil {
         //
         //        Android_id
         //        做缓存，单进程内读取一次
-        //
-        private var staticParamMap: HashMap<String, Any> = HashMap()
+        // 部分SDK在子线程读取，需要声明可见性
+        @Volatile private  var  staticParamMap: HashMap<String, Any> = HashMap()
 
         /**
          * 获取该进程内已经缓存的静态字段
