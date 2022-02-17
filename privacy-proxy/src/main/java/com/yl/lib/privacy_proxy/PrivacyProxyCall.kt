@@ -8,19 +8,17 @@ import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import android.database.Cursor
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.net.DhcpInfo
-import android.net.Uri
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
-import android.os.*
+import android.os.Build
 import android.provider.Settings
 import android.telephony.CellInfo
 import android.telephony.TelephonyManager
@@ -31,14 +29,12 @@ import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
 import com.yl.lib.privacy_proxy.PrivacyProxyUtil.Util.doFilePrinter
 import com.yl.lib.sentry.hook.PrivacySentry
-import com.yl.lib.sentry.hook.util.PrivacyLog
-import com.yl.lib.sentry.hook.util.PrivacyUtil
 import java.net.NetworkInterface
-import java.util.*
 
 /**
  * @author yulun
  * @since 2021-12-22 14:23
+ * 大部分敏感api拦截代理
  */
 @Keep
 open class PrivacyProxyCall {
@@ -219,12 +215,25 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getDeviceId(manager: TelephonyManager): String? {
-            doFilePrinter("getDeviceId", "获取设备id-getDeviceId()")
+            var key = "TelephonyManager-getDeviceId"
+            doFilePrinter(key, "获取设备id-getDeviceId()")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ""
             }
+            if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
+            }
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                manager.getDeviceId()
+                var value = ""
+                try {
+                    value = manager.getDeviceId()
+                } catch (e: Throwable) {
+                    //不管有没有申请，部分机子直接跑异常
+                    throw e
+                } finally {
+                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
+                }
+                return value
             } else {
                 ""
             }
@@ -237,12 +246,25 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getDeviceId(manager: TelephonyManager, index: Int): String? {
-            doFilePrinter("getDeviceId", "获取设备id-getDeviceId(I)")
+            var key = "TelephonyManager-getDeviceId-$index"
+            doFilePrinter(key ,"获取设备id-getDeviceId(I)")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ""
             }
+            if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
+            }
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                manager.getDeviceId(index)
+                var value = ""
+                try {
+                    value = manager.getDeviceId(index)
+                } catch (e: Throwable) {
+                    //不管有没有申请，部分机子直接跑异常
+                    throw e
+                } finally {
+                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
+                }
+                return value
             } else {
                 ""
             }
@@ -255,11 +277,28 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getSubscriberId(manager: TelephonyManager): String? {
-            doFilePrinter("getSubscriberId", "获取设备id-getSubscriberId(I)")
+            var key = "TelephonyManager-getSubscriberId"
+            doFilePrinter(key, "获取设备id-getSubscriberId(I)")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ""
             }
-            return manager.subscriberId
+            if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
+            }
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                var value = ""
+                try {
+                    value = manager.subscriberId
+                } catch (e: Throwable) {
+                    //不管有没有申请，部分机子直接跑异常
+                    throw e
+                } finally {
+                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
+                }
+                return value
+            } else {
+                ""
+            }
         }
 
         @PrivacyMethodProxy(
@@ -269,11 +308,7 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getSubscriberId(manager: TelephonyManager, index: Int): String? {
-            doFilePrinter("getSubscriberId", "获取设备id-getSubscriberId()")
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                return ""
-            }
-            return manager.subscriberId
+            return getSubscriberId(manager)
         }
 
         @PrivacyMethodProxy(
@@ -283,12 +318,25 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getImei(manager: TelephonyManager): String? {
-            doFilePrinter("getImei", "获取设备id-getImei()")
+            var key ="TelephonyManager-getImei"
+            doFilePrinter(key, "获取设备id-getImei()")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ""
             }
+            if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
+            }
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                manager.getImei()
+                var value = ""
+                try {
+                    value = manager.getImei()
+                } catch (e: Throwable) {
+                    //不管有没有申请，部分机子直接跑异常
+                    throw e
+                } finally {
+                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
+                }
+                return value
             } else {
                 ""
             }
@@ -301,12 +349,25 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getImei(manager: TelephonyManager, index: Int): String? {
-            doFilePrinter("getImei", "获取设备id-getImei()")
+            var key = "TelephonyManager-getImei-$index"
+            doFilePrinter(key, "获取设备id-getImei(I)")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ""
             }
+            if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
+            }
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                manager.getImei(index)
+                var value = ""
+                try {
+                    value = manager.getImei(index)
+                } catch (e: Throwable) {
+                    //不管有没有申请，部分机子直接跑异常
+                    throw e
+                } finally {
+                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
+                }
+                return value
             } else {
                 ""
             }
@@ -319,26 +380,28 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getSimSerialNumber(manager: TelephonyManager): String? {
+            var key = "TelephonyManager-getSimSerialNumber"
+            doFilePrinter(key, "获取设备id-getSimSerialNumber()")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ""
             }
-            doFilePrinter("getSimSerialNumber", "获取设备id-getSimSerialNumber()")
-            return manager.getSimSerialNumber()
-        }
-
-        @PrivacyMethodProxy(
-            originalClass = TelephonyManager::class,
-            originalMethod = "getLine1Number",
-            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
-        )
-        @SuppressLint("MissingPermission")
-        @JvmStatic
-        fun getLine1Number(manager: TelephonyManager): String? {
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                return ""
+            if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
             }
-            doFilePrinter("getLine1Number", "获取手机号-getLine1Number")
-            return manager.line1Number
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                var value = ""
+                try {
+                    value = manager.getSimSerialNumber()
+                } catch (e: Throwable) {
+                    //不管有没有申请，部分机子直接跑异常
+                    throw e
+                } finally {
+                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
+                }
+                return value
+            } else {
+                ""
+            }
         }
 
         @PrivacyMethodProxy(
@@ -348,11 +411,37 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getSimSerialNumber(manager: TelephonyManager, index: Int): String? {
+            return getSimSerialNumber(manager)
+        }
+
+
+        @PrivacyMethodProxy(
+            originalClass = TelephonyManager::class,
+            originalMethod = "getLine1Number",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        @SuppressLint("MissingPermission")
+        @JvmStatic
+        fun getLine1Number(manager: TelephonyManager): String? {
+
+            var key = "TelephonyManager-getLine1Number"
+            doFilePrinter(key, "获取手机号-getLine1Number")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ""
             }
-            doFilePrinter("getSimSerialNumber", "获取设备id-getSimSerialNumber()")
-            return manager.getSimSerialNumber()
+            if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
+            }
+            var value = ""
+            try {
+                value = manager.line1Number
+            } catch (e: Throwable) {
+                //不管有没有申请，部分机子直接跑异常
+                throw e
+            } finally {
+                PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
+            }
+            return value
         }
 
         @PrivacyMethodProxy(
@@ -432,11 +521,24 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getMacAddress(manager: WifiInfo): String? {
-            doFilePrinter("getMacAddress", "获取mac地址-getMacAddress")
+            var key = "WifiInfo-getMacAddress"
+            doFilePrinter(key, "获取mac地址-getMacAddress")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ""
             }
-            return manager.getMacAddress()
+            if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
+            }
+            var value = ""
+            try {
+                value = manager.getMacAddress()
+            } catch (e: Throwable) {
+                //不管有没有申请，部分机子直接跑异常
+                throw e
+            } finally {
+                PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
+            }
+            return value
         }
 
         /**
@@ -589,11 +691,24 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getHardwareAddress(manager: NetworkInterface): ByteArray? {
-            doFilePrinter("getHardwareAddress", "获取mac地址-getHardwareAddress")
+            var key = "NetworkInterface-getHardwareAddress"
+            doFilePrinter(key, "获取mac地址-getHardwareAddress")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ByteArray(1)
             }
-            return manager.hardwareAddress
+            if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                return PrivacyProxyUtil.Util.getCacheStaticParam(ByteArray(1), key)
+            }
+            var value = ByteArray(1)
+            try {
+                value = manager.hardwareAddress
+            } catch (e: Throwable) {
+                //不管有没有申请，部分机子直接跑异常
+                throw e
+            } finally {
+                PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
+            }
+            return value
         }
 
         @PrivacyMethodProxy(
@@ -603,11 +718,24 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getAddress(manager: BluetoothAdapter): String? {
-            doFilePrinter("getAddress", "获取蓝牙地址-getAddress")
+            var key = "BluetoothAdapter-getAddress"
+            doFilePrinter(key, "获取蓝牙地址-getAddress")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ""
             }
-            return manager.address ?: ""
+            if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
+            }
+            var value = ""
+            try {
+                value = manager.address
+            } catch (e: Throwable) {
+                //不管有没有申请，部分机子直接跑异常
+                throw e
+            } finally {
+                PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
+            }
+            return value
         }
 
 
@@ -618,16 +746,26 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getString(contentResolver: ContentResolver?, type: String?): String? {
-            var result = ""
             doFilePrinter("getString", "读取系统信息", args = type)
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ""
             }
-            result = Settings.Secure.getString(
-                contentResolver,
-                type
-            )
-
+            var key = "Secure-getString-$type"
+            if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
+            }
+            var result = ""
+            try {
+                result = Settings.Secure.getString(
+                    contentResolver,
+                    type
+                )
+            } catch (e: Throwable) {
+                //不管有没有申请，部分机子直接跑异常
+                throw e
+            } finally {
+                PrivacyProxyUtil.Util.putCacheStaticParam(result ?: "", "Secure-getString-$type")
+            }
             return result
         }
 
@@ -640,14 +778,21 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getSerial(): String? {
             var result = ""
+            var key = "getSerial"
             try {
                 doFilePrinter("getSerial", "读取Serial")
                 if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                     return ""
                 }
+
+                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
+                }
                 result = Build.getSerial()
             } catch (e: Exception) {
                 e.printStackTrace()
+            } finally {
+                PrivacyProxyUtil.Util.putCacheStaticParam(result ?: "", key)
             }
             return result
         }
