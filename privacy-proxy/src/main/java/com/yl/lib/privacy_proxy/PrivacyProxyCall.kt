@@ -216,13 +216,16 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getDeviceId(manager: TelephonyManager): String? {
             var key = "TelephonyManager-getDeviceId"
-            doFilePrinter(key, "获取设备id-getDeviceId()")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(key, "获取设备id-getDeviceId()", bVisitorModel = true)
                 return ""
             }
             if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                doFilePrinter(key, "获取设备id-getDeviceId()", bCache = true)
                 return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
             }
+
+            doFilePrinter(key, "获取设备id-getDeviceId()")
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 var value = ""
                 try {
@@ -247,13 +250,16 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getDeviceId(manager: TelephonyManager, index: Int): String? {
             var key = "TelephonyManager-getDeviceId-$index"
-            doFilePrinter(key ,"获取设备id-getDeviceId(I)")
+
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(key, "获取设备id-getDeviceId(I)", bVisitorModel = true)
                 return ""
             }
             if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                doFilePrinter(key, "获取设备id-getDeviceId(I)", bCache = true)
                 return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
             }
+            doFilePrinter(key, "获取设备id-getDeviceId(I)")
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 var value = ""
                 try {
@@ -278,13 +284,17 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getSubscriberId(manager: TelephonyManager): String? {
             var key = "TelephonyManager-getSubscriberId"
-            doFilePrinter(key, "获取设备id-getSubscriberId(I)")
+
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(key, "获取设备id-getSubscriberId(I)", bVisitorModel = true)
                 return ""
             }
             if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                doFilePrinter(key, "获取设备id-getSubscriberId(I)", bCache = true)
                 return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
             }
+
+            doFilePrinter(key, "获取设备id-getSubscriberId(I)")
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 var value = ""
                 try {
@@ -318,14 +328,18 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getImei(manager: TelephonyManager): String? {
-            var key ="TelephonyManager-getImei"
-            doFilePrinter(key, "获取设备id-getImei()")
+            var key = "TelephonyManager-getImei"
+
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(key, "获取设备id-getImei()", bVisitorModel = true)
                 return ""
             }
             if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                doFilePrinter(key, "获取设备id-getImei()", bCache = true)
                 return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
             }
+
+            doFilePrinter(key, "获取设备id-getImei()")
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 var value = ""
                 try {
@@ -350,13 +364,16 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getImei(manager: TelephonyManager, index: Int): String? {
             var key = "TelephonyManager-getImei-$index"
-            doFilePrinter(key, "获取设备id-getImei(I)")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(key, "获取设备id-getImei(I)", bVisitorModel = true)
                 return ""
             }
             if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                doFilePrinter(key, "获取设备id-getImei(I)", bCache = true)
                 return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
             }
+
+            doFilePrinter(key, "获取设备id-getImei(I)")
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 var value = ""
                 try {
@@ -381,13 +398,15 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getSimSerialNumber(manager: TelephonyManager): String? {
             var key = "TelephonyManager-getSimSerialNumber"
-            doFilePrinter(key, "获取设备id-getSimSerialNumber()")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(key, "获取设备id-getSimSerialNumber()", bVisitorModel = true)
                 return ""
             }
             if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                doFilePrinter(key, "获取设备id-getSimSerialNumber()", bCache = true)
                 return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
             }
+            doFilePrinter(key, "获取设备id-getSimSerialNumber()")
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 var value = ""
                 try {
@@ -425,13 +444,16 @@ open class PrivacyProxyCall {
         fun getLine1Number(manager: TelephonyManager): String? {
 
             var key = "TelephonyManager-getLine1Number"
-            doFilePrinter(key, "获取手机号-getLine1Number")
+
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(key, "获取手机号-getLine1Number", bVisitorModel = true)
                 return ""
             }
             if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                doFilePrinter(key, "获取手机号-getLine1Number", bCache = true)
                 return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
             }
+            doFilePrinter(key, "获取手机号-getLine1Number")
             var value = ""
             try {
                 value = manager.line1Number
@@ -522,13 +544,16 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getMacAddress(manager: WifiInfo): String? {
             var key = "WifiInfo-getMacAddress"
-            doFilePrinter(key, "获取mac地址-getMacAddress")
+
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(key, "获取mac地址-getMacAddress", bVisitorModel = true)
                 return ""
             }
             if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                doFilePrinter(key, "获取mac地址-getMacAddress", bCache = true)
                 return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
             }
+            doFilePrinter(key, "获取mac地址-getMacAddress")
             var value = ""
             try {
                 value = manager.getMacAddress()
@@ -692,13 +717,17 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getHardwareAddress(manager: NetworkInterface): ByteArray? {
             var key = "NetworkInterface-getHardwareAddress"
-            doFilePrinter(key, "获取mac地址-getHardwareAddress")
+
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(key, "获取mac地址-getHardwareAddress", bVisitorModel = true)
                 return ByteArray(1)
             }
             if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                doFilePrinter(key, "获取mac地址-getHardwareAddress", bCache = true)
                 return PrivacyProxyUtil.Util.getCacheStaticParam(ByteArray(1), key)
             }
+
+            doFilePrinter(key, "获取mac地址-getHardwareAddress")
             var value = ByteArray(1)
             try {
                 value = manager.hardwareAddress
@@ -719,13 +748,17 @@ open class PrivacyProxyCall {
         @JvmStatic
         fun getAddress(manager: BluetoothAdapter): String? {
             var key = "BluetoothAdapter-getAddress"
-            doFilePrinter(key, "获取蓝牙地址-getAddress")
+
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(key, "获取蓝牙地址-getAddress", bVisitorModel = true)
                 return ""
             }
             if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                doFilePrinter(key, "获取蓝牙地址-getAddress", bCache = true)
                 return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
             }
+
+            doFilePrinter(key, "获取蓝牙地址-getAddress")
             var value = ""
             try {
                 value = manager.address
@@ -746,14 +779,18 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getString(contentResolver: ContentResolver?, type: String?): String? {
-            doFilePrinter("getString", "读取系统信息", args = type)
+            var key = "Secure-getString-$type"
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter("getString", "读取系统信息", args = type, bVisitorModel = true)
                 return ""
             }
-            var key = "Secure-getString-$type"
+
             if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                doFilePrinter("getString", "读取系统信息", args = type, bCache = true)
                 return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
             }
+
+            doFilePrinter("getString", "读取系统信息", args = type)
             var result = ""
             try {
                 result = Settings.Secure.getString(
@@ -780,14 +817,17 @@ open class PrivacyProxyCall {
             var result = ""
             var key = "getSerial"
             try {
-                doFilePrinter("getSerial", "读取Serial")
                 if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                    doFilePrinter("getSerial", "读取Serial", bVisitorModel = true)
                     return ""
                 }
 
                 if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                    doFilePrinter("getSerial", "读取Serial", bCache = true)
                     return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
                 }
+
+                doFilePrinter("getSerial", "读取Serial")
                 result = Build.getSerial()
             } catch (e: Exception) {
                 e.printStackTrace()

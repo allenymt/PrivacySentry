@@ -54,20 +54,22 @@ class PrivacyProxyUtil {
         fun doFilePrinter(
             funName: String,
             methodDocumentDesc: String = "",
-            args: String? = ""
+            args: String? = "",
+            bVisitorModel: Boolean = false,
+            bCache: Boolean = false
         ) {
             if (PrivacySentry.Privacy.getBuilder()?.isEnableFileResult() == false) {
                 PrivacyLog.e("disable print file: funName is $funName methodDocumentDesc is $methodDocumentDesc,EnableFileResult=false")
                 return
             }
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+            if (bVisitorModel) {
                 PrivacyLog.e("disable print file: funName is $funName methodDocumentDesc is $methodDocumentDesc,isVisitorModel=true")
                 return
             }
             PrivacySentry.Privacy.getBuilder()?.getPrinterList()?.forEach {
                 it.filePrint(
                     funName,
-                    methodDocumentDesc + if (args?.isNotEmpty() == true) "--参数: $args" else "",
+                    (if (bCache) "命中缓存--" else "") + methodDocumentDesc + if (args?.isNotEmpty() == true) "--参数: $args" else "",
                     PrivacyUtil.Util.getStackTrace()
                 )
             }
