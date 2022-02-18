@@ -566,39 +566,39 @@ open class PrivacyProxyCall {
             return value
         }
 
-        /**
-         * 读取WIFI的SSID
-         */
-        @JvmStatic
-        @PrivacyMethodProxy(
-            originalClass = WifiInfo::class,
-            originalMethod = "getSSID",
-            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
-        )
-        fun getSSID(manager: WifiInfo): String? {
-            doFilePrinter("getSSID", "802.11网络的服务集标识符")
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                return ""
-            }
-            return manager.ssid
-        }
+//        /**
+//         * 读取WIFI的SSID
+//         */
+//        @JvmStatic
+//        @PrivacyMethodProxy(
+//            originalClass = WifiInfo::class,
+//            originalMethod = "getSSID",
+//            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+//        )
+//        fun getSSID(manager: WifiInfo): String? {
+//            doFilePrinter("getSSID", "802.11网络的服务集标识符")
+//            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+//                return ""
+//            }
+//            return manager.ssid
+//        }
 
-        /**
-         * 读取WIFI的SSID
-         */
-        @JvmStatic
-        @PrivacyMethodProxy(
-            originalClass = WifiInfo::class,
-            originalMethod = "getBSSID",
-            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
-        )
-        fun getBSSID(manager: WifiInfo): String? {
-            doFilePrinter("getBSSID", "802.11网络的服务集标识符")
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                return ""
-            }
-            return manager.bssid
-        }
+//        /**
+//         * 读取WIFI的SSID
+//         */
+//        @JvmStatic
+//        @PrivacyMethodProxy(
+//            originalClass = WifiInfo::class,
+//            originalMethod = "getBSSID",
+//            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+//        )
+//        fun getBSSID(manager: WifiInfo): String? {
+//            doFilePrinter("getBSSID", "802.11网络的服务集标识符")
+//            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+//                return ""
+//            }
+//            return manager.bssid
+//        }
 
         /**
          * 读取WIFI扫描结果
