@@ -29,6 +29,7 @@ import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
 import com.yl.lib.privacy_proxy.PrivacyProxyUtil.Util.doFilePrinter
 import com.yl.lib.sentry.hook.PrivacySentry
+import java.lang.StringBuilder
 import java.net.NetworkInterface
 
 /**
@@ -109,6 +110,11 @@ open class PrivacyProxyCall {
             return manager.getInstalledPackages(flags)
         }
 
+
+        // 这个方法比较特殊，是否合规完全取决于intent参数
+        // 如果指定了自己的包名，那可以认为是合规的，因为是查自己APP的AC
+        // 如果没有指定包名，那就是查询了其他APP的Ac，这不合规
+        // 思考，直接在SDK里拦截肯定不合适，对于业务方来说太黑盒了，如果触发bug开发会崩溃的，所以我们只打日志为业务方提供信息
         @PrivacyMethodProxy(
             originalClass = PackageManager::class,
             originalMethod = "queryIntentActivities",
@@ -120,9 +126,35 @@ open class PrivacyProxyCall {
             intent: Intent,
             flags: Int
         ): List<ResolveInfo> {
+            var paramBuilder = StringBuilder()
+            var legal = true
+            intent?.also {
+                intent?.categories?.also {
+                    paramBuilder.append("-categories:").append(it.toString()).append("\n")
+                }
+                intent?.`package`?.also {
+                    paramBuilder.append("-packageName:").append(it).append("\n")
+                }
+                intent?.data?.also {
+                    paramBuilder.append("-data:").append(it.toString()).append("\n")
+                }
+                intent?.component.also {
+                    paramBuilder.append("-packageName:").append(it?.packageName).append("\n")
+                }
+            }
+
+            if (paramBuilder.isEmpty()){
+                legal = false
+            }
+
+            //不指定包名，我们认为这个查询不合法
+            if (!paramBuilder.contains("packageName")){
+                legal = false
+            }
+            paramBuilder.append("-合法查询:${legal}").append("\n")
             doFilePrinter(
                 "queryIntentActivities",
-                methodDocumentDesc = "读安装列表-queryIntentActivities"
+                methodDocumentDesc = "读安装列表-queryIntentActivities${paramBuilder?.toString()}"
             )
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return emptyList()
