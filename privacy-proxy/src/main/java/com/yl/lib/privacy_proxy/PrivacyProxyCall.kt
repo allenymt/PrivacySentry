@@ -138,8 +138,8 @@ open class PrivacyProxyCall {
                 intent?.data?.also {
                     paramBuilder.append("-data:").append(it.toString()).append("\n")
                 }
-                intent?.component.also {
-                    paramBuilder.append("-packageName:").append(it?.packageName).append("\n")
+                intent?.component?.packageName.also {
+                    paramBuilder.append("-packageName:").append(it).append("\n")
                 }
             }
 
