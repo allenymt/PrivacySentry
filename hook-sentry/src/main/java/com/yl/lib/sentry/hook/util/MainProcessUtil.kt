@@ -32,13 +32,16 @@ class MainProcessUtil {
          * 当前进程名
          */
         fun getProcessName(context: Context?): String {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                // 9.0开始直接读
-                Application.getProcessName()
-            } else {
-                // 9.0以下反射拿
-                getProcessNameByReflect(context)
+            if (TextUtils.isEmpty(currentProcessName)) {
+                currentProcessName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    // 9.0开始直接读
+                    Application.getProcessName()
+                } else {
+                    // 9.0以下反射拿
+                    getProcessNameByReflect(context)
+                }
             }
+            return currentProcessName
         }
 
         // 以下代码 替代 getRunningProcessName
