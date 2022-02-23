@@ -28,8 +28,7 @@ class PrivacyProxyUtil {
             }
             PrivacySentry.Privacy.getBuilder()?.getPrinterList()?.forEach {
                 it.filePrint(
-                    funName,
-                    "当前进程： ${MainProcessUtil.MainProcessChecker.getProcessName(PrivacySentry.Privacy.getContext())}-"+(if (bCache) "命中缓存--" else "") + methodDocumentDesc + if (args?.isNotEmpty() == true) "--参数: $args" else "",
+                    funName, (if (bCache) "命中缓存--" else "") + methodDocumentDesc + if (args?.isNotEmpty() == true) "--参数: $args" else "",
                     PrivacyUtil.Util.getStackTrace()
                 )
             }
