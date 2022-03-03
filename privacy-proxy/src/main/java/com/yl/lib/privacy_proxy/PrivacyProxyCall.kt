@@ -860,7 +860,11 @@ open class PrivacyProxyCall {
                 }
 
                 doFilePrinter("getSerial", "读取Serial")
-                result = Build.getSerial()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    result = Build.getSerial()
+                }else {
+                    result = Build.SERIAL
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
