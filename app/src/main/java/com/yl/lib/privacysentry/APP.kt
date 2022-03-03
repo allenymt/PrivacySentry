@@ -15,7 +15,6 @@ import com.yl.lib.sentry.hook.util.PrivacyLog
 class APP : Application() {
     override fun onCreate() {
         super.onCreate()
-
     }
 
     override fun attachBaseContext(base: Context?) {
@@ -24,12 +23,12 @@ class APP : Application() {
         initPrivacyTransformComplete()
     }
 
-    private fun initPrivacyTransform(){
+    private fun initPrivacyTransform() {
         PrivacySentry.Privacy.initTransform(this)
     }
 
 
-    private fun initPrivacyTransformComplete(){
+    private fun initPrivacyTransformComplete() {
 
         // 完整版配置
         var builder = PrivacySentryBuilder()
@@ -37,9 +36,9 @@ class APP : Application() {
             .configResultFileName("demo_test")
             //自定义检测时间，也支持主动停止检测 PrivacySentry.Privacy.stopWatch()
             .configWatchTime(10 * 60 * 1000)
-                // 打开写入文件开关
+            // 打开写入文件开关
             .enableFileResult(true)
-                // 打开游客模式
+            // 打开游客模式
             .configVisitorModel(true)
             // 文件输出后的回调
             .configResultCallBack(object : PrivacyResultCallBack {
@@ -52,4 +51,5 @@ class APP : Application() {
         // 简易版配置
 //        PrivacySentry.Privacy.init(this)
     }
+
 }

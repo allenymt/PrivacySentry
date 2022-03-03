@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.3"
     defaultConfig {
         applicationId "com.yl.lib.privacysentry"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -56,6 +56,12 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation "androidx.multidex:multidex:2.0.1"
+
+    //不知道抽了什么风，epic拉不下来，只能先这样
+    api 'com.github.tiann:epic:0.11.2@aar'
+    api 'com.github.tiann:FreeReflection:3.1.0'
+    api 'me.weishu.exposed:exposed-xposedapi:0.4.5'
+
     if (rootProject.ext.plugin_local_debug) {
         implementation project(":hook-sentry")
         implementation project(":privacy-proxy")

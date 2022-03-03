@@ -66,7 +66,7 @@ class CalendarManager {
             context.getContentResolver().query(
                 CalendarContract.Calendars.CONTENT_URI,
                 null, null, null, null
-            ).use({ cursor ->
+            ).use { cursor ->
                 // 不存在日历账户
                 if (null == cursor) {
                     return -1
@@ -79,7 +79,7 @@ class CalendarManager {
                 } else {
                     -1
                 }
-            })
+            }
         }
 
         /**

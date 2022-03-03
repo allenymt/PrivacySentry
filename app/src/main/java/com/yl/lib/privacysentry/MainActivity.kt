@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.yl.lib.privacy_test.TestMethod
@@ -16,6 +17,9 @@ import com.yl.lib.privacysentry.process.MultiProcessB
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.util.MainProcessUtil
 import com.yl.lib.sentry.hook.util.PrivacyLog
+import com.yl.lib.sentry.hook.util.PrivacyUtil
+import de.robv.android.xposed.DexposedBridge
+import de.robv.android.xposed.XC_MethodHook
 
 class MainActivity : AppCompatActivity() {
 
@@ -159,6 +163,8 @@ class MainActivity : AppCompatActivity() {
             PrivacySentry.Privacy.updatePrivacyShow()
             PrivacySentry.Privacy.closeVisitorModel()
         }.create().show()
+
+        configEpicHook()
     }
 
 
@@ -173,5 +179,18 @@ class MainActivity : AppCompatActivity() {
         } else {
             PrivacyLog.i("requestPermissions ${Manifest.permission.READ_PHONE_STATE} fail")
         }
+    }
+
+
+    private fun configEpicHook() {
+        var hook = object: XC_MethodHook(){
+            override fun beforeHookedMethod(param: MethodHookParam?) {
+                super.beforeHookedMethod(param)
+
+                android.util.Log.d("TestEpic", "stack= " + PrivacyUtil.Util.getStackTrace() +" , methodName is "+ param?.method?.name)
+
+            }
+        }
+        DexposedBridge.hookAllMethods(TelephonyManager::class.java,"getSubscriberId",hook)
     }
 }
