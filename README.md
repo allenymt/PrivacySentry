@@ -2,6 +2,8 @@
     android隐私合规检测
 
 ## 更新日志
+    2022-03-04
+        支持变量hook，主要是Build.SERIAL
     2022-1-18
         1. 编译期注解+hook方案
         2. 支持业务方自定义配置拦截，支持游客模式
@@ -33,7 +35,7 @@
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
-	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.2'
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.3'
 	     }
 	}
 ```
@@ -47,7 +49,7 @@
         
         dependencies {
             // aar依赖
-            def privacyVersion = "1.0.2"
+            def privacyVersion = "1.0.3"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
