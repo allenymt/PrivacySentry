@@ -187,7 +187,7 @@ open class PrivacyProxyResolver {
 
 - 读取设备应用列表
 
-- 读取 Android SN(Serial)
+- 读取 Android SN(Serial,包括方法和变量)
 
 - 读写联系人、日历、本机号码
 
