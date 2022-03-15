@@ -205,4 +205,4 @@ open class PrivacyProxyResolver {
 
 
 ## 结语
-    整体代码很简单，有问题可以直接提~
+    整体代码很简单，有问题可以直接提~ (兄弟们，走过路过请给个star~~~)
