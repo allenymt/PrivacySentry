@@ -56,6 +56,7 @@
         }
         
         // 黑名单配置，可以设置这部分包名不会被修改字节码
+        // 项目里如果有引入高德地图，先加黑 blackList = ["com.loc","com.amap.api"], asm的版本有冲突
         privacy {
             blackList = []
         }
