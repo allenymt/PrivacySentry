@@ -76,6 +76,6 @@ dependencies {
 
 
 privacy {
-    // 设置免hook的名单
-    blackList = []
+    // 设置免hook的黑名单，高德地图的字节码应该是asm的版本冲突问题，可以先加黑
+    blackList = ["com.loc","com.amap.api"]
 }
