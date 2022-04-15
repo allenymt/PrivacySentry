@@ -62,10 +62,9 @@ dependencies {
         implementation project(":privacy-proxy")
         implementation project(path: ':privacy-annotation')
     } else {
-        def privacyVersion = "0.0.3.4-SNAPSHOT"
-        implementation "com.wdian.android.lib:privacy-hook:$privacyVersion"
-        implementation "com.wdian.android.lib:privacy-annotation:$privacyVersion"
-        implementation "com.wdian.android.lib:privacy-proxy:$privacyVersion"
+        implementation "com.wdian.android.lib:privacy-hook:${rootProject.ext.privacy_version}"
+        implementation "com.wdian.android.lib:privacy-annotation:${rootProject.ext.privacy_version}"
+        implementation "com.wdian.android.lib:privacy-proxy:${rootProject.ext.privacy_version}"
     }
 
     implementation project(path: ':privacy-test')

@@ -31,18 +31,21 @@ class MainProcessUtil {
         /**
          * 当前进程名
          */
-        fun getProcessName(context: Context): String {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                // 9.0开始直接读
-                Application.getProcessName()
-            } else {
-                // 9.0以下反射拿
-                getProcessNameByReflect(context)
+        fun getProcessName(context: Context?): String {
+            if (TextUtils.isEmpty(currentProcessName)) {
+                currentProcessName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    // 9.0开始直接读
+                    Application.getProcessName()
+                } else {
+                    // 9.0以下反射拿
+                    getProcessNameByReflect(context)
+                }
             }
+            return currentProcessName
         }
 
         // 以下代码 替代 getRunningProcessName
-        private fun getProcessNameByReflect(context: Context): String {
+        private fun getProcessNameByReflect(context: Context?): String {
             val activityThread = getActivityThread(context)
             if (activityThread != null) {
                 try {
@@ -57,7 +60,7 @@ class MainProcessUtil {
             return ""
         }
 
-        private fun getActivityThread(context: Context): Any? {
+        private fun getActivityThread(context: Context?): Any? {
             var activityThread = getActivityThreadInActivityThreadStaticField()
             if (activityThread != null) return activityThread
             activityThread = getActivityThreadInActivityThreadStaticMethod()
@@ -87,7 +90,7 @@ class MainProcessUtil {
             }
         }
 
-        private fun getActivityThreadInLoadedApkField(context: Context): Any? {
+        private fun getActivityThreadInLoadedApkField(context: Context?): Any? {
             return try {
                 val mLoadedApkField = Application::class.java.getDeclaredField("mLoadedApk")
                 mLoadedApkField.isAccessible = true
