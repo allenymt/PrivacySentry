@@ -1,6 +1,10 @@
 # PrivacySentry
     android隐私合规检测
 
+## TODO
+    queryIntentActivities增加参数输出判断是否合法
+    如何替换静态变量调用？Build.SERIAL;
+
 ## 优势
 - 全面高效:  对于业务开发无感知，只需要配置一次即可生效
 - 全局监控：包括应用自身和第三方SDK，支持监控和修改敏感函数
