@@ -76,7 +76,7 @@
                         .configResultFileName("buyer_privacy")
                         // 配置游客模式
                         .configVisitorModel(BeforeApplicationInitHelper.getInstance(application.getApplicationContext()).isNewUser())
-                        // 配置写入文件日志
+                        // 配置写入文件日志 , 线上包这个开关不要打开！！！！
                         .enableFileResult("true".equals(BuildConfig.enablePrivacyPrintFile))
                         // 持续写入文件30分钟
                         .configWatchTime(30 * 60 * 1000)
