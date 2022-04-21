@@ -111,6 +111,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="结束当前检测-导出结果" />
+
+
+            <Button
+                android:id="@+id/btn_thread_cache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="多线程缓存测试" />
         </LinearLayout>
 
     </ScrollView>

@@ -145,6 +145,39 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ContactActivity::class.java))
         }
 
+
+        findViewById<Button>(R.id.btn_thread_cache).setOnClickListener {
+            for (index in 1..20) {
+                Thread(Thread.currentThread().threadGroup, object : Runnable {
+                    override fun run() {
+                        var result = PrivacyMethod.PrivacyMethod.getAndroidId(this@MainActivity)
+                        PrivacyLog.e("btn_thread_cache result is $result")
+
+                        PrivacyMethod.PrivacyMethod.getDeviceId(this@MainActivity)
+
+                        PrivacyMethod.PrivacyMethod.getDeviceId1(this@MainActivity)
+
+                        PrivacyMethod.PrivacyMethod.getICCID(this@MainActivity)
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            PrivacyMethod.PrivacyMethod.getIMEI(this@MainActivity)
+                        }
+
+                        PrivacyMethod.PrivacyMethod.getIMSI(this@MainActivity)
+
+                        PrivacyMethod.PrivacyMethod.getMacRaw(this@MainActivity)
+
+                        PrivacyMethod.PrivacyMethod.getMacV2()
+
+                        PrivacyMethod.PrivacyMethod.getMeid(this@MainActivity)
+
+                        PrivacyMethod.PrivacyMethod.getSerial()
+                    }
+                }, "test_thread_$index", 0).start()
+            }
+        }
+
+
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
         var permissions = arrayOf(
             Manifest.permission.READ_PHONE_STATE

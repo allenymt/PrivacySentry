@@ -14,6 +14,12 @@ class PrivacyUtil {
             val st = Thread.currentThread().stackTrace
             val sbf = StringBuilder()
             for (e in st) {
+                if (e.methodName.equals("getThreadStackTrace") || e.methodName.equals("getStackTrace")){
+                    continue
+                }
+                if (e.className.contains("PrivacyProxy")){
+                    continue
+                }
                 if (sbf.isNotEmpty()) {
                     sbf.append(" <- ")
                     sbf.append(System.getProperty("line.separator"))
