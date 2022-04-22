@@ -58,6 +58,7 @@
             def privacyVersion = "1.0.4"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
+	    //如果不想使用库中本身的代理方法，可以不引入这个类，自己实现
             implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
         }
         
