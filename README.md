@@ -1,13 +1,16 @@
 # PrivacySentry
-    android隐私合规检测
-
+    android隐私合规检测，不仅仅是是检测，碰到第三方SDK不好解决的或者修复周期很长的，我们等不了那么长时间，可以通过这个库去动态拦截
+    例如游客模式，这种通过xposed只能做检测，毕竟xpose不能带到线上，但是asm可以
+    
 ## 更新日志
-    2022-1-18
+    2022-03-04(1.0.3)
+        支持变量hook，主要是Build.SERIAL
+    2022-1-18(1.0.2)
         1. 编译期注解+hook方案
         2. 支持业务方自定义配置拦截，支持游客模式
-    2021-12-26
+    2021-12-26(1.0.0)
         1. Asm修改字节码，hook敏感函数
-    2021-12-02
+    2021-12-02(0.0.7)
         1. 支持多进程
         2. 日志加上时间戳，方便阅读
         3. 优化文件分时段写入
@@ -18,6 +21,7 @@
 
 ## TODO
 1. 有其他问题欢迎提issue
+2. 项目里如果有引入高德地图，先加黑 blackList = ["com.loc","com.amap.api"], asm的版本有冲突
 
 ## 如何使用
 
@@ -33,7 +37,7 @@
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
-	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.2'
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.3'
 	     }
 	}
 ```
@@ -47,13 +51,14 @@
         
         dependencies {
             // aar依赖
-            def privacyVersion = "1.0.2"
+            def privacyVersion = "1.0.3"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
         }
         
         // 黑名单配置，可以设置这部分包名不会被修改字节码
+        // 项目里如果有引入高德地图，先加黑 blackList = ["com.loc","com.amap.api"], asm的版本有冲突
         privacy {
             blackList = []
         }
@@ -71,7 +76,7 @@
                         .configResultFileName("buyer_privacy")
                         // 配置游客模式
                         .configVisitorModel(BeforeApplicationInitHelper.getInstance(application.getApplicationContext()).isNewUser())
-                        // 配置写入文件日志
+                        // 配置写入文件日志 , 线上包这个开关不要打开！！！！
                         .enableFileResult("true".equals(BuildConfig.enablePrivacyPrintFile))
                         // 持续写入文件30分钟
                         .configWatchTime(30 * 60 * 1000)
@@ -185,7 +190,7 @@ open class PrivacyProxyResolver {
 
 - 读取设备应用列表
 
-- 读取 Android SN(Serial)
+- 读取 Android SN(Serial,包括方法和变量)
 
 - 读写联系人、日历、本机号码
 
@@ -203,4 +208,4 @@ open class PrivacyProxyResolver {
 
 
 ## 结语
-    整体代码很简单，有问题可以直接提~
+    整体代码很简单，有问题可以直接提~ (兄弟们，走过路过请给个star~~~)

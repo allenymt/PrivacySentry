@@ -8,33 +8,27 @@ import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import android.database.Cursor
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.net.DhcpInfo
-import android.net.Uri
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
-import android.os.*
+import android.os.Build
 import android.provider.Settings
 import android.telephony.CellInfo
 import android.telephony.TelephonyManager
 import androidx.annotation.Keep
-import androidx.annotation.RequiresApi
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
 import com.yl.lib.privacy_proxy.PrivacyProxyUtil.Util.doFilePrinter
 import com.yl.lib.sentry.hook.PrivacySentry
-import com.yl.lib.sentry.hook.util.PrivacyLog
-import com.yl.lib.sentry.hook.util.PrivacyUtil
 import java.net.NetworkInterface
-import java.util.*
 
 /**
  * @author yulun
@@ -631,7 +625,6 @@ open class PrivacyProxyCall {
             return result
         }
 
-        @RequiresApi(Build.VERSION_CODES.O)
         @PrivacyMethodProxy(
             originalClass = android.os.Build::class,
             originalMethod = "getSerial",
@@ -645,12 +638,15 @@ open class PrivacyProxyCall {
                 if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                     return ""
                 }
-                result = Build.getSerial()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    result = Build.getSerial()
+                } else {
+                    result = Build.SERIAL
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
             return result
         }
-
     }
 }

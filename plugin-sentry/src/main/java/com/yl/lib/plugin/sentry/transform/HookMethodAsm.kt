@@ -2,9 +2,7 @@ package com.yl.lib.plugin.sentry.transform
 
 import com.yl.lib.plugin.sentry.extension.HookMethodManager
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
-import org.objectweb.asm.AnnotationVisitor
-import org.objectweb.asm.ClassVisitor
-import org.objectweb.asm.MethodVisitor
+import org.objectweb.asm.*
 import org.objectweb.asm.commons.AdviceAdapter
 
 /**
@@ -55,18 +53,19 @@ class SentryTraceClassAdapter : ClassVisitor {
         signature: String?,
         exceptions: Array<out String>?
     ): MethodVisitor {
-        if (!bHookClass) {
-            return super.visitMethod(access, name, descriptor, signature, exceptions)
+        return if (!bHookClass) {
+            super.visitMethod(access, name, descriptor, signature, exceptions)
+        }else{
+            var methodVisitor = cv.visitMethod(access, name, descriptor, signature, exceptions)
+            SentryTraceMethodAdapter(
+                api,
+                methodVisitor,
+                access,
+                name,
+                descriptor,
+                privacyExtension
+            )
         }
-        var methodVisitor = cv.visitMethod(access, name, descriptor, signature, exceptions)
-        return SentryTraceMethodAdapter(
-            api,
-            methodVisitor,
-            access,
-            name,
-            descriptor,
-            privacyExtension
-        )
     }
 }
 
@@ -86,6 +85,7 @@ class SentryTraceMethodAdapter : AdviceAdapter {
         this.privacyExtension = privacyExtension
     }
 
+    // 访问方法指令
     override fun visitMethodInsn(
         opcodeAndSource: Int,
         owner: String,
@@ -107,8 +107,12 @@ class SentryTraceMethodAdapter : AdviceAdapter {
         super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface)
     }
 
-    override fun visitLdcInsn(value: Any?) {
-        super.visitLdcInsn(value)
+    //访问某个成员变量，变量拦截目前只有android/os/Build.SERIAL,所以直接写死了。
+    override fun visitFieldInsn(opcode: Int, owner: String?, name: String?, descriptor: String?) {
+        if (owner.equals("android/os/Build") && descriptor.equals("Ljava/lang/String;") && name.equals("SERIAL")){
+            mv.visitFieldInsn(opcode,"com.yl.lib.privacy_proxy.ProxyProxyField".replace(".","/"),"proxySerial",descriptor)
+            return
+        }
+        super.visitFieldInsn(opcode, owner, name, descriptor)
     }
-
 }
