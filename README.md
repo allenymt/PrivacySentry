@@ -3,6 +3,10 @@
     例如游客模式，这种通过xposed只能做检测，毕竟xpose不能带到线上，但是asm可以
     
 ## 更新日志
+    2022-04-22(1.0.4)
+        1. 对imei、imsi、mac、android_id、meid、serial等不可变字段，单进程内只读取一次
+        2. 精简堆栈，删除重复部分
+        3. 修复Android_id拦截问题
     2022-03-04(1.0.3)
         支持变量hook，主要是Build.SERIAL
     2022-1-18(1.0.2)
@@ -37,7 +41,7 @@
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
-	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.3'
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.4'
 	     }
 	}
 ```
@@ -51,7 +55,7 @@
         
         dependencies {
             // aar依赖
-            def privacyVersion = "1.0.3"
+            def privacyVersion = "1.0.4"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
