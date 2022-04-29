@@ -1,6 +1,5 @@
-package com.yl.lib.privacy_proxy
+package com.yl.lib.sentry.hook.util
 
-import com.weidian.framework.annotation.Export
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyUtil
@@ -10,9 +9,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @author yulun
  * @since 2022-01-13 17:58
  */
-@Export
 class PrivacyProxyUtil {
-    @Export
     object Util {
         fun doFilePrinter(
             funName: String,

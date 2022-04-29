@@ -10,12 +10,11 @@ import android.os.Bundle
 import android.os.CancellationSignal
 import androidx.annotation.Keep
 import androidx.annotation.RequiresApi
-import com.weidian.framework.annotation.Export
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
-import com.yl.lib.privacy_proxy.PrivacyProxyUtil.Util.doFilePrinter
 import com.yl.lib.sentry.hook.PrivacySentry
+import com.yl.lib.sentry.hook.util.PrivacyProxyUtil.Util.doFilePrinter
 
 /**
  * @author yulun
@@ -23,12 +22,10 @@ import com.yl.lib.sentry.hook.PrivacySentry
  * 代理ContentResolver 查增删改 ,主要是针对联系人，通讯录，日历等等
  */
 @Keep
-@Export
 open class PrivacyProxyResolver {
     // kotlin里实际解析的是这个PrivacyProxyCall$Proxy 内部类
     @PrivacyClassProxy
     @Keep
-    @Export
     object Proxy {
 
         // 查询
