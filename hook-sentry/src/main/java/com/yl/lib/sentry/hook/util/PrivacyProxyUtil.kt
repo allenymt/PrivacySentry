@@ -1,4 +1,4 @@
-package com.yl.lib.privacy_proxy
+package com.yl.lib.sentry.hook.util
 
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.util.PrivacyLog
