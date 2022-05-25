@@ -968,7 +968,6 @@ open class PrivacyProxyCall {
 
         }
 
-        @RequiresApi(Build.VERSION_CODES.O)
         @PrivacyMethodProxy(
             originalClass = android.os.Build::class,
             originalMethod = "getSerial",

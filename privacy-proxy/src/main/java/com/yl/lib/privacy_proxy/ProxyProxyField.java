@@ -12,6 +12,5 @@ import androidx.annotation.RequiresApi;
  */
 public class ProxyProxyField {
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static final String proxySerial = PrivacyProxyCall.Proxy.getSerial();
 }
