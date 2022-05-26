@@ -8,15 +8,15 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     // ASM V7.1
-    implementation group: 'org.ow2.asm', name: 'asm', version: '7.1'
-    implementation group: 'org.ow2.asm', name: 'asm-commons', version: '7.1'
+    implementation group: 'org.ow2.asm', name: 'asm', version: '9.1'
+    implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.1'
 }
 
 if (rootProject.ext.plugin_local_debug) {
     // 插件本地调试补充
     apply plugin: 'maven'
     group = 'com.yl.lib.plugin'
-    version = '0.0.1.56-SNAPSHOT'
+    version = '0.0.1.59-SNAPSHOT'
     uploadArchives {
         repositories {
             mavenDeployer {

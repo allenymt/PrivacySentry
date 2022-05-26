@@ -33,7 +33,7 @@ class PrivacyClassProcessor {
             // 定义类访问者
             val classVisitor: ClassVisitor =
                 SentryTraceClassAdapter(
-                    Opcodes.ASM7, classWriter, project.extensions.findByType(
+                    Opcodes.ASM9, classWriter, project.extensions.findByType(
                         PrivacyExtension::class.java
                     )
                 )
@@ -59,7 +59,7 @@ class PrivacyClassProcessor {
             // 定义类访问者
             val classVisitor: ClassVisitor =
                 CollectHookMethodClassAdapter(
-                    Opcodes.ASM7, classWriter, project.extensions.findByType(
+                    Opcodes.ASM9, classWriter, project.extensions.findByType(
                         PrivacyExtension::class.java
                     )
                 )
