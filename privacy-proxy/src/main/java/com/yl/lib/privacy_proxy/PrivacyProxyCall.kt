@@ -92,7 +92,15 @@ open class PrivacyProxyCall {
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return emptyList()
             }
-            return manager.getRunningAppProcesses()
+
+            var appProcess : List<ActivityManager.RunningAppProcessInfo> = emptyList()
+            try{
+                // 线上三星11和12的机子 有上报，量不大
+                appProcess = manager.runningAppProcesses
+            }catch (e : Throwable){
+                e.printStackTrace()
+            }
+            return appProcess
         }
 
         @PrivacyMethodProxy(
