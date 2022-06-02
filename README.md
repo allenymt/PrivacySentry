@@ -2,8 +2,11 @@
     android隐私合规检测
 
 ## TODO
-    queryIntentActivities增加参数输出判断是否合法
-    如何替换静态变量调用？Build.SERIAL;
+    2022-04-22(1.0.4)
+        1. 对imei、imsi、mac、android_id、meid、serial等不可变字段，单进程内只读取一次
+        2. 精简堆栈，删除重复部分
+        3. 修复Android_id拦截问题
+        4. 支持变量hook，主要是Build.SERIAL
 
 ## 优势
 - 全面高效:  对于业务开发无感知，只需要配置一次即可生效
@@ -18,7 +21,7 @@
 
 ```
    添加插件依赖
-    classpath "com.wdian.android.lib:privacy-plugin:0.0.3.5-SNAPSHOT"
+    classpath "com.wdian.android.lib:privacy-plugin:0.0.5"
 ```
 
 ```
@@ -31,7 +34,7 @@
    }
 
 
-   def privacyVersion = "0.0.3.5-SNAPSHOT"
+   def privacyVersion = "0.0.5"
    implementation ("com.wdian.android.lib:privacy-hook:${privacyVersion}"){
             exclude group: 'androidx.appcompat'
             exclude group: 'androidx.core'
