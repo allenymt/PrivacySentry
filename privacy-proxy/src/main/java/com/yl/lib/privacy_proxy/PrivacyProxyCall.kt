@@ -973,7 +973,17 @@ open class PrivacyProxyCall {
                     return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
                 }
             }
+        }
 
+
+        @PrivacyMethodProxy(
+            originalClass = Settings.System::class,
+            originalMethod = "getString",
+            originalOpcode = MethodInvokeOpcode.INVOKESTATIC
+        )
+        @JvmStatic
+        fun getStringSystem(contentResolver: ContentResolver?, type: String?): String? {
+            return getString(contentResolver,type)
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
