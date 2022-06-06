@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.yl.lib.privacy_test.TestMethod
+import com.yl.lib.privacy_test.TestMethodInJava
 import com.yl.lib.privacysentry.calendar.CalenderActivity
 import com.yl.lib.privacysentry.contact.ContactActivity
 import com.yl.lib.privacysentry.process.MultiProcessB
@@ -25,6 +26,8 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_androidId).setOnClickListener {
             var androidId = PrivacyMethod.PrivacyMethod.getAndroidId(this)
+            TestMethodInJava.getAndroidId(this)
+            TestMethodInJava.getAndroidIdSystem(this)
             PrivacyLog.i("androidId is $androidId")
         }
 

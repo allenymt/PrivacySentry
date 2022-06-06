@@ -92,7 +92,15 @@ open class PrivacyProxyCall {
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return emptyList()
             }
-            return manager.getRunningAppProcesses()
+
+            var appProcess : List<ActivityManager.RunningAppProcessInfo> = emptyList()
+            try{
+                // 线上三星11和12的机子 有上报，量不大
+                appProcess = manager.runningAppProcesses
+            }catch (e : Throwable){
+                e.printStackTrace()
+            }
+            return appProcess
         }
 
         @PrivacyMethodProxy(
@@ -965,7 +973,17 @@ open class PrivacyProxyCall {
                     return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
                 }
             }
+        }
 
+
+        @PrivacyMethodProxy(
+            originalClass = Settings.System::class,
+            originalMethod = "getString",
+            originalOpcode = MethodInvokeOpcode.INVOKESTATIC
+        )
+        @JvmStatic
+        fun getStringSystem(contentResolver: ContentResolver?, type: String?): String? {
+            return getString(contentResolver,type)
         }
 
         @PrivacyMethodProxy(
