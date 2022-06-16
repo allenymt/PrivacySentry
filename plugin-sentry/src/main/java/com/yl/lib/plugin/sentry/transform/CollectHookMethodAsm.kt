@@ -1,7 +1,5 @@
 package com.yl.lib.plugin.sentry.transform
 
-import com.yl.lib.plugin.sentry.extension.HookMethodItem
-import com.yl.lib.plugin.sentry.extension.HookMethodManager
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import org.objectweb.asm.AnnotationVisitor
