@@ -3,6 +3,10 @@
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
     
 ## 更新日志
+    2022-04-22(1.0.5)
+        1. 修复Settings.System获取Android_id,未拦截到的问题
+        2. 支持业务方配置同类型的hook函数覆盖自带的hook函数
+        3. 新增MIT开源协议
     2022-04-22(1.0.4)
         1. 对imei、imsi、mac、android_id、meid、serial等不可变字段，单进程内只读取一次
         2. 精简堆栈，删除重复部分
