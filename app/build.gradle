@@ -61,14 +61,15 @@ dependencies {
         implementation project(":privacy-proxy")
         implementation project(path: ':privacy-annotation')
     } else {
-        def privacyVersion = "1.0.4"
+        def privacyVersion = "1.0.5"
         implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
         implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
         implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
     }
 
-
-    implementation project(path: ':privacy-test')
+    implementation(project(path: ':privacy-test')) {
+        exclude module: 'privacy-annotation'
+    }
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -77,5 +78,5 @@ dependencies {
 
 privacy {
     // 设置免hook的黑名单，高德地图的字节码应该是asm的版本冲突问题，可以先加黑
-    blackList = ["com.loc","com.amap.api","io.openinstall.sdk"]
+    blackList = ["com.loc", "com.amap.api", "io.openinstall.sdk"]
 }
