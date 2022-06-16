@@ -7,7 +7,7 @@ package com.yl.lib.plugin.sentry.extension
  */
 open class HookMethodManager {
     object MANAGER {
-        private var hookMethodList: ArrayList<HookMethodItem> = ArrayList()
+        private var hookMethodList: HashSet<HookMethodItem> = HashSet()
 
         /**
          * 检测是否需要替换某个方法
@@ -99,11 +99,27 @@ open class HookMethodManager {
             )
         }
 
+        /**
+         * 加入hook集合
+         * 2022.06.15新增功能，支持业务方定义hook方法覆盖库内的方法
+         * @param hookMethodItem HookMethodItem
+         */
         fun appendHookMethod(
             hookMethodItem: HookMethodItem
         ) {
-            if (hookMethodList.contains(hookMethodItem))
+            if (hookMethodList.contains(hookMethodItem)) {
+                // 这里有两种情况
+                // 1. 先扫描到privacy自身的配置方法，需要替换掉HashSet里的方法
+                // 2. 先扫描到业务自身的配置，那过滤掉不处理
+                // 3. 如果业务方重复定义，那就没办法了，最后被扫描到的会被加入
+                var bPrivacyItem =
+                    hookMethodItem.proxyClassName.contains("com.yl.lib.privacy_proxy")
+                if (!bPrivacyItem){
+                    hookMethodList.removeIf { it == hookMethodItem }
+                    hookMethodList.add(hookMethodItem)
+                }
                 return
+            }
             hookMethodList.add(
                 hookMethodItem
             )
@@ -169,5 +185,9 @@ class HookMethodItem {
         }
 
         return super.equals(other)
+    }
+
+    override fun hashCode(): Int {
+        return originMethodAccess.hashCode() + originClassName.hashCode() + originMethodName.hashCode() + originMethodDesc.hashCode()
     }
 }
