@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.yl.lib.privacy_test.PrivacyProxySelfTest2
 import com.yl.lib.privacy_test.TestMethod
 import com.yl.lib.privacy_test.TestMethodInJava
 import com.yl.lib.privacysentry.calendar.CalenderActivity
@@ -104,6 +105,10 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("mainProcess currentProcessName is $currentProcessName  is $mainProcess")
 
             PrivacyProxyCallJava.getRunningTasks(
+                getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager,
+                1
+            )
+            PrivacyProxySelfTest2.getRunningTasks456(
                 getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager,
                 1
             )
