@@ -1,6 +1,5 @@
 package com.yl.lib.plugin.sentry.transform
 
-import com.yl.lib.plugin.sentry.extension.HookMethodManager
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import org.objectweb.asm.*
 import org.objectweb.asm.commons.AdviceAdapter
