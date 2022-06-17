@@ -105,7 +105,7 @@ class SentryTraceMethodAdapter : AdviceAdapter {
                 ReplaceMethodItem(
                     className!!,
                     methodName!!,
-                    owner,
+                    owner.replace("/","."),
                     name
                 )
             )

@@ -36,7 +36,7 @@ class ReplaceMethodManger {
             GFileUtils.deleteFileQuietly(resultFile)
             GFileUtils.writeFile(
                 objectToJsonString(
-                    replaceMethodMap.toList().sortedByDescending { it.second.count }
+                    replaceMethodMap.toList().sortedByDescending { it.second.count }.toMap()
                 ), resultFile
             )
         }
