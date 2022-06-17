@@ -1,7 +1,9 @@
 package com.yl.lib.plugin.sentry.transform
 
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
-import org.objectweb.asm.*
+import org.objectweb.asm.AnnotationVisitor
+import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.commons.AdviceAdapter
 
 /**
@@ -54,7 +56,7 @@ class SentryTraceClassAdapter : ClassVisitor {
     ): MethodVisitor {
         return if (!bHookClass) {
             super.visitMethod(access, name, descriptor, signature, exceptions)
-        }else{
+        } else {
             var methodVisitor = cv.visitMethod(access, name, descriptor, signature, exceptions)
             SentryTraceMethodAdapter(
                 api,
@@ -62,7 +64,8 @@ class SentryTraceClassAdapter : ClassVisitor {
                 access,
                 name,
                 descriptor,
-                privacyExtension
+                privacyExtension,
+                className
             )
         }
     }
@@ -72,16 +75,20 @@ class SentryTraceClassAdapter : ClassVisitor {
 class SentryTraceMethodAdapter : AdviceAdapter {
 
     private var privacyExtension: PrivacyExtension? = null
-
+    private var className:String? = null
+    private var methodName:String? = null
     constructor(
         api: Int,
         methodVisitor: MethodVisitor?,
         access: Int,
         name: String?,
         descriptor: String?,
-        privacyExtension: PrivacyExtension?
+        privacyExtension: PrivacyExtension?,
+        className:String
     ) : super(api, methodVisitor, access, name, descriptor) {
         this.privacyExtension = privacyExtension
+        this.methodName = name
+        this.className = className
     }
 
     // 访问方法指令
@@ -94,9 +101,17 @@ class SentryTraceMethodAdapter : AdviceAdapter {
     ) {
         var methodItem = HookMethodManager.MANAGER.findHookItemByName(name, owner, descriptor)
         if (methodItem != null) {
+            ReplaceMethodManger.MANAGER.addReplaceMethodItem(
+                ReplaceMethodItem(
+                    className!!,
+                    methodName!!,
+                    owner,
+                    name
+                )
+            )
             mv.visitMethodInsn(
                 INVOKESTATIC,
-                methodItem.proxyClassName.replace(".","/"),
+                methodItem.proxyClassName.replace(".", "/"),
                 methodItem.proxyMethodName,
                 methodItem.proxyMethodDesc,
                 false
@@ -108,8 +123,16 @@ class SentryTraceMethodAdapter : AdviceAdapter {
 
     //访问某个成员变量，变量拦截目前只有android/os/Build.SERIAL,所以直接写死了。
     override fun visitFieldInsn(opcode: Int, owner: String?, name: String?, descriptor: String?) {
-        if (owner.equals("android/os/Build") && descriptor.equals("Ljava/lang/String;") && name.equals("SERIAL")){
-            mv.visitFieldInsn(opcode,"com.yl.lib.privacy_proxy.ProxyProxyField".replace(".","/"),"proxySerial",descriptor)
+        if (owner.equals("android/os/Build") && descriptor.equals("Ljava/lang/String;") && name.equals(
+                "SERIAL"
+            )
+        ) {
+            mv.visitFieldInsn(
+                opcode,
+                "com.yl.lib.privacy_proxy.ProxyProxyField".replace(".", "/"),
+                "proxySerial",
+                descriptor
+            )
             return
         }
         super.visitFieldInsn(opcode, owner, name, descriptor)
