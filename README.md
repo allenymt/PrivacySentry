@@ -3,7 +3,7 @@
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
     
 ## 更新日志
-    2022-04-22(1.0.5)
+    2022-06-16(1.0.5)
         1. 修复Settings.System获取Android_id,未拦截到的问题
         2. 支持业务方配置同类型的hook函数覆盖自带的hook函数
         3. 新增MIT开源协议
@@ -46,7 +46,7 @@
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
-	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.4'
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.5'
 	     }
 	}
 ```
@@ -60,10 +60,10 @@
         
         dependencies {
             // aar依赖
-            def privacyVersion = "1.0.4"
+            def privacyVersion = "1.0.5"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
-	    //如果不想使用库中本身的代理方法，可以不引入这个类，自己实现
+	    //如果不想使用库中本身的代理方法，可以不引入这个aar，自己实现
             implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
         }
         
