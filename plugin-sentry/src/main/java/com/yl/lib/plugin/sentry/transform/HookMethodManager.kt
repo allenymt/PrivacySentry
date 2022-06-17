@@ -8,7 +8,6 @@ package com.yl.lib.plugin.sentry.transform
 open class HookMethodManager {
     object MANAGER {
         private var hookMethodList: HashSet<HookMethodItem> = HashSet()
-
         /**
          * 检测是否需要替换某个方法
          * @param methodName String
