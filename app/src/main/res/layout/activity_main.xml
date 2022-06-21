@@ -107,17 +107,25 @@
                 android:text="跳转联系人测试Ac" />
 
             <Button
+                android:id="@+id/btn_thread_cache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="多线程缓存测试" />
+
+            <Button
+                android:id="@+id/btn_test_sensor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="注册传感器" />
+
+            <Button
                 android:id="@+id/btn_force_finish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="结束当前检测-导出结果" />
 
 
-            <Button
-                android:id="@+id/btn_thread_cache"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="多线程缓存测试" />
+
         </LinearLayout>
 
     </ScrollView>
