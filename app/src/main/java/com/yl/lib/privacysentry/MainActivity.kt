@@ -153,6 +153,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ContactActivity::class.java))
         }
 
+        findViewById<Button>(R.id.btn_test_sensor).setOnClickListener {
+            PrivacyMethod.PrivacyMethod.testSensor(this)
+        }
 
         findViewById<Button>(R.id.btn_thread_cache).setOnClickListener {
             for (index in 1..20) {

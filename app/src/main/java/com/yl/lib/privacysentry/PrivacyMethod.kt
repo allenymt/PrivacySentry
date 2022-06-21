@@ -42,7 +42,12 @@ import android.content.ContentUris
 import android.content.ContentValues
 
 import android.content.ContentResolver
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventCallback
+import android.hardware.SensorManager
 import android.net.Uri
+import android.util.Log
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import java.lang.StringBuilder
 
@@ -409,6 +414,68 @@ class PrivacyMethod {
                 android.os.Build.getSerial()
             } else {
                 android.os.Build.SERIAL
+            }
+        }
+
+        fun  testSensor(context:Context){
+            var sensorManager: SensorManager? = null
+            var callback: SensorEventCallback? = null
+            // 摇一摇注册
+            // 摇一摇注册
+            sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            var sensor: Sensor?  = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+            // 获得重力传感器
+            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+            // 注册
+            var lastUpdateTime: Long = 0
+            var lastX = 0f
+            var lastY = 0f
+            var lastZ = 0f
+            if (sensor != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    callback = object : SensorEventCallback() {
+                        override fun onSensorChanged(event: SensorEvent) {
+                            // 现在检测时间
+                            val currentUpdateTime = System.currentTimeMillis()
+                            // 两次检测的时间间隔
+                            val timeInterval: Long = currentUpdateTime - lastUpdateTime
+
+                            // 判断是否达到了检测时间间隔
+                            if (timeInterval < 70) return
+                            // 现在的时间变成last时间
+                            lastUpdateTime = currentUpdateTime
+
+                            // 获得x,y,z坐标
+                            val x = event.values[0]
+                            val y = event.values[1]
+                            val z = event.values[2]
+
+                            // 获得x,y,z的变化值
+                            val deltaX: Float = x - lastX
+                            val deltaY: Float = y - lastY
+                            val deltaZ: Float = z - lastZ
+
+                            // 将现在的坐标变成last坐标
+                            lastX = x
+                            lastY = y
+                            lastZ = z
+//                           PrivacyLog.i(" 摇了摇 $deltaX,$deltaY,$deltaZ")
+                            val speed =
+                                Math.sqrt((deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ).toDouble()) / timeInterval * 10000
+                            // 达到速度阀值，发出提示
+                            if (speed >= 3000) {
+                                PrivacyLog.i(" 摇了摇  😂😂")
+                                sensorManager.unregisterListener(this)
+                            }
+                        }
+                    }
+                    sensorManager.registerListener(
+                        callback,
+                        sensor,
+                        SensorManager.SENSOR_DELAY_GAME
+                    )
+                }
             }
         }
     }
