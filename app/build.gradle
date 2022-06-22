@@ -79,5 +79,5 @@ dependencies {
 privacy {
     // 设置免hook的名单
     blackList = []
-//    replaceFileName = "replace.json"
+    replaceFileName = "replace.json"
 }
