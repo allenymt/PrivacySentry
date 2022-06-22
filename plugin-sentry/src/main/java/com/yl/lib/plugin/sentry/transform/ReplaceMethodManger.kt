@@ -3,6 +3,7 @@ package com.yl.lib.plugin.sentry.transform
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.annotation.JSONField
 import com.alibaba.fastjson.serializer.SerializerFeature
+import org.gradle.api.Project
 import org.gradle.util.GFileUtils
 import java.io.File
 
@@ -25,14 +26,16 @@ class ReplaceMethodManger {
             replaceMethodMap[key] = replaceMethodData
         }
 
-        fun flushToFile(fileName: String) {
+        fun flushToFile(fileName: String,project: Project) {
+            project.logger.debug("yulun-flushToFile2")
             if (fileName == null || replaceMethodMap.isEmpty()) {
                 return
             }
 
-
             var resultFile = File(fileName)
-            GFileUtils.mkdirs(resultFile)
+            if (!resultFile.parentFile.exists()){
+                GFileUtils.mkdirs(resultFile)
+            }
             GFileUtils.deleteFileQuietly(resultFile)
             GFileUtils.writeFile(
                 objectToJsonString(

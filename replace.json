@@ -1,5 +1,5 @@
 {
-	"android/content/ContentResolver.insert":{
+	"android.content.ContentResolver.insert":{
 		"count":9,
 		"originMethodList":[
 			{
@@ -40,7 +40,7 @@
 			}
 		]
 	},
-	"android/content/ContentResolver.query":{
+	"android.content.ContentResolver.query":{
 		"count":7,
 		"originMethodList":[
 			{
@@ -73,7 +73,7 @@
 			}
 		]
 	},
-	"android/telephony/TelephonyManager.getDeviceId":{
+	"android.telephony.TelephonyManager.getDeviceId":{
 		"count":4,
 		"originMethodList":[
 			{
@@ -94,7 +94,24 @@
 			}
 		]
 	},
-	"android/telephony/TelephonyManager.getSubscriberId":{
+	"android.app.ActivityManager.getRunningTasks":{
+		"count":3,
+		"originMethodList":[
+			{
+				"originClassName":"com.yl.lib.privacy_test.TestMethodInJava",
+				"originMethodName":"testRunningTask"
+			},
+			{
+				"originClassName":"com.yl.lib.privacy_test.TestMethod$PrivacyMethod",
+				"originMethodName":"testRunningTask"
+			},
+			{
+				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
+				"originMethodName":"testRunningTask"
+			}
+		]
+	},
+	"android.telephony.TelephonyManager.getSubscriberId":{
 		"count":3,
 		"originMethodList":[
 			{
@@ -111,24 +128,7 @@
 			}
 		]
 	},
-	"android/app/ActivityManager.getRunningTasks":{
-		"count":3,
-		"originMethodList":[
-			{
-				"originClassName":"com.yl.lib.privacy_test.TestMethodInJava",
-				"originMethodName":"testRunningTask"
-			},
-			{
-				"originClassName":"com.yl.lib.privacy_test.TestMethod$PrivacyMethod",
-				"originMethodName":"testRunningTask"
-			},
-			{
-				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
-				"originMethodName":"testRunningTask"
-			}
-		]
-	},
-	"android/app/ActivityManager.getRunningAppProcesses":{
+	"android.app.ActivityManager.getRunningAppProcesses":{
 		"count":3,
 		"originMethodList":[
 			{
@@ -145,33 +145,7 @@
 			}
 		]
 	},
-	"android/content/ClipboardManager.getPrimaryClip":{
-		"count":2,
-		"originMethodList":[
-			{
-				"originClassName":"com.yl.lib.privacy_test.TestMethod$PrivacyMethod",
-				"originMethodName":"testHookCms"
-			},
-			{
-				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
-				"originMethodName":"testHookCms"
-			}
-		]
-	},
-	"android/telephony/TelephonyManager.getSimSerialNumber":{
-		"count":2,
-		"originMethodList":[
-			{
-				"originClassName":"com.yl.lib.privacy_test.TestMethod$PrivacyMethod",
-				"originMethodName":"getICCID"
-			},
-			{
-				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
-				"originMethodName":"getICCID"
-			}
-		]
-	},
-	"android/content/pm/PackageManager.getInstalledPackages":{
+	"android.content.pm.PackageManager.getInstalledPackages":{
 		"count":2,
 		"originMethodList":[
 			{
@@ -184,33 +158,7 @@
 			}
 		]
 	},
-	"android/telephony/TelephonyManager.getImei":{
-		"count":2,
-		"originMethodList":[
-			{
-				"originClassName":"com.yl.lib.privacy_test.TestMethod$PrivacyMethod",
-				"originMethodName":"getIMEI"
-			},
-			{
-				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
-				"originMethodName":"getIMEI"
-			}
-		]
-	},
-	"android/net/wifi/WifiInfo.getMacAddress":{
-		"count":2,
-		"originMethodList":[
-			{
-				"originClassName":"com.yl.lib.privacy_test.TestMethod$PrivacyMethod",
-				"originMethodName":"getMacRaw"
-			},
-			{
-				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
-				"originMethodName":"getMacRaw"
-			}
-		]
-	},
-	"android/content/ClipboardManager.setPrimaryClip":{
+	"android.content.ClipboardManager.setPrimaryClip":{
 		"count":2,
 		"originMethodList":[
 			{
@@ -223,7 +171,7 @@
 			}
 		]
 	},
-	"java/net/NetworkInterface.getHardwareAddress":{
+	"java.net.NetworkInterface.getHardwareAddress":{
 		"count":2,
 		"originMethodList":[
 			{
@@ -236,7 +184,7 @@
 			}
 		]
 	},
-	"android/provider/Settings$Secure.getString":{
+	"android.provider.Settings$Secure.getString":{
 		"count":2,
 		"originMethodList":[
 			{
@@ -249,16 +197,68 @@
 			}
 		]
 	},
-	"android/content/ClipboardManager.getText":{
-		"count":1,
+	"android.content.ClipboardManager.getPrimaryClip":{
+		"count":2,
 		"originMethodList":[
+			{
+				"originClassName":"com.yl.lib.privacy_test.TestMethod$PrivacyMethod",
+				"originMethodName":"testHookCms"
+			},
 			{
 				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
 				"originMethodName":"testHookCms"
 			}
 		]
 	},
-	"android/os/Build.getSerial":{
+	"android.telephony.TelephonyManager.getImei":{
+		"count":2,
+		"originMethodList":[
+			{
+				"originClassName":"com.yl.lib.privacy_test.TestMethod$PrivacyMethod",
+				"originMethodName":"getIMEI"
+			},
+			{
+				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
+				"originMethodName":"getIMEI"
+			}
+		]
+	},
+	"android.telephony.TelephonyManager.getSimSerialNumber":{
+		"count":2,
+		"originMethodList":[
+			{
+				"originClassName":"com.yl.lib.privacy_test.TestMethod$PrivacyMethod",
+				"originMethodName":"getICCID"
+			},
+			{
+				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
+				"originMethodName":"getICCID"
+			}
+		]
+	},
+	"android.net.wifi.WifiInfo.getMacAddress":{
+		"count":2,
+		"originMethodList":[
+			{
+				"originClassName":"com.yl.lib.privacy_test.TestMethod$PrivacyMethod",
+				"originMethodName":"getMacRaw"
+			},
+			{
+				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
+				"originMethodName":"getMacRaw"
+			}
+		]
+	},
+	"android.hardware.SensorManager.registerListener":{
+		"count":1,
+		"originMethodList":[
+			{
+				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
+				"originMethodName":"testSensor"
+			}
+		]
+	},
+	"android.os.Build.getSerial":{
 		"count":1,
 		"originMethodList":[
 			{
@@ -267,25 +267,7 @@
 			}
 		]
 	},
-	"android/provider/Settings$System.getString":{
-		"count":1,
-		"originMethodList":[
-			{
-				"originClassName":"com.yl.lib.privacy_test.TestMethodInJava",
-				"originMethodName":"getAndroidIdSystem"
-			}
-		]
-	},
-	"android/bluetooth/BluetoothAdapter.getAddress":{
-		"count":1,
-		"originMethodList":[
-			{
-				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
-				"originMethodName":"getMacRaw"
-			}
-		]
-	},
-	"android/content/pm/PackageManager.queryIntentActivities":{
+	"android.content.pm.PackageManager.queryIntentActivities":{
 		"count":1,
 		"originMethodList":[
 			{
@@ -294,25 +276,7 @@
 			}
 		]
 	},
-	"android/telephony/TelephonyManager.getMeid":{
-		"count":1,
-		"originMethodList":[
-			{
-				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
-				"originMethodName":"getMeid"
-			}
-		]
-	},
-	"android/content/pm/PackageManager.queryIntentActivityOptions":{
-		"count":1,
-		"originMethodList":[
-			{
-				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
-				"originMethodName":"queryActivityInfo"
-			}
-		]
-	},
-	"android/content/ClipboardManager.getPrimaryClipDescription":{
+	"android.content.ClipboardManager.setText":{
 		"count":1,
 		"originMethodList":[
 			{
@@ -321,7 +285,52 @@
 			}
 		]
 	},
-	"android/content/ClipboardManager.setText":{
+	"android.content.ClipboardManager.getPrimaryClipDescription":{
+		"count":1,
+		"originMethodList":[
+			{
+				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
+				"originMethodName":"testHookCms"
+			}
+		]
+	},
+	"android.bluetooth.BluetoothAdapter.getAddress":{
+		"count":1,
+		"originMethodList":[
+			{
+				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
+				"originMethodName":"getMacRaw"
+			}
+		]
+	},
+	"android.telephony.TelephonyManager.getMeid":{
+		"count":1,
+		"originMethodList":[
+			{
+				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
+				"originMethodName":"getMeid"
+			}
+		]
+	},
+	"android.provider.Settings$System.getString":{
+		"count":1,
+		"originMethodList":[
+			{
+				"originClassName":"com.yl.lib.privacy_test.TestMethodInJava",
+				"originMethodName":"getAndroidIdSystem"
+			}
+		]
+	},
+	"android.content.pm.PackageManager.queryIntentActivityOptions":{
+		"count":1,
+		"originMethodList":[
+			{
+				"originClassName":"com.yl.lib.privacysentry.PrivacyMethod$PrivacyMethod",
+				"originMethodName":"queryActivityInfo"
+			}
+		]
+	},
+	"android.content.ClipboardManager.getText":{
 		"count":1,
 		"originMethodList":[
 			{
