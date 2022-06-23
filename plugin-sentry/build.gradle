@@ -10,13 +10,15 @@ dependencies {
     // ASM V7.1
     implementation group: 'org.ow2.asm', name: 'asm', version: '7.1'
     implementation group: 'org.ow2.asm', name: 'asm-commons', version: '7.1'
+
+    implementation "com.alibaba:fastjson:1.1.68.android"
 }
 
 if (rootProject.ext.plugin_local_debug) {
     // 插件本地调试补充
     apply plugin: 'maven'
     group = 'com.yl.lib.plugin'
-    version = '0.0.1.55-SNAPSHOT'
+    version = '0.0.1.69-SNAPSHOT'
     uploadArchives {
         repositories {
             mavenDeployer {

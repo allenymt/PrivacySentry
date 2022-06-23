@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.yl.lib.privacy_test.PrivacyProxySelfTest2
 import com.yl.lib.privacy_test.TestMethod
 import com.yl.lib.privacy_test.TestMethodInJava
 import com.yl.lib.privacysentry.calendar.CalenderActivity
@@ -107,6 +108,10 @@ class MainActivity : AppCompatActivity() {
                 getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager,
                 1
             )
+            PrivacyProxySelfTest2.getRunningTasks456(
+                getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager,
+                1
+            )
         }
 
 
@@ -148,6 +153,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ContactActivity::class.java))
         }
 
+        findViewById<Button>(R.id.btn_test_sensor).setOnClickListener {
+            PrivacyMethod.PrivacyMethod.testSensor(this)
+        }
 
         findViewById<Button>(R.id.btn_thread_cache).setOnClickListener {
             for (index in 1..20) {

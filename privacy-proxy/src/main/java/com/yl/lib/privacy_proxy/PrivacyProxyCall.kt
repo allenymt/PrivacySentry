@@ -5,6 +5,7 @@ import android.app.ActivityManager
 import android.bluetooth.BluetoothAdapter
 import android.content.*
 import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
@@ -23,7 +24,6 @@ import android.provider.Settings
 import android.telephony.CellInfo
 import android.telephony.TelephonyManager
 import androidx.annotation.Keep
-import androidx.annotation.RequiresApi
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
@@ -93,11 +93,11 @@ open class PrivacyProxyCall {
                 return emptyList()
             }
 
-            var appProcess : List<ActivityManager.RunningAppProcessInfo> = emptyList()
-            try{
+            var appProcess: List<ActivityManager.RunningAppProcessInfo> = emptyList()
+            try {
                 // 线上三星11和12的机子 有上报，量不大
                 appProcess = manager.runningAppProcesses
-            }catch (e : Throwable){
+            } catch (e: Throwable) {
                 e.printStackTrace()
             }
             return appProcess
@@ -115,6 +115,58 @@ open class PrivacyProxyCall {
                 return emptyList()
             }
             return manager.getInstalledPackages(flags)
+        }
+
+        @PrivacyMethodProxy(
+            originalClass = PackageManager::class,
+            originalMethod = "getInstalledPackagesAsUser",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        @JvmStatic
+        fun getInstalledPackagesAsUser(
+            manager: PackageManager,
+            flags: Int,
+            userId: Int
+        ): List<PackageInfo> {
+            doFilePrinter(
+                "getInstalledPackagesAsUser",
+                methodDocumentDesc = "安装包-getInstalledPackagesAsUser"
+            )
+            return getInstalledPackages(manager, flags);
+        }
+
+        @PrivacyMethodProxy(
+            originalClass = PackageManager::class,
+            originalMethod = "getInstalledApplications",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        @JvmStatic
+        fun getInstalledApplications(manager: PackageManager, flags: Int): List<ApplicationInfo> {
+            doFilePrinter(
+                "getInstalledApplications",
+                methodDocumentDesc = "安装包-getInstalledApplications"
+            )
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                return emptyList()
+            }
+            return manager.getInstalledApplications(flags)
+        }
+
+        @PrivacyMethodProxy(
+            originalClass = PackageManager::class,
+            originalMethod = "getInstalledApplicationsAsUser",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        @JvmStatic
+        fun getInstalledApplicationsAsUser(
+            manager: PackageManager, flags: Int,
+            userId: Int
+        ): List<ApplicationInfo> {
+            doFilePrinter(
+                "getInstalledApplicationsAsUser",
+                methodDocumentDesc = "安装包-getInstalledApplicationsAsUser"
+            )
+            return getInstalledApplications(manager, flags);
         }
 
 
@@ -423,8 +475,6 @@ open class PrivacyProxyCall {
             }
             manager.requestLocationUpdates(provider, minTime, minDistance, listener)
         }
-
-
 
 
         var objectImeiLock = Object()
@@ -983,10 +1033,9 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getStringSystem(contentResolver: ContentResolver?, type: String?): String? {
-            return getString(contentResolver,type)
+            return getString(contentResolver, type)
         }
 
-        @RequiresApi(Build.VERSION_CODES.O)
         @PrivacyMethodProxy(
             originalClass = android.os.Build::class,
             originalMethod = "getSerial",

@@ -62,6 +62,11 @@ class PrivacySentryTransform : Transform {
                 transformInvocation.isIncremental, privacyExtension
             )
         }
+        project.logger.info("yulun-flushToFile1")
+        // 写入被替换所有的类和文件
+        privacyExtension.replaceFileName?.let {
+            ReplaceMethodManger.MANAGER.flushToFile(privacyExtension.replaceFileName!!,project)
+        }
     }
 
     // 处理jar

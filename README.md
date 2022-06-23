@@ -1,55 +1,82 @@
 # PrivacySentry
-    android隐私合规检测
-
-## TODO
-    2022-04-22(1.0.4)
+    android隐私合规检测，不仅仅是是检测，碰到第三方SDK不好解决的或者修复周期很长的，我们等不了那么长时间，可以通过这个库去动态拦截
+    例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
+    
+## 更新日志
+    2022-06-16(0.0.7)
+        1. 新增hook 传感器方法
+        2. 新增静态扫描，支持产出敏感函数hook列表
+    2022-06-16(0.0.6)
+        1. 修复Settings.System获取Android_id,未拦截到的问题
+        2. 支持业务方配置同类型的hook函数覆盖自带的hook函数
+    2022-04-22(0.0.5)
         1. 对imei、imsi、mac、android_id、meid、serial等不可变字段，单进程内只读取一次
         2. 精简堆栈，删除重复部分
         3. 修复Android_id拦截问题
-        4. 支持变量hook，主要是Build.SERIAL
+    2022-03-04(0.0.4)
+        支持变量hook，主要是Build.SERIAL
+    2022-1-18(0.0.3)
+        1. 编译期注解+hook方案
+        2. 支持业务方自定义配置拦截，支持游客模式
+    2021-12-26(0.0.2)
+        1. Asm修改字节码，hook敏感函数
+    2021-12-02(0.0.1)
+        1. 支持多进程
+        2. 日志加上时间戳，方便阅读
+        3. 优化文件分时段写入
+        4. pms增加部分hook方法
+    
 
-## 优势
-- 全面高效:  对于业务开发无感知，只需要配置一次即可生效
-- 全局监控：包括应用自身和第三方SDK，支持监控和修改敏感函数
-- 开发简单:   后续新增监控简单，只需配置一个方法注解即可，不仅仅是敏感函数，支持任意函数的监控
-- 可扩展性强：完全自定义和研发，支持输出调用堆栈记录，支持游客模式
 
-## 技术文档
-[传送门](http://docs.vdian.net/pages/viewpage.action?pageId=129578422)
+
+## TODO
+1. 有其他问题欢迎提issue
+2. 项目里如果有引入高德地图or openInstall，先加黑 blackList = ["com.loc","com.amap.api","io.openinstall.sdk"], asm的版本有冲突
+3. 动态加载的代码拦截不到的
 
 ## 如何使用
 
 ```
-   添加插件依赖
-    classpath "com.wdian.android.lib:privacy-plugin:0.0.5"
+    1. 在根目录的build.gralde下添加
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+	
+	buildscript {
+	     dependencies {
+	         // 添加插件依赖
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.5'
+	     }
+	}
 ```
 
+
+
 ```
-   在主项目的build.gradle下依赖插件和配置
-   apply plugin: 'privacy-sentry-plugin'
-   
-   privacy {
-    // 设置免hook的名单
-    blackList = []
-   }
+    2. 在项目中的build.gralde下添加
+        // 在主项目里添加插件依赖
+        apply plugin: 'privacy-sentry-plugin'
+        
+        dependencies {
+            // aar依赖
+            def privacyVersion = "1.0.5"
+            implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
+            implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
+	    //如果不想使用库中本身的代理方法，可以不引入这个aar，自己实现
+            implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
+        }
+        
+        // 黑名单配置，可以设置这部分包名不会被修改字节码
+        // 项目里如果有引入高德地图，先加黑 blackList = ["com.loc","com.amap.api"], asm的版本有冲突
+        // 如果需要生成静态扫描文件， 默认名是replace.json
+        privacy {
+            blackList = []
+            replaceFileName = "replace.json"
+        }
 
-
-   def privacyVersion = "0.0.5"
-   implementation ("com.wdian.android.lib:privacy-hook:${privacyVersion}"){
-            exclude group: 'androidx.appcompat'
-            exclude group: 'androidx.core'
-            exclude group: 'com.google.android.material'
-        }
-    implementation ("com.wdian.android.lib:privacy-annotation:${privacyVersion}"){
-            exclude group: 'androidx.appcompat'
-            exclude group: 'androidx.core'
-            exclude group: 'com.google.android.material'
-        }
-    implementation ("com.wdian.android.lib:privacy-proxy:${privacyVersion}"){
-            exclude group: 'androidx.appcompat'
-            exclude group: 'androidx.core'
-            exclude group: 'com.google.android.material'
-        }
 ```
 
 ```
@@ -57,23 +84,14 @@
 ```
 
 ```
-    简易版初始化
-    在代码中调用，越早越好，建议在application中调用
-    kotlin:PrivacySentry.Privacy.init(this)
-    java:PrivacySentry.Privacy.INSTANCE.init(this);
-```
-
-
-```
     完成功能的初始化
-      // 完整版配置
-                PrivacySentryBuilder builder = new PrivacySentryBuilder()
+    PrivacySentryBuilder builder = new PrivacySentryBuilder()
                         // 自定义文件结果的输出名
                         .configResultFileName("buyer_privacy")
-                        // 配置游客模式
-                        .configVisitorModel(BeforeApplicationInitHelper.getInstance(application.getApplicationContext()).isNewUser())
-                        // 配置写入文件日志
-                        .enableFileResult("true".equals(BuildConfig.enablePrivacyPrintFile))
+                        // 配置游客模式，true打开游客模式，false关闭游客模式
+                        .configVisitorModel(false)
+                        // 配置写入文件日志 , 线上包这个开关不要打开！！！！，true打开文件输入，false关闭文件输入
+                        .enableFileResult(true)
                         // 持续写入文件30分钟
                         .configWatchTime(30 * 60 * 1000)
                         // 文件输出后的回调
@@ -84,10 +102,9 @@
 
                             }
                         });
-                // 添加默认结果输出，包含log输出和文件输出
-                PrivacySentry.Privacy.INSTANCE.init(application, builder);
+    // 添加默认结果输出，包含log输出和文件输出
+    PrivacySentry.Privacy.INSTANCE.init(application, builder);
 ```
-
 
 ```
     在隐私协议确认的时候调用，这一步非常重要！，一定要加
@@ -95,13 +112,10 @@
     java:PrivacySentry.Privacy.INSTANCE.updatePrivacyShow();
 ```
 
-
 ```
     关闭游客模式
     PrivacySentry.Privacy.INSTANCE.closeVisitorModel();
 ```
-
-
 ```
     支持自定义配置hook函数
     /**
@@ -180,5 +194,32 @@ open class PrivacyProxyResolver {
 -     为什么不搞基于lint的排查方式？ 工信部对于运行期 敏感函数的调用时机和次数都有限制，代码扫描解决不了这些问题
 
 
+## 支持的hook函数列表
+
+支持hook以下功能函数：
+
+- 当前运行进程和任务
+
+- 系统剪贴板服务
+
+- 读取设备应用列表
+
+- 读取 Android SN(Serial,包括方法和变量)
+
+- 读写联系人、日历、本机号码
+
+- 获取定位、基站信息、wifi信息
+
+- Mac 地址、IP 地址
+
+- 读取 IMEI(DeviceId)、MEID、IMSI、ADID(AndroidID)
+
+- 手机可用传感器
+
+
+
+
+
+
 ## 结语
-    整体代码很简单，有问题可以直接提~
+    整体代码很简单，有问题可以直接提~ (兄弟们，走过路过请给个star~~~)

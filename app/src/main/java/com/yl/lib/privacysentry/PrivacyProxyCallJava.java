@@ -18,11 +18,6 @@ import java.util.List;
 @PrivacyClassProxy
 public class PrivacyProxyCallJava {
 
-    @PrivacyMethodProxy(
-            originalClass = ActivityManager.class,
-            originalMethod = "getRunningTasks",
-            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
-    )
     public static List<ActivityManager.RunningTaskInfo> getRunningTasks(
             ActivityManager manager,
             int maxNum

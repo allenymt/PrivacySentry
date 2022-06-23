@@ -1,7 +1,5 @@
 package com.yl.lib.plugin.sentry.transform
 
-import com.yl.lib.plugin.sentry.extension.HookMethodItem
-import com.yl.lib.plugin.sentry.extension.HookMethodManager
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import org.objectweb.asm.AnnotationVisitor
@@ -109,12 +107,12 @@ class CollectHookMethodAdapter : AdviceAdapter {
 }
 
 class CollectHookAnnotationVisitor : AnnotationVisitor {
-    private var hookMethodItem: HookMethodItem
+    private var hookMethodItem:  HookMethodItem? = null
 
     constructor(
         api: Int,
         annotationVisitor: AnnotationVisitor?,
-        hookMethodItem: HookMethodItem
+        hookMethodItem: HookMethodItem?
     ) : super(api, annotationVisitor) {
         this.hookMethodItem = hookMethodItem
     }
@@ -123,31 +121,31 @@ class CollectHookAnnotationVisitor : AnnotationVisitor {
         super.visit(name, value)
         if (name.equals("originalClass")) {
             var classSourceName = value.toString()
-            hookMethodItem.originClassName =
+            hookMethodItem?.originClassName =
                 classSourceName.substring(1, classSourceName.length - 1)
         } else if (name.equals("originalMethod")) {
-            hookMethodItem.originMethodName = value.toString()
+            hookMethodItem?.originMethodName = value.toString()
         }
     }
 
     override fun visitEnum(name: String?, descriptor: String?, value: String?) {
         super.visitEnum(name, descriptor, value)
         if (name.equals("originalOpcode")) {
-            hookMethodItem.originMethodAccess = MethodInvokeOpcode.valueOf(value.toString()).opcode
+            hookMethodItem?.originMethodAccess = MethodInvokeOpcode.valueOf(value.toString()).opcode
         }
     }
 
     override fun visitEnd() {
         super.visitEnd()
-        if (hookMethodItem.originMethodAccess == MethodInvokeOpcode.INVOKESTATIC.opcode) {
-            hookMethodItem.originMethodDesc = hookMethodItem.proxyMethodDesc
-        } else if (hookMethodItem.originMethodAccess == MethodInvokeOpcode.INVOKEVIRTUAL.opcode ||
-            hookMethodItem.originMethodAccess == MethodInvokeOpcode.INVOKEINTERFACE.opcode
+        if (hookMethodItem?.originMethodAccess == MethodInvokeOpcode.INVOKESTATIC.opcode) {
+            hookMethodItem?.originMethodDesc = hookMethodItem?.proxyMethodDesc
+        } else if (hookMethodItem?.originMethodAccess == MethodInvokeOpcode.INVOKEVIRTUAL.opcode ||
+            hookMethodItem?.originMethodAccess == MethodInvokeOpcode.INVOKEINTERFACE.opcode
         ) {
             // 如果是调用实例方法，代理方法的描述会比原始方法多了一个实例，这里需要裁剪，方便做匹配 、、、
-            hookMethodItem.originMethodDesc =
-                hookMethodItem.proxyMethodDesc.replace("L${hookMethodItem.originClassName};", "")
+            hookMethodItem?.originMethodDesc =
+                hookMethodItem?.proxyMethodDesc?.replace("L${hookMethodItem?.originClassName};", "")
         }
-        HookMethodManager.MANAGER.appendHookMethod(hookMethodItem)
+        HookMethodManager.MANAGER.appendHookMethod(hookMethodItem!!)
     }
 }

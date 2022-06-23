@@ -66,7 +66,9 @@ dependencies {
         implementation "com.wdian.android.lib:privacy-proxy:${rootProject.ext.privacy_version}"
     }
 
-    implementation project(path: ':privacy-test')
+    implementation(project(path: ':privacy-test')) {
+        exclude module: 'privacy-annotation'
+    }
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -76,4 +78,5 @@ dependencies {
 privacy {
     // 设置免hook的名单
     blackList = []
+    replaceFileName = "replace.json"
 }
