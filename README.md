@@ -215,7 +215,7 @@ open class PrivacyProxyResolver {
 
 - 读取 IMEI(DeviceId)、MEID、IMSI、ADID(AndroidID)
 
-- 手机可用传感器
+- 手机可用传感器,传感器注册
 
 
 
