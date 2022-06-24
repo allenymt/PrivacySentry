@@ -1,8 +1,16 @@
 # PrivacySentry
     android隐私合规检测，不仅仅是是检测，碰到第三方SDK不好解决的或者修复周期很长的，我们等不了那么长时间，可以通过这个库去动态拦截
-    例如游客模式，这种通过xposed只能做检测，毕竟xpose不能带到线上，但是asm可以
+    例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
     
 ## 更新日志
+    2022-06-16(1.0.5)
+        1. 修复Settings.System获取Android_id,未拦截到的问题
+        2. 支持业务方配置同类型的hook函数覆盖自带的hook函数
+        3. 新增MIT开源协议
+    2022-04-22(1.0.4)
+        1. 对imei、imsi、mac、android_id、meid、serial等不可变字段，单进程内只读取一次
+        2. 精简堆栈，删除重复部分
+        3. 修复Android_id拦截问题
     2022-03-04(1.0.3)
         支持变量hook，主要是Build.SERIAL
     2022-1-18(1.0.2)
@@ -21,7 +29,8 @@
 
 ## TODO
 1. 有其他问题欢迎提issue
-2. 项目里如果有引入高德地图，先加黑 blackList = ["com.loc","com.amap.api"], asm的版本有冲突
+2. 项目里如果有引入高德地图or openInstall，先加黑 blackList = ["com.loc","com.amap.api","io.openinstall.sdk"], asm的版本有冲突
+3. 动态加载的代码拦截不到的
 
 ## 如何使用
 
@@ -37,7 +46,7 @@
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
-	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.3'
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.5'
 	     }
 	}
 ```
@@ -51,9 +60,10 @@
         
         dependencies {
             // aar依赖
-            def privacyVersion = "1.0.3"
+            def privacyVersion = "1.0.5"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
+	    //如果不想使用库中本身的代理方法，可以不引入这个aar，自己实现
             implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
         }
         
@@ -74,10 +84,10 @@
     PrivacySentryBuilder builder = new PrivacySentryBuilder()
                         // 自定义文件结果的输出名
                         .configResultFileName("buyer_privacy")
-                        // 配置游客模式
-                        .configVisitorModel(BeforeApplicationInitHelper.getInstance(application.getApplicationContext()).isNewUser())
-                        // 配置写入文件日志 , 线上包这个开关不要打开！！！！
-                        .enableFileResult("true".equals(BuildConfig.enablePrivacyPrintFile))
+                        // 配置游客模式，true打开游客模式，false关闭游客模式
+                        .configVisitorModel(false)
+                        // 配置写入文件日志 , 线上包这个开关不要打开！！！！，true打开文件输入，false关闭文件输入
+                        .enableFileResult(true)
                         // 持续写入文件30分钟
                         .configWatchTime(30 * 60 * 1000)
                         // 文件输出后的回调

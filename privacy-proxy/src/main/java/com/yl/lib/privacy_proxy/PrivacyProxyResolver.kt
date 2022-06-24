@@ -13,7 +13,7 @@ import androidx.annotation.RequiresApi
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
-import com.yl.lib.privacy_proxy.PrivacyProxyUtil.Util.doFilePrinter
+import com.yl.lib.sentry.hook.util.PrivacyProxyUtil.Util.doFilePrinter
 import com.yl.lib.sentry.hook.PrivacySentry
 
 /**

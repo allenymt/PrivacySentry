@@ -27,8 +27,9 @@ import androidx.annotation.RequiresApi
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
-import com.yl.lib.privacy_proxy.PrivacyProxyUtil.Util.doFilePrinter
+import com.yl.lib.sentry.hook.util.PrivacyProxyUtil.Util.doFilePrinter
 import com.yl.lib.sentry.hook.PrivacySentry
+import com.yl.lib.sentry.hook.util.PrivacyProxyUtil
 import java.net.NetworkInterface
 
 /**
@@ -964,10 +965,19 @@ open class PrivacyProxyCall {
                     return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
                 }
             }
-
         }
 
-        @RequiresApi(Build.VERSION_CODES.O)
+
+        @PrivacyMethodProxy(
+            originalClass = Settings.System::class,
+            originalMethod = "getString",
+            originalOpcode = MethodInvokeOpcode.INVOKESTATIC
+        )
+        @JvmStatic
+        fun getStringSystem(contentResolver: ContentResolver?, type: String?): String? {
+            return getString(contentResolver,type)
+        }
+
         @PrivacyMethodProxy(
             originalClass = android.os.Build::class,
             originalMethod = "getSerial",
