@@ -36,7 +36,7 @@ class ReplaceMethodManger {
                 GFileUtils.mkdirs(resultFile)
             }
             resultFile?.let {
-                GFileUtils.deleteFileQuietly(resultFile)
+                GFileUtils.deleteQuietly(resultFile)
             }
             GFileUtils.writeFile(
                 objectToJsonString(
