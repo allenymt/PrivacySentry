@@ -71,8 +71,10 @@ class DefaultFilePrint : BaseFilePrinter {
             return
         }
         if (PrivacySentry.Privacy.isFilePrintFinish()) {
+            PrivacyLog.i("FilePrintFinish $funName-$funAlias-$msg")
             return
         }
+
         PrivacyLog.i("DefaultFilePrint appendData $funName-$funAlias-$msg")
         privacyFunBeanList.add(PrivacyFunBean(funAlias, funName, msg, 1))
     }
