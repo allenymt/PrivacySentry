@@ -161,11 +161,13 @@ class PrivacySentry {
             )
         }
 
+        var replaceFileName = "replace.json"
+        var replaceFilePath = "${ctx?.getExternalFilesDir(null)}${File.separator}privacy${File.separator}$replaceFileName"
         fun checkMoveReplaceFile(context: Context){
             try {
-                val inputStream = context.assets.open("replace.json")
+                val inputStream = context.assets.open(replaceFileName)
                 val outFile =
-                    File("${context.getExternalFilesDir(null)}${File.separator}privacy${File.separator}replace.json")
+                    File(replaceFilePath)
                 val fos = FileOutputStream(outFile)
                 val buffer = ByteArray(1024)
                 var byteCount: Int
