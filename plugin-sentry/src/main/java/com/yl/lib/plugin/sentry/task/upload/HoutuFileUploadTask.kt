@@ -1,4 +1,4 @@
-package com.yl.lib.plugin.sentry.upload
+package com.yl.lib.plugin.sentry.task.upload
 
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import groovy.lang.Closure
@@ -25,7 +25,9 @@ import java.time.Duration
 /**
  * @author yulun
  * @since 2022-06-28 16:57
+ * 如果要结合上传搞，那就要在houtu开两个接口，一个负责存储链接，一个负责返回链接
  */
+@Deprecated(message = "暂时无用")
 open class HoutuFileUploadTask : DefaultTask() {
 
     override fun getName(): String {
@@ -33,7 +35,6 @@ open class HoutuFileUploadTask : DefaultTask() {
     }
 
     override fun doFirst(action: Action<in Task>): Task {
-        project.logger.info("HoutuFileUploadTask doUpload")
         return super.doFirst(action)
     }
 
