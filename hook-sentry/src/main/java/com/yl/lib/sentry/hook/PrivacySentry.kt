@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.text.TextUtils
 import com.yl.lib.sentry.hook.printer.BaseFilePrinter
 import com.yl.lib.sentry.hook.printer.BasePrinter
 import com.yl.lib.sentry.hook.printer.DefaultFilePrint
@@ -11,6 +12,7 @@ import com.yl.lib.sentry.hook.printer.PrintCallBack
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyUtil
 import java.io.File
+import java.io.FileOutputStream
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -157,6 +159,25 @@ class PrivacySentry {
                     }, watchTime = builder?.getWatchTime()
                 )
             )
+        }
+
+        fun checkMoveReplaceFile(context: Context){
+            try {
+                val inputStream = context.assets.open("replace.json")
+                val outFile =
+                    File("${context.getExternalFilesDir(null)}${File.separator}privacy${File.separator}replace.json")
+                val fos = FileOutputStream(outFile)
+                val buffer = ByteArray(1024)
+                var byteCount: Int
+                while (inputStream.read(buffer).also { byteCount = it } != -1) {
+                    fos.write(buffer, 0, byteCount)
+                }
+                fos.flush()
+                inputStream.close()
+                fos.close()
+            } catch (e:Exception){
+                e.printStackTrace()
+            }
         }
     }
 }

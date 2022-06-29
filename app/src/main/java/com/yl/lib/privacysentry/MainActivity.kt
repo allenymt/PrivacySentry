@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+
         findViewById<Button>(R.id.btn_deviceId).setOnClickListener {
             var deviceId = PrivacyMethod.PrivacyMethod.getDeviceId(this)
             PrivacyLog.i("deviceId is $deviceId")
@@ -203,6 +204,9 @@ class MainActivity : AppCompatActivity() {
             PrivacySentry.Privacy.updatePrivacyShow()
             PrivacySentry.Privacy.closeVisitorModel()
         }.create().show()
+
+        // 直接主线程里干了
+        PrivacySentry.Privacy.checkMoveReplaceFile(this)
     }
 
 
