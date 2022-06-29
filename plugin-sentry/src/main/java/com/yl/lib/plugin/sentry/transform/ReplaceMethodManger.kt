@@ -31,7 +31,7 @@ class ReplaceMethodManger {
                 return
             }
             project.logger.debug("flushToFile")
-            var resultFile = File(fileName)
+            var resultFile = File(project.buildDir.absolutePath+File.separator+fileName)
             if (resultFile?.parentFile != null && !resultFile.parentFile.exists()) {
                 GFileUtils.mkdirs(resultFile)
             }
