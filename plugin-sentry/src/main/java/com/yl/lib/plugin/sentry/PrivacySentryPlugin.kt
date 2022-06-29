@@ -55,27 +55,28 @@ class PrivacySentryPlugin : Plugin<Project> {
 //            }
 //        }
 
-        // replaceFile 生成完后，把文件挪到assets目录下
-        project.afterEvaluate {
-            android.applicationVariants.forEach { variant ->
-                var variantName = variant.name.capitalize()
-                var pluginHelper = AndroidGradlePluginHelper(project, variant)
-                var moveTask = project.tasks.findByName("MoveAssetsTask") as MoveAssetsTask
-                moveTask.fileName = privacyExtension.replaceFileName
-                moveTask.assetsPathList?.add(pluginHelper?.mergedAssetsDir?.absolutePath + File.separator + "privacy" + File.separator + privacyExtension.replaceFileName)
-                var transformTask = project.tasks.withType(TransformTask::class.java)
-                var privacySentryTask =
-                    transformTask.first { task ->
-                        task.variantName.equals(
-                            variantName,
-                            ignoreCase = true
-                        ) && task.transform is PrivacySentryTransform
-                    }
-                project.logger.info("project MoveAssetsTask finalizedBy privacySentryTask variantName is ${privacySentryTask.variantName} MoveAssetsTask is $moveTask $variantName after fileName is ${moveTask.fileName} ")
-                pluginHelper.mergeAssetsTask.finalizedBy(moveTask)
-                moveTask.mustRunAfter(privacySentryTask)
+        if (privacyExtension.bEnableAddAssetsFile){
+            // replaceFile 生成完后，把文件挪到assets目录下
+            project.afterEvaluate {
+                android.applicationVariants.forEach { variant ->
+                    var variantName = variant.name.capitalize()
+                    var pluginHelper = AndroidGradlePluginHelper(project, variant)
+                    var moveTask = project.tasks.findByName("MoveAssetsTask") as MoveAssetsTask
+                    moveTask.fileName = privacyExtension.replaceFileName
+                    moveTask.assetsPathList?.add(pluginHelper?.mergedAssetsDir?.absolutePath + File.separator + "privacy" + File.separator + privacyExtension.replaceFileName)
+                    var transformTask = project.tasks.withType(TransformTask::class.java)
+                    var privacySentryTask =
+                        transformTask.first { task ->
+                            task.variantName.equals(
+                                variantName,
+                                ignoreCase = true
+                            ) && task.transform is PrivacySentryTransform
+                        }
+                    project.logger.info("project MoveAssetsTask finalizedBy privacySentryTask variantName is ${privacySentryTask.variantName} MoveAssetsTask is $moveTask $variantName after fileName is ${moveTask.fileName} ")
+                    pluginHelper.mergeAssetsTask.finalizedBy(moveTask)
+                    moveTask.mustRunAfter(privacySentryTask)
+                }
             }
         }
-
     }
 }
