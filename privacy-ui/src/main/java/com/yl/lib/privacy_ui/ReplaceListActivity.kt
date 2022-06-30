@@ -6,7 +6,6 @@ import android.widget.ProgressBar
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import com.yl.lib.sentry.hook.PrivacySentry
-import com.yl.lib.sentry.hook.R
 import java.io.FileInputStream
 import java.lang.Exception
 
@@ -35,7 +34,7 @@ class ReplaceListActivity : AppCompatActivity() {
         progressBar.showContextMenu()
         try{
             var fis = FileInputStream(PrivacySentry.Privacy.replaceFilePath)
-            fis.re
+//            fis.re
         }catch (e:Exception){
             e.printStackTrace()
         }
