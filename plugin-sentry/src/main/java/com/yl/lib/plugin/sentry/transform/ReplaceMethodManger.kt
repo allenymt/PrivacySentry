@@ -27,22 +27,17 @@ class ReplaceMethodManger {
         }
 
         fun flushToFile(fileName: String, project: Project) {
-            project.logger.info("yulun-flushToFile3")
             if (fileName == null || replaceMethodMap.isEmpty()) {
                 return
             }
-            project.logger.info("yulun-flushToFile4,fileName is ${fileName}")
-            var resultFile = File(fileName)
-            project.logger.info("yulun-flushToFile5,resultFile is ${resultFile.absolutePath}")
+            var resultFile = File(project.buildDir.absolutePath + File.separator + fileName)
             if (resultFile?.parentFile != null && !resultFile.parentFile.exists()) {
                 GFileUtils.mkdirs(resultFile)
             }
 
             resultFile?.let {
-                project.logger.info("yulun-flushToFile6 deleteFileQuietly")
                 GFileUtils.deleteFileQuietly(resultFile)
             }
-            project.logger.info("yulun-flushToFile7 writeFile")
             GFileUtils.writeFile(
                 objectToJsonString(
                     replaceMethodMap.toList().sortedByDescending { it.second.count }.toMap()
