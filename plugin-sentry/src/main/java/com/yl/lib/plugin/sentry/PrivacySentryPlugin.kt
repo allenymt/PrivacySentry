@@ -55,8 +55,9 @@ class PrivacySentryPlugin : Plugin<Project> {
 //            }
 //        }
 
-        if (privacyExtension.bEnableAddAssetsFile){
+        privacyExtension.replaceFileName.let {
             // replaceFile 生成完后，把文件挪到assets目录下
+            project.tasks.create("MoveAssetsTask",MoveAssetsTask::class.java)
             project.afterEvaluate {
                 android.applicationVariants.forEach { variant ->
                     var variantName = variant.name.capitalize()

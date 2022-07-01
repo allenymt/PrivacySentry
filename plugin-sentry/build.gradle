@@ -16,16 +16,18 @@ dependencies {
     implementation 'com.vdian.android.lib:android-gradle-plugin-helper:1.3.0'
 
     implementation "com.alibaba:fastjson:1.1.68.android"
-    implementation 'org.apache.httpcomponents:httpcore:4.4.13'
-    implementation 'org.apache.httpcomponents:httpmime:4.5.12'
-    implementation 'org.apache.httpcomponents:httpclient:4.5.12'
+
+    // 如果需要放开上传任务，再打开
+//    implementation 'org.apache.httpcomponents:httpcore:4.4.13'
+//    implementation 'org.apache.httpcomponents:httpmime:4.5.12'
+//    implementation 'org.apache.httpcomponents:httpclient:4.5.12'
 }
 
 if (rootProject.ext.plugin_local_debug) {
     // 插件本地调试补充
     apply plugin: 'maven'
     group = 'com.yl.lib.plugin'
-    version = '0.0.1.86-SNAPSHOT'
+    version = '0.0.1.94-SNAPSHOT'
     uploadArchives {
         repositories {
             mavenDeployer {
