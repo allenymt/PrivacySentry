@@ -27,12 +27,10 @@ class ReplaceMethodManger {
         }
 
         fun flushToFile(fileName: String, project: Project) {
-            project.logger.debug("yulun-flushToFile2")
             if (fileName == null || replaceMethodMap.isEmpty()) {
                 return
             }
-
-            var resultFile = File(fileName)
+            var resultFile = File(project.buildDir.absolutePath + File.separator + fileName)
             if (resultFile?.parentFile != null && !resultFile.parentFile.exists()) {
                 GFileUtils.mkdirs(resultFile)
             }
