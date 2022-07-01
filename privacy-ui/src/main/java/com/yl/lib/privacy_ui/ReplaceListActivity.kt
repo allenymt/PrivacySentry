@@ -6,6 +6,7 @@ import android.widget.ProgressBar
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import com.yl.lib.sentry.hook.PrivacySentry
+import java.io.File
 import java.io.FileInputStream
 import java.lang.Exception
 
@@ -38,5 +39,20 @@ class ReplaceListActivity : AppCompatActivity() {
         }catch (e:Exception){
             e.printStackTrace()
         }
+    }
+
+    private fun loadConfigFile(filePath: String): String? {
+        try {
+            var file = File(filePath + File.separator + CONFIG_JSON_NAME)
+            if (file.exists()) {
+                val data = EmoticonUtil.convertStreamToByte(FileInputStream(file))
+                if (data != null) {
+                    return String(data)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return ""
     }
 }
