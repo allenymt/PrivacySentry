@@ -45,3 +45,9 @@ dependencies {
     // 线程池
     implementation("com.vdian.android.lib:VExecutor:0.2.5")
 }
+
+if (rootProject.ext.plugin_local_debug) {
+
+} else {
+    apply plugin: 'android.publish'
+}
