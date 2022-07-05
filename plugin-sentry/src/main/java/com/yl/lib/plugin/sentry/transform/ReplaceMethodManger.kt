@@ -75,6 +75,9 @@ class ReplaceMethodData {
     }
 
     fun addReplaceMethodItem(replaceMethodItem: ReplaceMethodItem) {
+        if (originMethodList?.contains(replaceMethodItem) == true) {
+            return
+        }
         count++
         originMethodList?.add(replaceMethodItem)
     }
