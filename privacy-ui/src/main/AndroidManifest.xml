@@ -4,6 +4,7 @@
     <application>
         <activity
             android:name=".ReplaceListActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:exported="false" />
     </application>
 

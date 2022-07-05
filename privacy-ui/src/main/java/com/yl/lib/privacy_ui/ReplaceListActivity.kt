@@ -1,23 +1,20 @@
 package com.yl.lib.privacy_ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.yl.lib.sentry.hook.PrivacySentry
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileInputStream
-import java.io.InputStream
-import java.lang.Exception
+import com.yl.lib.privacy_ui.replace.ReplaceAdapter
+import com.yl.lib.privacy_ui.replace.ReplaceItemList
+import com.yl.lib.privacy_ui.replace.ReplaceViewModel
 
 /**
  * 展示静态替换数据
  * @property searchBar SearchView?
  * @property recyclerView RecyclerView?
- * @property progressBar ProgressBar
  */
 class ReplaceListActivity : AppCompatActivity() {
 
@@ -25,72 +22,50 @@ class ReplaceListActivity : AppCompatActivity() {
 
     var recyclerView: RecyclerView? = null
 
+    var adapter: ReplaceAdapter? = null
+    var viewModel: ReplaceViewModel? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_replace_list)
         searchBar = findViewById(R.id.search_bar)
         recyclerView = findViewById(R.id.content)
+        viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(application).create(
+            ReplaceViewModel::class.java
+        )
+        searchBar?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel?.search(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel?.search(newText)
+                return false
+            }
+        })
+        buildData()
     }
 
-    var progressBar:ProgressBar = ProgressBar(this)
 
-    private fun buildData(){
-        progressBar.showContextMenu()
-        try{
-            var fis = FileInputStream(PrivacySentry.Privacy.replaceFilePath)
-//            fis.re
-        }catch (e:Exception){
-            e.printStackTrace()
-        }
-    }
+    private fun buildData() {
+        adapter = ReplaceAdapter()
+        recyclerView?.adapter = adapter
+        recyclerView?.layoutManager =
+            androidx.recyclerview.widget.LinearLayoutManager(this)
+        recyclerView?.addItemDecoration(
+            DividerItemDecoration(
+                this,
+                DividerItemDecoration.VERTICAL
+            )
+        )
 
-    private fun loadConfigFile(filePath: String): String? {
-        try {
-            var file = File(filePath + File.separator + "CONFIG_JSON_NAME")
-            if (file.exists()) {
-                val data = convertStreamToByte(FileInputStream(file))
-                if (data != null) {
-                    return String(data)
+        viewModel?.observer()?.observe(this,
+            Observer<ArrayList<ReplaceItemList>> {
+                if (it != null) {
+                    adapter?.setData(it)
                 }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return ""
-    }
-
-    fun convertStreamToByte(inputStream: InputStream?): ByteArray? {
-        if (inputStream == null) {
-            return null
-        }
-        var bos: ByteArrayOutputStream? = null
-        try {
-            bos = ByteArrayOutputStream()
-            val buffer = ByteArray(2 * 1024)
-            var read = -1
-            while (inputStream.read(buffer)?.also { read = it } != -1) {
-                bos.write(buffer, 0, read)
-            }
-            return bos.toByteArray()
-        } catch (e: java.lang.Exception) {
-            Log.e("error:", e.toString())
-        } finally {
-            if (bos != null) {
-                try {
-                    bos.close()
-                } catch (e2: java.lang.Exception) {
-                }
-            }
-        }
-        return null
-    }
-
-    private fun convertStreamToString(inputStream: InputStream?): String? {
-        var result: String? = ""
-        val data: ByteArray? = convertStreamToByte(inputStream)
-        if (data != null) {
-            result = String(data)
-        }
-        return result
+            })
+        viewModel?.buildData()
     }
 }

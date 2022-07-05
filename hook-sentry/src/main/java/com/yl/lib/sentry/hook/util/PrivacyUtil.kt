@@ -1,5 +1,8 @@
 package com.yl.lib.sentry.hook.util
 
+import android.util.Log
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
 import java.text.MessageFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,6 +41,42 @@ class PrivacyUtil {
             return sdr.format(time)
         }
 
+
+        private fun convertStreamToByte(inputStream: InputStream?): ByteArray? {
+            if (inputStream == null) {
+                return null
+            }
+            var bos: ByteArrayOutputStream? = null
+            try {
+                bos = ByteArrayOutputStream()
+                val buffer = ByteArray(2 * 1024)
+                var read = -1
+                while (inputStream.read(buffer)?.also { read = it } != -1) {
+                    bos.write(buffer, 0, read)
+                }
+                return bos.toByteArray()
+            } catch (e: java.lang.Exception) {
+                Log.e("error:", e.toString())
+            } finally {
+                if (bos != null) {
+                    try {
+                        bos.close()
+                    } catch (e2: java.lang.Exception) {
+                    }
+                }
+            }
+            return null
+        }
+
+        fun convertStreamToString(inputStream: InputStream?): String? {
+            var result: String? = ""
+            val data: ByteArray? = convertStreamToByte(inputStream)
+            if (data != null) {
+                result = String(data)
+            }
+
+            return result
+        }
     }
 
 }

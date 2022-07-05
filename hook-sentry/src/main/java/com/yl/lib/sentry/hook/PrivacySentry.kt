@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.text.TextUtils
 import com.yl.lib.sentry.hook.printer.BaseFilePrinter
 import com.yl.lib.sentry.hook.printer.BasePrinter
 import com.yl.lib.sentry.hook.printer.DefaultFilePrint
@@ -62,7 +61,7 @@ class PrivacySentry {
                 }, it)
             }
 
-            if (mBuilder?.isEnableFileResult() == true){
+            if (mBuilder?.isEnableFileResult() == true) {
                 mBuilder?.addPrinter(defaultFilePrinter(ctx, mBuilder))
             }
         }
@@ -116,21 +115,21 @@ class PrivacySentry {
          * 当前写入文件任务是否结束
          * @return Boolean
          */
-        fun isFilePrintFinish():Boolean{
+        fun isFilePrintFinish(): Boolean {
             return bFilePrintFinish.get()
         }
 
         /**
          * 关闭游客模式
          */
-        fun closeVisitorModel(){
+        fun closeVisitorModel() {
             mBuilder?.configVisitorModel(false)
         }
 
         /**
          * 打开游客模式
          */
-        fun openVisitorModel(){
+        fun openVisitorModel() {
             mBuilder?.configVisitorModel(true)
         }
 
@@ -161,13 +160,17 @@ class PrivacySentry {
             )
         }
 
-        var replaceFileName = "replace.json"
-        var replaceFilePath = "${ctx?.getExternalFilesDir(null)}${File.separator}privacy${File.separator}$replaceFileName"
-        fun checkMoveReplaceFile(context: Context){
+
+        var replaceFileName = "privacy/replace.json"
+        fun buildrReplaceFilePath(): String {
+            return "${ctx?.getExternalFilesDir(null)}${File.separator}$replaceFileName"
+        }
+
+        fun checkMoveReplaceFile(context: Context) {
             try {
                 val inputStream = context.assets.open(replaceFileName)
                 val outFile =
-                    File(replaceFilePath)
+                    File(buildrReplaceFilePath())
                 val fos = FileOutputStream(outFile)
                 val buffer = ByteArray(1024)
                 var byteCount: Int
@@ -177,7 +180,7 @@ class PrivacySentry {
                 fos.flush()
                 inputStream.close()
                 fos.close()
-            } catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
