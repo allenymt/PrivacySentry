@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.yl.lib.privacy_test.PrivacyProxySelfTest2
 import com.yl.lib.privacy_test.TestMethod
 import com.yl.lib.privacy_test.TestMethodInJava
+import com.yl.lib.privacy_ui.RealTimePrivacyItemActivity
 import com.yl.lib.privacy_ui.ReplaceListActivity
 import com.yl.lib.privacysentry.calendar.CalenderActivity
 import com.yl.lib.privacysentry.contact.ContactActivity
@@ -188,8 +189,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<Button>(R.id.btn_visualization).setOnClickListener {
+        findViewById<Button>(R.id.btn_visualization_replace).setOnClickListener {
             startActivity(Intent(this, ReplaceListActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.btn_visualization_real_time).setOnClickListener {
+            startActivity(Intent(this, RealTimePrivacyItemActivity::class.java))
         }
 
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框

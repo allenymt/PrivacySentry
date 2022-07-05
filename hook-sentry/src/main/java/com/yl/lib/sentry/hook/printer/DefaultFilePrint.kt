@@ -5,6 +5,7 @@ import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
 import com.yl.lib.sentry.hook.excel.ExcelUtil
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.watcher.DelayTimeWatcher
+import com.yl.lib.sentry.hook.watcher.PrivacyDataManager
 
 /**
  * @author yulun
@@ -22,7 +23,6 @@ class DefaultFilePrint : BaseFilePrinter {
     private val sheetPrivacyCount = 1
 
     private var hasInit = false
-    private var privacyFunBeanList: ArrayList<PrivacyFunBean> = ArrayList()
 
     constructor(
         fileName: String,
@@ -45,7 +45,7 @@ class DefaultFilePrint : BaseFilePrinter {
         if (PrivacySentry.Privacy.getBuilder()?.isEnableFileResult() == false) {
             return
         }
-        if (privacyFunBeanList.isEmpty())
+        if (PrivacyDataManager.Manager.isEmpty())
             return
         if (!hasInit) {
             hasInit = true
@@ -57,7 +57,7 @@ class DefaultFilePrint : BaseFilePrinter {
             )
         }
         var newFunBeanList = ArrayList<PrivacyFunBean>()
-        newFunBeanList.addAll(privacyFunBeanList)
+        newFunBeanList.addAll(PrivacyDataManager.Manager.getFunBeanList())
         flushSheetPrivacyLegal(newFunBeanList)
         flushSheetPrivacyCount(newFunBeanList)
         newFunBeanList.clear()
@@ -74,7 +74,7 @@ class DefaultFilePrint : BaseFilePrinter {
             return
         }
         PrivacyLog.i("DefaultFilePrint appendData $funName-$funAlias-$msg")
-        privacyFunBeanList.add(PrivacyFunBean(funAlias, funName, msg, 1))
+        PrivacyDataManager.Manager.addData(PrivacyFunBean(funAlias, funName, msg, 1))
     }
 
     private fun flushSheetPrivacyCount(funBeanList: ArrayList<PrivacyFunBean>) {

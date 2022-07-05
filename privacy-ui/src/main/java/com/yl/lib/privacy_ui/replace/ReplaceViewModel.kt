@@ -54,7 +54,7 @@ class ReplaceViewModel : ViewModel() {
         if (searchText == null || searchText.isEmpty()) {
             replaceData?.postValue(originData)
         } else {
-            replaceData?.value?.filter { it.proxyMethodName?.toLowerCase()?.contains(searchText) ?: false }?.let {
+            originData?.filter { it.proxyMethodName?.toLowerCase()?.contains(searchText) ?: false }?.let {
                 replaceData?.postValue(it as ArrayList<ReplaceItemList> /* = java.util.ArrayList<com.yl.lib.privacy_ui.replace.ReplaceItemList> */)
             }
         }
