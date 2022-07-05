@@ -13,14 +13,16 @@ import java.util.*
  */
 class PrivacyUtil {
     object Util {
-        fun getStackTrace(): String{
+        fun getStackTrace(): String {
             val st = Thread.currentThread().stackTrace
             val sbf = StringBuilder()
             for (e in st) {
-                if (e.methodName.equals("getThreadStackTrace") || e.methodName.equals("getStackTrace")){
+                if (e.methodName.equals("getThreadStackTrace") || e.methodName.equals("getStackTrace")) {
                     continue
                 }
-                if (e.className.contains("PrivacyProxy")){
+                if (e.className.contains("PrivacyProxy")
+                    || e.className.contains("PrivacySensorProxy")
+                ) {
                     continue
                 }
                 if (sbf.isNotEmpty()) {
