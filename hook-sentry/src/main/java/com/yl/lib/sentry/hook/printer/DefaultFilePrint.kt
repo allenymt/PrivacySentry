@@ -41,12 +41,16 @@ class DefaultFilePrint : BaseFilePrinter {
 
     override fun flushToFile() {
         assert(resultFileName != null)
-
+        if (PrivacyDataManager.Manager.isEmpty())
+            return
         if (PrivacySentry.Privacy.getBuilder()?.isEnableFileResult() == false) {
+            PrivacyLog.e("disable print file")
             return
         }
-        if (privacyFunBeanList.isEmpty())
+        if (PrivacyDataManager.Manager.isEmpty())
             return
+        }
+
         if (!hasInit) {
             hasInit = true
             ExcelUtil.instance.initExcel(
@@ -66,13 +70,6 @@ class DefaultFilePrint : BaseFilePrinter {
     override fun appendData(funName: String, funAlias: String, msg: String) {
         if (funName == null || funAlias == null)
             return
-
-        if (PrivacySentry.Privacy.getBuilder()?.isEnableFileResult() == false) {
-            return
-        }
-        if (PrivacySentry.Privacy.isFilePrintFinish()) {
-            return
-        }
         PrivacyLog.i("DefaultFilePrint appendData $funName-$funAlias-$msg")
         privacyFunBeanList.add(PrivacyFunBean(funAlias, funName, msg, 1))
     }

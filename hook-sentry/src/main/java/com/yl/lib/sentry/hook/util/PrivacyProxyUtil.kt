@@ -16,10 +16,10 @@ class PrivacyProxyUtil {
             bVisitorModel: Boolean = false,
             bCache: Boolean = false
         ) {
-            if (PrivacySentry.Privacy.getBuilder()?.isEnableFileResult() == false) {
-                PrivacyLog.e("disable print file: funName is $funName methodDocumentDesc is $methodDocumentDesc,EnableFileResult=false")
-                return
-            }
+//            if (PrivacySentry.Privacy.getBuilder()?.isEnableFileResult() == false) {
+//                PrivacyLog.e("disable print file: funName is $funName methodDocumentDesc is $methodDocumentDesc,EnableFileResult=false")
+//                return
+//            }
             if (bVisitorModel) {
                 PrivacyLog.e("disable print file: funName is $funName methodDocumentDesc is $methodDocumentDesc,isVisitorModel=true")
                 return
