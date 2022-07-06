@@ -30,11 +30,11 @@ class ReplaceMethodManger {
             if (fileName == null || replaceMethodMap.isEmpty()) {
                 return
             }
-            project.logger.debug("flushToFile")
-            var resultFile = File(fileName)
+            var resultFile = File(project.buildDir.absolutePath + File.separator + fileName)
             if (resultFile?.parentFile != null && !resultFile.parentFile.exists()) {
                 GFileUtils.mkdirs(resultFile)
             }
+
             resultFile?.let {
                 GFileUtils.deleteQuietly(resultFile)
             }
@@ -75,6 +75,9 @@ class ReplaceMethodData {
     }
 
     fun addReplaceMethodItem(replaceMethodItem: ReplaceMethodItem) {
+        if (originMethodList?.contains(replaceMethodItem) == true) {
+            return
+        }
         count++
         originMethodList?.add(replaceMethodItem)
     }
