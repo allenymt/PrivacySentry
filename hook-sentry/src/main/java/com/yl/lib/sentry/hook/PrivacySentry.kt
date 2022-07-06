@@ -11,7 +11,6 @@ import com.yl.lib.sentry.hook.printer.PrintCallBack
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyUtil
 import java.io.File
-import java.io.FileOutputStream
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -61,9 +60,7 @@ class PrivacySentry {
                 }, it)
             }
 
-            if (mBuilder?.isEnableFileResult() == true) {
-                mBuilder?.addPrinter(defaultFilePrinter(ctx, mBuilder))
-            }
+            mBuilder?.addPrinter(defaultFilePrinter(ctx, mBuilder))
         }
 
         /**
