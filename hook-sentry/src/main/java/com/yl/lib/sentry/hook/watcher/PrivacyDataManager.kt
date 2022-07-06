@@ -19,7 +19,7 @@ class PrivacyDataManager {
         fun addData(bean: PrivacyFunBean) {
             assert(bean != null)
             privacyFunBeanList.add(bean)
-            liveItemPrivacy.value = (bean)
+            liveItemPrivacy.postValue(bean)
         }
 
         fun getFunBeanList(): ArrayList<PrivacyFunBean> {
