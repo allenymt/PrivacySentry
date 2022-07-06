@@ -61,6 +61,17 @@ class PrivacyFunBean {
         if (delIndex != null && delIndex <= 0) {
             return stackStrace
         }
-        return sArray?.subList(delIndex!!+1,sArray.size)?.joinToString(separator = "\n")
+        return sArray?.subList(delIndex!! + 1, sArray.size)?.joinToString(separator = "\n")
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is PrivacyFunBean) {
+            return (
+                    other.appendTime == appendTime &&
+                            other.funAlias == funAlias &&
+                            other.funName == funName && other.stackTraces == stackTraces)
+        }
+
+        return super.equals(other)
     }
 }

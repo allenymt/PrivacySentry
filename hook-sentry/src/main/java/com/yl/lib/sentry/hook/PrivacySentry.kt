@@ -60,9 +60,7 @@ class PrivacySentry {
                 }, it)
             }
 
-            if (mBuilder?.isEnableFileResult() == true){
-                mBuilder?.addPrinter(defaultFilePrinter(ctx, mBuilder))
-            }
+            mBuilder?.addPrinter(defaultFilePrinter(ctx, mBuilder))
         }
 
         /**
@@ -114,21 +112,21 @@ class PrivacySentry {
          * 当前写入文件任务是否结束
          * @return Boolean
          */
-        fun isFilePrintFinish():Boolean{
+        fun isFilePrintFinish(): Boolean {
             return bFilePrintFinish.get()
         }
 
         /**
          * 关闭游客模式
          */
-        fun closeVisitorModel(){
+        fun closeVisitorModel() {
             mBuilder?.configVisitorModel(false)
         }
 
         /**
          * 打开游客模式
          */
-        fun openVisitorModel(){
+        fun openVisitorModel() {
             mBuilder?.configVisitorModel(true)
         }
 
@@ -158,6 +156,7 @@ class PrivacySentry {
                 )
             )
         }
+
     }
 }
 

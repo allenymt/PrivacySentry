@@ -13,6 +13,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:orientation="vertical">
 
             <Button
@@ -117,6 +119,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="注册传感器" />
+
+            <Button
+                android:id="@+id/btn_visualization_replace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="跳转可视化界面-静态扫描数据" />
+
+            <Button
+                android:id="@+id/btn_visualization_real_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="跳转可视化界面-实时调用数据" />
 
             <Button
                 android:id="@+id/btn_force_finish"

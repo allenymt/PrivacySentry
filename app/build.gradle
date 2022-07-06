@@ -59,11 +59,13 @@ dependencies {
     if (rootProject.ext.plugin_local_debug) {
         implementation project(":hook-sentry")
         implementation project(":privacy-proxy")
-        implementation project(path: ':privacy-annotation')
+        implementation project(":privacy-annotation")
+        implementation project(":privacy-ui")
     } else {
         implementation "com.wdian.android.lib:privacy-hook:${rootProject.ext.privacy_version}"
         implementation "com.wdian.android.lib:privacy-annotation:${rootProject.ext.privacy_version}"
         implementation "com.wdian.android.lib:privacy-proxy:${rootProject.ext.privacy_version}"
+        implementation "com.wdian.android.lib:privacy-ui:${rootProject.ext.privacy_version}"
     }
 
     implementation(project(path: ':privacy-test')) {
@@ -78,5 +80,4 @@ dependencies {
 privacy {
     // 设置免hook的名单
     blackList = []
-    replaceFileName = "replace.json"
 }

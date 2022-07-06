@@ -14,7 +14,7 @@ import java.io.File
  */
 class PrivacySentryTransform : Transform {
 
-    private var project: Project
+    private var project: Project? = null
 
     constructor(project: Project) {
         this.project = project
@@ -22,7 +22,7 @@ class PrivacySentryTransform : Transform {
 
 
     override fun getName(): String {
-        return "PrivacySentryPlugin"
+        return "PrivacySentryTransform"
     }
 
     override fun getInputTypes(): MutableSet<QualifiedContent.ContentType> {
@@ -45,7 +45,7 @@ class PrivacySentryTransform : Transform {
             transformInvocation.outputProvider.deleteAll()
         }
 
-        var privacyExtension = project.extensions.findByType(
+        var privacyExtension = project?.extensions?.findByType(
             PrivacyExtension::class.java
         ) as PrivacyExtension
 
@@ -62,11 +62,10 @@ class PrivacySentryTransform : Transform {
                 transformInvocation.isIncremental, privacyExtension
             )
         }
-        project.logger.info("yulun-flushToFile1-- privacyExtension.replaceFileName is ${privacyExtension.replaceFileName}")
+        project?.logger?.info("yulun-flushToFile1")
         // 写入被替换所有的类和文件
         privacyExtension.replaceFileName?.let {
-            project.logger.info("yulun-flushToFile2")
-            ReplaceMethodManger.MANAGER.flushToFile(privacyExtension.replaceFileName!!,project)
+            ReplaceMethodManger.MANAGER.flushToFile(privacyExtension.replaceFileName!!,project!!)
         }
     }
 
@@ -82,9 +81,9 @@ class PrivacySentryTransform : Transform {
             if (incremental) {
                 when (it.status) {
                     Status.ADDED, Status.CHANGED -> {
-                        project.logger.info("directory status is ${it.status}  file is:" + it.file.absolutePath)
+                        project?.logger?.info("directory status is ${it.status}  file is:" + it.file.absolutePath)
                         PrivacyClassProcessor.processJar(
-                            project,
+                            project!!,
                             it.file,
                             extension,
                             runAsm = { input, project ->
@@ -97,14 +96,14 @@ class PrivacySentryTransform : Transform {
                         GFileUtils.copyFile(it.file, output)
                     }
                     Status.REMOVED -> {
-                        project.logger.info("jar REMOVED file is:" + it.file.absolutePath)
+                        project?.logger?.info("jar REMOVED file is:" + it.file.absolutePath)
                         GFileUtils.deleteQuietly(output)
                     }
                 }
             } else {
-                project.logger.info("jar incremental false file is:" + it.file.absolutePath)
+                project?.logger?.info("jar incremental false file is:" + it.file.absolutePath)
                 PrivacyClassProcessor.processJar(
-                    project,
+                    project!!,
                     it.file,
                     extension,
                     runAsm = { input, project ->
@@ -143,13 +142,13 @@ class PrivacySentryTransform : Transform {
 
                     when (status) {
                         Status.REMOVED -> {
-                            project.logger.info("directory REMOVED file is:" + inputFile.absolutePath)
+                            project?.logger?.info("directory REMOVED file is:" + inputFile.absolutePath)
                             GFileUtils.deleteQuietly(inputFile)
                         }
                         Status.ADDED, Status.CHANGED -> {
-                            project.logger.info("directory status is $status $ file is:" + inputFile.absolutePath)
+                            project?.logger?.info("directory status is $status $ file is:" + inputFile.absolutePath)
                             PrivacyClassProcessor.processDirectory(
-                                project,
+                                project!!,
                                 inputDir,
                                 inputFile,
                                 extension,
@@ -168,11 +167,11 @@ class PrivacySentryTransform : Transform {
                     }
                 }
             } else {
-                project.logger.info("directory incremental false  file is:" + inputDir.absolutePath)
+                project?.logger?.info("directory incremental false  file is:" + inputDir.absolutePath)
                 inputDir.walk().forEach { file ->
                     if (!file.isDirectory) {
                         PrivacyClassProcessor.processDirectory(
-                            project,
+                            project!!,
                             inputDir,
                             file,
                             extension,
