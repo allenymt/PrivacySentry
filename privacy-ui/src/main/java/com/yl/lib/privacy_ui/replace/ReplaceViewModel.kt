@@ -9,10 +9,7 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.TypeReference
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyUtil
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 /**
  * @author yulun
@@ -33,14 +30,12 @@ class ReplaceViewModel : ViewModel() {
     fun buildData(context: Context) {
         try {
             CoroutineScope(Dispatchers.IO).launch {
-                PrivacyLog.e("replace curThread is ${Thread.currentThread().name}")
                 var data = loadReplaceFile(context, "privacy/replace.json")
                 data.let {
                     var result = fromJson(it!!,
                         object : TypeReference<HashMap<String, ReplaceItemList>>() {})
                     result?.let {
-                        GlobalScope.launch(Dispatchers.Main) {
-                            PrivacyLog.e("replace GlobalScope curThread is ${Thread.currentThread().name}")
+                        withContext(Dispatchers.Main) {
                             originData = transformData(result!!)
                             replaceData?.postValue(originData)
                         }
