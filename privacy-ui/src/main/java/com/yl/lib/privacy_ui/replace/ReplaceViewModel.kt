@@ -1,5 +1,6 @@
 package com.yl.lib.privacy_ui.replace
 
+import android.content.Context
 import androidx.annotation.Keep
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,10 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.TypeReference
 import com.vdian.android.lib.executor.VExecutorManager
-import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.util.PrivacyUtil
-import java.io.File
-import java.io.FileInputStream
 
 /**
  * @author yulun
@@ -28,11 +26,11 @@ class ReplaceViewModel : ViewModel() {
         return replaceData!!
     }
 
-    fun buildData() {
+    fun buildData(context: Context) {
         try {
             //  替换成协程的实现
             VExecutorManager.INSTANCE.io().submit {
-                var data = loadReplaceFile(PrivacySentry.Privacy.buildrReplaceFilePath())
+                var data = loadReplaceFile(context ,"privacy/replace.json")
                 data.let {
                     var result = fromJson(it!!,
                         object : TypeReference<HashMap<String, ReplaceItemList>>() {})
@@ -54,9 +52,10 @@ class ReplaceViewModel : ViewModel() {
         if (searchText == null || searchText.isEmpty()) {
             replaceData?.postValue(originData)
         } else {
-            originData?.filter { it.proxyMethodName?.toLowerCase()?.contains(searchText) ?: false }?.let {
-                replaceData?.postValue(it as ArrayList<ReplaceItemList> /* = java.util.ArrayList<com.yl.lib.privacy_ui.replace.ReplaceItemList> */)
-            }
+            originData?.filter { it.proxyMethodName?.toLowerCase()?.contains(searchText) ?: false }
+                ?.let {
+                    replaceData?.postValue(it as ArrayList<ReplaceItemList> /* = java.util.ArrayList<com.yl.lib.privacy_ui.replace.ReplaceItemList> */)
+                }
         }
     }
 
@@ -67,12 +66,9 @@ class ReplaceViewModel : ViewModel() {
         } as ArrayList<ReplaceItemList>
     }
 
-    private fun loadReplaceFile(fileName: String): String? {
+    private fun loadReplaceFile(context: Context, fileName: String): String? {
         try {
-            var file = File(fileName)
-            if (file.exists()) {
-                return PrivacyUtil.Util.convertStreamToString(FileInputStream(file))
-            }
+            return PrivacyUtil.Util.convertStreamToString(context.assets.open(fileName))
         } catch (e: Exception) {
             e.printStackTrace()
         }

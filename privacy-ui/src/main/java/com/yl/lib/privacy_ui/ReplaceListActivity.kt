@@ -66,6 +66,6 @@ class ReplaceListActivity : AppCompatActivity() {
                     adapter?.setData(it)
                 }
             })
-        viewModel?.buildData()
+        viewModel?.buildData(this)
     }
 }

@@ -160,30 +160,6 @@ class PrivacySentry {
             )
         }
 
-
-        var replaceFileName = "privacy/replace.json"
-        fun buildrReplaceFilePath(): String {
-            return "${ctx?.getExternalFilesDir(null)}${File.separator}$replaceFileName"
-        }
-
-        fun checkMoveReplaceFile(context: Context) {
-            try {
-                val inputStream = context.assets.open(replaceFileName)
-                val outFile =
-                    File(buildrReplaceFilePath())
-                val fos = FileOutputStream(outFile)
-                val buffer = ByteArray(1024)
-                var byteCount: Int
-                while (inputStream.read(buffer).also { byteCount = it } != -1) {
-                    fos.write(buffer, 0, byteCount)
-                }
-                fos.flush()
-                inputStream.close()
-                fos.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
     }
 }
 

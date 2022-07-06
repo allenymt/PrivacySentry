@@ -211,9 +211,6 @@ class MainActivity : AppCompatActivity() {
             PrivacySentry.Privacy.updatePrivacyShow()
             PrivacySentry.Privacy.closeVisitorModel()
         }.create().show()
-
-        // 直接主线程里干了
-        PrivacySentry.Privacy.checkMoveReplaceFile(this)
     }
 
 
