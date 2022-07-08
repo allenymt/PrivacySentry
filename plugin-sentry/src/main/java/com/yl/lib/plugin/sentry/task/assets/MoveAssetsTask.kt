@@ -18,12 +18,15 @@ open class MoveAssetsTask : DefaultTask() {
 
     @TaskAction
     fun doMoveFile() {
+        var originFile = File(project.buildDir.absolutePath + File.separator + fileName)
+        if (!originFile.exists()){
+            return
+        }
         assetsPathList?.forEach { assetsPath ->
             var assetsFile = File(assetsPath)
             assetsFile?.let {
                 GFileUtils.deleteFileQuietly(assetsFile)
             }
-            var originFile = File(project.buildDir.absolutePath + File.separator + fileName)
             project.logger.info("MoveAssetsTask originFile is ${originFile.absolutePath} assetsPath is $assetsPath")
             GFileUtils.copyFile(originFile, assetsFile)
         }
