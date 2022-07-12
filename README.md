@@ -33,7 +33,7 @@
 ## TODO
 1. 有其他问题欢迎提issue
 2. 项目里如果有引入高德地图or openInstall，先加黑 blackList = ["com.loc","com.amap.api","io.openinstall.sdk"], asm的版本有冲突
-3. 动态加载的代码拦截不到的
+3. 动态加载加载的代码无法拦截(热修复，插件化)
 
 ## 如何使用
 
