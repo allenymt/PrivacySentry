@@ -5,6 +5,7 @@ import androidx.annotation.Keep
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.TypeReference
 import com.yl.lib.sentry.hook.util.PrivacyLog
@@ -29,7 +30,8 @@ class ReplaceViewModel : ViewModel() {
 
     fun buildData(context: Context) {
         try {
-            CoroutineScope(Dispatchers.IO).launch {
+
+            viewModelScope.launch(Dispatchers.IO) {
                 var data = loadReplaceFile(context, "privacy/replace.json")
                 data.let {
                     var result = fromJson(it!!,

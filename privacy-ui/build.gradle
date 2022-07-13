@@ -43,6 +43,7 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-reflect:1.3.50'
     implementation project(":hook-sentry")
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'//viewModelScope
 }
 
 if (rootProject.ext.plugin_local_debug) {
