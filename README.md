@@ -3,6 +3,9 @@
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
     
 ## 更新日志
+    2022-07-26(1.0.8)
+        1. 优化log输出，未初始化也能有log输出
+        2. 优化初始化方式
     2022-06-24(1.0.7)
         1. 新增hook 传感器方法
         2. 新增静态扫描，支持产出敏感函数hook列表
@@ -49,7 +52,7 @@
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
-	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.7'
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.8'
 	     }
 	}
 ```
@@ -63,7 +66,7 @@
         
         dependencies {
             // aar依赖
-            def privacyVersion = "1.0.7"
+            def privacyVersion = "1.0.8"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
 	    //如果不想使用库中本身的代理方法，可以不引入这个aar，自己实现
