@@ -71,9 +71,6 @@ dependencies {
     implementation(project(path: ':privacy-test')) {
         exclude module: 'privacy-annotation'
     }
-
-    implementation "androidx.work:work-runtime-ktx:2.0.1"
-
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
