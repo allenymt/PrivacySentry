@@ -29,12 +29,12 @@ class PrivacySensorProxy {
         )
         @JvmStatic
         fun registerListener(
-            sensorManager: SensorManager,
-            listener: SensorEventListener, sensor: Sensor,
+            sensorManager: SensorManager?,
+            listener: SensorEventListener?, sensor: Sensor?,
             samplingPeriodUs: Int
         ): Boolean {
             logSensorManager(sensor)
-            return sensorManager.registerListener(listener, sensor, samplingPeriodUs)
+            return sensorManager?.registerListener(listener, sensor, samplingPeriodUs) == true
         }
 
         @PrivacyMethodProxy(
@@ -44,18 +44,19 @@ class PrivacySensorProxy {
         )
         @JvmStatic
         fun registerListener(
-            sensorManager: SensorManager,
-            listener: SensorEventListener, sensor: Sensor,
+            sensorManager: SensorManager?,
+            listener: SensorEventListener?, sensor: Sensor?,
             samplingPeriodUs: Int, maxReportLatencyUs: Int
         ): Boolean {
             logSensorManager(sensor)
-            return sensorManager.registerListener(
+            return sensorManager?.registerListener(
                 listener,
                 sensor,
                 samplingPeriodUs,
                 maxReportLatencyUs
-            )
+            ) == true
         }
+
 
         @PrivacyMethodProxy(
             originalClass = SensorManager::class,
@@ -64,12 +65,17 @@ class PrivacySensorProxy {
         )
         @JvmStatic
         fun registerListener(
-            sensorManager: SensorManager,
-            listener: SensorEventListener, sensor: Sensor,
+            sensorManager: SensorManager?,
+            listener: SensorEventListener?, sensor: Sensor?,
             samplingPeriodUs: Int, handler: Handler?
         ): Boolean {
             logSensorManager(sensor)
-            return sensorManager.registerListener(listener, sensor, samplingPeriodUs, handler)
+            return sensorManager?.registerListener(
+                listener,
+                sensor,
+                samplingPeriodUs,
+                handler
+            ) == true
         }
 
         @PrivacyMethodProxy(
@@ -79,20 +85,20 @@ class PrivacySensorProxy {
         )
         @JvmStatic
         fun registerListener(
-            sensorManager: SensorManager,
+            sensorManager: SensorManager?,
             listener: SensorEventListener?, sensor: Sensor?,
             samplingPeriodUs: Int, maxReportLatencyUs: Int, handler: Handler?
         ): Boolean {
             logSensorManager(sensor)
-            return sensorManager.registerListener(
+            return sensorManager?.registerListener(
                 listener,
                 sensor,
                 samplingPeriodUs,
                 maxReportLatencyUs,
                 handler
-            )
+            ) == true
         }
-
+        
         @JvmStatic
         private fun logSensorManager(sensor: Sensor?) {
             sensor?.let {
@@ -101,26 +107,26 @@ class PrivacySensorProxy {
                 when (sensor.type) {
                     // 加速度，摇一摇
                     Sensor.TYPE_ACCELEROMETER -> {
-                        sensorType ="加速度"
-                        sensorDesc ="常用于摇一摇"
+                        sensorType = "加速度"
+                        sensorDesc = "常用于摇一摇"
                     }
                     // 磁场。。
                     Sensor.TYPE_MAGNETIC_FIELD -> {
-                        sensorType ="磁场"
+                        sensorType = "磁场"
                     }
                     // 方向, 弃用了
                     Sensor.TYPE_ORIENTATION -> {
-                        sensorType ="方向"
+                        sensorType = "方向"
                     }
                     // 陀螺仪。 用来感应手机的旋转和倾斜
                     Sensor.TYPE_GYROSCOPE -> {
-                        sensorType ="陀螺仪"
-                        sensorDesc ="用来感应手机正面的光线强弱"
+                        sensorType = "陀螺仪"
+                        sensorDesc = "用来感应手机正面的光线强弱"
                     }
                     // 光线 用来感应手机正面的光线强弱
                     Sensor.TYPE_LIGHT -> {
-                        sensorType ="光线 "
-                        sensorDesc ="用来感应手机正面的光线强弱"
+                        sensorType = "光线 "
+                        sensorDesc = "用来感应手机正面的光线强弱"
                     }
                     // 压力。
                     Sensor.TYPE_PRESSURE -> {
