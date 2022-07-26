@@ -21,6 +21,7 @@ class APP : Application() {
     }
 
     override fun attachBaseContext(base: Context?) {
+        PrivacyMethod.PrivacyMethod.getSerial()
         super.attachBaseContext(base)
         MultiDex.install(this);
         initPrivacyTransformComplete()
