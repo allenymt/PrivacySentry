@@ -41,12 +41,12 @@ class DefaultFilePrint : BaseFilePrinter {
 
     override fun flushToFile() {
         assert(resultFileName != null)
-        if (privacyFunBeanList.isEmpty())
-            return
+
         if (PrivacySentry.Privacy.getBuilder()?.isEnableFileResult() == false) {
-            PrivacyLog.e("disable print file")
             return
         }
+        if (privacyFunBeanList.isEmpty())
+            return
         if (!hasInit) {
             hasInit = true
             ExcelUtil.instance.initExcel(

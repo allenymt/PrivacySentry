@@ -3,6 +3,9 @@
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
     
 ## 更新日志
+    2022-06-24(1.0.7)
+        1. 新增hook 传感器方法
+        2. 新增静态扫描，支持产出敏感函数hook列表
     2022-06-16(1.0.5)
         1. 修复Settings.System获取Android_id,未拦截到的问题
         2. 支持业务方配置同类型的hook函数覆盖自带的hook函数
@@ -30,7 +33,7 @@
 ## TODO
 1. 有其他问题欢迎提issue
 2. 项目里如果有引入高德地图or openInstall，先加黑 blackList = ["com.loc","com.amap.api","io.openinstall.sdk"], asm的版本有冲突
-3. 动态加载的代码拦截不到的
+3. 动态加载加载的代码无法拦截(热修复，插件化)
 
 ## 如何使用
 
@@ -46,7 +49,7 @@
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
-	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.5'
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.7'
 	     }
 	}
 ```
@@ -60,7 +63,7 @@
         
         dependencies {
             // aar依赖
-            def privacyVersion = "1.0.5"
+            def privacyVersion = "1.0.7"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
 	    //如果不想使用库中本身的代理方法，可以不引入这个aar，自己实现
@@ -69,8 +72,10 @@
         
         // 黑名单配置，可以设置这部分包名不会被修改字节码
         // 项目里如果有引入高德地图，先加黑 blackList = ["com.loc","com.amap.api"], asm的版本有冲突
+        // 如果需要生成静态扫描文件， 默认名是replace.json
         privacy {
             blackList = []
+            replaceFileName = "replace.json"
         }
 
 ```
@@ -210,7 +215,7 @@ open class PrivacyProxyResolver {
 
 - 读取 IMEI(DeviceId)、MEID、IMSI、ADID(AndroidID)
 
-- 手机可用传感器
+- 手机可用传感器,传感器注册
 
 
 

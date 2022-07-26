@@ -35,6 +35,7 @@ class ReplaceMethodManger {
             if (resultFile?.parentFile != null && !resultFile.parentFile.exists()) {
                 GFileUtils.mkdirs(resultFile)
             }
+
             resultFile?.let {
                 GFileUtils.deleteQuietly(resultFile)
             }
@@ -75,6 +76,9 @@ class ReplaceMethodData {
     }
 
     fun addReplaceMethodItem(replaceMethodItem: ReplaceMethodItem) {
+        if (originMethodList?.contains(replaceMethodItem) == true) {
+            return
+        }
         count++
         originMethodList?.add(replaceMethodItem)
     }
