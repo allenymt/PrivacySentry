@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 class PrivacySentry {
     object Privacy {
-        private var mBuilder: PrivacySentryBuilder? = null
+        private var mBuilder: PrivacySentryBuilder? = PrivacySentryBuilder()
         private val bInit = AtomicBoolean(false)
         private val bFilePrintFinish = AtomicBoolean(false)
         var bShowPrivacy = false
@@ -40,11 +40,7 @@ class PrivacySentry {
             ctx: Application, builder: PrivacySentryBuilder?
         ) {
             if (bInit.compareAndSet(false, true)) {
-                if (builder == null) {
-                    mBuilder = PrivacySentryBuilder()
-                } else {
-                    mBuilder = builder
-                }
+                mBuilder = builder
                 initInner(ctx)
             }
         }
