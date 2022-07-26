@@ -71,7 +71,6 @@ class DefaultFilePrint : BaseFilePrinter {
     override fun appendData(funName: String, funAlias: String, msg: String) {
         if (funName == null || funAlias == null)
             return
-        PrivacyLog.i("DefaultFilePrint appendData $funName-$funAlias-$msg")
         PrivacyDataManager.Manager.addData(PrivacyFunBean(funAlias, funName, msg, 1))
     }
 

@@ -13,5 +13,6 @@ class DefaultLogPrint : BasePrinter() {
     }
 
     override fun filePrint(funName: String, funAlias: String, msg: String) {
+        logPrint("$funName-$funAlias-$msg")
     }
 }
