@@ -69,6 +69,9 @@ class DefaultFilePrint : BaseFilePrinter {
     }
 
     override fun appendData(funName: String, funAlias: String, msg: String) {
+        if (PrivacySentry.Privacy.getBuilder()?.isEnableFileResult() == false) {
+            return
+        }
         if (funName == null || funAlias == null)
             return
         PrivacyDataManager.Manager.addData(PrivacyFunBean(funAlias, funName, msg, 1))
