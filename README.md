@@ -3,6 +3,8 @@
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
     
 ## 更新日志
+    2022-07-29(1.0.9)
+        1. 删除多余的aar引用
     2022-07-26(1.0.8)
         1. 优化log输出，未初始化也能有log输出
         2. 优化初始化方式
@@ -52,7 +54,7 @@
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
-	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.8'
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.9'
 	     }
 	}
 ```
@@ -66,7 +68,7 @@
         
         dependencies {
             // aar依赖
-            def privacyVersion = "1.0.8"
+            def privacyVersion = "1.0.9"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
 	    //如果不想使用库中本身的代理方法，可以不引入这个aar，自己实现
