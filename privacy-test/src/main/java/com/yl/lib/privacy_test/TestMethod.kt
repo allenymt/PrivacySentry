@@ -2,6 +2,7 @@ package com.yl.lib.privacy_test
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.ActivityManager
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -14,7 +15,6 @@ import android.telephony.TelephonyManager
 import android.text.TextUtils
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import java.net.NetworkInterface
 
 
@@ -46,7 +46,7 @@ class TestMethod {
                     )
                 ) {
                     val mTelephonyMgr = context
-                        .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                        .getSystemService(Activity.TELEPHONY_SERVICE) as TelephonyManager
                     imei = mTelephonyMgr.getDeviceId()
                 }
             } catch (e: Throwable) {
@@ -73,7 +73,7 @@ class TestMethod {
                     )
                 ) {
                     val mTelephonyMgr = context
-                        .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                        .getSystemService(Activity.TELEPHONY_SERVICE) as TelephonyManager
                     imei = mTelephonyMgr.getDeviceId(1)
                 }
             } catch (e: Throwable) {
@@ -102,7 +102,7 @@ class TestMethod {
                     )
                 ) {
                     val mTelephonyMgr = context
-                        .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                        .getSystemService(Activity.TELEPHONY_SERVICE) as TelephonyManager
                     imei = mTelephonyMgr.getImei()
                 }
             } catch (e: Throwable) {
@@ -131,7 +131,7 @@ class TestMethod {
                     )
                 ) {
                     val mTelephonyMgr = context
-                        .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                        .getSystemService(Activity.TELEPHONY_SERVICE) as TelephonyManager
                         ?: return ""
                     imsi =
                         mTelephonyMgr.subscriberId
@@ -161,7 +161,7 @@ class TestMethod {
                     )
                 ) {
                     val mTelephonyMgr = context
-                        .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                        .getSystemService(Activity.TELEPHONY_SERVICE) as TelephonyManager
                         ?: return ""
                     iccid =
                         mTelephonyMgr.simSerialNumber
@@ -189,7 +189,7 @@ class TestMethod {
             }
             try {
                 val wifiManager =
-                    context.applicationContext.getSystemService(AppCompatActivity.WIFI_SERVICE) as WifiManager
+                    context.applicationContext.getSystemService(Activity.WIFI_SERVICE) as WifiManager
                 if (wifiManager != null) {
                     val wifiInfo = wifiManager.connectionInfo
                     if (wifiInfo != null) {
