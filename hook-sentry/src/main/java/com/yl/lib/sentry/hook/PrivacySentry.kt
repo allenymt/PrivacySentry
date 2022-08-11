@@ -48,13 +48,15 @@ class PrivacySentry {
         private fun initInner(ctx: Application) {
             PrivacyLog.i("call initInner")
             this.ctx = ctx
-            if (mBuilder?.isEnableFileResult() == true){
-                mBuilder?.getWatchTime()?.let {
-                    PrivacyLog.i("delay stop watch $it")
-                    var handler = Handler(Looper.getMainLooper())
-                    handler.postDelayed({
-                        stop()
-                    }, it)
+            if (mBuilder?.isEnableFileResult() == true || mBuilder?.debug == true) {
+                if (mBuilder?.isEnableFileResult() == true){
+                    mBuilder?.getWatchTime()?.let {
+                        PrivacyLog.i("delay stop watch $it")
+                        var handler = Handler(Looper.getMainLooper())
+                        handler.postDelayed({
+                            stop()
+                        }, it)
+                    }
                 }
                 mBuilder?.addPrinter(defaultFilePrinter(ctx, mBuilder))
             }
