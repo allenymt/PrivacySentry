@@ -26,6 +26,7 @@ import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.yl.lib.sentry.hook.util.PrivacyLog
+import java.io.File
 import java.net.NetworkInterface
 import java.net.SocketException
 import java.util.*
@@ -459,10 +460,10 @@ class PrivacyMethod {
         }
 
         fun  testGetSensorList(context:Context){
-            var sensorManager: SensorManager? = null
-            var callback: SensorEventCallback? = null
+            var sensorManager: SensorManager? = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             // 获取传感器列表
-            var sensor: List<Sensor>? = sensorManager?.getSensorList(Sensor.TYPE_ACCELEROMETER);
+            var sensor: List<Sensor>? = sensorManager?.getSensorList(Sensor.TYPE_ACCELEROMETER)
+            PrivacyLog.i("sensor size is :${sensor?.size}")
         }
 
         /**
@@ -478,6 +479,7 @@ class PrivacyMethod {
                 val sdDir = Environment.getExternalStorageDirectory()
                 path = sdDir.absolutePath
             }
+           var newPath =  getPath(context)
             return path
         }
 
@@ -485,6 +487,21 @@ class PrivacyMethod {
             return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
         }
 
+        fun getPath(context: Context): String? {
+            var dir: File? = null
+            val state = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+            dir = if (state) {
+                if (Build.VERSION.SDK_INT >= 29) {
+                    //Android10之后
+                    context.getExternalFilesDir(null)
+                } else {
+                    Environment.getExternalStorageDirectory()
+                }
+            } else {
+                Environment.getRootDirectory()
+            }
+            return dir.toString()
+        }
         /**
          * 是否有写扩展存储的权限
          *
