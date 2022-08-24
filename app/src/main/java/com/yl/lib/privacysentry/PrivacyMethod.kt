@@ -12,44 +12,23 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.database.Cursor
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventCallback
+import android.hardware.SensorManager
 import android.net.wifi.WifiManager
 import android.os.Build
-import android.provider.ContactsContract
+import android.os.Environment
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.text.TextUtils
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.yl.lib.sentry.hook.util.PrivacyLog
 import java.net.NetworkInterface
 import java.net.SocketException
 import java.util.*
-import android.content.ContentProviderResult
-
-import android.provider.ContactsContract.CommonDataKinds.Email
-
-import android.content.ContentProviderOperation
-
-import android.provider.ContactsContract.CommonDataKinds.Phone
-
-import android.provider.ContactsContract.CommonDataKinds.StructuredName
-
-import android.provider.ContactsContract.RawContacts
-
-import android.content.ContentUris
-
-import android.content.ContentValues
-
-import android.content.ContentResolver
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventCallback
-import android.hardware.SensorManager
-import android.net.Uri
-import android.util.Log
-import com.yl.lib.sentry.hook.util.PrivacyLog
-import java.lang.StringBuilder
 
 
 /**
@@ -477,6 +456,45 @@ class PrivacyMethod {
                     )
                 }
             }
+        }
+
+        fun  testGetSensorList(context:Context){
+            var sensorManager: SensorManager? = null
+            var callback: SensorEventCallback? = null
+            // 获取传感器列表
+            var sensor: List<Sensor>? = sensorManager?.getSensorList(Sensor.TYPE_ACCELEROMETER);
+        }
+
+        /**
+         * 返回SD卡根路径
+         *
+         * @return
+         */
+        fun getSdcardRoot(context: Context): String? {
+            var path: String? = null
+            if (isSdcardReady()
+                && hasExternalStoragePermission(context)
+            ) {
+                val sdDir = Environment.getExternalStorageDirectory()
+                path = sdDir.absolutePath
+            }
+            return path
+        }
+
+        fun isSdcardReady(): Boolean {
+            return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+        }
+
+        /**
+         * 是否有写扩展存储的权限
+         *
+         * @param context
+         * @return
+         */
+        fun hasExternalStoragePermission(context: Context): Boolean {
+            val perm =
+                context.checkCallingOrSelfPermission("android.permission.WRITE_EXTERNAL_STORAGE")
+            return perm == PackageManager.PERMISSION_GRANTED
         }
     }
 }

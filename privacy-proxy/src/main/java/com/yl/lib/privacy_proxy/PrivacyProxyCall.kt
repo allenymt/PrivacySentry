@@ -20,6 +20,7 @@ import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.os.Build
+import android.os.Environment
 import android.provider.Settings
 import android.telephony.CellInfo
 import android.telephony.TelephonyManager
@@ -30,6 +31,7 @@ import com.yl.lib.privacy_annotation.PrivacyMethodProxy
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.util.PrivacyProxyUtil
 import com.yl.lib.sentry.hook.util.PrivacyProxyUtil.Util.doFilePrinter
+import java.io.File
 import java.net.NetworkInterface
 
 /**
@@ -483,7 +485,7 @@ open class PrivacyProxyCall {
         var objectHardMacLock = Object()
         var objectSNLock = Object()
         var objectAndroidIdLock = Object()
-
+        var objectExternalStorageDirectoryLock = Object()
 
         var objectMeidLock = Object()
 
@@ -1067,6 +1069,36 @@ open class PrivacyProxyCall {
                 e.printStackTrace()
             } finally {
                 PrivacyProxyUtil.Util.putCacheStaticParam(result ?: "", key)
+            }
+            return result
+        }
+
+        @PrivacyMethodProxy(
+            originalClass = android.os.Environment::class,
+            originalMethod = "getExternalStorageDirectory",
+            originalOpcode = MethodInvokeOpcode.INVOKESTATIC
+        )
+        @JvmStatic
+        fun getExternalStorageDirectory(): File? {
+            var result: File? = null
+            var key = "externalStorageDirectory"
+            try {
+                if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                    doFilePrinter("getExternalStorageDirectory", key, bVisitorModel = true)
+                }
+                synchronized(objectExternalStorageDirectoryLock) {
+                    if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                        doFilePrinter("getExternalStorageDirectory", key, bCache = true)
+                        return PrivacyProxyUtil.Util.getCacheStaticParam(null, key)
+                    }
+
+                    doFilePrinter("getExternalStorageDirectory", key)
+                    result = Environment.getExternalStorageDirectory()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                PrivacyProxyUtil.Util.putCacheStaticParam(result, key)
             }
             return result
         }

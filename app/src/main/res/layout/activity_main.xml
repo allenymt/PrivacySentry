@@ -13,9 +13,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:orientation="vertical">
+            android:paddingRight="20dp">
 
             <Button
                 android:id="@+id/btn_androidId"
@@ -121,6 +121,18 @@
                 android:text="注册传感器" />
 
             <Button
+                android:id="@+id/btn_test_get_all_sensor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取传感器列表" />
+
+            <Button
+                android:id="@+id/btn_test_ExternalStorageDirectory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取SD卡根路径" />
+
+            <Button
                 android:id="@+id/btn_visualization_replace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -137,7 +149,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="结束当前检测-导出结果" />
-
 
 
         </LinearLayout>
