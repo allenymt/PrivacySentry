@@ -411,7 +411,12 @@ class PrivacyMethod {
         //读取 Android SN(Serial)
         fun getSerial():String{
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                android.os.Build.getSerial()
+                try {
+                    android.os.Build.getSerial()
+                }catch (e:Exception){
+                    e.printStackTrace()
+                    return ""
+                }
             } else {
                 android.os.Build.SERIAL
             }
