@@ -4,6 +4,7 @@ import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.FieldVisitor
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.commons.AdviceAdapter
 
@@ -67,6 +68,26 @@ class CollectHookMethodClassAdapter : ClassVisitor {
         }
         return super.visitMethod(access, name, descriptor, signature, exceptions)
     }
+
+    override fun visitField(
+        access: Int,
+        name: String?,
+        descriptor: String?,
+        signature: String?,
+        value: Any?
+    ): FieldVisitor {
+        if (bHookClass) {
+            var methodVisitor = cv.visitField(access, name, descriptor, signature, value)
+            return CollectHookFieldVisitor(
+                api,
+                methodVisitor,
+                className,
+                name,
+                descriptor
+            )
+        }
+        return super.visitField(access, name, descriptor, signature, value)
+    }
 }
 
 
@@ -92,7 +113,7 @@ class CollectHookMethodAdapter : AdviceAdapter {
     override fun visitAnnotation(descriptor: String?, visible: Boolean): AnnotationVisitor {
         if (descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyMethodProxy;") == true) {
             var avr = mv.visitAnnotation(descriptor, visible)
-            return CollectHookAnnotationVisitor(
+            return CollectMethodHookAnnotationVisitor(
                 api,
                 avr,
                 HookMethodItem(
@@ -104,10 +125,12 @@ class CollectHookMethodAdapter : AdviceAdapter {
         }
         return super.visitAnnotation(descriptor, visible)
     }
+
+
 }
 
-class CollectHookAnnotationVisitor : AnnotationVisitor {
-    private var hookMethodItem:  HookMethodItem? = null
+class CollectMethodHookAnnotationVisitor : AnnotationVisitor {
+    private var hookMethodItem: HookMethodItem? = null
 
     constructor(
         api: Int,
@@ -147,5 +170,71 @@ class CollectHookAnnotationVisitor : AnnotationVisitor {
                 hookMethodItem?.proxyMethodDesc?.replace("L${hookMethodItem?.originClassName};", "")
         }
         HookMethodManager.MANAGER.appendHookMethod(hookMethodItem!!)
+    }
+}
+
+class CollectHookFieldVisitor : FieldVisitor {
+    private var className: String
+    private var fieldName: String?
+    private var proxyDescriptor: String?
+
+    constructor(
+        api: Int,
+        fieldVisitor: FieldVisitor,
+        className: String,
+        fieldName: String?,
+        descriptor: String?
+    ) : super(api, fieldVisitor) {
+        this.className = className
+        this.fieldName = fieldName
+        this.proxyDescriptor = descriptor
+    }
+
+    override fun visitAnnotation(descriptor: String?, visible: Boolean): AnnotationVisitor {
+        if (descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyFieldProxy;") == true) {
+            var avr = fv.visitAnnotation(descriptor, visible)
+            return CollectFieldHookAnnotationVisitor(
+                api,
+                avr,
+                HookFieldItem(
+                    proxyClassName = className,
+                    proxyFieldName = fieldName ?: "",
+                    proxyFieldDesc = proxyDescriptor ?: ""
+                )
+            )
+        }
+        return super.visitAnnotation(descriptor, visible)
+    }
+
+}
+
+class CollectFieldHookAnnotationVisitor : AnnotationVisitor {
+    private var hookFieldItem: HookFieldItem? = null
+
+    constructor(
+        api: Int,
+        annotationVisitor: AnnotationVisitor?,
+        hookFieldItem: HookFieldItem
+    ) : super(api, annotationVisitor) {
+        this.hookFieldItem = hookFieldItem
+    }
+
+    override fun visit(name: String?, value: Any?) {
+        super.visit(name, value)
+        if (name.equals("originalClass")) {
+            var classSourceName = value.toString()
+            hookFieldItem?.originClassName =
+                classSourceName.substring(1, classSourceName.length - 1)
+        } else if (name.equals("originalFieldName")) {
+            hookFieldItem?.originFieldName = value.toString()
+        }
+    }
+
+    override fun visitEnd() {
+        super.visitEnd()
+        hookFieldItem?.let {
+            HookFieldManager.MANAGER.appendHookField(it)
+        }
+
     }
 }
