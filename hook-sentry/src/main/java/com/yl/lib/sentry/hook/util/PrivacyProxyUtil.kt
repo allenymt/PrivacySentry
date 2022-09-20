@@ -1,8 +1,7 @@
 package com.yl.lib.sentry.hook.util
 
+import android.content.pm.PackageManager
 import com.yl.lib.sentry.hook.PrivacySentry
-import com.yl.lib.sentry.hook.util.PrivacyLog
-import com.yl.lib.sentry.hook.util.PrivacyUtil
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -75,6 +74,15 @@ class PrivacyProxyUtil {
             var hasCacheValue = false
             hasCacheValue = staticParamMap[key] != null
             return hasCacheValue
+        }
+
+        fun checkPermission(permission: String): Boolean {
+            val localPackageManager: PackageManager? =
+                PrivacySentry.Privacy.getContext()?.packageManager
+            return localPackageManager?.checkPermission(
+                permission,
+                PrivacySentry.Privacy.getContext()?.packageName ?: ""
+            ) == PackageManager.PERMISSION_GRANTED
         }
     }
 

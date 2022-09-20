@@ -1,5 +1,6 @@
 package com.yl.lib.privacy_proxy
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.bluetooth.BluetoothAdapter
@@ -496,7 +497,6 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getMeid(manager: TelephonyManager): String? {
-            doFilePrinter("getMeid", methodDocumentDesc = "移动设备标识符-getMeid()")
             var key = "meid"
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 doFilePrinter(key, "移动设备标识符-getMeid()", bVisitorModel = true)
@@ -505,6 +505,12 @@ open class PrivacyProxyCall {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 return ""
             }
+
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+                doFilePrinter("getMeid", methodDocumentDesc = "移动设备标识符-getMeid()-无权限")
+                return ""
+            }
+
             synchronized(objectMeidLock) {
                 if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
                     doFilePrinter(key, "移动设备标识符-getMeid()", bCache = true)
@@ -531,13 +537,16 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getMeid(manager: TelephonyManager, index: Int): String? {
-            doFilePrinter("getMeid", methodDocumentDesc = "移动设备标识符-getMeid()")
             var key = "meid"
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 doFilePrinter(key, "移动设备标识符-getMeid()", bVisitorModel = true)
                 return ""
             }
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                return ""
+            }
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+                doFilePrinter("getMeid", methodDocumentDesc = "移动设备标识符-getMeid()-无权限")
                 return ""
             }
             synchronized(objectMeidLock) {
@@ -575,6 +584,11 @@ open class PrivacyProxyCall {
             }
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                return ""
+            }
+
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+                doFilePrinter(key, "IMEI-getDeviceId()-无权限")
                 return ""
             }
             synchronized(objectDeviceIdLock) {
@@ -618,6 +632,11 @@ open class PrivacyProxyCall {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 return ""
             }
+
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+                doFilePrinter(key, "IMEI-getDeviceId()-无权限")
+                return ""
+            }
             synchronized(objectDeviceIdLock) {
                 if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
                     doFilePrinter(key, "IMEI-getDeviceId()", bCache = true)
@@ -657,6 +676,11 @@ open class PrivacyProxyCall {
             }
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                return ""
+            }
+
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+                doFilePrinter(key, "IMSI-getSubscriberId(I)-无权限")
                 return ""
             }
 
@@ -711,6 +735,11 @@ open class PrivacyProxyCall {
                 return ""
             }
 
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+                doFilePrinter(key, "IMEI-getImei()-无权限")
+                return ""
+            }
+
             synchronized(objectImeiLock) {
                 if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
                     doFilePrinter(key, "IMEI-getImei()", bCache = true)
@@ -747,6 +776,12 @@ open class PrivacyProxyCall {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 return ""
             }
+
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+                doFilePrinter(key, "设备id-getImei(I)-无权限")
+                return ""
+            }
+
             synchronized(objectImeiLock) {
 
                 if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
@@ -789,6 +824,10 @@ open class PrivacyProxyCall {
                 return ""
             }
 
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+                doFilePrinter(key, "SIM卡-getSimSerialNumber()-无权限")
+                return ""
+            }
             synchronized(objectSimLock) {
                 if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
                     doFilePrinter(
