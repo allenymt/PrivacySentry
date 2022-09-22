@@ -494,7 +494,6 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getMeid(manager: TelephonyManager): String? {
-            doFilePrinter("getMeid", methodDocumentDesc = "移动设备标识符-getMeid()")
             var key = "meid"
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 doFilePrinter(key, "移动设备标识符-getMeid()", bVisitorModel = true)
@@ -529,7 +528,6 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getMeid(manager: TelephonyManager, index: Int): String? {
-            doFilePrinter("getMeid", methodDocumentDesc = "移动设备标识符-getMeid()")
             var key = "meid"
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 doFilePrinter(key, "移动设备标识符-getMeid()", bVisitorModel = true)
