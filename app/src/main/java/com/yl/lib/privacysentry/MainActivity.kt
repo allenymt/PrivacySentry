@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.yl.lib.privacy_proxy.ProxyProxyField
 import com.yl.lib.privacy_test.PrivacyProxySelfTest2
 import com.yl.lib.privacy_test.TestMethod
 import com.yl.lib.privacy_test.TestMethodInJava
@@ -142,9 +143,11 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        // 变量hook测试
         findViewById<Button>(R.id.btn_test_sn).setOnClickListener {
             var sn = PrivacyMethod.PrivacyMethod.getSerial()
-            PrivacyLog.i("Android SN is $sn")
+            var brand = android.os.Build.BRAND
+            PrivacyLog.i("Android SN is $sn brand is $brand")
         }
 
 

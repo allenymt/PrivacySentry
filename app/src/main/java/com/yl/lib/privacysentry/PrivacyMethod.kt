@@ -272,12 +272,15 @@ class PrivacyMethod {
             }
             return ""
         }
+
+
         private fun checkPermissions(context: Context, permission: String): Boolean {
-            val localPackageManager = context.packageManager ?: return false
-            return localPackageManager.checkPermission(
-                permission,
-                context.packageName
-            ) == PackageManager.PERMISSION_GRANTED
+//            val localPackageManager = context.packageManager ?: return false
+//            return localPackageManager.checkPermission(
+//                permission,
+//                context.packageName
+//            ) == PackageManager.PERMISSION_GRANTED
+            return true
         }
 
 

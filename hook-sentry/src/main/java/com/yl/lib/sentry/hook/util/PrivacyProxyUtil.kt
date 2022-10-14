@@ -76,6 +76,11 @@ class PrivacyProxyUtil {
             return hasCacheValue
         }
 
+        /**
+         * 检查运行时权限
+         * @param permission String
+         * @return Boolean
+         */
         fun checkPermission(permission: String): Boolean {
             val localPackageManager: PackageManager? =
                 PrivacySentry.Privacy.getContext()?.packageManager

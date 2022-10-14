@@ -30,6 +30,7 @@ import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
 import com.yl.lib.sentry.hook.PrivacySentry
+import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyProxyUtil
 import com.yl.lib.sentry.hook.util.PrivacyProxyUtil.Util.doFilePrinter
 import java.io.File
@@ -506,7 +507,7 @@ open class PrivacyProxyCall {
                 return ""
             }
 
-            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
                 doFilePrinter("getMeid", methodDocumentDesc = "移动设备标识符-getMeid()-无权限")
                 return ""
             }
@@ -545,7 +546,7 @@ open class PrivacyProxyCall {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 return ""
             }
-            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
                 doFilePrinter("getMeid", methodDocumentDesc = "移动设备标识符-getMeid()-无权限")
                 return ""
             }
@@ -587,7 +588,7 @@ open class PrivacyProxyCall {
                 return ""
             }
 
-            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
                 doFilePrinter(key, "IMEI-getDeviceId()-无权限")
                 return ""
             }
@@ -633,7 +634,7 @@ open class PrivacyProxyCall {
                 return ""
             }
 
-            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
                 doFilePrinter(key, "IMEI-getDeviceId()-无权限")
                 return ""
             }
@@ -679,7 +680,7 @@ open class PrivacyProxyCall {
                 return ""
             }
 
-            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
                 doFilePrinter(key, "IMSI-getSubscriberId(I)-无权限")
                 return ""
             }
@@ -735,7 +736,7 @@ open class PrivacyProxyCall {
                 return ""
             }
 
-            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
                 doFilePrinter(key, "IMEI-getImei()-无权限")
                 return ""
             }
@@ -777,7 +778,7 @@ open class PrivacyProxyCall {
                 return ""
             }
 
-            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
                 doFilePrinter(key, "设备id-getImei(I)-无权限")
                 return ""
             }
@@ -824,7 +825,7 @@ open class PrivacyProxyCall {
                 return ""
             }
 
-            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)){
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
                 doFilePrinter(key, "SIM卡-getSimSerialNumber()-无权限")
                 return ""
             }
@@ -1142,5 +1143,25 @@ open class PrivacyProxyCall {
             return result
         }
 
+        // 拦截获取系统设备，简直离谱，这个也不能重复获取
+        @JvmStatic
+        fun getBrand(): String? {
+            var result = ""
+            var key = "getBrand"
+            try {
+                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                    doFilePrinter("getBrand", "Brand", bCache = true)
+                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
+                }
+
+                doFilePrinter("getBrand", "Brand")
+                result = Build.BRAND
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                PrivacyProxyUtil.Util.putCacheStaticParam(result ?: "", key)
+            }
+            return result
+        }
     }
 }
