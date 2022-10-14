@@ -1,5 +1,6 @@
 package com.yl.lib.privacy_proxy
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.bluetooth.BluetoothAdapter
@@ -20,6 +21,7 @@ import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.os.Build
+import android.os.Environment
 import android.provider.Settings
 import android.telephony.CellInfo
 import android.telephony.TelephonyManager
@@ -27,9 +29,11 @@ import androidx.annotation.Keep
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
-import com.yl.lib.sentry.hook.util.PrivacyProxyUtil.Util.doFilePrinter
 import com.yl.lib.sentry.hook.PrivacySentry
+import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyProxyUtil
+import com.yl.lib.sentry.hook.util.PrivacyProxyUtil.Util.doFilePrinter
+import java.io.File
 import java.net.NetworkInterface
 
 /**
@@ -93,11 +97,11 @@ open class PrivacyProxyCall {
                 return emptyList()
             }
 
-            var appProcess : List<ActivityManager.RunningAppProcessInfo> = emptyList()
-            try{
+            var appProcess: List<ActivityManager.RunningAppProcessInfo> = emptyList()
+            try {
                 // 线上三星11和12的机子 有上报，量不大
                 appProcess = manager.runningAppProcesses
-            }catch (e : Throwable){
+            } catch (e: Throwable) {
                 e.printStackTrace()
             }
             return appProcess
@@ -483,7 +487,7 @@ open class PrivacyProxyCall {
         var objectHardMacLock = Object()
         var objectSNLock = Object()
         var objectAndroidIdLock = Object()
-
+        var objectExternalStorageDirectoryLock = Object()
 
         var objectMeidLock = Object()
 
@@ -502,6 +506,12 @@ open class PrivacyProxyCall {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 return ""
             }
+
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
+                doFilePrinter("getMeid", methodDocumentDesc = "移动设备标识符-getMeid()-无权限")
+                return ""
+            }
+
             synchronized(objectMeidLock) {
                 if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
                     doFilePrinter(key, "移动设备标识符-getMeid()", bCache = true)
@@ -534,6 +544,10 @@ open class PrivacyProxyCall {
                 return ""
             }
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                return ""
+            }
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
+                doFilePrinter("getMeid", methodDocumentDesc = "移动设备标识符-getMeid()-无权限")
                 return ""
             }
             synchronized(objectMeidLock) {
@@ -571,6 +585,11 @@ open class PrivacyProxyCall {
             }
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                return ""
+            }
+
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
+                doFilePrinter(key, "IMEI-getDeviceId()-无权限")
                 return ""
             }
             synchronized(objectDeviceIdLock) {
@@ -614,6 +633,11 @@ open class PrivacyProxyCall {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 return ""
             }
+
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
+                doFilePrinter(key, "IMEI-getDeviceId()-无权限")
+                return ""
+            }
             synchronized(objectDeviceIdLock) {
                 if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
                     doFilePrinter(key, "IMEI-getDeviceId()", bCache = true)
@@ -653,6 +677,11 @@ open class PrivacyProxyCall {
             }
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                return ""
+            }
+
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
+                doFilePrinter(key, "IMSI-getSubscriberId(I)-无权限")
                 return ""
             }
 
@@ -707,6 +736,11 @@ open class PrivacyProxyCall {
                 return ""
             }
 
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
+                doFilePrinter(key, "IMEI-getImei()-无权限")
+                return ""
+            }
+
             synchronized(objectImeiLock) {
                 if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
                     doFilePrinter(key, "IMEI-getImei()", bCache = true)
@@ -743,6 +777,12 @@ open class PrivacyProxyCall {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 return ""
             }
+
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
+                doFilePrinter(key, "设备id-getImei(I)-无权限")
+                return ""
+            }
+
             synchronized(objectImeiLock) {
 
                 if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
@@ -785,6 +825,10 @@ open class PrivacyProxyCall {
                 return ""
             }
 
+            if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
+                doFilePrinter(key, "SIM卡-getSimSerialNumber()-无权限")
+                return ""
+            }
             synchronized(objectSimLock) {
                 if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
                     doFilePrinter(
@@ -1069,5 +1113,55 @@ open class PrivacyProxyCall {
             return result
         }
 
+        @PrivacyMethodProxy(
+            originalClass = android.os.Environment::class,
+            originalMethod = "getExternalStorageDirectory",
+            originalOpcode = MethodInvokeOpcode.INVOKESTATIC
+        )
+        @JvmStatic
+        fun getExternalStorageDirectory(): File? {
+            var result: File? = null
+            var key = "externalStorageDirectory"
+            try {
+                if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                    doFilePrinter("getExternalStorageDirectory", key, bVisitorModel = true)
+                }
+                synchronized(objectExternalStorageDirectoryLock) {
+                    if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                        doFilePrinter("getExternalStorageDirectory", key, bCache = true)
+                        return PrivacyProxyUtil.Util.getCacheStaticParam(null, key)
+                    }
+
+                    doFilePrinter("getExternalStorageDirectory", key)
+                    result = Environment.getExternalStorageDirectory()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                PrivacyProxyUtil.Util.putCacheStaticParam(result, key)
+            }
+            return result
+        }
+
+        // 拦截获取系统设备，简直离谱，这个也不能重复获取
+        @JvmStatic
+        fun getBrand(): String? {
+            var result = ""
+            var key = "getBrand"
+            try {
+                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
+                    doFilePrinter("getBrand", "Brand", bCache = true)
+                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
+                }
+
+                doFilePrinter("getBrand", "Brand")
+                result = Build.BRAND
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                PrivacyProxyUtil.Util.putCacheStaticParam(result ?: "", key)
+            }
+            return result
+        }
     }
 }
