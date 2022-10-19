@@ -41,7 +41,10 @@ class SentryTraceClassAdapter : ClassVisitor {
     }
 
     override fun visitAnnotation(descriptor: String?, visible: Boolean): AnnotationVisitor {
-        if (descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassProxy;") == true) {
+        if (descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassProxy;") == true || HookMethodManager.MANAGER.isProxyClass(
+                className
+            ) || HookFieldManager.MANAGER.isProxyClass(className)
+        ) {
             bHookClass = false
         }
         return super.visitAnnotation(descriptor, visible)
@@ -75,8 +78,9 @@ class SentryTraceClassAdapter : ClassVisitor {
 class SentryTraceMethodAdapter : AdviceAdapter {
 
     private var privacyExtension: PrivacyExtension? = null
-    private var className:String? = null
-    private var methodName:String? = null
+    private var className: String? = null
+    private var methodName: String? = null
+
     constructor(
         api: Int,
         methodVisitor: MethodVisitor?,
@@ -84,7 +88,7 @@ class SentryTraceMethodAdapter : AdviceAdapter {
         name: String?,
         descriptor: String?,
         privacyExtension: PrivacyExtension?,
-        className:String
+        className: String
     ) : super(api, methodVisitor, access, name, descriptor) {
         this.privacyExtension = privacyExtension
         this.methodName = name
@@ -105,7 +109,7 @@ class SentryTraceMethodAdapter : AdviceAdapter {
                 ReplaceMethodItem(
                     className!!,
                     methodName!!,
-                    owner.replace("/","."),
+                    owner.replace("/", "."),
                     name
                 )
             )
@@ -121,9 +125,9 @@ class SentryTraceMethodAdapter : AdviceAdapter {
         super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface)
     }
 
-    //访问某个成员变量，变量拦截目前只有android/os/Build.SERIAL,所以直接写死了。
+    //访问某个成员变量
     override fun visitFieldInsn(opcode: Int, owner: String?, name: String?, descriptor: String?) {
-        if (HookFieldManager.MANAGER.contains(name,owner,descriptor)){
+        if (HookFieldManager.MANAGER.contains(name, owner, descriptor)) {
             var fieldItem = HookFieldManager.MANAGER.findHookItemByName(name, owner, descriptor)
             mv.visitFieldInsn(
                 opcode,

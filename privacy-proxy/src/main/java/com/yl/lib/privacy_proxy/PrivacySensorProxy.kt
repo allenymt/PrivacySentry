@@ -9,6 +9,8 @@ import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
 import com.yl.lib.sentry.hook.PrivacySentry
+import com.yl.lib.sentry.hook.cache.CachePrivacyManager
+import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyProxyUtil
 
 /**
@@ -16,7 +18,7 @@ import com.yl.lib.sentry.hook.util.PrivacyProxyUtil
  * @since 2022-06-17 17:56
  */
 @Keep
-class PrivacySensorProxy {
+open class PrivacySensorProxy {
 
     @Keep
     @PrivacyClassProxy
@@ -108,14 +110,17 @@ class PrivacySensorProxy {
         @JvmStatic
         fun getSensorList(sensorManager: SensorManager?, type: Int): List<Sensor>? {
             var logPair = transformSensorTypeToString(type)
-            PrivacyProxyUtil.Util.doFilePrinter(
-                "getSensorList",
-                methodDocumentDesc = "获取${logPair.first}-${logPair.second}"
-            )
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return emptyList()
             }
-            return sensorManager?.getSensorList(type)
+            return CachePrivacyManager.manager.loadWithMemoryCache<List<Sensor>>(
+                "getSensorList-$type",
+                "获取${logPair.first}-${logPair.second}",
+                emptyList()
+            ) {
+                PrivacyLog.i("getBrand Value")
+                sensorManager?.getSensorList(type) ?: emptyList()
+            }
         }
 
         @JvmStatic
