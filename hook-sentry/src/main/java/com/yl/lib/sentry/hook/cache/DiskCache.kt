@@ -15,12 +15,15 @@ class DiskCache : BasePrivacyCache(PrivacyCacheType.PERMANENT_DISK) {
         if (paramMap.contains(key)) {
             return paramMap[key] as T
         }
+
+        // 读操作可以频繁，文件io只会触发一次
         var any = CacheUtils.Utils.loadFromSp(key, default.toString())
         any?.let { paramMap[key] }
         return any as T
     }
 
 
+    // TODO 如何优化，避免频繁写入sp
     override fun put(key: String, value: Any) {
         paramMap[key] = value
         CacheUtils.Utils.saveToSp(key, value?.toString() ?: "")
