@@ -15,7 +15,7 @@ class CachePrivacyManager {
         private var dickCache = DiskCache()
 
         // 不同字段可能对时间的要求不一样
-        private var timeDiskCache = TimeLessDiskCache(CacheUtils.Utils.MINUTE * 10)
+        private var timeDiskCache = TimeLessDiskCache(CacheUtils.Utils.MINUTE * 30)
         private var memoryCache = MemoryCache<Any>()
 
         fun <T> loadWithMemoryCache(
