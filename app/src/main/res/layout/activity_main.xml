@@ -133,6 +133,12 @@
                 android:text="获取SD卡根路径" />
 
             <Button
+                android:id="@+id/btn_to_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="跳转定位测试页面" />
+
+            <Button
                 android:id="@+id/btn_visualization_replace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.yl.lib.privacy_proxy.ProxyProxyField
 import com.yl.lib.privacy_test.PrivacyProxySelfTest2
 import com.yl.lib.privacy_test.TestMethod
 import com.yl.lib.privacy_test.TestMethodInJava
@@ -17,6 +16,7 @@ import com.yl.lib.privacy_ui.RealTimePrivacyItemActivity
 import com.yl.lib.privacy_ui.ReplaceListActivity
 import com.yl.lib.privacysentry.calendar.CalenderActivity
 import com.yl.lib.privacysentry.contact.ContactActivity
+import com.yl.lib.privacysentry.location.LocationTestActivity
 import com.yl.lib.privacysentry.process.MultiProcessB
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.util.MainProcessUtil
@@ -206,6 +206,10 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_test_get_all_sensor).setOnClickListener {
             PrivacyMethod.PrivacyMethod.testGetSensorList(this)
+        }
+
+        findViewById<Button>(R.id.btn_to_location).setOnClickListener {
+            startActivity(Intent(this, LocationTestActivity::class.java))
         }
 
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框

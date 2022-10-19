@@ -6,17 +6,21 @@ import java.util.concurrent.ConcurrentHashMap
  * @author yulun
  * @since 2022-10-17 11:39
  */
-class MemoryCache : BasePrivacyCache(PrivacyCacheType.MEMORY) {
+class MemoryCache<T> : BasePrivacyCache<T>(PrivacyCacheType.MEMORY) {
 
     //部分字段只需要读取一次
     // 部分SDK在子线程读取，需要声明可见性
-    private var paramMap: ConcurrentHashMap<String, Any> = ConcurrentHashMap()
+    private var paramMap: ConcurrentHashMap<String, T> = ConcurrentHashMap()
 
-    override fun <T> get(key: String, default: T): T? {
-        return paramMap[key] as? T ?: default
+    override fun get(key: String, default: T): Pair<Boolean,T?> {
+        if (paramMap.containsKey(key)){
+            return Pair(true,paramMap[key] as? T ?: default)
+        } else {
+            return Pair(false,null)
+        }
     }
 
-    override fun put(key: String, value: Any) {
+    override fun put(key: String, value: T) {
         paramMap[key] = value
     }
 }

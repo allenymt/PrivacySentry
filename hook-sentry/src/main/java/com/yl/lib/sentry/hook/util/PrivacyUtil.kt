@@ -1,5 +1,8 @@
 package com.yl.lib.sentry.hook.util
 
+import android.location.Location
+import android.location.LocationManager.GPS_PROVIDER
+import android.text.TextUtils
 import android.util.Log
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
@@ -76,8 +79,32 @@ class PrivacyUtil {
             if (data != null) {
                 result = String(data)
             }
-
             return result
+        }
+
+        fun formatLocation(location: Location?): String {
+            if (location == null) {
+                return ""
+            }
+            return "${location?.latitude},${location?.longitude},${location?.altitude},${location?.accuracy},${location?.speed},${location?.bearing}"
+        }
+
+        fun formatLocation(locationInfo: String): Location? {
+            if (TextUtils.isEmpty(locationInfo)) {
+                return null
+            }
+            var location :Location? = null
+            val infoArray: Array<String> = locationInfo.split(",").toTypedArray()
+            if (infoArray.size > 1) {
+                location = Location(GPS_PROVIDER)
+                location.latitude = infoArray[0].toDouble()
+                location.longitude = infoArray[1].toDouble()
+                location.altitude = infoArray[2].toDouble()
+                location.accuracy = infoArray[3].toFloat()
+                location.speed = infoArray[4].toFloat()
+                location.bearing = infoArray[5].toFloat()
+            }
+            return location
         }
     }
 

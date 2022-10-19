@@ -19,6 +19,7 @@ class CacheUtils {
         const val MINUTE = 60 * 1000L
         const val HOUR = MINUTE * 60
         const val DAY = HOUR * 24
+        const val EMPTY = "|PrivacyEmpty|"
 
         /**
          * 当前值是否在有效期
@@ -31,7 +32,7 @@ class CacheUtils {
             }
             try {
                 val starTime = value.substring(0, 13)
-                val validTime = value.substring(14, value.indexOf(separator))
+                val validTime = value.substring(13, value.indexOf(separator))
                 return System.currentTimeMillis() - starTime.toLong() < validTime.toLong()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -41,14 +42,14 @@ class CacheUtils {
             return false
         }
 
-        fun <T> parseValue(value: String,default : T): T {
+        fun parseValue(value: String, default: String): String {
             if (TextUtils.isEmpty(value)) {
                 return default
             }
             if (!isPrivacyTimeData(value)) {
-                return value as T
+                return value
             }
-            return value.substring(value.indexOf(separator) + 1, value.length) as T
+            return value.substring(value.indexOf(separator) + 1, value.length)
         }
 
         /**
@@ -68,8 +69,20 @@ class CacheUtils {
             getSp()?.edit()?.putString(key, value)?.apply()
         }
 
-        fun loadFromSp(key: String, defaultValue: String): Any? {
-            return getSp()?.getString(key, defaultValue)
+        fun loadFromSp(key: String, defaultValue: String): Pair<Boolean, Any?> {
+            if (getSp() == null) {
+                return Pair(false, defaultValue)
+            }
+            var result = getSp()?.getString(key, EMPTY)
+
+            var success = false
+            if (EMPTY == result) {
+                result = defaultValue
+                success = false
+            } else {
+                success = true
+            }
+            return Pair(success, result)
         }
 
         fun clearData(key: String) {

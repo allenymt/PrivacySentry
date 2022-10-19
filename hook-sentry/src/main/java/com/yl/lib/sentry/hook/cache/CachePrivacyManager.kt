@@ -1,5 +1,6 @@
 package com.yl.lib.sentry.hook.cache
 
+import android.location.Location
 import android.text.TextUtils
 import com.yl.lib.sentry.hook.util.PrivacyProxyUtil
 import java.io.File
@@ -15,7 +16,7 @@ class CachePrivacyManager {
 
         // 不同字段可能对时间的要求不一样
         private var timeDiskCache = TimeLessDiskCache(CacheUtils.Utils.MINUTE * 10)
-        private var memoryCache = MemoryCache()
+        private var memoryCache = MemoryCache<Any>()
 
         fun <T> loadWithMemoryCache(
             key: String,
@@ -23,7 +24,7 @@ class CachePrivacyManager {
             defaultValue: T,
             getValue: () -> T
         ): T {
-            var result = getCacheParam<T>(key, defaultValue, PrivacyCacheType.MEMORY)
+            var result = getCacheParam(key, defaultValue, PrivacyCacheType.MEMORY)
             return handleData(
                 key,
                 methodDocumentDesc,
@@ -40,7 +41,7 @@ class CachePrivacyManager {
             defaultValue: T,
             getValue: () -> T
         ): T {
-            var result = getCacheParam<T>(key, defaultValue, PrivacyCacheType.PERMANENT_DISK)
+            var result = getCacheParam(key, defaultValue, PrivacyCacheType.PERMANENT_DISK)
             return handleData(
                 key,
                 methodDocumentDesc,
@@ -57,7 +58,7 @@ class CachePrivacyManager {
             defaultValue: T,
             getValue: () -> T
         ): T {
-            var result = getCacheParam<T>(key, defaultValue, PrivacyCacheType.TIMELINESS_DISK)
+            var result = getCacheParam(key, defaultValue, PrivacyCacheType.TIMELINESS_DISK)
             return handleData(
                 key,
                 methodDocumentDesc,
@@ -87,7 +88,7 @@ class CachePrivacyManager {
             } catch (e: Throwable) {
                 e.printStackTrace()
             } finally {
-                putCacheParam(value, key, cacheType)
+                putCacheParam(value ?: defaultValue, key, cacheType)
             }
             return value ?: defaultValue
         }
@@ -105,14 +106,18 @@ class CachePrivacyManager {
             cacheType: PrivacyCacheType
         ): Pair<Boolean, T> {
             var cacheValue = when (cacheType) {
-                PrivacyCacheType.MEMORY -> memoryCache.get(key, defaultValue)
-                PrivacyCacheType.PERMANENT_DISK -> dickCache.get(key, defaultValue)
-                PrivacyCacheType.TIMELINESS_DISK -> timeDiskCache.get(key, defaultValue)
+                PrivacyCacheType.MEMORY -> memoryCache.get(key, defaultValue as Any)
+                PrivacyCacheType.PERMANENT_DISK -> dickCache.get(key, defaultValue.toString())
+                PrivacyCacheType.TIMELINESS_DISK -> timeDiskCache.get(key, defaultValue.toString())
             }
-            return if (isEmpty(cacheValue)) {
-                Pair(false, defaultValue)
+            return if (cacheValue.first) {
+                Pair(true, cacheValue.second as T)
             } else {
-                Pair(true, cacheValue!!)
+                var value = cacheValue.second
+                if (isEmpty(value)) {
+                    value = defaultValue
+                }
+                Pair(false, value as T)
             }
         }
 
@@ -125,8 +130,8 @@ class CachePrivacyManager {
             value?.also {
                 when (cacheType) {
                     PrivacyCacheType.MEMORY -> memoryCache.put(key, value)
-                    PrivacyCacheType.PERMANENT_DISK -> dickCache.put(key, value)
-                    PrivacyCacheType.TIMELINESS_DISK -> timeDiskCache.put(key, value)
+                    PrivacyCacheType.PERMANENT_DISK -> dickCache.put(key, value.toString())
+                    PrivacyCacheType.TIMELINESS_DISK -> timeDiskCache.put(key, value.toString())
                 }
             }
         }
@@ -141,6 +146,8 @@ class CachePrivacyManager {
             } else if (value is Map<*, *> && value.isEmpty()) {
                 return true
             } else if (value is File && value.absolutePath.equals("/")) {
+                return true
+            } else if (value is Location && (value.latitude == 0.0 || value.longitude == 0.0)) {
                 return true
             }
             return false
