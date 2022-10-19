@@ -30,6 +30,7 @@ import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
 import com.yl.lib.sentry.hook.PrivacySentry
+import com.yl.lib.sentry.hook.cache.CachePrivacyManager
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyProxyUtil
 import com.yl.lib.sentry.hook.util.PrivacyProxyUtil.Util.doFilePrinter
@@ -389,21 +390,6 @@ open class PrivacyProxyCall {
         }
 
 
-        @JvmStatic
-        @PrivacyMethodProxy(
-            originalClass = SensorManager::class,
-            originalMethod = "getSensorList",
-            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
-        )
-        fun getSensorList(manager: SensorManager, type: Int): List<Sensor>? {
-            doFilePrinter("getSensorList", "可用传感器")
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                return emptyList()
-            }
-            return manager.getSensorList(type)
-        }
-
-
         /**
          * DHCP信息
          */
@@ -513,21 +499,11 @@ open class PrivacyProxyCall {
             }
 
             synchronized(objectMeidLock) {
-                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                    doFilePrinter(key, "移动设备标识符-getMeid()", bCache = true)
-                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
-                }
-                doFilePrinter(key, "移动设备标识符-getMeid()")
-                var value = ""
-                try {
-                    value = manager.getMeid()
-                } catch (e: Throwable) {
-                    //不管有没有申请，部分机子直接跑异常
-                    throw e
-                } finally {
-                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
-                }
-                return value
+                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                    key,
+                    "移动设备标识符-getMeid()",
+                    ""
+                ) { manager.meid }
             }
         }
 
@@ -551,21 +527,11 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectMeidLock) {
-                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                    doFilePrinter(key, "移动设备标识符-getMeid()", bCache = true)
-                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
-                }
-                doFilePrinter(key, "移动设备标识符-getMeid()")
-                var value = ""
-                try {
-                    value = manager.getMeid(index)
-                } catch (e: Throwable) {
-                    //不管有没有申请，部分机子直接跑异常
-                    throw e
-                } finally {
-                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
-                }
-                return value
+                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                    key,
+                    "移动设备标识符-getMeid(I)",
+                    ""
+                ) { manager.meid }
             }
         }
 
@@ -593,22 +559,11 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectDeviceIdLock) {
-                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                    doFilePrinter(key, "IMEI-getDeviceId()", bCache = true)
-                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
-                }
-
-                doFilePrinter(key, "IMEI-getDeviceId()")
-                var value = ""
-                try {
-                    value = manager.getDeviceId()
-                } catch (e: Throwable) {
-                    //不管有没有申请，部分机子直接跑异常
-                    throw e
-                } finally {
-                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
-                }
-                return value
+                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                    key,
+                    "IMEI-getDeviceId()",
+                    ""
+                ) { manager.getDeviceId() }
             }
         }
 
@@ -639,22 +594,11 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectDeviceIdLock) {
-                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                    doFilePrinter(key, "IMEI-getDeviceId()", bCache = true)
-                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
-                }
-
-                doFilePrinter(key, "IMEI-getDeviceId()")
-                var value = ""
-                try {
-                    value = manager.getDeviceId(index)
-                } catch (e: Throwable) {
-                    //不管有没有申请，部分机子直接跑异常
-                    throw e
-                } finally {
-                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
-                }
-                return value
+                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                    key,
+                    "IMEI-getDeviceId(I)",
+                    ""
+                ) { manager.getDeviceId(index) }
             }
         }
 
@@ -686,25 +630,11 @@ open class PrivacyProxyCall {
             }
 
             synchronized(objectImsiLock) {
-                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                    doFilePrinter(
-                        key,
-                        "IMSI-getSubscriberId(I)",
-                        bCache = true
-                    )
-                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
-                }
-                doFilePrinter(key, "IMSI-getSubscriberId(I)")
-                var value = ""
-                try {
-                    value = manager.subscriberId
-                } catch (e: Throwable) {
-                    //不管有没有申请，部分机子直接跑异常
-                    throw e
-                } finally {
-                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
-                }
-                return value
+                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                    key,
+                    "IMSI-getSubscriberId()",
+                    ""
+                ) { manager.subscriberId }
             }
         }
 
@@ -742,22 +672,11 @@ open class PrivacyProxyCall {
             }
 
             synchronized(objectImeiLock) {
-                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                    doFilePrinter(key, "IMEI-getImei()", bCache = true)
-                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
-                }
-
-                doFilePrinter(key, "IMEI-getImei()")
-                var value = ""
-                try {
-                    value = manager.getImei()
-                } catch (e: Throwable) {
-                    //不管有没有申请，部分机子直接跑异常
-                    throw e
-                } finally {
-                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
-                }
-                return value
+                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                    key,
+                    "IMEI-getImei()",
+                    ""
+                ) { manager.imei }
             }
         }
 
@@ -784,22 +703,11 @@ open class PrivacyProxyCall {
             }
 
             synchronized(objectImeiLock) {
-
-                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                    doFilePrinter(key, "设备id-getImei(I)", bCache = true)
-                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
-                }
-                doFilePrinter(key, "设备id-getImei(I)")
-                var value = ""
-                try {
-                    value = manager.getImei(index)
-                } catch (e: Throwable) {
-                    //不管有没有申请，部分机子直接跑异常
-                    throw e
-                } finally {
-                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
-                }
-                return value
+                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                    key,
+                    "IMEI-getImei(I)",
+                    ""
+                ) { manager.getImei(index) }
             }
         }
 
@@ -830,25 +738,11 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectSimLock) {
-                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                    doFilePrinter(
-                        key,
-                        "SIM卡-getSimSerialNumber()",
-                        bCache = true
-                    )
-                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
-                }
-                doFilePrinter(key, "SIM卡-getSimSerialNumber()")
-                var value = ""
-                try {
-                    value = manager.getSimSerialNumber()
-                } catch (e: Throwable) {
-                    //不管有没有申请，部分机子直接跑异常
-                    throw e
-                } finally {
-                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
-                }
-                return value
+                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                    key,
+                    "SIM卡-getSimSerialNumber()",
+                    ""
+                ) { manager.getSimSerialNumber() }
             }
         }
 
@@ -861,7 +755,6 @@ open class PrivacyProxyCall {
         fun getSimSerialNumber(manager: TelephonyManager, index: Int): String? {
             return getSimSerialNumber(manager)
         }
-
 
         var objectPhoneNumberLock = Object()
 
@@ -881,21 +774,11 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectPhoneNumberLock) {
-                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                    doFilePrinter(key, "手机号-getLine1Number", bCache = true)
-                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
-                }
-                doFilePrinter(key, "手机号-getLine1Number")
-                var value = ""
-                try {
-                    value = manager.line1Number
-                } catch (e: Throwable) {
-                    //不管有没有申请，部分机子直接跑异常
-                    throw e
-                } finally {
-                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
-                }
-                return value
+                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                    key,
+                    "手机号-getLine1Number",
+                    ""
+                ) { manager.line1Number }
             }
         }
 
@@ -919,21 +802,11 @@ open class PrivacyProxyCall {
             }
 
             synchronized(objectMacLock) {
-                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                    doFilePrinter(key, "mac地址-getMacAddress", bCache = true)
-                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
-                }
-                doFilePrinter(key, "mac地址-getMacAddress")
-                var value = ""
-                try {
-                    value = manager.getMacAddress()
-                } catch (e: Throwable) {
-                    //不管有没有申请，部分机子直接跑异常
-                    throw e
-                } finally {
-                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
-                }
-                return value
+                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                    key,
+                    "mac地址-getMacAddress",
+                    ""
+                ) { manager.getMacAddress() }
             }
         }
 
@@ -956,26 +829,11 @@ open class PrivacyProxyCall {
                 return ByteArray(1)
             }
             synchronized(objectHardMacLock) {
-                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                    doFilePrinter(
-                        key,
-                        "mac地址-getHardwareAddress",
-                        bCache = true
-                    )
-                    return PrivacyProxyUtil.Util.getCacheStaticParam(ByteArray(1), key)
-                }
-
-                doFilePrinter(key, "mac地址-getHardwareAddress")
-                var value = ByteArray(1)
-                try {
-                    value = manager.hardwareAddress
-                } catch (e: Throwable) {
-                    //不管有没有申请，部分机子直接跑异常
-                    throw e
-                } finally {
-                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
-                }
-                return value
+                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                    key,
+                    "mac地址-getHardwareAddress",
+                    ""
+                ) { manager.hardwareAddress.toString() }.toByteArray()
             }
         }
 
@@ -995,22 +853,11 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectBluetoothLock) {
-                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                    doFilePrinter(key, "蓝牙地址-getAddress", bCache = true)
-                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
-                }
-
-                doFilePrinter(key, "蓝牙地址-getAddress")
-                var value = ""
-                try {
-                    value = manager.address
-                } catch (e: Throwable) {
-                    //不管有没有申请，部分机子直接跑异常
-                    throw e
-                } finally {
-                    PrivacyProxyUtil.Util.putCacheStaticParam(value ?: "", key)
-                }
-                return value
+                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                    key,
+                    "蓝牙地址-getAddress",
+                    ""
+                ) { manager.address }
             }
         }
 
@@ -1039,30 +886,15 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectAndroidIdLock) {
-                var hasValue = PrivacyProxyUtil.Util.hasReadStaticParam(key)
-                if (!hasValue) {
-                    doFilePrinter("getString", "系统信息", args = type)
-                    var result = ""
-                    try {
-                        result = Settings.Secure.getString(
-                            contentResolver,
-                            type
-                        )
-                    } catch (e: Throwable) {
-                        //不管有没有申请，部分机子直接跑异常
-                        throw e
-                    } finally {
-                        PrivacyProxyUtil.Util.putCacheStaticParam(result ?: "", key)
-                    }
-                    return result
-                } else {
-                    doFilePrinter(
-                        "getString",
-                        "系统信息",
-                        args = type,
-                        bCache = true
+                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                    key,
+                    "getString-系统信息",
+                    ""
+                ) {
+                    Settings.Secure.getString(
+                        contentResolver,
+                        type
                     )
-                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
                 }
             }
         }
@@ -1087,30 +919,23 @@ open class PrivacyProxyCall {
         fun getSerial(): String? {
             var result = ""
             var key = "getSerial"
-            try {
-                if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                    doFilePrinter("getSerial", "Serial", bVisitorModel = true)
-                    return ""
-                }
-                synchronized(objectSNLock) {
-                    if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                        doFilePrinter("getSerial", "Serial", bCache = true)
-                        return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
-                    }
-
-                    doFilePrinter("getSerial", "Serial")
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        result = Build.getSerial()
-                    } else {
-                        result = Build.SERIAL
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                PrivacyProxyUtil.Util.putCacheStaticParam(result ?: "", key)
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter("getSerial", "Serial", bVisitorModel = true)
+                return ""
             }
-            return result
+            synchronized(objectSNLock) {
+                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                    key,
+                    "getSerial",
+                    ""
+                ) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        Build.getSerial()
+                    } else {
+                        Build.SERIAL
+                    }
+                }
+            }
         }
 
         @PrivacyMethodProxy(
@@ -1122,23 +947,17 @@ open class PrivacyProxyCall {
         fun getExternalStorageDirectory(): File? {
             var result: File? = null
             var key = "externalStorageDirectory"
-            try {
-                if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                    doFilePrinter("getExternalStorageDirectory", key, bVisitorModel = true)
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter("getExternalStorageDirectory", key, bVisitorModel = true)
+            }
+            synchronized(objectExternalStorageDirectoryLock) {
+                result = CachePrivacyManager.manager.loadWithMemoryCache<File>(
+                    key,
+                    "getExternalStorageDirectory",
+                    File("")
+                ) {
+                    Environment.getExternalStorageDirectory()
                 }
-                synchronized(objectExternalStorageDirectoryLock) {
-                    if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                        doFilePrinter("getExternalStorageDirectory", key, bCache = true)
-                        return PrivacyProxyUtil.Util.getCacheStaticParam(null, key)
-                    }
-
-                    doFilePrinter("getExternalStorageDirectory", key)
-                    result = Environment.getExternalStorageDirectory()
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                PrivacyProxyUtil.Util.putCacheStaticParam(result, key)
             }
             return result
         }
@@ -1146,22 +965,16 @@ open class PrivacyProxyCall {
         // 拦截获取系统设备，简直离谱，这个也不能重复获取
         @JvmStatic
         fun getBrand(): String? {
-            var result = ""
+            PrivacyLog.i("getBrand")
             var key = "getBrand"
-            try {
-                if (PrivacyProxyUtil.Util.hasReadStaticParam(key)) {
-                    doFilePrinter("getBrand", "Brand", bCache = true)
-                    return PrivacyProxyUtil.Util.getCacheStaticParam("", key)
-                }
-
-                doFilePrinter("getBrand", "Brand")
-                result = Build.BRAND
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                PrivacyProxyUtil.Util.putCacheStaticParam(result ?: "", key)
+            return CachePrivacyManager.manager.loadWithMemoryCache<String>(
+                key,
+                "getBrand",
+                ""
+            ) {
+                PrivacyLog.i("getBrand Value")
+                Build.BRAND
             }
-            return result
         }
     }
 }

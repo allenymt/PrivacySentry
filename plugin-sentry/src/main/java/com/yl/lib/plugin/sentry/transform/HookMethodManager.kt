@@ -8,6 +8,7 @@ package com.yl.lib.plugin.sentry.transform
 open class HookMethodManager {
     object MANAGER {
         private var hookMethodList: HashSet<HookMethodItem> = HashSet()
+
         /**
          * 检测是否需要替换某个方法
          * @param methodName String
@@ -34,6 +35,13 @@ open class HookMethodManager {
             return findHookItemByName(methodName, "", "")
         }
 
+        /**
+         * 找到替换方法
+         * @param methodName String
+         * @param classOwnerName String
+         * @param methodReturnDesc String
+         * @return HookMethodItem?
+         */
         fun findHookItemByName(
             methodName: String, classOwnerName: String = "",
             methodReturnDesc: String = ""
@@ -47,6 +55,14 @@ open class HookMethodManager {
             }
         }
 
+        /**
+         * 判断当前方法是否可以被替换
+         * @param hookItem HookMethodItem
+         * @param methodName String
+         * @param classOwnerName String
+         * @param methodReturnDesc String
+         * @return Boolean
+         */
         private fun isHookMethodItem(
             hookItem: HookMethodItem, methodName: String,
             classOwnerName: String = "",
@@ -113,7 +129,7 @@ open class HookMethodManager {
                 // 3. 如果业务方重复定义，那就没办法了，最后被扫描到的会被加入
                 var bPrivacyItem =
                     hookMethodItem.proxyClassName.contains("com.yl.lib.privacy_proxy")
-                if (!bPrivacyItem){
+                if (!bPrivacyItem) {
                     hookMethodList.removeIf { it == hookMethodItem }
                     hookMethodList.add(hookMethodItem)
                 }
@@ -122,6 +138,24 @@ open class HookMethodManager {
             hookMethodList.add(
                 hookMethodItem
             )
+        }
+
+        /**
+         * 兼容kotlin lambda表达式，lambda会生成新的类，导致库本身的屏蔽失效
+         * @param className String
+         * @return Boolean
+         */
+        fun isProxyClass(className: String): Boolean {
+            return hookMethodList.find {
+                it.proxyClassName == className || className.startsWith(it.proxyClassName)
+            } != null
+        }
+
+        /**
+         * 由于变量是静态的，防止gradle进程有缓存
+         */
+        fun clear() {
+            hookMethodList.clear()
         }
     }
 }

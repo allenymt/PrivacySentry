@@ -117,6 +117,24 @@ open class HookFieldManager {
                 hookFieldItem
             )
         }
+
+        /**
+         * 兼容kotlin lambda表达式，lambda会生成新的类，导致库本身的屏蔽失效
+         * @param className String
+         * @return Boolean
+         */
+        fun isProxyClass(className: String): Boolean {
+            return hookFieldSet.find {
+                it.proxyClassName == className ||  className.startsWith(it.proxyClassName)
+            } != null
+        }
+
+        /**
+         * 由于变量是静态的，防止gradle进程有缓存
+         */
+        fun clear() {
+            hookFieldSet.clear()
+        }
     }
 }
 
