@@ -9,11 +9,11 @@ import kotlin.properties.Delegates
  * @since 2022-10-17 11:46
  *
  */
-class TimeLessDiskCache : BasePrivacyCache {
+class TimeLessDiskCache : BasePrivacyCache<String> {
     var duration by Delegates.notNull<Long>()
 
     // 加个内存级别，避免频繁读sp
-    private var paramMap: ConcurrentHashMap<String, Any> = ConcurrentHashMap()
+    private var paramMap: ConcurrentHashMap<String, String> = ConcurrentHashMap()
 
     constructor(
         duration: Long
@@ -21,24 +21,30 @@ class TimeLessDiskCache : BasePrivacyCache {
         this.duration = duration
     }
 
-    override fun <T> get(key: String, default: T): T? {
-        var value = if (paramMap.contains(key)) {
-            paramMap[key]
+    override fun get(key: String, default: String): Pair<Boolean, String?> {
+        var value: String = if (paramMap.containsKey(key)) {
+            paramMap[key] ?: default
         } else {
-            CacheUtils.Utils.loadFromSp(key, "")
-        }
-        value?.let {
-            return if (CacheUtils.Utils.isValid(it.toString())) {
-                CacheUtils.Utils.parseValue(it.toString(),default)
+            var cache = CacheUtils.Utils.loadFromSp(key, "")
+            if (cache.first) {
+                cache.second?.toString() ?: default
             } else {
-                CacheUtils.Utils.clearData(key)
-                default
+                cache.second?.toString() ?: default
             }
         }
-        return null
+
+        value?.let {
+            return if (CacheUtils.Utils.isValid(it.toString())) {
+                Pair(true, CacheUtils.Utils.parseValue(it.toString(), default))
+            } else {
+                CacheUtils.Utils.clearData(key)
+                Pair(false, default)
+            }
+        }
+        return Pair(false, default)
     }
 
-    override fun put(key: String, value: Any) {
+    override fun put(key: String, value: String) {
         if (TextUtils.isEmpty(key) || value == null) {
             return
         }

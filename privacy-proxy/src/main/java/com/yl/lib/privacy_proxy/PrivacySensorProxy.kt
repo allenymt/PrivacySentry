@@ -118,7 +118,6 @@ open class PrivacySensorProxy {
                 "获取${logPair.first}-${logPair.second}",
                 emptyList()
             ) {
-                PrivacyLog.i("getBrand Value")
                 sensorManager?.getSensorList(type) ?: emptyList()
             }
         }

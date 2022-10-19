@@ -1,5 +1,11 @@
 package com.yl.lib.sentry.hook.util
 
+import android.location.Location
+import android.location.LocationManager.GPS_PROVIDER
+import android.text.TextUtils
+import android.util.Log
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
 import java.text.MessageFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -10,14 +16,16 @@ import java.util.*
  */
 class PrivacyUtil {
     object Util {
-        fun getStackTrace(): String{
+        fun getStackTrace(): String {
             val st = Thread.currentThread().stackTrace
             val sbf = StringBuilder()
             for (e in st) {
-                if (e.methodName.equals("getThreadStackTrace") || e.methodName.equals("getStackTrace")){
+                if (e.methodName.equals("getThreadStackTrace") || e.methodName.equals("getStackTrace")) {
                     continue
                 }
-                if (e.className.contains("PrivacyProxy")){
+                if (e.className.contains("PrivacyProxy")
+                    || e.className.contains("PrivacySensorProxy")
+                ) {
                     continue
                 }
                 if (sbf.isNotEmpty()) {
@@ -38,6 +46,66 @@ class PrivacyUtil {
             return sdr.format(time)
         }
 
+
+        private fun convertStreamToByte(inputStream: InputStream?): ByteArray? {
+            if (inputStream == null) {
+                return null
+            }
+            var bos: ByteArrayOutputStream? = null
+            try {
+                bos = ByteArrayOutputStream()
+                val buffer = ByteArray(2 * 1024)
+                var read = -1
+                while (inputStream.read(buffer)?.also { read = it } != -1) {
+                    bos.write(buffer, 0, read)
+                }
+                return bos.toByteArray()
+            } catch (e: java.lang.Exception) {
+                Log.e("error:", e.toString())
+            } finally {
+                if (bos != null) {
+                    try {
+                        bos.close()
+                    } catch (e2: java.lang.Exception) {
+                    }
+                }
+            }
+            return null
+        }
+
+        fun convertStreamToString(inputStream: InputStream?): String? {
+            var result: String? = ""
+            val data: ByteArray? = convertStreamToByte(inputStream)
+            if (data != null) {
+                result = String(data)
+            }
+            return result
+        }
+
+        fun formatLocation(location: Location?): String {
+            if (location == null) {
+                return ""
+            }
+            return "${location?.latitude},${location?.longitude},${location?.altitude},${location?.accuracy},${location?.speed},${location?.bearing}"
+        }
+
+        fun formatLocation(locationInfo: String): Location? {
+            if (TextUtils.isEmpty(locationInfo)) {
+                return null
+            }
+            var location :Location? = null
+            val infoArray: Array<String> = locationInfo.split(",").toTypedArray()
+            if (infoArray.size > 1) {
+                location = Location(GPS_PROVIDER)
+                location.latitude = infoArray[0].toDouble()
+                location.longitude = infoArray[1].toDouble()
+                location.altitude = infoArray[2].toDouble()
+                location.accuracy = infoArray[3].toFloat()
+                location.speed = infoArray[4].toFloat()
+                location.bearing = infoArray[5].toFloat()
+            }
+            return location
+        }
     }
 
 }

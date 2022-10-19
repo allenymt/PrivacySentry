@@ -10,8 +10,6 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import android.hardware.Sensor
-import android.hardware.SensorManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -34,6 +32,7 @@ import com.yl.lib.sentry.hook.cache.CachePrivacyManager
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyProxyUtil
 import com.yl.lib.sentry.hook.util.PrivacyProxyUtil.Util.doFilePrinter
+import com.yl.lib.sentry.hook.util.PrivacyUtil
 import java.io.File
 import java.net.NetworkInterface
 
@@ -439,12 +438,24 @@ open class PrivacyProxyCall {
         fun getLastKnownLocation(
             manager: LocationManager, provider: String
         ): Location? {
+            var key = "getLastKnownLocation"
             doFilePrinter("getLastKnownLocation", "上一次的位置信息")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 // 这里直接写空可能有风险
                 return null
             }
-            return manager.getLastKnownLocation(provider)
+
+            var locationStr = CachePrivacyManager.manager.loadWithTimeCache(
+                key,
+                "上一次的位置信息",
+                ""
+            ) { PrivacyUtil.Util.formatLocation(manager.getLastKnownLocation(provider)) }
+
+            var location: Location? = null
+            locationStr.also {
+                location = PrivacyUtil.Util.formatLocation(it)
+            }
+            return location
         }
 
 
@@ -499,7 +510,7 @@ open class PrivacyProxyCall {
             }
 
             synchronized(objectMeidLock) {
-                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                return CachePrivacyManager.manager.loadWithDiskCache(
                     key,
                     "移动设备标识符-getMeid()",
                     ""
@@ -527,7 +538,7 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectMeidLock) {
-                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                return CachePrivacyManager.manager.loadWithDiskCache(
                     key,
                     "移动设备标识符-getMeid(I)",
                     ""
@@ -559,7 +570,7 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectDeviceIdLock) {
-                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                return CachePrivacyManager.manager.loadWithDiskCache(
                     key,
                     "IMEI-getDeviceId()",
                     ""
@@ -594,7 +605,7 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectDeviceIdLock) {
-                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                return CachePrivacyManager.manager.loadWithDiskCache(
                     key,
                     "IMEI-getDeviceId(I)",
                     ""
@@ -630,7 +641,7 @@ open class PrivacyProxyCall {
             }
 
             synchronized(objectImsiLock) {
-                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                return CachePrivacyManager.manager.loadWithDiskCache(
                     key,
                     "IMSI-getSubscriberId()",
                     ""
@@ -672,7 +683,7 @@ open class PrivacyProxyCall {
             }
 
             synchronized(objectImeiLock) {
-                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                return CachePrivacyManager.manager.loadWithDiskCache(
                     key,
                     "IMEI-getImei()",
                     ""
@@ -703,7 +714,7 @@ open class PrivacyProxyCall {
             }
 
             synchronized(objectImeiLock) {
-                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                return CachePrivacyManager.manager.loadWithDiskCache(
                     key,
                     "IMEI-getImei(I)",
                     ""
@@ -738,7 +749,7 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectSimLock) {
-                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                return CachePrivacyManager.manager.loadWithDiskCache(
                     key,
                     "SIM卡-getSimSerialNumber()",
                     ""
@@ -774,7 +785,7 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectPhoneNumberLock) {
-                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                return CachePrivacyManager.manager.loadWithDiskCache(
                     key,
                     "手机号-getLine1Number",
                     ""
@@ -802,7 +813,7 @@ open class PrivacyProxyCall {
             }
 
             synchronized(objectMacLock) {
-                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                return CachePrivacyManager.manager.loadWithDiskCache(
                     key,
                     "mac地址-getMacAddress",
                     ""
@@ -829,7 +840,7 @@ open class PrivacyProxyCall {
                 return ByteArray(1)
             }
             synchronized(objectHardMacLock) {
-                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                return CachePrivacyManager.manager.loadWithDiskCache(
                     key,
                     "mac地址-getHardwareAddress",
                     ""
@@ -853,7 +864,7 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectBluetoothLock) {
-                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                return CachePrivacyManager.manager.loadWithDiskCache(
                     key,
                     "蓝牙地址-getAddress",
                     ""
@@ -886,7 +897,7 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectAndroidIdLock) {
-                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                return CachePrivacyManager.manager.loadWithDiskCache(
                     key,
                     "getString-系统信息",
                     ""
@@ -924,7 +935,7 @@ open class PrivacyProxyCall {
                 return ""
             }
             synchronized(objectSNLock) {
-                return CachePrivacyManager.manager.loadWithDiskCache<String>(
+                return CachePrivacyManager.manager.loadWithDiskCache(
                     key,
                     "getSerial",
                     ""
@@ -967,7 +978,7 @@ open class PrivacyProxyCall {
         fun getBrand(): String? {
             PrivacyLog.i("getBrand")
             var key = "getBrand"
-            return CachePrivacyManager.manager.loadWithMemoryCache<String>(
+            return CachePrivacyManager.manager.loadWithMemoryCache(
                 key,
                 "getBrand",
                 ""
