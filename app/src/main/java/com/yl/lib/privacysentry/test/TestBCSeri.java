@@ -1,4 +1,4 @@
-package com.yl.lib.privacysentry;
+package com.yl.lib.privacysentry.test;
 
 import android.os.Build;
 

@@ -83,4 +83,5 @@ dependencies {
 privacy {
     // 设置免hook的名单
     blackList = []
+    hookReflex = true
 }

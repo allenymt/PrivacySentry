@@ -1,4 +1,4 @@
-package com.yl.lib.privacysentry
+package com.yl.lib.privacysentry.test
 
 import android.app.ActivityManager
 import androidx.annotation.Keep

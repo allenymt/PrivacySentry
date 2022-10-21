@@ -18,6 +18,10 @@ import com.yl.lib.privacysentry.calendar.CalenderActivity
 import com.yl.lib.privacysentry.contact.ContactActivity
 import com.yl.lib.privacysentry.location.LocationTestActivity
 import com.yl.lib.privacysentry.process.MultiProcessB
+import com.yl.lib.privacysentry.test.PrivacyMethod
+import com.yl.lib.privacysentry.test.PrivacyProxyCallJava
+import com.yl.lib.privacysentry.test.TestReflex
+import com.yl.lib.privacysentry.test.TestReflexJava
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.util.MainProcessUtil
 import com.yl.lib.sentry.hook.util.PrivacyLog
@@ -212,9 +216,17 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LocationTestActivity::class.java))
         }
 
+        findViewById<Button>(R.id.btn_test_reflex).setOnClickListener {
+            TestReflex().test(this)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                TestReflexJava().test(this)
+                TestReflexJava().reflex3(this,"123")
+            }
+        }
+
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
         var permissions = arrayOf(
-//            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

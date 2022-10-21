@@ -1,4 +1,4 @@
-package com.yl.lib.privacysentry
+package com.yl.lib.privacysentry.test
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -25,6 +25,7 @@ import android.text.TextUtils
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.yl.lib.privacysentry.MainActivity
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import java.io.File
 import java.net.NetworkInterface

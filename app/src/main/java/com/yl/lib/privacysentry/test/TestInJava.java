@@ -1,4 +1,4 @@
-package com.yl.lib.privacysentry;
+package com.yl.lib.privacysentry.test;
 
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy;
 import com.yl.lib.sentry.hook.PrivacySentry;
