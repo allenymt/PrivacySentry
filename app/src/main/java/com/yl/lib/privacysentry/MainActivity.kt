@@ -102,6 +102,17 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("testHookCms")
         }
 
+        findViewById<Button>(R.id.btn_clipboard_readable).setOnClickListener {
+            var enableClipRead = PrivacySentry.Privacy.isReadClipboardEnable()
+            if (enableClipRead) {
+                PrivacySentry.Privacy.closeReadClipboard()
+            } else {
+                PrivacySentry.Privacy.openReadClipboard()
+            }
+            configClipReadText(it as Button)
+        }
+        configClipReadText(findViewById<Button>(R.id.btn_clipboard_readable))
+
         findViewById<Button>(R.id.btn_test_ams_process).setOnClickListener {
             PrivacyMethod.PrivacyMethod.testRunningProcess(application)
             PrivacyMethod.PrivacyMethod.testRunningTask(application)
@@ -220,7 +231,7 @@ class MainActivity : AppCompatActivity() {
             TestReflex().test(this)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 TestReflexJava().test(this)
-                TestReflexJava().reflex3(this,"123")
+                TestReflexJava().reflex3(this, "123")
             }
         }
 
@@ -253,5 +264,16 @@ class MainActivity : AppCompatActivity() {
         } else {
             PrivacyLog.i("requestPermissions ${Manifest.permission.READ_PHONE_STATE} fail")
         }
+    }
+
+    private fun configClipReadText(btn:Button) {
+        var enableClipRead = PrivacySentry.Privacy.isReadClipboardEnable()
+        var btnText = ""
+        btnText = if (enableClipRead) {
+            "关闭读取剪切板"
+        } else {
+            "开启剪贴板"
+        }
+        btn.text = btnText
     }
 }

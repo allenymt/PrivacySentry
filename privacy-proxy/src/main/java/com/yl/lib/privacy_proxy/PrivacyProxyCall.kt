@@ -277,6 +277,12 @@ open class PrivacyProxyCall {
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ClipData.newPlainText("Label", "")
             }
+
+            if (!PrivacySentry.Privacy.isReadClipboardEnable()) {
+                doFilePrinter("getPrimaryClip", "读取系统剪贴板关闭")
+                return ClipData.newPlainText("Label", "")
+            }
+
             doFilePrinter("getPrimaryClip", "剪贴板内容-getPrimaryClip")
             return manager.primaryClip
         }
@@ -291,6 +297,12 @@ open class PrivacyProxyCall {
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ClipDescription("", arrayOf(MIMETYPE_TEXT_PLAIN))
             }
+
+            if (!PrivacySentry.Privacy.isReadClipboardEnable()) {
+                doFilePrinter("getPrimaryClipDescription", "读取系统剪贴板关闭")
+                return ClipDescription("", arrayOf(MIMETYPE_TEXT_PLAIN))
+            }
+
             doFilePrinter("getPrimaryClipDescription", "剪贴板内容-getPrimaryClipDescription")
             return manager.primaryClipDescription
         }
@@ -302,10 +314,16 @@ open class PrivacyProxyCall {
         )
         @JvmStatic
         fun getText(manager: ClipboardManager): CharSequence? {
-            doFilePrinter("getText", "剪贴板内容-getText")
+
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ""
             }
+
+            if (!PrivacySentry.Privacy.isReadClipboardEnable()) {
+                doFilePrinter("getText", "读取系统剪贴板关闭")
+                return ""
+            }
+            doFilePrinter("getText", "剪贴板内容-getText")
             return manager.text
         }
 
