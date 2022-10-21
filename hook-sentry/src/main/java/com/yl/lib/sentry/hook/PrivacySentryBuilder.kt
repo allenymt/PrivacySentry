@@ -30,6 +30,9 @@ class PrivacySentryBuilder {
     // 游客模式，拦截所有敏感方法
     private var visitorModel: Boolean = false
 
+    // 可以拦截读取系统剪贴板
+    private var enableReadClipBoard: Boolean = true
+
     constructor() {
         addPrinter(DefaultLogPrint())
     }
@@ -111,4 +114,14 @@ class PrivacySentryBuilder {
     fun isEnableFileResult(): Boolean {
         return enableFileResult
     }
+
+    fun enableReadClipBoard(enableReadClipBoard: Boolean): PrivacySentryBuilder {
+        this.enableReadClipBoard = enableReadClipBoard
+        return this
+    }
+
+    fun isEnableReadClipBoard(): Boolean {
+        return enableReadClipBoard
+    }
+
 }

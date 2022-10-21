@@ -67,6 +67,12 @@
                 android:text="判断主进程，跳过当前敏感函数" />
 
             <Button
+                android:id="@+id/btn_clipboard_readable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="设置系统剪贴板开关" />
+
+            <Button
                 android:id="@+id/btn_test_cms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
