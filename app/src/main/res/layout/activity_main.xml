@@ -133,6 +133,12 @@
                 android:text="获取SD卡根路径" />
 
             <Button
+                android:id="@+id/btn_test_reflex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试反射" />
+
+            <Button
                 android:id="@+id/btn_to_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

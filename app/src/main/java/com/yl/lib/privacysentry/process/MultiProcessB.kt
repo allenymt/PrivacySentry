@@ -4,7 +4,7 @@ import android.app.Application
 import android.app.IntentService
 import android.content.Intent
 import android.os.Build
-import com.yl.lib.privacysentry.PrivacyMethod
+import com.yl.lib.privacysentry.test.PrivacyMethod
 import com.yl.lib.sentry.hook.util.MainProcessUtil
 import com.yl.lib.sentry.hook.util.PrivacyLog
 

@@ -12,10 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.yl.lib.privacy_test.PrivacyProxySelfTest2
 import com.yl.lib.privacy_test.TestMethod
 import com.yl.lib.privacy_test.TestMethodInJava
+import com.yl.lib.privacy_ui.RealTimePrivacyItemActivity
+import com.yl.lib.privacy_ui.ReplaceListActivity
 import com.yl.lib.privacysentry.calendar.CalenderActivity
 import com.yl.lib.privacysentry.contact.ContactActivity
 import com.yl.lib.privacysentry.location.LocationTestActivity
 import com.yl.lib.privacysentry.process.MultiProcessB
+import com.yl.lib.privacysentry.test.PrivacyMethod
+import com.yl.lib.privacysentry.test.PrivacyProxyCallJava
+import com.yl.lib.privacysentry.test.TestReflex
+import com.yl.lib.privacysentry.test.TestReflexJava
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.util.MainProcessUtil
 import com.yl.lib.sentry.hook.util.PrivacyLog
@@ -32,6 +38,7 @@ class MainActivity : AppCompatActivity() {
             TestMethodInJava.getAndroidIdSystem(this)
             PrivacyLog.i("androidId is $androidId")
         }
+
 
 
         findViewById<Button>(R.id.btn_deviceId).setOnClickListener {
@@ -162,43 +169,65 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_thread_cache).setOnClickListener {
             for (index in 1..20) {
-                Thread(Thread.currentThread().threadGroup, object : Runnable {
-                    override fun run() {
-                        var result = PrivacyMethod.PrivacyMethod.getAndroidId(this@MainActivity)
-                        PrivacyLog.e("btn_thread_cache result is $result")
+                Thread(Thread.currentThread().threadGroup, {
+                    var result = PrivacyMethod.PrivacyMethod.getAndroidId(this@MainActivity)
+                    PrivacyLog.e("btn_thread_cache result is $result")
 
-                        PrivacyMethod.PrivacyMethod.getDeviceId(this@MainActivity)
+                    PrivacyMethod.PrivacyMethod.getDeviceId(this@MainActivity)
 
-                        PrivacyMethod.PrivacyMethod.getDeviceId1(this@MainActivity)
+                    PrivacyMethod.PrivacyMethod.getDeviceId1(this@MainActivity)
 
-                        PrivacyMethod.PrivacyMethod.getICCID(this@MainActivity)
+                    PrivacyMethod.PrivacyMethod.getICCID(this@MainActivity)
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            PrivacyMethod.PrivacyMethod.getIMEI(this@MainActivity)
-                        }
-
-                        PrivacyMethod.PrivacyMethod.getIMSI(this@MainActivity)
-
-                        PrivacyMethod.PrivacyMethod.getMacRaw(this@MainActivity)
-
-                        PrivacyMethod.PrivacyMethod.getMacV2()
-
-                        PrivacyMethod.PrivacyMethod.getMeid(this@MainActivity)
-
-                        PrivacyMethod.PrivacyMethod.getSerial()
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        PrivacyMethod.PrivacyMethod.getIMEI(this@MainActivity)
                     }
+
+                    PrivacyMethod.PrivacyMethod.getIMSI(this@MainActivity)
+
+                    PrivacyMethod.PrivacyMethod.getMacRaw(this@MainActivity)
+
+                    PrivacyMethod.PrivacyMethod.getMacV2()
+
+                    PrivacyMethod.PrivacyMethod.getMeid(this@MainActivity)
+
+                    PrivacyMethod.PrivacyMethod.getSerial()
                 }, "test_thread_$index", 0).start()
             }
         }
 
+        findViewById<Button>(R.id.btn_visualization_replace).setOnClickListener {
+            startActivity(Intent(this, ReplaceListActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.btn_visualization_real_time).setOnClickListener {
+            startActivity(Intent(this, RealTimePrivacyItemActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.btn_test_ExternalStorageDirectory).setOnClickListener {
+            PrivacyMethod.PrivacyMethod.getSdcardRoot(this)
+        }
+
+        findViewById<Button>(R.id.btn_test_get_all_sensor).setOnClickListener {
+            PrivacyMethod.PrivacyMethod.testGetSensorList(this)
+        }
 
         findViewById<Button>(R.id.btn_to_location).setOnClickListener {
             startActivity(Intent(this, LocationTestActivity::class.java))
         }
 
+        findViewById<Button>(R.id.btn_test_reflex).setOnClickListener {
+            TestReflex().test(this)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                TestReflexJava().test(this)
+                TestReflexJava().reflex3(this,"123")
+            }
+        }
+
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
         var permissions = arrayOf(
-            Manifest.permission.READ_PHONE_STATE
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permissions, 1000)

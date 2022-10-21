@@ -140,6 +140,14 @@ open class HookMethodManager {
             )
         }
 
+        fun findByClsOrMethod(
+            name: String
+        ): Boolean {
+            return hookMethodList.find {
+                name.contains(it.originClassName ?: "")  ||  name.contains(it.originMethodName ?: "")
+            } !=null
+        }
+
         /**
          * 兼容kotlin lambda表达式，lambda会生成新的类，导致库本身的屏蔽失效
          * @param className String
