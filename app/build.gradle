@@ -67,13 +67,14 @@ dependencies {
         implementation "com.wdian.android.lib:privacy-proxy:${rootProject.ext.privacy_version}"
         implementation "com.wdian.android.lib:privacy-ui:${rootProject.ext.privacy_version}"
     }
-
     implementation(project(path: ':privacy-test')) {
         exclude module: 'privacy-annotation'
     }
 
     implementation "androidx.work:work-runtime-ktx:2.0.1"
 
+    // 测试SHA-256 digest error问题
+//    api "org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5"
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

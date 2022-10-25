@@ -27,7 +27,7 @@ if (rootProject.ext.plugin_local_debug) {
     // 插件本地调试补充
     apply plugin: 'maven'
     group = 'com.yl.lib.plugin'
-    version = '0.0.2.17-SNAPSHOT'
+    version = '0.0.2.23-SNAPSHOT'
     uploadArchives {
         repositories {
             mavenDeployer {

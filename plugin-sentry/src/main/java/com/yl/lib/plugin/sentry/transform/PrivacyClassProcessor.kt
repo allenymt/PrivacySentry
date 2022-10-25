@@ -3,6 +3,7 @@ package com.yl.lib.plugin.sentry.transform
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import org.apache.commons.io.IOUtils
 import org.gradle.api.Project
+import org.gradle.util.GFileUtils
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.Opcodes
 import java.io.File
@@ -74,6 +75,8 @@ class PrivacyClassProcessor {
             return classWriter.toByteArray()
         }
 
+        private val JAR_SIGNATURE_EXTENSIONS = setOf("SF", "RSA", "DSA", "EC")
+
         fun processJar(project: Project, file: File, extension: PrivacyExtension,runAsm:(InputStream?,Project)->ByteArray?) {
             if (file == null || !file.exists() || !file.name.endsWith(".jar")) {
                 return
@@ -89,10 +92,17 @@ class PrivacyClassProcessor {
             var jarFile = JarFile(file)
             // 以下是标准模板代码
             var enumeration = jarFile.entries()
+
+            var transformSuccess = true
             while (enumeration.hasMoreElements()) {
                 var jarEntry = enumeration.nextElement()
                 // jar里每个元素的名称，对于java来说，就是类名(文件名)
-                var entryName = jarEntry.getName()
+                var entryName = jarEntry.name
+                if (entryName.startsWith("META-INF/") && entryName.substringAfterLast('.') in JAR_SIGNATURE_EXTENSIONS) {
+//                    GFileUtils.copyFile(file,tmpFile)
+                    transformSuccess = false
+                    break
+                }
                 // 封装成zipEntry why？
                 var zipEntry = ZipEntry(entryName)
                 // 针对jarEntry构建输入流
@@ -110,14 +120,17 @@ class PrivacyClassProcessor {
                 }
                 jarOutputStream.closeEntry()
             }
-            jarOutputStream.close()
-            jarFile.close()
+            if (transformSuccess) {
+                jarOutputStream.close()
+                jarFile.close()
 
-            if (file.exists()) {
-                file.delete()
+                if (file.exists()) {
+                    file.delete()
+                }
+                // 要把临时文件重命名成源文件的名称
+                tmpFile.renameTo(file)
             }
-            // 要把临时文件重命名成源文件的名称
-            tmpFile.renameTo(file)
+
         }
 
         fun processDirectory(
@@ -155,6 +168,11 @@ class PrivacyClassProcessor {
                 || entryName.contains("android/app/")
                 || entryName.contains("android/material")
                 || entryName.contains("androidx")
+                || entryName.endsWith(".SF")
+                || entryName.contains(".DSA")
+                || entryName.contains(".RSA")
+                || entryName.contains(".MF")
+
                 // 过滤掉库本身
                 || entryName.contains("com/yl/lib/privacy_annotation")
             ) {
