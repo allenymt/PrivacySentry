@@ -65,13 +65,14 @@ class CachePrivacyManager {
             duration: Long = CacheUtils.Utils.MINUTE * 30,
             getValue: () -> T
         ): T {
+            var transformKey = TimeLessDiskCache.Util.buildKey(key, duration)
             var result = getCacheParam(
-                TimeLessDiskCache.Util.buildKey(key, duration),
+                transformKey,
                 defaultValue,
                 PrivacyCacheType.TIMELINESS_DISK
             )
             return handleData(
-                key,
+                transformKey,
                 methodDocumentDesc,
                 defaultValue,
                 getValue,
