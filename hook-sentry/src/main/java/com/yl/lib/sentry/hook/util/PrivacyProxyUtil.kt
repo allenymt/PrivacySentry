@@ -18,7 +18,7 @@ class PrivacyProxyUtil {
             bVisitorModel: Boolean = false,
             bCache: Boolean = false
         ) {
-            if (bVisitorModel) {
+            if (bVisitorModel || PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 PrivacyLog.e("disable print file: funName is $funName methodDocumentDesc is $methodDocumentDesc,isVisitorModel=true")
                 return
             }
