@@ -42,46 +42,46 @@ open class PrivacyReflectProxy {
 
             if (obj is TelephonyManager) {
                 if ("getMeid" == method.name && args.isEmpty()) {
-                    return PrivacyProxyCall.Proxy.getMeid(obj)
+                    return PrivacyTelephonyProxy.TelephonyProxy.getMeid(obj)
                 }
                 if ("getMeid" == method.name && args.size == 1 && args[0] is Int) {
-                    return PrivacyProxyCall.Proxy.getMeid(
+                    return PrivacyTelephonyProxy.TelephonyProxy.getMeid(
                         obj,
                         args[0] as Int
                     )
                 }
                 if ("getDeviceId" == method.name && args.isEmpty()) {
-                    return PrivacyProxyCall.Proxy.getDeviceId(obj)
+                    return PrivacyTelephonyProxy.TelephonyProxy.getDeviceId(obj)
                 }
                 if ("getDeviceId" == method.name && args.size == 1 && args[0] is Int) {
-                    return PrivacyProxyCall.Proxy.getDeviceId(
+                    return PrivacyTelephonyProxy.TelephonyProxy.getDeviceId(
                         obj,
                         args[0] as Int
                     )
                 }
                 if ("getSubscriberId" == method.name && args.isEmpty()) {
-                    return PrivacyProxyCall.Proxy.getSubscriberId(obj)
+                    return PrivacyTelephonyProxy.TelephonyProxy.getSubscriberId(obj)
                 }
                 if ("getSubscriberId" == method.name && args.size == 1 && args.get(0) is Int) {
-                    return PrivacyProxyCall.Proxy.getSubscriberId(
+                    return PrivacyTelephonyProxy.TelephonyProxy.getSubscriberId(
                         obj,
                         args[0] as Int
                     )
                 }
                 if ("getImei" == method.name && args.isEmpty()) {
-                    return PrivacyProxyCall.Proxy.getImei(obj)
+                    return PrivacyTelephonyProxy.TelephonyProxy.getImei(obj)
                 }
                 if ("getImei" == method.name && args.size == 1 && args[0] is Int) {
-                    return PrivacyProxyCall.Proxy.getImei(
+                    return PrivacyTelephonyProxy.TelephonyProxy.getImei(
                         obj,
                         args[0] as Int
                     )
                 }
                 if ("getSimSerialNumber" == method.name && args.isEmpty()) {
-                    return PrivacyProxyCall.Proxy.getSimSerialNumber(obj)
+                    return PrivacyTelephonyProxy.TelephonyProxy.getSimSerialNumber(obj)
                 }
                 if ("getSimSerialNumber" == method.name && args.size == 1 && args[0] is Int) {
-                    return PrivacyProxyCall.Proxy.getSimSerialNumber(
+                    return PrivacyTelephonyProxy.TelephonyProxy.getSimSerialNumber(
                         obj,
                         args[0] as Int
                     )

@@ -18,6 +18,7 @@ import com.yl.lib.privacysentry.calendar.CalenderActivity
 import com.yl.lib.privacysentry.contact.ContactActivity
 import com.yl.lib.privacysentry.location.LocationTestActivity
 import com.yl.lib.privacysentry.process.MultiProcessB
+import com.yl.lib.privacysentry.telephony.TelephonyTestActivity
 import com.yl.lib.privacysentry.test.PrivacyMethod
 import com.yl.lib.privacysentry.test.PrivacyProxyCallJava
 import com.yl.lib.privacysentry.test.TestReflex
@@ -39,39 +40,9 @@ class MainActivity : AppCompatActivity() {
             PrivacyLog.i("androidId is $androidId")
         }
 
-
-
-        findViewById<Button>(R.id.btn_deviceId).setOnClickListener {
-            var deviceId = PrivacyMethod.PrivacyMethod.getDeviceId(this)
-            PrivacyLog.i("deviceId is $deviceId")
-
-            var deviceId1 = PrivacyMethod.PrivacyMethod.getDeviceId1(this)
-            PrivacyLog.i("deviceId is $deviceId1")
-
-            PrivacyLog.i("deviceId is ${PrivacyMethod.PrivacyMethod.getMeid(this)}")
-        }
-
         findViewById<Button>(R.id.btn_mac_address).setOnClickListener {
             var macRaw = PrivacyMethod.PrivacyMethod.getMacRaw(this)
             PrivacyLog.i("macRaw is $macRaw")
-        }
-
-
-        findViewById<Button>(R.id.btn_iccid).setOnClickListener {
-            var iccid = PrivacyMethod.PrivacyMethod.getICCID(this)
-            PrivacyLog.i("iccid is $iccid")
-        }
-
-        findViewById<Button>(R.id.btn_imei).setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                var imei = PrivacyMethod.PrivacyMethod.getIMEI(this)
-                PrivacyLog.i("imei is $imei")
-            }
-        }
-
-        findViewById<Button>(R.id.btn_imsi).setOnClickListener {
-            var imsi = PrivacyMethod.PrivacyMethod.getIMSI(this)
-            PrivacyLog.i("imsi is $imsi")
         }
 
         findViewById<Button>(R.id.btn_installed_packages).setOnClickListener {
@@ -170,6 +141,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, CalenderActivity::class.java))
         }
 
+        findViewById<Button>(R.id.btn_to_telephony).setOnClickListener {
+            startActivity(Intent(this, TelephonyTestActivity::class.java))
+        }
+
         findViewById<Button>(R.id.btn_to_contact).setOnClickListener {
             startActivity(Intent(this, ContactActivity::class.java))
         }
@@ -228,6 +203,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btn_test_reflex).setOnClickListener {
+            var ap = packageManager
             TestReflex().test(this)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 TestReflexJava().test(this)
@@ -237,7 +213,6 @@ class MainActivity : AppCompatActivity() {
 
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
         var permissions = arrayOf(
-            Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -260,13 +235,13 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1000) {
-            PrivacyLog.i("requestPermissions ${Manifest.permission.READ_PHONE_STATE} success")
+            PrivacyLog.i("requestPermissions ${permissions[0]} success")
         } else {
-            PrivacyLog.i("requestPermissions ${Manifest.permission.READ_PHONE_STATE} fail")
+            PrivacyLog.i("requestPermissions ${permissions[0]} fail")
         }
     }
 
-    private fun configClipReadText(btn:Button) {
+    private fun configClipReadText(btn: Button) {
         var enableClipRead = PrivacySentry.Privacy.isReadClipboardEnable()
         var btnText = ""
         btnText = if (enableClipRead) {

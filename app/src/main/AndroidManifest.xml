@@ -27,6 +27,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PrivacySentry">
         <activity
+            android:name=".telephony.TelephonyTestActivity"
+            android:exported="false" />
+        <activity
             android:name=".location.LocationTestActivity"
             android:exported="false" />
         <activity
