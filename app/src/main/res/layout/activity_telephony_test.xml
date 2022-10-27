@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".telephony.TelephonyTestActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <Button
+                android:id="@+id/btn_deviceId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试DeviceId" />
+
+
+            <Button
+                android:id="@+id/btn_imei"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试Imei" />
+
+            <Button
+                android:id="@+id/btn_imsi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试Imsi" />
+
+            <Button
+                android:id="@+id/btn_iccid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试sim卡唯一标识符" />
+
+            <Button
+                android:id="@+id/btn_sim_operator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试sim卡操作码？" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -58,10 +58,10 @@ class CacheUtils {
          * @param validTime Long 单位ms
          */
         fun buildTimeValue(value: String, validTime: Long): String {
-            return "${System.currentTimeMillis()}${validTime.toString()}$separator$value"
+            return "${System.currentTimeMillis()}$validTime$separator$value"
         }
 
-        fun isPrivacyTimeData(value: String): Boolean {
+        private fun isPrivacyTimeData(value: String): Boolean {
             return value != null && value.length > 15 && value.indexOf(separator) > 13
         }
 

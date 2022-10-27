@@ -174,6 +174,40 @@ class PrivacyMethod {
             return imsi ?: ""
         }
 
+        fun getSimOperator(context: Context?): String? {
+            if (context == null) {
+                return ""
+            }
+            var simOperator = ""
+            try {
+
+                val mTelephonyMgr = context
+                    .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                simOperator =
+                    mTelephonyMgr.simOperator
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+            return simOperator
+        }
+
+        fun getNetworkOperator(context: Context?): String? {
+            if (context == null) {
+                return ""
+            }
+            var networkOperator = ""
+            try {
+
+                val mTelephonyMgr = context
+                    .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                networkOperator =
+                    mTelephonyMgr.networkOperator
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+            return networkOperator
+        }
+
         /**
          * 获取sim卡唯一标示
          *
@@ -393,11 +427,11 @@ class PrivacyMethod {
         }
 
         //读取 Android SN(Serial)
-        fun getSerial():String{
+        fun getSerial(): String {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 try {
                     android.os.Build.getSerial()
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                     return ""
                 }
@@ -406,13 +440,13 @@ class PrivacyMethod {
             }
         }
 
-        fun  testSensor(context:Context){
+        fun testSensor(context: Context) {
             var sensorManager: SensorManager? = null
             var callback: SensorEventCallback? = null
             // 摇一摇注册
             // 摇一摇注册
             sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-            var sensor: Sensor?  = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            var sensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
             // 获得重力传感器
             sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -468,8 +502,9 @@ class PrivacyMethod {
             }
         }
 
-        fun  testGetSensorList(context:Context){
-            var sensorManager: SensorManager? = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        fun testGetSensorList(context: Context) {
+            var sensorManager: SensorManager? =
+                context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             // 获取传感器列表
             var sensor: List<Sensor>? = sensorManager?.getSensorList(Sensor.TYPE_ACCELEROMETER)
             PrivacyLog.i("sensor size is :${sensor?.size}")
@@ -488,7 +523,7 @@ class PrivacyMethod {
                 val sdDir = Environment.getExternalStorageDirectory()
                 path = sdDir.absolutePath
             }
-           var newPath =  getPath(context)
+            var newPath = getPath(context)
             return path
         }
 
@@ -511,6 +546,7 @@ class PrivacyMethod {
             }
             return dir.toString()
         }
+
         /**
          * 是否有写扩展存储的权限
          *

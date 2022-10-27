@@ -10,13 +10,19 @@ import java.io.File
  * @since 2022-10-18 10:39
  */
 class CachePrivacyManager {
-    object manager {
-
-        private var dickCache = DiskCache()
+    object Manager {
+        private val dickCache: DiskCache by lazy {
+            DiskCache()
+        }
 
         // 不同字段可能对时间的要求不一样
-        private var timeDiskCache = TimeLessDiskCache(CacheUtils.Utils.MINUTE * 30)
-        private var memoryCache = MemoryCache<Any>()
+        private val timeDiskCache: TimeLessDiskCache by lazy {
+            TimeLessDiskCache()
+        }
+
+        private val memoryCache: MemoryCache<Any> by lazy {
+            MemoryCache<Any>()
+        }
 
         fun <T> loadWithMemoryCache(
             key: String,
@@ -56,9 +62,14 @@ class CachePrivacyManager {
             key: String,
             methodDocumentDesc: String,
             defaultValue: T,
+            duration: Long = CacheUtils.Utils.MINUTE * 30,
             getValue: () -> T
         ): T {
-            var result = getCacheParam(key, defaultValue, PrivacyCacheType.TIMELINESS_DISK)
+            var result = getCacheParam(
+                TimeLessDiskCache.Util.buildKey(key, duration),
+                defaultValue,
+                PrivacyCacheType.TIMELINESS_DISK
+            )
             return handleData(
                 key,
                 methodDocumentDesc,

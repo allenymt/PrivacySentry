@@ -10,7 +10,6 @@ import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.cache.CachePrivacyManager
-import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyProxyUtil
 
 /**
@@ -113,7 +112,7 @@ open class PrivacySensorProxy {
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return emptyList()
             }
-            return CachePrivacyManager.manager.loadWithMemoryCache<List<Sensor>>(
+            return CachePrivacyManager.Manager.loadWithMemoryCache<List<Sensor>>(
                 "getSensorList-$type",
                 "获取${logPair.first}-${logPair.second}",
                 emptyList()

@@ -12,11 +12,11 @@ class MemoryCache<T> : BasePrivacyCache<T>(PrivacyCacheType.MEMORY) {
     // 部分SDK在子线程读取，需要声明可见性
     private var paramMap: ConcurrentHashMap<String, T> = ConcurrentHashMap()
 
-    override fun get(key: String, default: T): Pair<Boolean,T?> {
-        if (paramMap.containsKey(key)){
-            return Pair(true,paramMap[key] as? T ?: default)
+    override fun get(key: String, default: T): Pair<Boolean, T?> {
+        return if (paramMap.containsKey(key)) {
+            Pair(true, paramMap[key] as? T ?: default)
         } else {
-            return Pair(false,null)
+            Pair(false, null)
         }
     }
 

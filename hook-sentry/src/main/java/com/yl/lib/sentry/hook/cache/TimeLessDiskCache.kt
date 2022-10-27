@@ -2,23 +2,29 @@ package com.yl.lib.sentry.hook.cache
 
 import android.text.TextUtils
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.properties.Delegates
 
 /**
  * @author yulun
  * @since 2022-10-17 11:46
  *
  */
-class TimeLessDiskCache : BasePrivacyCache<String> {
-    var duration by Delegates.notNull<Long>()
-
+class TimeLessDiskCache : BasePrivacyCache<String>(PrivacyCacheType.TIMELINESS_DISK) {
     // 加个内存级别，避免频繁读sp
     private var paramMap: ConcurrentHashMap<String, String> = ConcurrentHashMap()
 
-    constructor(
-        duration: Long
-    ) : super(PrivacyCacheType.TIMELINESS_DISK) {
-        this.duration = duration
+    object Util {
+        private var sep = "|"
+        fun buildKey(key: String, duration: Long): String {
+            return "$key$sep$duration"
+        }
+
+        fun parseKey(key: String): Pair<String, Long> {
+            var index = key.lastIndexOf(sep)
+            if (index == -1) {
+                return Pair(key, 0)
+            }
+            return Pair(key.substring(0, index), key.substring(index + 1).toLong())
+        }
     }
 
     override fun get(key: String, default: String): Pair<Boolean, String?> {
@@ -34,8 +40,8 @@ class TimeLessDiskCache : BasePrivacyCache<String> {
         }
 
         value?.let {
-            return if (CacheUtils.Utils.isValid(it.toString())) {
-                Pair(true, CacheUtils.Utils.parseValue(it.toString(), default))
+            return if (CacheUtils.Utils.isValid(it)) {
+                Pair(true, CacheUtils.Utils.parseValue(it, default))
             } else {
                 CacheUtils.Utils.clearData(key)
                 Pair(false, default)
@@ -48,14 +54,15 @@ class TimeLessDiskCache : BasePrivacyCache<String> {
         if (TextUtils.isEmpty(key) || value == null) {
             return
         }
-
-        var formatValue = CacheUtils.Utils.buildTimeValue(value.toString(), duration!!)
+        var parseValue  = Util.parseKey(key)
+        var formatValue = CacheUtils.Utils.buildTimeValue(value, parseValue.second)
         paramMap[key] = formatValue
         CacheUtils.Utils.saveToSp(
-            key,
+            parseValue.first,
             formatValue
         )
     }
+
 
 
 }
