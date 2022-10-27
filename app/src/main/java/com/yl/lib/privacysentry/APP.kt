@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.os.Build
 import androidx.multidex.MultiDex
+import com.yl.lib.privacysentry.test.PrivacyMethod
 import com.yl.lib.sentry.hook.PrivacyResultCallBack
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.PrivacySentryBuilder
@@ -21,7 +22,6 @@ class APP : Application() {
     }
 
     override fun attachBaseContext(base: Context?) {
-        PrivacyMethod.PrivacyMethod.getSerial()
         super.attachBaseContext(base)
         MultiDex.install(this);
         initPrivacyTransformComplete()
