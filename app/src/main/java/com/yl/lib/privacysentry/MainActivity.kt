@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_mac_address).setOnClickListener {
             var macRaw = PrivacyMethod.PrivacyMethod.getMacRaw(this)
             PrivacyLog.i("macRaw is $macRaw")
+
+            PrivacyMethod.PrivacyMethod.getIp(this)
         }
 
         findViewById<Button>(R.id.btn_installed_packages).setOnClickListener {
@@ -63,6 +65,15 @@ class MainActivity : AppCompatActivity() {
                     PrivacyMethod.PrivacyMethod.queryActivityInfo(
                         application,
                         this
+                    )
+                }"
+            )
+
+            PrivacyLog.i(
+                "privacySentryInstalled3 is ${
+                    PrivacyMethod.PrivacyMethod.isInstalled3(
+                        application,
+                        "com.koudai.weidian.buyer"
                     )
                 }"
             )

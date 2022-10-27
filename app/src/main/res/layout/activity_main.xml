@@ -28,7 +28,7 @@
                 android:id="@+id/btn_mac_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="测试mac地址" />
+                android:text="测试mac地址和IP地址" />
 
 
             <Button

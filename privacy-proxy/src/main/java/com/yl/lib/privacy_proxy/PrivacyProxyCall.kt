@@ -32,6 +32,7 @@ import com.yl.lib.sentry.hook.util.PrivacyProxyUtil.Util.doFilePrinter
 import com.yl.lib.sentry.hook.util.PrivacyUtil
 import java.io.File
 import java.net.Inet4Address
+import java.net.InetAddress
 import java.net.NetworkInterface
 
 /**
@@ -708,6 +709,74 @@ open class PrivacyProxyCall {
             }
         }
 
+        @PrivacyMethodProxy(
+            originalClass = InetAddress::class,
+            originalMethod = "getAddress",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        @JvmStatic
+        fun getAddress(manager: InetAddress): ByteArray? {
+            var key = "ip地址-getAddress"
+
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(key, "ip地址-getAddress", bVisitorModel = true)
+                return ByteArray(1)
+            }
+            synchronized(objectBluetoothLock) {
+                return CachePrivacyManager.Manager.loadWithTimeCache(
+                    key,
+                    "ip地址-getAddress",
+                    "",
+                    duration = CacheUtils.Utils.HOUR
+                ) { manager.address.toString() }.toByteArray()
+            }
+        }
+
+        @PrivacyMethodProxy(
+            originalClass = Inet4Address::class,
+            originalMethod = "getHostAddress",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        @JvmStatic
+        fun getHostAddress(manager: Inet4Address): String? {
+            var key = "ip地址-getHostAddress"
+
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(key, "ip地址-getHostAddress", bVisitorModel = true)
+                return ""
+            }
+            synchronized(objectBluetoothLock) {
+                return CachePrivacyManager.Manager.loadWithTimeCache(
+                    key,
+                    "ip地址-getHostAddress",
+                    "",
+                    duration = CacheUtils.Utils.HOUR
+                ) { manager.hostAddress }
+            }
+        }
+
+        @PrivacyMethodProxy(
+            originalClass = InetAddress::class,
+            originalMethod = "getHostAddress",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        @JvmStatic
+        fun getHostAddress(manager: InetAddress): String?{
+            var key = "ip地址-getHostAddress"
+
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(key, "ip地址-getHostAddress", bVisitorModel = true)
+                return ""
+            }
+            synchronized(objectBluetoothLock) {
+                return CachePrivacyManager.Manager.loadWithTimeCache(
+                    key,
+                    "ip地址-getHostAddress",
+                    "",
+                    duration = CacheUtils.Utils.HOUR
+                ) { manager.hostAddress }
+            }
+        }
 
         @PrivacyMethodProxy(
             originalClass = Settings.Secure::class,
