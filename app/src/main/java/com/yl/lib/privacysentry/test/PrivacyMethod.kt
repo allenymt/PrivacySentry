@@ -174,6 +174,17 @@ class PrivacyMethod {
             return imsi ?: ""
         }
 
+        fun getIp(context: Context) {
+            var ip1 = TestInJava.getHostIp()
+            PrivacyLog.i("ip1 is $ip1")
+            Thread {
+                var ip2 = TestInJava.getIpAddress(context)
+                PrivacyLog.i(" ip2 is $ip2")
+            }.start()
+        }
+
+
+        // 获取sim卡操作码
         fun getSimOperator(context: Context?): String? {
             if (context == null) {
                 return ""
@@ -358,6 +369,27 @@ class PrivacyMethod {
                     MainActivity::javaClass.javaClass
                 ), 0
             )).isNotEmpty()
+        }
+
+        fun isInstalled3(
+            context: Application,
+            pkgName: String
+        ): Boolean {
+            if (TextUtils.isEmpty(pkgName)) {
+                return false
+            }
+            // 获取所有已安装程序的包信息
+            val packageManager = context.packageManager
+            try {
+                var info = packageManager.getPackageInfo(
+                    pkgName, 0
+                )
+                return info != null
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            return false
         }
 
         fun queryActivityInfo(
