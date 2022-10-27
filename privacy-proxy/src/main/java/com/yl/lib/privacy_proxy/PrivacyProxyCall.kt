@@ -476,7 +476,6 @@ open class PrivacyProxyCall {
             }
 
             var key = "getScanResults"
-            doFilePrinter("getScanResults", "WIFI扫描结果")
             return CachePrivacyManager.Manager.loadWithTimeCache(
                 key,
                 "getScanResults",
@@ -501,7 +500,6 @@ open class PrivacyProxyCall {
             }
 
             var key = "isWifiEnabled"
-            doFilePrinter("isWifiEnabled", "读取WiFi状态")
             return CachePrivacyManager.Manager.loadWithTimeCache(
                 key,
                 "isWifiEnabled",
@@ -561,8 +559,8 @@ open class PrivacyProxyCall {
             manager: LocationManager, provider: String
         ): Location? {
             var key = "getLastKnownLocation"
-            doFilePrinter("getLastKnownLocation", "上一次的位置信息")
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter("getLastKnownLocation", "上一次的位置信息", bVisitorModel =  true)
                 // 这里直接写空可能有风险
                 return null
             }
