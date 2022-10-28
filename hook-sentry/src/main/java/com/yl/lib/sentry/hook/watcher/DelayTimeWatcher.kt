@@ -1,6 +1,8 @@
 package com.yl.lib.sentry.hook.watcher
 
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
 import com.yl.lib.sentry.hook.util.PrivacyLog
 
 /**
@@ -17,15 +19,28 @@ class DelayTimeWatcher {
     constructor(watchTime: Long, callBack: Runnable) {
         this.watchTime = watchTime + minDelayTime
         this.callBack = callBack
+
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            // 子线程
+            Handler(Looper.getMainLooper()).post {
+                initCountDownTimer()
+            }
+        } else {
+            initCountDownTimer()
+        }
+
+    }
+
+    private fun initCountDownTimer() {
         countDownTimer = object : CountDownTimer(watchTime!!, minDelayTime) {
             override fun onTick(millisUntilFinished: Long) {
                 PrivacyLog.i("DelayTimeWatcher onTick $millisUntilFinished")
-                callBack.run()
+                callBack?.run()
             }
 
             override fun onFinish() {
                 PrivacyLog.i("DelayTimeWatcher onFinish")
-                callBack.run()
+                callBack?.run()
             }
         }
     }
