@@ -697,7 +697,7 @@ open class PrivacyProxyCall {
                 doFilePrinter(key, "ip地址-getAddress", bVisitorModel = true)
                 return ByteArray(1)
             }
-            doFilePrinter(key, "ip地址-getAddress-${manager.hostName ?: ""}", bVisitorModel = true)
+            doFilePrinter(key, "ip地址-getAddress-${manager.hostName ?: ""}")
             return manager.address
         }
 
@@ -714,7 +714,7 @@ open class PrivacyProxyCall {
                 doFilePrinter(key, "ip地址-getAddress", bVisitorModel = true)
                 return ByteArray(1)
             }
-            doFilePrinter(key, "ip地址-getAddress-${manager.hostName ?: ""}", bVisitorModel = true)
+            doFilePrinter(key, "ip地址-getAddress-${manager.hostName ?: ""}")
             return manager.address
         }
 
@@ -731,7 +731,7 @@ open class PrivacyProxyCall {
                 doFilePrinter(key, "ip地址-getHostAddress", bVisitorModel = true)
                 return ""
             }
-            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostName ?: ""}", bVisitorModel = true)
+            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostName ?: ""}")
             return manager.hostAddress
         }
 
@@ -748,7 +748,7 @@ open class PrivacyProxyCall {
                 doFilePrinter(key, "ip地址-getHostAddress", bVisitorModel = true)
                 return ""
             }
-            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostName ?: ""}", bVisitorModel = true)
+            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostName ?: ""}")
             return manager.hostAddress
         }
 
