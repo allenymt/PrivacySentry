@@ -697,14 +697,8 @@ open class PrivacyProxyCall {
                 doFilePrinter(key, "ip地址-getAddress", bVisitorModel = true)
                 return ByteArray(1)
             }
-            synchronized(objectBluetoothLock) {
-                return CachePrivacyManager.Manager.loadWithTimeCache(
-                    key,
-                    "ip地址-getAddress",
-                    "",
-                    duration = CacheUtils.Utils.HOUR
-                ) { manager.address.toString() }.toByteArray()
-            }
+            doFilePrinter(key, "ip地址-getAddress-${manager.hostName ?: ""}", bVisitorModel = true)
+            return manager.address
         }
 
         @PrivacyMethodProxy(
@@ -720,14 +714,8 @@ open class PrivacyProxyCall {
                 doFilePrinter(key, "ip地址-getAddress", bVisitorModel = true)
                 return ByteArray(1)
             }
-            synchronized(objectBluetoothLock) {
-                return CachePrivacyManager.Manager.loadWithTimeCache(
-                    key,
-                    "ip地址-getAddress",
-                    "",
-                    duration = CacheUtils.Utils.HOUR
-                ) { manager.address.toString() }.toByteArray()
-            }
+            doFilePrinter(key, "ip地址-getAddress-${manager.hostName ?: ""}", bVisitorModel = true)
+            return manager.address
         }
 
         @PrivacyMethodProxy(
@@ -743,14 +731,8 @@ open class PrivacyProxyCall {
                 doFilePrinter(key, "ip地址-getHostAddress", bVisitorModel = true)
                 return ""
             }
-            synchronized(objectBluetoothLock) {
-                return CachePrivacyManager.Manager.loadWithTimeCache(
-                    key,
-                    "ip地址-getHostAddress",
-                    "",
-                    duration = CacheUtils.Utils.HOUR
-                ) { manager.hostAddress }
-            }
+            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostName ?: ""}", bVisitorModel = true)
+            return manager.hostAddress
         }
 
         @PrivacyMethodProxy(
@@ -766,14 +748,8 @@ open class PrivacyProxyCall {
                 doFilePrinter(key, "ip地址-getHostAddress", bVisitorModel = true)
                 return ""
             }
-            synchronized(objectBluetoothLock) {
-                return CachePrivacyManager.Manager.loadWithTimeCache(
-                    key,
-                    "ip地址-getHostAddress",
-                    "",
-                    duration = CacheUtils.Utils.HOUR
-                ) { manager.hostAddress }
-            }
+            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostName ?: ""}", bVisitorModel = true)
+            return manager.hostAddress
         }
 
         @PrivacyMethodProxy(
