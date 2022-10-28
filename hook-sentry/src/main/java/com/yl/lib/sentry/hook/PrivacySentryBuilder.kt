@@ -28,7 +28,7 @@ class PrivacySentryBuilder {
     private var enableFileResult: Boolean = true
 
     // 游客模式，拦截所有敏感方法
-    private var visitorModel: Boolean = false
+    private var visitorModel: Boolean = true
 
     // 可以拦截读取系统剪贴板
     private var enableReadClipBoard: Boolean = true
