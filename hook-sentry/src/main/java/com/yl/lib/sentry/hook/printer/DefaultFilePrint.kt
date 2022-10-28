@@ -5,6 +5,10 @@ import com.yl.lib.sentry.hook.excel.ExcelBuildDataListener
 import com.yl.lib.sentry.hook.excel.ExcelUtil
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.watcher.DelayTimeWatcher
+import com.yl.lib.sentry.hook.watcher.PrivacyDataManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 /**
  * @author yulun
@@ -22,7 +26,6 @@ class DefaultFilePrint : BaseFilePrinter {
     private val sheetPrivacyCount = 1
 
     private var hasInit = false
-    private var privacyFunBeanList: ArrayList<PrivacyFunBean> = ArrayList()
 
     constructor(
         fileName: String,
@@ -30,9 +33,13 @@ class DefaultFilePrint : BaseFilePrinter {
         watchTime: Long?
     ) : super(printCallBack, fileName) {
         PrivacyLog.i("file name is $fileName")
-        ExcelUtil.instance.checkDelOldFile(fileName)
+        GlobalScope.launch(Dispatchers.IO) {
+            ExcelUtil.instance.checkDelOldFile(fileName)
+        }
         DelayTimeWatcher(watchTime ?: 60 * 60 * 1000, Runnable {
-            flushToFile()
+            GlobalScope.launch(Dispatchers.IO) {
+                flushToFile()
+            }
         }).start()
     }
 
@@ -41,12 +48,17 @@ class DefaultFilePrint : BaseFilePrinter {
 
     override fun flushToFile() {
         assert(resultFileName != null)
-
+        if (PrivacyDataManager.Manager.isEmpty())
+            return
         if (PrivacySentry.Privacy.getBuilder()?.isEnableFileResult() == false) {
+            PrivacyLog.e("disable print file")
             return
         }
-        if (privacyFunBeanList.isEmpty())
+        if (PrivacySentry.Privacy.isFilePrintFinish()) {
+            PrivacyLog.e("print file finished,so fail to print file")
             return
+        }
+
         if (!hasInit) {
             hasInit = true
             ExcelUtil.instance.initExcel(
@@ -57,7 +69,7 @@ class DefaultFilePrint : BaseFilePrinter {
             )
         }
         var newFunBeanList = ArrayList<PrivacyFunBean>()
-        newFunBeanList.addAll(privacyFunBeanList)
+        newFunBeanList.addAll(PrivacyDataManager.Manager.getFunBeanList())
         flushSheetPrivacyLegal(newFunBeanList)
         flushSheetPrivacyCount(newFunBeanList)
         newFunBeanList.clear()
@@ -66,7 +78,7 @@ class DefaultFilePrint : BaseFilePrinter {
     override fun appendData(funName: String, funAlias: String, msg: String) {
         if (funName == null || funAlias == null)
             return
-        privacyFunBeanList.add(PrivacyFunBean(funAlias, funName, msg, 1))
+        PrivacyDataManager.Manager.addData(PrivacyFunBean(funAlias, funName, msg, 1))
     }
 
     private fun flushSheetPrivacyCount(funBeanList: ArrayList<PrivacyFunBean>) {

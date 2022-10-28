@@ -2,11 +2,6 @@ package com.yl.lib.sentry.hook.util
 
 import android.content.pm.PackageManager
 import com.yl.lib.sentry.hook.PrivacySentry
-import com.yl.lib.sentry.hook.cache.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * @author yulun
@@ -26,15 +21,13 @@ class PrivacyProxyUtil {
                 return
             }
 
-           GlobalScope.launch(Dispatchers.IO) {
-               PrivacySentry.Privacy.getBuilder()?.getPrinterList()?.forEach {
-                   it.filePrint(
-                       funName + "-\n线程名: ${Thread.currentThread().name}",
-                       (if (bCache) "命中缓存--" else "") + methodDocumentDesc + if (args?.isNotEmpty() == true) "--参数: $args" else "",
-                       PrivacyUtil.Util.getStackTrace()
-                   )
-               }
-           }
+            PrivacySentry.Privacy.getBuilder()?.getPrinterList()?.forEach {
+                it.filePrint(
+                    funName + "-\n线程名: ${Thread.currentThread().name}",
+                    (if (bCache) "命中缓存--" else "") + methodDocumentDesc + if (args?.isNotEmpty() == true) "--参数: $args" else "",
+                    PrivacyUtil.Util.getStackTrace()
+                )
+            }
         }
 
         /**
