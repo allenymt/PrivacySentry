@@ -6,6 +6,9 @@ import com.yl.lib.sentry.hook.excel.ExcelUtil
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.watcher.DelayTimeWatcher
 import com.yl.lib.sentry.hook.watcher.PrivacyDataManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 /**
  * @author yulun
@@ -30,9 +33,13 @@ class DefaultFilePrint : BaseFilePrinter {
         watchTime: Long?
     ) : super(printCallBack, fileName) {
         PrivacyLog.i("file name is $fileName")
-        ExcelUtil.instance.checkDelOldFile(fileName)
+        GlobalScope.launch(Dispatchers.IO) {
+            ExcelUtil.instance.checkDelOldFile(fileName)
+        }
         DelayTimeWatcher(watchTime ?: 60 * 60 * 1000, Runnable {
-            flushToFile()
+            GlobalScope.launch(Dispatchers.IO) {
+                flushToFile()
+            }
         }).start()
     }
 
