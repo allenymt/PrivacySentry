@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.yl.lib.sentry.hook.printer.PrivacyFunBean
+import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * @author yulun
@@ -12,7 +13,7 @@ import com.yl.lib.sentry.hook.printer.PrivacyFunBean
  */
 class PrivacyDataManager {
     object Manager {
-        private var privacyFunBeanList: ArrayList<PrivacyFunBean> = ArrayList()
+        private var privacyFunBeanList: CopyOnWriteArrayList<PrivacyFunBean> = CopyOnWriteArrayList()
 
         private var liveItemPrivacy: MutableLiveData<PrivacyFunBean> = MutableLiveData()
 
@@ -22,7 +23,7 @@ class PrivacyDataManager {
             liveItemPrivacy.postValue(bean)
         }
 
-        fun getFunBeanList(): ArrayList<PrivacyFunBean> {
+        fun getFunBeanList(): CopyOnWriteArrayList<PrivacyFunBean> {
             return privacyFunBeanList
         }
 
