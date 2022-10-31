@@ -697,8 +697,9 @@ open class PrivacyProxyCall {
                 doFilePrinter(key, "ip地址-getAddress", bVisitorModel = true)
                 return ByteArray(1)
             }
-            doFilePrinter(key, "ip地址-getAddress-${manager.hostName ?: ""}")
-            return manager.address
+            var address = manager.address
+            doFilePrinter(key, "ip地址-getAddress-${manager.hostName ?: ""} , address is ${address ?: ""}")
+            return address
         }
 
         @PrivacyMethodProxy(
@@ -714,8 +715,9 @@ open class PrivacyProxyCall {
                 doFilePrinter(key, "ip地址-getAddress", bVisitorModel = true)
                 return ByteArray(1)
             }
-            doFilePrinter(key, "ip地址-getAddress-${manager.hostName ?: ""}")
-            return manager.address
+            var address = manager.address
+            doFilePrinter(key, "ip地址-getAddress-${manager.hostName ?: ""} , address is ${address ?: ""} ")
+            return address
         }
 
         @PrivacyMethodProxy(
@@ -731,8 +733,10 @@ open class PrivacyProxyCall {
                 doFilePrinter(key, "ip地址-getHostAddress", bVisitorModel = true)
                 return ""
             }
-            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostName ?: ""}")
-            return manager.hostAddress
+
+            var address = manager.hostAddress
+            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostName ?: ""} , address is ${address ?: ""}")
+            return address
         }
 
         @PrivacyMethodProxy(
@@ -748,8 +752,10 @@ open class PrivacyProxyCall {
                 doFilePrinter(key, "ip地址-getHostAddress", bVisitorModel = true)
                 return ""
             }
-            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostName ?: ""}")
-            return manager.hostAddress
+
+            var address = manager.hostAddress
+            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostName ?: ""} , address is ${address ?: ""}")
+            return address
         }
 
         @PrivacyMethodProxy(
