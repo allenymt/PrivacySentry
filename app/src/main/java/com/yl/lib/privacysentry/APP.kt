@@ -24,7 +24,9 @@ class APP : Application() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this);
-        initPrivacyTransformComplete()
+
+        Thread { initPrivacyTransformComplete() }.start()
+
     }
 
     private fun initPrivacyTransform() {
