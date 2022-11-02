@@ -34,9 +34,12 @@ class DefaultFilePrint : BaseFilePrinter {
         watchTime: Long?
     ) : super(printCallBack, fileName) {
         PrivacyLog.i("file name is $fileName")
-        GlobalScope.launch(Dispatchers.IO) {
-            ExcelUtil.instance.checkDelOldFile(fileName)
+        if (PrivacySentry.Privacy.getBuilder()?.isEnableFileResult() == true) {
+            GlobalScope.launch(Dispatchers.IO) {
+                ExcelUtil.instance.checkDelOldFile(fileName)
+            }
         }
+
         DelayTimeWatcher(watchTime ?: 60 * 60 * 1000, Runnable {
             GlobalScope.launch(Dispatchers.IO) {
                 flushToFile()
