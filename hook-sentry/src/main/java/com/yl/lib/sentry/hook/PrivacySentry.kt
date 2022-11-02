@@ -129,27 +129,7 @@ class PrivacySentry {
             mBuilder?.configVisitorModel(true)
         }
 
-        /**
-         * 打开 读取系统剪贴板
-         */
-        fun openReadClipboard() {
-            mBuilder?.enableReadClipBoard(true)
-        }
 
-        /**
-         * 关闭 读取系统剪贴板
-         */
-        fun closeReadClipboard() {
-            mBuilder?.enableReadClipBoard(false)
-        }
-
-        /**
-         * 当前读取系统剪贴板是否开启，默认true
-         * @return Boolean
-         */
-        fun isReadClipboardEnable(): Boolean {
-            return mBuilder?.isEnableReadClipBoard() ?: true
-        }
 
         private fun defaultFilePrinter(
             ctx: Context,
