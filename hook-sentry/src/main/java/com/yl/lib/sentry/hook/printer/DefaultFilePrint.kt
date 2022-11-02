@@ -25,6 +25,7 @@ class DefaultFilePrint : BaseFilePrinter {
     private val titlePrivacyCount = arrayOf("别名", "函数名", "调用堆栈", "调用次数")
     private val sheetPrivacyCount = 1
 
+    @Volatile
     private var hasInit = false
 
     constructor(
@@ -40,7 +41,7 @@ class DefaultFilePrint : BaseFilePrinter {
             GlobalScope.launch(Dispatchers.IO) {
                 flushToFile()
             }
-        }).start()
+        })
     }
 
     override fun logPrint(msg: String) {

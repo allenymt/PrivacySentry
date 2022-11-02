@@ -43,6 +43,7 @@ class DelayTimeWatcher {
                 callBack?.run()
             }
         }
+        start()
     }
 
     fun start() {
