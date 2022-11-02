@@ -3,6 +3,18 @@
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
     
 ## 更新日志
+    2022-11-02(1.2.0)
+        更新的东西有点多，尽量测试和自测
+        1. androidId等不能只做内存缓存，还要磁盘缓存 
+        2. 传感器信息加入到进程级别缓存
+        3. 增加三种缓存，分别是内存缓存，时间单位的磁盘缓存，永久的磁盘缓存
+        4. 设备名加入到不可变字段缓存，类似于Android—id一样
+        5. 扩展存储api，比如位置信息等，wifi参数等，增加拦截sim卡状态，sim卡操作码
+        6. 增加剪切板读取开关，对应到合规库加一个全局开关
+        7. 修复SHA-256 digest error问题， https://github.com/allenymt/PrivacySentry/issues/29
+        8. 修复问题多线程写入问题：https://github.com/allenymt/PrivacySentry/issues/84
+        9. 默认打开游客模式，记得关闭
+
     2022-08-30(1.1.0)
         1. 变量hook支持通过注解配置
         2. 修复不引入privacy-proxy引起的问题
