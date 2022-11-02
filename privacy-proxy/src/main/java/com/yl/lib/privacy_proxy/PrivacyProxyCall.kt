@@ -27,6 +27,7 @@ import com.yl.lib.privacy_annotation.PrivacyMethodProxy
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.cache.CachePrivacyManager
 import com.yl.lib.sentry.hook.cache.CacheUtils
+import com.yl.lib.sentry.hook.util.PrivacyClipBoardManager
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyProxyUtil.Util.doFilePrinter
 import com.yl.lib.sentry.hook.util.PrivacyUtil
@@ -329,8 +330,7 @@ open class PrivacyProxyCall {
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 return ClipData.newPlainText("Label", "")
             }
-
-            if (!PrivacySentry.Privacy.isReadClipboardEnable()) {
+            if (!PrivacyClipBoardManager.isReadClipboardEnable()) {
                 doFilePrinter("getPrimaryClip", "读取系统剪贴板关闭")
                 return ClipData.newPlainText("Label", "")
             }
@@ -350,7 +350,7 @@ open class PrivacyProxyCall {
                 return ClipDescription("", arrayOf(MIMETYPE_TEXT_PLAIN))
             }
 
-            if (!PrivacySentry.Privacy.isReadClipboardEnable()) {
+            if (!PrivacyClipBoardManager.isReadClipboardEnable()) {
                 doFilePrinter("getPrimaryClipDescription", "读取系统剪贴板关闭")
                 return ClipDescription("", arrayOf(MIMETYPE_TEXT_PLAIN))
             }
@@ -371,7 +371,7 @@ open class PrivacyProxyCall {
                 return ""
             }
 
-            if (!PrivacySentry.Privacy.isReadClipboardEnable()) {
+            if (!PrivacyClipBoardManager.isReadClipboardEnable()) {
                 doFilePrinter("getText", "读取系统剪贴板关闭")
                 return ""
             }
