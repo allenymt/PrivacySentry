@@ -61,7 +61,7 @@ dependencies {
         implementation project(":privacy-proxy")
         implementation project(":privacy-annotation")
     } else {
-        def privacyVersion = "1.1.0"
+        def privacyVersion = "1.2.1"
         implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
         implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
         //  测试自定义拦截就注释掉
@@ -85,5 +85,6 @@ dependencies {
 privacy {
     // 设置免hook的名单
     blackList = []
-//    hookReflex = true
+    // 开启hook反射
+    hookReflex = true
 }

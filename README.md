@@ -72,6 +72,12 @@
 	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.0.9'
 	     }
 	}
+	
+	allprojects {
+        repositories {
+            maven { url 'https://jitpack.io' }
+        }
+    }
 ```
 
 
