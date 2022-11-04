@@ -93,6 +93,7 @@
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
 	    //如果不想使用库中本身的代理方法，可以不引入这个aar，自己实现
+	    //也可以引入，个别方法在自己的类中重写即可
             implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
         }
         
@@ -102,6 +103,8 @@
         privacy {
             blackList = []
             replaceFileName = "replace.json"
+	    // 开启hook反射
+    	    hookReflex = true
         }
 
 ```
