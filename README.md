@@ -3,7 +3,7 @@
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
     
 ## 更新日志
-    2022-11-02(1.2.0)
+    2022-11-02(1.2.1)
         更新的东西有点多，尽量测试和自测
         1. androidId等不能只做内存缓存，还要磁盘缓存 
         2. 传感器信息加入到进程级别缓存
@@ -69,7 +69,7 @@
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
-	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.2.0'
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.2.1'
 	     }
 	}
 	
@@ -89,7 +89,7 @@
         
         dependencies {
             // aar依赖
-            def privacyVersion = "1.2.0"
+            def privacyVersion = "1.2.1"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
 	    //如果不想使用库中本身的代理方法，可以不引入这个aar，自己实现
