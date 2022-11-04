@@ -17,10 +17,7 @@ import com.yl.lib.privacysentry.contact.ContactActivity
 import com.yl.lib.privacysentry.location.LocationTestActivity
 import com.yl.lib.privacysentry.process.MultiProcessB
 import com.yl.lib.privacysentry.telephony.TelephonyTestActivity
-import com.yl.lib.privacysentry.test.PrivacyMethod
-import com.yl.lib.privacysentry.test.PrivacyProxyCallJava
-import com.yl.lib.privacysentry.test.TestReflex
-import com.yl.lib.privacysentry.test.TestReflexJava
+import com.yl.lib.privacysentry.test.*
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.util.MainProcessUtil
 import com.yl.lib.sentry.hook.util.PrivacyClipBoardManager
@@ -211,6 +208,9 @@ class MainActivity : AppCompatActivity() {
                 TestReflexJava().test(this)
                 TestReflexJava().reflex3(this, "123")
             }
+            TestInJava.testReflexClipManager()
+            TestInJava.testReflexClipManagerOpen()
+            TestInJava.testReflexClipManagerClose()
         }
 
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
