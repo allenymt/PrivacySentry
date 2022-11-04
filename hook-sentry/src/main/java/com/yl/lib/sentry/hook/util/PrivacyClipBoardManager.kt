@@ -2,6 +2,7 @@ package com.yl.lib.sentry.hook.util
 
 import androidx.annotation.Keep
 import com.yl.lib.sentry.hook.PrivacySentry
+import com.yl.lib.sentry.hook.cache.DiskCache
 
 /**
  * @author yulun
@@ -10,12 +11,19 @@ import com.yl.lib.sentry.hook.PrivacySentry
 @Keep
 class PrivacyClipBoardManager {
     @Keep
-    companion object{
+    companion object {
+
+        private val diskCache by lazy {
+            DiskCache()
+        }
+        var bReadClipboardEnable: Boolean? = null
+
         /**
          * 打开 读取系统剪贴板
          */
         fun openReadClipboard() {
             PrivacySentry.Privacy.getBuilder()?.enableReadClipBoard(true)
+            syncReadClipboardEnable(true)
         }
 
         /**
@@ -23,6 +31,7 @@ class PrivacyClipBoardManager {
          */
         fun closeReadClipboard() {
             PrivacySentry.Privacy.getBuilder()?.enableReadClipBoard(false)
+            syncReadClipboardEnable(false)
         }
 
         /**
@@ -30,7 +39,19 @@ class PrivacyClipBoardManager {
          * @return Boolean
          */
         fun isReadClipboardEnable(): Boolean {
-            return PrivacySentry.Privacy.getBuilder()?.isEnableReadClipBoard() ?: true
+            if (bReadClipboardEnable == null) {
+                var strEnable = diskCache.get("isReadClipboardEnable", "true")?.second
+                bReadClipboardEnable = strEnable?.toBoolean() ?: true
+            }
+            return (PrivacySentry.Privacy.getBuilder()?.isEnableReadClipBoard()
+                ?: true) && (bReadClipboardEnable ?: true)
+        }
+
+        private fun syncReadClipboardEnable(bEnable: Boolean) {
+            if (bEnable != bReadClipboardEnable) {
+                bReadClipboardEnable = bEnable
+                diskCache.put("isReadClipboardEnable", bEnable.toString())
+            }
         }
     }
 

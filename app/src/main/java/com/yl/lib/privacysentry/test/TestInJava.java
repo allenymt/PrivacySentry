@@ -5,16 +5,17 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.yl.lib.privacy_annotation.PrivacyMethodProxy;
 import com.yl.lib.sentry.hook.PrivacySentry;
 import com.yl.lib.sentry.hook.PrivacySentryBuilder;
 import com.yl.lib.sentry.hook.util.PrivacyLog;
 
 import org.json.JSONObject;
-import android.util.*;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -26,7 +27,7 @@ import java.util.Enumeration;
  * @author yulun
  * @sinice 2021-12-26 13:30
  */
-class TestInJava {
+public class TestInJava {
 
     public static void testInitJava() {
         // 完整版配置
@@ -111,23 +112,59 @@ class TestInJava {
                 }
                 JSONObject jsonObject = new JSONObject(retJSON.toString());
                 String code = jsonObject.getString("code");
-                PrivacyLog.Log.e("提示：" +retJSON.toString());
+                PrivacyLog.Log.e("提示：" + retJSON.toString());
                 if (code.equals("0")) {
                     JSONObject data = jsonObject.getJSONObject("data");
                     ipAddress = data.getString("ip")/* + "(" + data.getString("country")
               + data.getString("area") + "区"
               + data.getString("region") + data.getString("city")
               + data.getString("isp") + ")"*/;
-                   PrivacyLog.Log.e("您的IP地址是：" + ipAddress);
+                    PrivacyLog.Log.e("您的IP地址是：" + ipAddress);
                 } else {
-                   PrivacyLog.Log.e("IP接口异常，无法获取IP地址！");
+                    PrivacyLog.Log.e("IP接口异常，无法获取IP地址！");
                 }
             } else {
-               PrivacyLog.Log.e("网络连接异常，无法获取IP地址！");
+                PrivacyLog.Log.e("网络连接异常，无法获取IP地址！");
             }
         } catch (Exception e) {
-           PrivacyLog.Log.e("获取IP地址时出现异常，异常信息是：" + e.toString());
+            PrivacyLog.Log.e("获取IP地址时出现异常，异常信息是：" + e.toString());
         }
         return ipAddress;
+    }
+
+    public static void testReflexClipManager() {
+        try {
+            Class<?> companionClass = Class.forName("com.yl.lib.sentry.hook.util.PrivacyClipBoardManager$Companion");
+            Class<?> privacyClipBoardManagerClass = Class.forName("com.yl.lib.sentry.hook.util.PrivacyClipBoardManager");
+            Field companion = privacyClipBoardManagerClass.getField("Companion");
+            Method m1 = companionClass.getDeclaredMethod("isReadClipboardEnable", (Class[]) null);
+            boolean open = (Boolean) m1.invoke(companion.get(null), (Object[]) null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void testReflexClipManagerOpen() {
+        try {
+            Class<?> companionClass = Class.forName("com.yl.lib.sentry.hook.util.PrivacyClipBoardManager$Companion");
+            Class<?> privacyClipBoardManagerClass = Class.forName("com.yl.lib.sentry.hook.util.PrivacyClipBoardManager");
+            Field companion = privacyClipBoardManagerClass.getField("Companion");
+            Method m1 = companionClass.getDeclaredMethod("openReadClipboard", (Class[]) null);
+            m1.invoke(companion.get(null), (Object[]) null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void testReflexClipManagerClose() {
+        try {
+            Class<?> companionClass = Class.forName("com.yl.lib.sentry.hook.util.PrivacyClipBoardManager$Companion");
+            Class<?> privacyClipBoardManagerClass = Class.forName("com.yl.lib.sentry.hook.util.PrivacyClipBoardManager");
+            Field companion = privacyClipBoardManagerClass.getField("Companion");
+            Method m1 = companionClass.getDeclaredMethod("closeReadClipboard", (Class[]) null);
+            m1.invoke(companion.get(null), (Object[]) null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
