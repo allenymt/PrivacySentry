@@ -5,6 +5,8 @@ import androidx.annotation.Keep
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
+import com.yl.lib.sentry.hook.util.PrivacyLog
+import java.net.HttpURLConnection
 
 /**
  * @author yulun
@@ -28,6 +30,18 @@ class PrivacyProxySelfTest {
             maxNum: Int
         ): List<ActivityManager.RunningTaskInfo?>? {
             return manager.getRunningTasks(maxNum)
+        }
+
+
+        @PrivacyMethodProxy(
+            originalClass = HttpURLConnection::class,
+            originalMethod = "connect",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        @JvmStatic
+        fun connect(httpURLConnection: HttpURLConnection) {
+            PrivacyLog.i("HttpURLConnection connect")
+            httpURLConnection.connect()
         }
     }
 }
