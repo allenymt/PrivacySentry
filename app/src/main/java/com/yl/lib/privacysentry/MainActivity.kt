@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity() {
             TestMethodInJava.getAndroidId(this)
             TestMethodInJava.getAndroidIdSystem(this)
             PrivacyLog.i("androidId is $androidId")
+
+            TestInJava.testHttpUrlConnection()
         }
 
         findViewById<Button>(R.id.btn_mac_address).setOnClickListener {
