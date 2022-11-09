@@ -3,6 +3,7 @@ package com.yl.lib.plugin.sentry.transform
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import org.apache.commons.io.IOUtils
 import org.gradle.api.Project
+import org.gradle.api.logging.Logger
 import org.gradle.util.GFileUtils
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.Opcodes
@@ -22,8 +23,7 @@ import java.util.zip.ZipEntry
 class PrivacyClassProcessor {
 
     companion object {
-
-        fun runHook(`is`: InputStream?, project: Project): ByteArray? {
+        fun runHook(`is`: InputStream?,privacyExtension: PrivacyExtension): ByteArray? {
             val classReader = org.objectweb.asm.ClassReader(`is`)
 
             // 入参有两个，ClassWriter.COMPUTE_MAXS 和 COMPUTE_FRAMES
@@ -34,10 +34,7 @@ class PrivacyClassProcessor {
             // 定义类访问者
             val classVisitor: ClassVisitor =
                 SentryTraceClassAdapter(
-                    Opcodes.ASM7, classWriter, project.extensions.findByType(
-                        PrivacyExtension::class.java
-                    ),project
-                )
+                    Opcodes.ASM7, classWriter,privacyExtension)
             /**
              * ClassReader.SKIP_DEBUG：表示不遍历调试内容，即跳过源文件，源码调试扩展，局部变量表，局部变量类型表和行号表属性，即以下方法既不会被解析也不会被访问（ClassVisitor.visitSource，MethodVisitor.visitLocalVariable，MethodVisitor.visitLineNumber）。使用此标识后，类文件调试信息会被去除，请警记。
              * ClassReader.SKIP_CODE：设置该标识，则代码属性将不会被转换和访问，例如方法体代码不会进行解析和访问。
@@ -49,7 +46,7 @@ class PrivacyClassProcessor {
             return classWriter.toByteArray()
         }
 
-        fun runCollect(`is`: InputStream?, project: Project): ByteArray? {
+        fun runCollect(`is`: InputStream?,privacyExtension:PrivacyExtension): ByteArray? {
             val classReader = org.objectweb.asm.ClassReader(`is`)
 
             // 入参有两个，ClassWriter.COMPUTE_MAXS 和 COMPUTE_FRAMES
@@ -59,11 +56,7 @@ class PrivacyClassProcessor {
                 org.objectweb.asm.ClassWriter(org.objectweb.asm.ClassWriter.COMPUTE_MAXS)
             // 定义类访问者
             val classVisitor: ClassVisitor =
-                CollectHookMethodClassAdapter(
-                    Opcodes.ASM7, classWriter, project.extensions.findByType(
-                        PrivacyExtension::class.java
-                    )
-                )
+                CollectHookMethodClassAdapter(Opcodes.ASM7, classWriter, privacyExtension)
             /**
              * ClassReader.SKIP_DEBUG：表示不遍历调试内容，即跳过源文件，源码调试扩展，局部变量表，局部变量类型表和行号表属性，即以下方法既不会被解析也不会被访问（ClassVisitor.visitSource，MethodVisitor.visitLocalVariable，MethodVisitor.visitLineNumber）。使用此标识后，类文件调试信息会被去除，请警记。
              * ClassReader.SKIP_CODE：设置该标识，则代码属性将不会被转换和访问，例如方法体代码不会进行解析和访问。
@@ -76,8 +69,7 @@ class PrivacyClassProcessor {
         }
 
         private val JAR_SIGNATURE_EXTENSIONS = setOf("SF", "RSA", "DSA", "EC")
-
-        fun processJar(project: Project, file: File, extension: PrivacyExtension,runAsm:(InputStream?,Project)->ByteArray?) {
+        fun processJar(logger: Logger, file: File, extension: PrivacyExtension, runAsm:(InputStream?, PrivacyExtension)->ByteArray?) {
             if (file == null || !file.exists() || !file.name.endsWith(".jar")) {
                 return
             }
@@ -108,12 +100,12 @@ class PrivacyClassProcessor {
                 // 针对jarEntry构建输入流
                 var inputStream = jarFile.getInputStream(jarEntry)
                 if (shouldProcessClass(entryName, extension.blackList)) {
-                    project.logger.info("deal with jar file is: $file.absolutePath entryName is $entryName")
+                    logger.info("deal with jar file is: $file.absolutePath entryName is $entryName")
                     jarOutputStream.putNextEntry(zipEntry)
                     // 使用 ASM 对 class 文件进行操控
-                    jarOutputStream.write(runAsm(inputStream, project))
+                    jarOutputStream.write(runAsm(inputStream,extension))
                 } else {
-                    project.logger.info("undeal with jar file is: $file.absolutePath entryName is $entryName")
+                    logger.info("undeal with jar file is: $file.absolutePath entryName is $entryName")
                     // 如果命中黑名单，不做处理，直接输入
                     jarOutputStream.putNextEntry(zipEntry)
                     jarOutputStream.write(IOUtils.toByteArray(inputStream))
@@ -134,15 +126,15 @@ class PrivacyClassProcessor {
         }
 
         fun processDirectory(
-            project: Project,
+            logger:Logger,
             inputDir: File,
             inputFile: File,
             extension: PrivacyExtension,
-            runAsm:(InputStream?,Project)->ByteArray?
+            runAsm:(InputStream?,PrivacyExtension)->ByteArray?
         ) {
             if (shouldProcessClass(inputFile.name, extension.blackList)) {
-                project.logger.info("deal with directory file is:" + inputFile.absolutePath)
-                var codeBytes = runAsm(FileInputStream(inputFile), project)
+                logger.info("deal with directory file is:" + inputFile.absolutePath)
+                var codeBytes = runAsm(FileInputStream(inputFile),extension)
                 // 构建输出流，这里是当前目录的原文件；也可以新建个临时文件，写完后再覆盖
                 var fileOutputStream = FileOutputStream(
                     "${inputFile.parent}${File.separator}${inputFile.name}"

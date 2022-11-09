@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.annotation.JSONField
 import com.alibaba.fastjson.serializer.SerializerFeature
 import org.gradle.api.Project
+import org.gradle.api.logging.Logger
 import org.gradle.util.GFileUtils
 import java.io.File
 
@@ -26,12 +27,12 @@ class ReplaceMethodManger {
             replaceMethodMap[key] = replaceMethodData
         }
 
-        fun flushToFile(fileName: String, project: Project) {
+        fun flushToFile(path:String,fileName: String, logger: Logger) {
             if (fileName == null || replaceMethodMap.isEmpty()) {
                 return
             }
-            project.logger.debug("flushToFile")
-            var resultFile = File(project.buildDir.absolutePath + File.separator + fileName)
+            logger.debug("flushToFile")
+            var resultFile = File(path + File.separator + fileName)
             if (resultFile?.parentFile != null && !resultFile.parentFile.exists()) {
                 GFileUtils.mkdirs(resultFile)
             }

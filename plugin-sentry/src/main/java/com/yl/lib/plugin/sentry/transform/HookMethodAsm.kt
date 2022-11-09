@@ -20,19 +20,15 @@ class SentryTraceClassAdapter : ClassVisitor {
 
     private var bHookClass = true
 
-    private var project: Project
-
     constructor(
         api: Int,
         classVisitor: ClassVisitor?,
-        privacyExtension: PrivacyExtension?,
-        project: Project
+        privacyExtension: PrivacyExtension?
     ) : super(
         api,
         classVisitor
     ) {
         this.privacyExtension = privacyExtension
-        this.project = project
     }
 
     override fun visit(
@@ -77,8 +73,7 @@ class SentryTraceClassAdapter : ClassVisitor {
                 name,
                 descriptor,
                 privacyExtension,
-                className,
-                project
+                className
             )
         }
     }
@@ -90,7 +85,6 @@ class SentryTraceMethodAdapter : AdviceAdapter {
     private var privacyExtension: PrivacyExtension? = null
     private var className: String? = null
     private var methodName: String? = null
-    private var project: Project
 
     // 标识当前方法加载的常量是否为敏感方法。一般来说，反射调用某个方法时，会将方法名作为常量加载到栈中，这个时候就能拦截到
     // 如果是先加载常量再通过其他的方法调用反射，一般也会被内敛，这么做是为了减少拦截反射方法的数量
@@ -103,13 +97,11 @@ class SentryTraceMethodAdapter : AdviceAdapter {
         name: String?,
         descriptor: String?,
         privacyExtension: PrivacyExtension?,
-        className: String,
-        project: Project
+        className: String
     ) : super(api, methodVisitor, access, name, descriptor) {
         this.privacyExtension = privacyExtension
         this.methodName = name
         this.className = className
-        this.project = project
     }
 
     // 访问方法指令
