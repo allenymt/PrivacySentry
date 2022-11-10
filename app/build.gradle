@@ -88,5 +88,5 @@ privacy {
     // 开启hook反射
     hookReflex = true
     // Debug编译是否应用此插件，默认false
-    debugEnable = true
+//    debugEnable = true
 }
