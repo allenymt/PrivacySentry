@@ -138,11 +138,7 @@ class PrivacySentryTransform : Transform {
             )
             if (incremental) {
                 for ((inputFile, status) in it.changedFiles) {
-                    var outputFile = File(
-                        outputDir,
-                        FileUtils.relativePossiblyNonExistingPath(inputFile, inputDir)
-                    )
-
+                    var outputFile  = File(outputDir, inputFile.toRelativeString(inputDir))
                     when (status) {
                         Status.REMOVED -> {
                             logger.info("directory REMOVED file is:" + inputFile.absolutePath)
