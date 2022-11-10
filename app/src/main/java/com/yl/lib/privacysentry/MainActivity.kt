@@ -203,6 +203,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LocationTestActivity::class.java))
         }
 
+        findViewById<Button>(R.id.btn_to_fragment).setOnClickListener {
+            startActivity(Intent(this, TestFragmentActivity::class.java))
+        }
+
         findViewById<Button>(R.id.btn_test_reflex).setOnClickListener {
             var ap = packageManager
             TestReflex().test(this)

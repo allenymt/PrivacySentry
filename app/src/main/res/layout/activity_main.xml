@@ -137,6 +137,12 @@
                 android:text="跳转定位测试页面" />
 
             <Button
+                android:id="@+id/btn_to_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="跳转fragment申请权限页面" />
+
+            <Button
                 android:id="@+id/btn_force_finish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
