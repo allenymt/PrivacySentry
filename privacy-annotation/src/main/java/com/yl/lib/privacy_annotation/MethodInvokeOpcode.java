@@ -3,8 +3,9 @@ package com.yl.lib.privacy_annotation;
 /**
  * @author yulun
  * @sinice 2021-12-31 11:12
+ * 猜测是编译顺序的关系，当插件里引用这个类时，插件里是kotlin代码，opcode计算出来都是0
  */
-public enum MethodInvokeOpcode {
+public class MethodInvokeOpcode {
 
     /***
      *   int INVOKEVIRTUAL = 182; // visitMethodInsn
@@ -14,27 +15,15 @@ public enum MethodInvokeOpcode {
      *   int INVOKEDYNAMIC = 186; // visitInvokeDynamicInsn
      */
     // 调用对象的实例方法
-    INVOKEVIRTUAL(0),
+    public static final int INVOKEVIRTUAL = 182;
 
     // 调用特殊方法，比如初始化，私有方法，父类方法
-    INVOKESPECIAL(1),
+    public static final int INVOKESPECIAL = 183;
 
     // 调用类方法，也就是静态方法
-    INVOKESTATIC(2),
+    public static final int INVOKESTATIC = 184;
+    public static final int INVOKEINTERFACE = 185;
 
-    // 调用接口方法
-    INVOKEINTERFACE(3),
+    public static final int INVOKEDYNAMIC = 186;
 
-    // 暂时还不清楚
-    INVOKEDYNAMIC(4);
-
-    private int opcode;
-
-    MethodInvokeOpcode(int opcode) {
-        this.opcode = opcode;
-    }
-
-    public int getOpcode() {
-        return opcode;
-    }
 }

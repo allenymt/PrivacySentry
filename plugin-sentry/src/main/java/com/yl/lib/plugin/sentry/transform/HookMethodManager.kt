@@ -19,20 +19,21 @@ open class HookMethodManager {
         fun contains(
             methodName: String,
             classOwnerName: String = "",
-            methodReturnDesc: String = ""
+            methodReturnDesc: String = "",
+            opcodeAndSource:Int
         ): Boolean {
             if (methodName == "") {
                 return false
             }
             return hookMethodList.find {
-                isHookMethodItem(it, methodName, classOwnerName, methodReturnDesc)
+                isHookMethodItem(it, methodName, classOwnerName, methodReturnDesc,opcodeAndSource)
             } != null
         }
 
         fun findHookItemByName(
             methodName: String
         ): HookMethodItem? {
-            return findHookItemByName(methodName, "", "")
+            return findHookItemByName(methodName, "", "",-1)
         }
 
         /**
@@ -44,14 +45,15 @@ open class HookMethodManager {
          */
         fun findHookItemByName(
             methodName: String, classOwnerName: String = "",
-            methodReturnDesc: String = ""
+            methodReturnDesc: String = "",
+            opcodeAndSource:Int
         ): HookMethodItem? {
             if (methodName == "") {
                 return null
             }
 
             return hookMethodList.find {
-                isHookMethodItem(it, methodName, classOwnerName, methodReturnDesc)
+                isHookMethodItem(it, methodName, classOwnerName, methodReturnDesc,opcodeAndSource)
             }
         }
 
@@ -66,52 +68,29 @@ open class HookMethodManager {
         private fun isHookMethodItem(
             hookItem: HookMethodItem, methodName: String,
             classOwnerName: String = "",
-            methodReturnDesc: String = ""
+            methodReturnDesc: String = "",
+            opcodeAndSource:Int
         ): Boolean {
             if (methodName.isEmpty()) {
                 return false
             }
-            return if (classOwnerName.isEmpty() && methodReturnDesc.isNotEmpty()) {
-                methodName == hookItem.originMethodName && methodReturnDesc == hookItem.originMethodDesc
-            } else if (classOwnerName.isNotEmpty() && methodReturnDesc.isEmpty()) {
-                methodName == hookItem.originMethodName && classOwnerName == hookItem.originClassName
-            } else if (classOwnerName.isNotEmpty() && methodReturnDesc.isNotEmpty()) {
-                methodName == hookItem.originMethodName && classOwnerName == hookItem.originClassName && methodReturnDesc == hookItem.originMethodDesc
+
+            // 如果忽略类名，只要方法名和签名相同就可以
+            val replaceClassOwnerName = if (hookItem.ignoreClass) {
+                ""
+            } else {
+                classOwnerName
+            }
+
+            return if (replaceClassOwnerName.isEmpty() && methodReturnDesc.isNotEmpty()) {
+                methodName == hookItem.originMethodName && methodReturnDesc == hookItem.originMethodDesc && opcodeAndSource == hookItem.originMethodAccess
+            } else if (replaceClassOwnerName.isNotEmpty() && methodReturnDesc.isEmpty()) {
+                methodName == hookItem.originMethodName && replaceClassOwnerName == hookItem.originClassName && opcodeAndSource == hookItem.originMethodAccess
+            } else if (replaceClassOwnerName.isNotEmpty() && methodReturnDesc.isNotEmpty()) {
+                methodName == hookItem.originMethodName && replaceClassOwnerName == hookItem.originClassName && methodReturnDesc == hookItem.originMethodDesc && opcodeAndSource == hookItem.originMethodAccess
             } else {
                 methodName == hookItem.originMethodName
             }
-        }
-
-        /**
-         * 追加hook方法
-         * @param originClassName String 被代理方法的类名
-         * @param originMethodName String 被代理的方法
-         * @param proxyClassName String 代理方法的类名
-         * @param proxyMethodName String 代理方法名
-         * @param proxyMethodReturnDesc String 代理方法描述=被代理的方法描述
-         * @param documentMethodDesc String 方法注释信息
-         */
-        fun appendHookMethod(
-            originClassName: String,
-            originMethodName: String,
-            originMethodAccess: Int,
-            originMethodReturnDesc: String,
-            proxyClassName: String,
-            proxyMethodName: String,
-            proxyMethodReturnDesc: String,
-            documentMethodDesc: String
-        ) {
-            hookMethodList.add(
-                HookMethodItem(
-                    originClassName = originClassName,
-                    originMethodName = originMethodName,
-                    originMethodDesc = originMethodReturnDesc,
-                    originMethodAccess = originMethodAccess,
-                    proxyClassName = proxyClassName,
-                    proxyMethodName = proxyMethodName,
-                    proxyMethodDesc = proxyMethodReturnDesc
-                )
-            )
         }
 
         /**
@@ -140,6 +119,7 @@ open class HookMethodManager {
             )
         }
 
+        //判断加载的字符串常量
         fun findByClsOrMethod(
             name: String
         ): Boolean {
@@ -180,6 +160,8 @@ class HookMethodItem {
 
     var originMethodAccess: Int? = 0
 
+    var ignoreClass : Boolean = false
+
     // 代理的类名
     var proxyClassName: String
 
@@ -216,6 +198,7 @@ class HookMethodItem {
         this.proxyMethodName = proxyMethodName
         this.proxyMethodDesc = proxyMethodDesc
     }
+
 
     override fun equals(other: Any?): Boolean {
         if (other is HookMethodItem) {

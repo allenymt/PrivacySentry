@@ -120,7 +120,7 @@ class SentryTraceMethodAdapter : AdviceAdapter {
         descriptor: String,
         isInterface: Boolean
     ) {
-        var methodItem = HookMethodManager.MANAGER.findHookItemByName(name, owner, descriptor)
+        var methodItem = HookMethodManager.MANAGER.findHookItemByName(name, owner, descriptor,opcodeAndSource)
         if (methodItem != null && shouldHook(name)) {
             ReplaceMethodManger.MANAGER.addReplaceMethodItem(
                 ReplaceMethodItem(
