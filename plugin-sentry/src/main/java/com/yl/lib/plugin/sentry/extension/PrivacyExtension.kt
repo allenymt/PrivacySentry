@@ -14,4 +14,7 @@ open class PrivacyExtension {
 
     // 开启hook反射方法，默认为false
     var hookReflex: Boolean = false
+
+    // debug是否应用此插件
+    var debugEnable: Boolean = false
 }

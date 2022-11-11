@@ -25,9 +25,9 @@ class PrivacySentryPlugin : Plugin<Project> {
         var privacyExtension = project.extensions.create("privacy", PrivacyExtension::class.java)
         var android = project.extensions.getByType(AppExtension::class.java)
         // 收集注解信息的任务
-        android?.registerTransform(PrivacyCollectTransform(project))
+        android?.registerTransform(PrivacyCollectTransform(project.logger, privacyExtension))
 
         // 执行字节码替换的任务
-        android?.registerTransform(PrivacySentryTransform(project))
+        android?.registerTransform(PrivacySentryTransform(project.logger, privacyExtension,project.buildDir.absolutePath))
     }
 }

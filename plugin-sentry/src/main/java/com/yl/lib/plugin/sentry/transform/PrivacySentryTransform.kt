@@ -1,10 +1,12 @@
 package com.yl.lib.plugin.sentry.transform
 
 import com.android.build.api.transform.*
+import com.android.build.api.variant.VariantInfo
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.utils.FileUtils
+import com.yl.lib.plugin.sentry.Utils
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
-import org.gradle.api.Project
+import org.gradle.api.logging.Logger
 import org.gradle.util.GFileUtils
 import java.io.File
 
@@ -14,13 +16,19 @@ import java.io.File
  */
 class PrivacySentryTransform : Transform {
 
-    private var project: Project
+    private var logger: Logger
+    private var extension: PrivacyExtension
+    private var resultFilePath: String
 
-    constructor(project: Project) {
-        this.project = project
+    constructor(logger: Logger, extension: PrivacyExtension, path: String) {
+        this.logger = logger
+        this.extension = extension
+        this.resultFilePath = path
     }
 
-
+    override fun applyToVariant(variant: VariantInfo?): Boolean {
+        return Utils.isApply(variant,extension)
+    }
     override fun getName(): String {
         return "PrivacySentryPlugin"
     }
@@ -45,26 +53,22 @@ class PrivacySentryTransform : Transform {
             transformInvocation.outputProvider.deleteAll()
         }
 
-        var privacyExtension = project.extensions.findByType(
-            PrivacyExtension::class.java
-        ) as PrivacyExtension
-
         transformInvocation?.inputs?.forEach {
             handleJar(
                 it,
                 transformInvocation.outputProvider,
                 transformInvocation.isIncremental,
-                privacyExtension
+                extension
             )
             handleDirectory(
                 it,
                 transformInvocation.outputProvider,
-                transformInvocation.isIncremental, privacyExtension
+                transformInvocation.isIncremental, extension
             )
         }
         // 写入被替换所有的类和文件
-        privacyExtension.replaceFileName?.let {
-            ReplaceMethodManger.MANAGER.flushToFile(privacyExtension.replaceFileName!!,project)
+        extension.replaceFileName?.let {
+            ReplaceMethodManger.MANAGER.flushToFile(resultFilePath,extension.replaceFileName!!,logger)
         }
     }
 
@@ -80,9 +84,9 @@ class PrivacySentryTransform : Transform {
             if (incremental) {
                 when (it.status) {
                     Status.ADDED, Status.CHANGED -> {
-                        project.logger.info("directory status is ${it.status}  file is:" + it.file.absolutePath)
+                        logger.info("directory status is ${it.status}  file is:" + it.file.absolutePath)
                         PrivacyClassProcessor.processJar(
-                            project,
+                            logger,
                             it.file,
                             extension,
                             runAsm = { input, project ->
@@ -95,14 +99,14 @@ class PrivacySentryTransform : Transform {
                         GFileUtils.copyFile(it.file, output)
                     }
                     Status.REMOVED -> {
-                        project.logger.info("jar REMOVED file is:" + it.file.absolutePath)
+                        logger.info("jar REMOVED file is:" + it.file.absolutePath)
                         GFileUtils.deleteQuietly(output)
                     }
                 }
             } else {
-                project.logger.info("jar incremental false file is:" + it.file.absolutePath)
+                logger.info("jar incremental false file is:" + it.file.absolutePath)
                 PrivacyClassProcessor.processJar(
-                    project,
+                    logger,
                     it.file,
                     extension,
                     runAsm = { input, project ->
@@ -134,20 +138,16 @@ class PrivacySentryTransform : Transform {
             )
             if (incremental) {
                 for ((inputFile, status) in it.changedFiles) {
-                    var outputFile = File(
-                        outputDir,
-                        FileUtils.relativePossiblyNonExistingPath(inputFile, inputDir)
-                    )
-
+                    var outputFile  = File(outputDir, inputFile.toRelativeString(inputDir))
                     when (status) {
                         Status.REMOVED -> {
-                            project.logger.info("directory REMOVED file is:" + inputFile.absolutePath)
+                            logger.info("directory REMOVED file is:" + inputFile.absolutePath)
                             GFileUtils.deleteQuietly(inputFile)
                         }
                         Status.ADDED, Status.CHANGED -> {
-                            project.logger.info("directory status is $status $ file is:" + inputFile.absolutePath)
+                            logger.info("directory status is $status $ file is:" + inputFile.absolutePath)
                             PrivacyClassProcessor.processDirectory(
-                                project,
+                                logger,
                                 inputDir,
                                 inputFile,
                                 extension,
@@ -166,11 +166,11 @@ class PrivacySentryTransform : Transform {
                     }
                 }
             } else {
-                project.logger.info("directory incremental false  file is:" + inputDir.absolutePath)
+                logger.info("directory incremental false  file is:" + inputDir.absolutePath)
                 inputDir.walk().forEach { file ->
                     if (!file.isDirectory) {
                         PrivacyClassProcessor.processDirectory(
-                            project,
+                            logger,
                             inputDir,
                             file,
                             extension,
