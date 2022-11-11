@@ -2,6 +2,7 @@ package com.yl.lib.plugin.sentry.transform
 
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
+import org.gradle.api.Project
 import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.FieldVisitor
@@ -18,11 +19,13 @@ class CollectHookMethodClassAdapter : ClassVisitor {
 
     private var bHookClass: Boolean = false
     private var privacyExtension: PrivacyExtension? = null
+    private var project: Project
 
-    constructor(api: Int, classVisitor: ClassVisitor?, privacyExtension: PrivacyExtension?) : super(
+    constructor(api: Int, classVisitor: ClassVisitor?, privacyExtension: PrivacyExtension?, project: Project) : super(
         api,
         classVisitor
     ) {
+        this.project = project
         this.privacyExtension = privacyExtension
     }
 
@@ -63,7 +66,8 @@ class CollectHookMethodClassAdapter : ClassVisitor {
                 name,
                 descriptor,
                 privacyExtension,
-                className
+                className,
+                project
             )
         }
         return super.visitMethod(access, name, descriptor, signature, exceptions)
@@ -95,6 +99,7 @@ class CollectHookMethodAdapter : AdviceAdapter {
 
     private var privacyExtension: PrivacyExtension? = null
     private var className: String
+    private var project: Project
 
     constructor(
         api: Int,
@@ -103,10 +108,12 @@ class CollectHookMethodAdapter : AdviceAdapter {
         name: String?,
         descriptor: String?,
         privacyExtension: PrivacyExtension?,
-        className: String
+        className: String,
+        project: Project
     ) : super(api, methodVisitor, access, name, descriptor) {
         this.privacyExtension = privacyExtension
         this.className = className
+        this.project = project
     }
 
 
@@ -120,7 +127,9 @@ class CollectHookMethodAdapter : AdviceAdapter {
                     proxyClassName = className,
                     proxyMethodName = name,
                     proxyMethodReturnDesc = methodDesc
-                )
+
+                ),
+                project = project
             )
         }
         return super.visitAnnotation(descriptor, visible)
@@ -131,13 +140,16 @@ class CollectHookMethodAdapter : AdviceAdapter {
 
 class CollectMethodHookAnnotationVisitor : AnnotationVisitor {
     private var hookMethodItem: HookMethodItem? = null
+    private var project: Project
 
     constructor(
         api: Int,
         annotationVisitor: AnnotationVisitor?,
-        hookMethodItem: HookMethodItem?
+        hookMethodItem: HookMethodItem?,
+        project: Project
     ) : super(api, annotationVisitor) {
         this.hookMethodItem = hookMethodItem
+        this.project = project
     }
 
     override fun visit(name: String?, value: Any?) {
@@ -148,22 +160,27 @@ class CollectMethodHookAnnotationVisitor : AnnotationVisitor {
                 classSourceName.substring(1, classSourceName.length - 1)
         } else if (name.equals("originalMethod")) {
             hookMethodItem?.originMethodName = value.toString()
+        } else if (name.equals("ignoreClass")) {
+            hookMethodItem?.ignoreClass = value as Boolean
+        } else if (name.equals("originalOpcode")) {
+            hookMethodItem?.originMethodAccess = value as Int
         }
     }
 
     override fun visitEnum(name: String?, descriptor: String?, value: String?) {
         super.visitEnum(name, descriptor, value)
         if (name.equals("originalOpcode")) {
-            hookMethodItem?.originMethodAccess = MethodInvokeOpcode.valueOf(value.toString()).opcode
+            hookMethodItem?.originMethodAccess = value?.toInt()
         }
     }
 
     override fun visitEnd() {
         super.visitEnd()
-        if (hookMethodItem?.originMethodAccess == MethodInvokeOpcode.INVOKESTATIC.opcode) {
+        if (hookMethodItem?.originMethodAccess == MethodInvokeOpcode.INVOKESTATIC) {
             hookMethodItem?.originMethodDesc = hookMethodItem?.proxyMethodDesc
-        } else if (hookMethodItem?.originMethodAccess == MethodInvokeOpcode.INVOKEVIRTUAL.opcode ||
-            hookMethodItem?.originMethodAccess == MethodInvokeOpcode.INVOKEINTERFACE.opcode
+        } else if (hookMethodItem?.originMethodAccess == MethodInvokeOpcode.INVOKEVIRTUAL ||
+            hookMethodItem?.originMethodAccess == MethodInvokeOpcode.INVOKEINTERFACE ||
+            hookMethodItem?.originMethodAccess == MethodInvokeOpcode.INVOKESPECIAL
         ) {
             // 如果是调用实例方法，代理方法的描述会比原始方法多了一个实例，这里需要裁剪，方便做匹配 、、、
             hookMethodItem?.originMethodDesc =

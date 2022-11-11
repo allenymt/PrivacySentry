@@ -3,7 +3,9 @@ package com.yl.lib.privacysentry.test
 import android.content.Context
 import android.content.Context.TELEPHONY_SERVICE
 import android.telephony.TelephonyManager
+import com.yl.lib.sentry.hook.util.ReflectUtils
 import java.lang.reflect.InvocationTargetException
+import java.lang.reflect.Method
 
 /**
  * @author yulun
@@ -24,6 +26,31 @@ class TestReflex {
             e.printStackTrace()
         } catch (e: InvocationTargetException) {
             e.printStackTrace()
+        }
+    }
+
+    fun test2(obj: Any,
+              name: String,
+              types: Array<Class<*>>,
+              args: Array<Any?>){
+        try {
+            val method: Method? =
+               getMethod(obj.javaClass.superclass, name, types)
+            if (null != method) {
+                method.isAccessible = true
+                method.invoke(obj, *args)
+            }
+        } catch (t: Throwable) {
+            t.printStackTrace()
+        }
+    }
+
+    private fun getMethod(klass: Class<*>, name: String, types: Array<Class<*>>): Method? {
+        return try {
+            klass.getDeclaredMethod(name, *types)
+        } catch (e: NoSuchMethodException) {
+            val parent = klass.superclass ?: return null
+            getMethod(parent, name, types)
         }
     }
 }

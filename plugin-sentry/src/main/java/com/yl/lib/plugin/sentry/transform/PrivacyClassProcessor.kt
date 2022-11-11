@@ -56,7 +56,11 @@ class PrivacyClassProcessor {
                 org.objectweb.asm.ClassWriter(org.objectweb.asm.ClassWriter.COMPUTE_MAXS)
             // 定义类访问者
             val classVisitor: ClassVisitor =
-                CollectHookMethodClassAdapter(Opcodes.ASM7, classWriter, privacyExtension)
+                CollectHookMethodClassAdapter(
+                    Opcodes.ASM7, classWriter, project.extensions.findByType(
+                        PrivacyExtension::class.java
+                    )
+                )
             /**
              * ClassReader.SKIP_DEBUG：表示不遍历调试内容，即跳过源文件，源码调试扩展，局部变量表，局部变量类型表和行号表属性，即以下方法既不会被解析也不会被访问（ClassVisitor.visitSource，MethodVisitor.visitLocalVariable，MethodVisitor.visitLineNumber）。使用此标识后，类文件调试信息会被去除，请警记。
              * ClassReader.SKIP_CODE：设置该标识，则代码属性将不会被转换和访问，例如方法体代码不会进行解析和访问。
