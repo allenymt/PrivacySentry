@@ -28,7 +28,6 @@ class TestPermissionFragment : Fragment() {
                 PrivacyLog.i("TestFragmentFragment ${PrivacyUtil.Util.getStackTrace()} \n ${it.key} = ${it.value}")
             }
         }
-
         requestMultiplePermissions.launch(
             arrayOf(
                 Manifest.permission.CAMERA

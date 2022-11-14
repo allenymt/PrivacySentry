@@ -36,6 +36,8 @@ class PrivacyPermissionProxy {
                 "requestPermissions",
                 methodDocumentDesc = "${obj.javaClass.name}-INVOKESPECIAL-请求权限，权限列表：${permissions?.contentToString()}"
             )
+            //  理论上不可能重写requestPermissions，但还是反射更靠谱
+          
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 ReflectUtils.Utils.invokeMethod<Unit>(
                     obj, "requestPermissions", arrayOf(
