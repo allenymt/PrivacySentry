@@ -19,10 +19,11 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 class PrivacySentry {
     object Privacy {
+        @Volatile
         private var mBuilder: PrivacySentryBuilder? = PrivacySentryBuilder()
         private val bInit = AtomicBoolean(false)
         private val bFilePrintFinish = AtomicBoolean(false)
-        var bShowPrivacy = false
+        private val bShowPrivacy = AtomicBoolean(false)
         private var ctx: Application? = null
 
         /**
@@ -82,17 +83,17 @@ class PrivacySentry {
          * 记录展示隐私协议，调用时机一般为 隐私协议点击确定的时候，必须调用
          */
         fun updatePrivacyShow() {
-            if (bShowPrivacy) {
+            if (bShowPrivacy.get()) {
                 return
             }
             PrivacyLog.i("call updatePrivacyShow")
-            bShowPrivacy = true
+            bShowPrivacy.compareAndSet(false, true)
             mBuilder?.getPrinterList()?.filterIsInstance<BaseFilePrinter>()
                 ?.forEach { it.appendData("点击隐私协议确认", "点击隐私协议确认", "点击隐私协议确认") }
         }
 
         fun hasShowPrivacy(): Boolean {
-            return bShowPrivacy
+            return bShowPrivacy.get()
         }
 
         fun isDebug(): Boolean {
