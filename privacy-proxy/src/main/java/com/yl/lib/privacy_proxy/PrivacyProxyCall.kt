@@ -407,6 +407,7 @@ open class PrivacyProxyCall {
             manager.text = clip
         }
 
+        private var objectSsidLock = Object()
         /**
          * WIFI的SSID
          */
@@ -424,17 +425,20 @@ open class PrivacyProxyCall {
 
             var key = "getSSID"
             doFilePrinter("getSSID", "SSID")
-            return CachePrivacyManager.Manager.loadWithTimeCache(
-                key,
-                "getSSID",
-                "",
-                duration = CacheUtils.Utils.MINUTE * 5
-            ) { manager.ssid }
-            return manager.ssid
+            synchronized(objectSsidLock) {
+                return CachePrivacyManager.Manager.loadWithTimeCache(
+                    key,
+                    "getSSID",
+                    "",
+                    duration = CacheUtils.Utils.MINUTE * 5
+                ) { manager.ssid }
+            }
+
         }
 
+        private var objectBSsidLock = Object()
         /**
-         * WIFI的SSID
+         * WIFI的BSSID
          */
         @JvmStatic
         @PrivacyMethodProxy(
@@ -443,7 +447,6 @@ open class PrivacyProxyCall {
             originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
         )
         fun getBSSID(manager: WifiInfo): String? {
-
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 doFilePrinter("getBSSID", "getBSSID", bVisitorModel = true)
                 return ""
@@ -451,13 +454,14 @@ open class PrivacyProxyCall {
 
             var key = "getBSSID"
             doFilePrinter("getBSSID", "getBSSID")
-            return CachePrivacyManager.Manager.loadWithTimeCache(
-                key,
-                "getBSSID",
-                "",
-                duration = CacheUtils.Utils.MINUTE * 5
-            ) { manager.ssid }
-            return manager.bssid
+            synchronized(objectBSsidLock) {
+                return CachePrivacyManager.Manager.loadWithTimeCache(
+                    key,
+                    "getBSSID",
+                    "",
+                    duration = CacheUtils.Utils.MINUTE * 5
+                ) { manager.ssid }
+            }
         }
 
         /**
