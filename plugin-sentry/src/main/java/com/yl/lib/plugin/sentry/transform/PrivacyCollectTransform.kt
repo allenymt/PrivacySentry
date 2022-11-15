@@ -9,6 +9,7 @@ import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import org.gradle.api.logging.Logger
 import org.gradle.util.GFileUtils
 import java.io.File
+import kotlin.math.log
 
 /**
  * @author yulun
@@ -87,7 +88,8 @@ class PrivacyCollectTransform : Transform {
                             runAsm = { input, project ->
                                 PrivacyClassProcessor.runCollect(
                                     input,
-                                    project
+                                    extension,
+                                    logger
                                 )
                             })
                         GFileUtils.deleteQuietly(output)
@@ -107,7 +109,8 @@ class PrivacyCollectTransform : Transform {
                     runAsm = { input, project ->
                         PrivacyClassProcessor.runCollect(
                             input,
-                            project
+                            extension,
+                            logger
                         )
                     })
                 GFileUtils.deleteQuietly(output)
@@ -150,7 +153,8 @@ class PrivacyCollectTransform : Transform {
                                 runAsm = { input, project ->
                                     PrivacyClassProcessor.runCollect(
                                         input,
-                                        project
+                                        extension,
+                                        logger
                                     )
                                 }
                             )
@@ -173,7 +177,8 @@ class PrivacyCollectTransform : Transform {
                             runAsm = { input, project ->
                                 PrivacyClassProcessor.runCollect(
                                     input,
-                                    project
+                                    extension,
+                                    logger
                                 )
                             })
                     }

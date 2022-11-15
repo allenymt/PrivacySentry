@@ -23,7 +23,7 @@ import java.util.zip.ZipEntry
 class PrivacyClassProcessor {
 
     companion object {
-        fun runHook(`is`: InputStream?,privacyExtension: PrivacyExtension): ByteArray? {
+        fun runHook(`is`: InputStream?,privacyExtension: PrivacyExtension,logger: Logger): ByteArray? {
             val classReader = org.objectweb.asm.ClassReader(`is`)
 
             // 入参有两个，ClassWriter.COMPUTE_MAXS 和 COMPUTE_FRAMES
@@ -46,7 +46,7 @@ class PrivacyClassProcessor {
             return classWriter.toByteArray()
         }
 
-        fun runCollect(`is`: InputStream?,privacyExtension:PrivacyExtension): ByteArray? {
+        fun runCollect(`is`: InputStream?,privacyExtension:PrivacyExtension,logger: Logger): ByteArray? {
             val classReader = org.objectweb.asm.ClassReader(`is`)
 
             // 入参有两个，ClassWriter.COMPUTE_MAXS 和 COMPUTE_FRAMES
@@ -57,9 +57,7 @@ class PrivacyClassProcessor {
             // 定义类访问者
             val classVisitor: ClassVisitor =
                 CollectHookMethodClassAdapter(
-                    Opcodes.ASM7, classWriter, project.extensions.findByType(
-                        PrivacyExtension::class.java
-                    )
+                    Opcodes.ASM7, classWriter, privacyExtension,logger
                 )
             /**
              * ClassReader.SKIP_DEBUG：表示不遍历调试内容，即跳过源文件，源码调试扩展，局部变量表，局部变量类型表和行号表属性，即以下方法既不会被解析也不会被访问（ClassVisitor.visitSource，MethodVisitor.visitLocalVariable，MethodVisitor.visitLineNumber）。使用此标识后，类文件调试信息会被去除，请警记。
@@ -172,7 +170,6 @@ class PrivacyClassProcessor {
                 // 过滤掉库本身
                 || entryName.contains("com/yl/lib/sentry/hook")
                 || entryName.contains("com/yl/lib/privacy_annotation")
-                || entryName.contains("com/yl/lib/sentry/base")
             ) {
 //            print("checkClassFile className is $entryName false")
                 return false

@@ -3,11 +3,13 @@ package com.yl.lib.plugin.sentry.transform
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import org.gradle.api.Project
+import org.gradle.api.logging.Logger
 import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.FieldVisitor
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.commons.AdviceAdapter
+import kotlin.math.log
 
 /**
  * @author yulun
@@ -19,13 +21,13 @@ class CollectHookMethodClassAdapter : ClassVisitor {
 
     private var bHookClass: Boolean = false
     private var privacyExtension: PrivacyExtension? = null
-    private var project: Project
+    private var logger: Logger
 
-    constructor(api: Int, classVisitor: ClassVisitor?, privacyExtension: PrivacyExtension?, project: Project) : super(
+    constructor(api: Int, classVisitor: ClassVisitor?, privacyExtension: PrivacyExtension?, logger: Logger) : super(
         api,
         classVisitor
     ) {
-        this.project = project
+        this.logger = logger
         this.privacyExtension = privacyExtension
     }
 
@@ -67,7 +69,7 @@ class CollectHookMethodClassAdapter : ClassVisitor {
                 descriptor,
                 privacyExtension,
                 className,
-                project
+                logger
             )
         }
         return super.visitMethod(access, name, descriptor, signature, exceptions)
@@ -99,7 +101,7 @@ class CollectHookMethodAdapter : AdviceAdapter {
 
     private var privacyExtension: PrivacyExtension? = null
     private var className: String
-    private var project: Project
+    private var logger: Logger
 
     constructor(
         api: Int,
@@ -109,11 +111,11 @@ class CollectHookMethodAdapter : AdviceAdapter {
         descriptor: String?,
         privacyExtension: PrivacyExtension?,
         className: String,
-        project: Project
+        logger: Logger
     ) : super(api, methodVisitor, access, name, descriptor) {
         this.privacyExtension = privacyExtension
         this.className = className
-        this.project = project
+        this.logger = logger
     }
 
 
@@ -129,7 +131,7 @@ class CollectHookMethodAdapter : AdviceAdapter {
                     proxyMethodReturnDesc = methodDesc
 
                 ),
-                project = project
+                logger = logger
             )
         }
         return super.visitAnnotation(descriptor, visible)
@@ -140,16 +142,16 @@ class CollectHookMethodAdapter : AdviceAdapter {
 
 class CollectMethodHookAnnotationVisitor : AnnotationVisitor {
     private var hookMethodItem: HookMethodItem? = null
-    private var project: Project
+    private var logger: Logger
 
     constructor(
         api: Int,
         annotationVisitor: AnnotationVisitor?,
         hookMethodItem: HookMethodItem?,
-        project: Project
+        logger: Logger
     ) : super(api, annotationVisitor) {
         this.hookMethodItem = hookMethodItem
-        this.project = project
+        this.logger = logger
     }
 
     override fun visit(name: String?, value: Any?) {

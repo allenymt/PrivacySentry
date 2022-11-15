@@ -92,7 +92,8 @@ class PrivacySentryTransform : Transform {
                             runAsm = { input, project ->
                                 PrivacyClassProcessor.runHook(
                                     input,
-                                    project
+                                    extension,
+                                    logger
                                 )
                             })
                         GFileUtils.deleteQuietly(output)
@@ -112,7 +113,8 @@ class PrivacySentryTransform : Transform {
                     runAsm = { input, project ->
                         PrivacyClassProcessor.runHook(
                             input,
-                            project
+                            extension,
+                            logger
                         )
                     })
                 GFileUtils.deleteQuietly(output)
@@ -154,7 +156,8 @@ class PrivacySentryTransform : Transform {
                                 runAsm = { input, project ->
                                     PrivacyClassProcessor.runHook(
                                         input,
-                                        project
+                                        extension,
+                                        logger
                                     )
                                 }
                             )
@@ -177,7 +180,8 @@ class PrivacySentryTransform : Transform {
                             runAsm = { input, project ->
                                 PrivacyClassProcessor.runHook(
                                     input,
-                                    project
+                                    extension,
+                                    logger
                                 )
                             })
                     }
