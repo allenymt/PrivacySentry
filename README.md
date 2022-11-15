@@ -7,6 +7,7 @@
         1. 放开support androidx目录下的类hook
         2. 支持权限请求hook(requestPermissions) https://github.com/allenymt/PrivacySentry/issues/75
         3. 修复部分多线程引起的数据同步问题
+        4. 支持关闭插件的hook功能(感谢runforprogram)
         
     2022-11-02(1.2.1)
         更新的东西有点多，尽量测试和自测
