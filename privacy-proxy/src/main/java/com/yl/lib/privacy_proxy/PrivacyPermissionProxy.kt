@@ -34,7 +34,7 @@ class PrivacyPermissionProxy {
         fun requestPermissionsSuper(obj: Any, permissions: Array<String?>, requestCode: Int) {
             PrivacyProxyUtil.Util.doFilePrinter(
                 "requestPermissions",
-                methodDocumentDesc = "${obj.javaClass.name}-INVOKESPECIAL-请求权限"
+                methodDocumentDesc = "${obj.javaClass.name}-INVOKESPECIAL-请求权限，权限列表：${permissions?.contentToString()}"
             )
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 ReflectUtils.Utils.invokeMethod<Unit>(
@@ -58,7 +58,7 @@ class PrivacyPermissionProxy {
         fun requestPermissions(any: Any, permissions: Array<String?>, requestCode: Int) {
             PrivacyProxyUtil.Util.doFilePrinter(
                 "requestPermissions",
-                methodDocumentDesc = "${any.javaClass.name}-INVOKEVIRTUAL-请求权限"
+                methodDocumentDesc = "${any.javaClass.name}-INVOKEVIRTUAL-请求权限，权限列表：${permissions?.contentToString()}"
             )
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (any is Activity) {

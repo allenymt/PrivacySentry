@@ -3,6 +3,11 @@
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
     
 ## 更新日志
+    2022-11-15(1.2.2)
+        1. 放开support androidx目录下的类hook
+        2. 支持权限请求hook(requestPermissions) https://github.com/allenymt/PrivacySentry/issues/75
+        3. 修复部分多线程引起的数据同步问题
+        
     2022-11-02(1.2.1)
         更新的东西有点多，尽量测试和自测
         1. androidId等不能只做内存缓存，还要磁盘缓存 
@@ -69,7 +74,7 @@
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
-	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.2.1'
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.2.2'
 	     }
 	}
 	
@@ -89,11 +94,11 @@
         
         dependencies {
             // aar依赖
-            def privacyVersion = "1.2.1"
+            def privacyVersion = "1.2.2"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
-	    //如果不想使用库中本身的代理方法，可以不引入这个aar，自己实现
-	    //也可以引入，个别方法在自己的类中重写即可
+	        //如果不想使用库中本身的代理方法，可以不引入这个aar，自己实现
+	        //也可以引入，个别方法在自己的类中重写即可
             implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
         }
         
@@ -103,8 +108,10 @@
         privacy {
             blackList = []
             replaceFileName = "replace.json"
-	    // 开启hook反射
+	        // 开启hook反射
     	    hookReflex = true
+    	    // debug编译默认开启，支持关闭，感谢run的pr
+    	    debugEnable = true
         }
 
 ```

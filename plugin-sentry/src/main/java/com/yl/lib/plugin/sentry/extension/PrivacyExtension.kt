@@ -16,5 +16,5 @@ open class PrivacyExtension {
     var hookReflex: Boolean = false
 
     // debug是否应用此插件
-    var debugEnable: Boolean = false
+    var debugEnable: Boolean = true
 }
