@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.yl.lib.privacy_test.PrivacyProxySelfTest2
 import com.yl.lib.privacy_test.TestMethod
 import com.yl.lib.privacy_test.TestMethodInJava
@@ -24,6 +25,8 @@ import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.util.MainProcessUtil
 import com.yl.lib.sentry.hook.util.PrivacyClipBoardManager
 import com.yl.lib.sentry.hook.util.PrivacyLog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,9 +40,9 @@ class MainActivity : AppCompatActivity() {
             TestMethodInJava.getAndroidIdSystem(this)
             PrivacyLog.i("androidId is $androidId")
 
-            Thread{
+            lifecycleScope.launch(Dispatchers.IO) {
                 TestInJava.testHttpUrlConnection()
-            }.start()
+            }
         }
 
         findViewById<Button>(R.id.btn_mac_address).setOnClickListener {
