@@ -5,6 +5,8 @@ import android.app.ActivityManager
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
@@ -13,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import com.yl.lib.privacy_test.PrivacyProxySelfTest2
 import com.yl.lib.privacy_test.TestMethod
 import com.yl.lib.privacy_test.TestMethodInJava
+import com.yl.lib.privacy_ui.PermissionListActivity
 import com.yl.lib.privacy_ui.RealTimePrivacyItemActivity
 import com.yl.lib.privacy_ui.ReplaceListActivity
 import com.yl.lib.privacysentry.calendar.CalenderActivity
@@ -206,6 +209,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, RealTimePrivacyItemActivity::class.java))
         }
 
+        findViewById<Button>(R.id.btn_permission_list).setOnClickListener {
+            startActivity(Intent(this, PermissionListActivity::class.java))
+        }
+
+
         findViewById<Button>(R.id.btn_test_ExternalStorageDirectory).setOnClickListener {
             PrivacyMethod.PrivacyMethod.getSdcardRoot(this)
         }
@@ -249,7 +257,6 @@ class MainActivity : AppCompatActivity() {
             PrivacySentry.Privacy.closeVisitorModel()
         }.create().show()
     }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

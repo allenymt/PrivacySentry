@@ -155,6 +155,12 @@
                 android:text="跳转可视化界面-实时调用数据" />
 
             <Button
+                android:id="@+id/btn_permission_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="查看应用权限列表" />
+
+            <Button
                 android:id="@+id/btn_force_finish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

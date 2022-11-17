@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ReplaceListActivity">
+    tools:context=".PermissionListActivity">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
-        app:queryHint="输入查找权限"
+        app:queryHint="输入查找敏感方法"
         app:iconifiedByDefault="false"
         android:layout_height="50dp" />
 

@@ -4,6 +4,7 @@ import AndroidGradlePluginHelper
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.internal.pipeline.TransformTask
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
+import com.yl.lib.plugin.sentry.task.ManifestProcessor
 import com.yl.lib.plugin.sentry.task.assets.MoveAssetsTask
 import com.yl.lib.plugin.sentry.transform.HookFieldManager
 import com.yl.lib.plugin.sentry.transform.HookMethodManager
@@ -61,26 +62,53 @@ class PrivacySentryPlugin : Plugin<Project> {
 
         privacyExtension.replaceFileName.let {
             // replaceFile 生成完后，把文件挪到assets目录下
-            project.tasks.create("MoveAssetsTask",MoveAssetsTask::class.java)
+            project.tasks.create("MoveAssetsTask", MoveAssetsTask::class.java)
             project.afterEvaluate {
                 android.applicationVariants.forEach { variant ->
                     var variantName = variant.name.capitalize()
                     var pluginHelper = AndroidGradlePluginHelper(project, variant)
-                    var moveTask = project.tasks.findByName("MoveAssetsTask") as MoveAssetsTask
-                    moveTask.fileName = privacyExtension.replaceFileName
-                    moveTask.assetsPathList?.add(pluginHelper?.mergedAssetsDir?.absolutePath + File.separator + "privacy" + File.separator + privacyExtension.replaceFileName)
-                    var transformTask = project.tasks.withType(TransformTask::class.java)
-                    var privacySentryTask =
-                        transformTask.first { task ->
-                            task.variantName.equals(
-                                variantName,
-                                ignoreCase = true
-                            ) && task.transform is PrivacySentryTransform
-                        }
-                    project.logger.info("project MoveAssetsTask finalizedBy privacySentryTask variantName is ${privacySentryTask.variantName} MoveAssetsTask is $moveTask $variantName after fileName is ${moveTask.fileName} ")
-                    pluginHelper.mergeAssetsTask.finalizedBy(moveTask)
-                    moveTask.mustRunAfter(privacySentryTask)
+                    registerAssetsTask(variantName, pluginHelper, project, privacyExtension)
+                    registerManifestTask(variantName, pluginHelper, project, privacyExtension)
                 }
+            }
+        }
+    }
+
+    // 把替换的api列表同步到assets目录下，方便查看
+    private fun registerAssetsTask(
+        variantName: String,
+        pluginHelper: AndroidGradlePluginHelper,
+        project: Project,
+        privacyExtension: PrivacyExtension
+    ) {
+        var moveTask = project.tasks.findByName("MoveAssetsTask") as MoveAssetsTask
+        moveTask.fileName = privacyExtension.replaceFileName
+        moveTask.assetsPathList?.add(pluginHelper?.mergedAssetsDir?.absolutePath + File.separator + "privacy" + File.separator + privacyExtension.replaceFileName)
+        var transformTask = project.tasks.withType(TransformTask::class.java)
+        var privacySentryTask =
+            transformTask.first { task ->
+                task.variantName.equals(
+                    variantName,
+                    ignoreCase = true
+                ) && task.transform is PrivacySentryTransform
+            }
+        project.logger.info("project MoveAssetsTask finalizedBy privacySentryTask variantName is ${privacySentryTask.variantName} MoveAssetsTask is $moveTask $variantName after fileName is ${moveTask.fileName} ")
+        pluginHelper.mergeAssetsTask.finalizedBy(moveTask)
+        moveTask.mustRunAfter(privacySentryTask)
+    }
+
+    // 后期想做的是自动屏蔽危险权限，自动删除危险权限，目前看好像没必要
+    private fun registerManifestTask(
+        variantName: String,
+        pluginHelper: AndroidGradlePluginHelper,
+        project: Project,
+        privacyExtension: PrivacyExtension
+    ) {
+        var manifestFile = pluginHelper.mergedManifestFile
+        var processManifestTask = project.tasks.getByName("process${variantName}Manifest")
+        processManifestTask?.let {
+            it.doLast {
+                ManifestProcessor.Processor.process(manifestFile.absolutePath)
             }
         }
     }
