@@ -55,7 +55,6 @@
     
 
 
-
 ## TODO
 1. 有其他问题欢迎提issue
 2. 项目里如果有引入高德地图or openInstall，先加黑 blackList = ["com.loc","com.amap.api","io.openinstall.sdk"]
@@ -236,13 +235,15 @@ open class PrivacyProxyResolver {
 
 支持hook以下功能函数：
 
+- 支持敏感字段缓存(磁盘缓存、带有时间限制的磁盘缓存、内存缓存)
+
 - 当前运行进程和任务
 
 - 系统剪贴板服务
 
 - 读取设备应用列表
 
-- 读取 Android SN(Serial,包括方法和变量)
+- 读取 Android SN(Serial,包括方法和变量)，系统设备号
 
 - 读写联系人、日历、本机号码
 
@@ -252,7 +253,9 @@ open class PrivacyProxyResolver {
 
 - 读取 IMEI(DeviceId)、MEID、IMSI、ADID(AndroidID)
 
-- 手机可用传感器,传感器注册
+- 手机可用传感器,传感器注册，传感器列表
+
+- 权限请求
 
 
 
