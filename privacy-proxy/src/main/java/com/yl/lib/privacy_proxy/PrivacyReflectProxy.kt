@@ -13,7 +13,7 @@ import java.net.NetworkInterface
 /**
  * @author yulun
  * @since 2022-06-17 17:56
- * 代理反射
+ * 代理反射，当前还是写死的判断，后续可以优化，不过反射扫到的例子也不多，roi不高
  */
 @Keep
 open class PrivacyReflectProxy {

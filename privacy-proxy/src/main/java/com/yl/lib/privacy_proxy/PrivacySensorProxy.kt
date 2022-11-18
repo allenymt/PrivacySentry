@@ -15,6 +15,7 @@ import com.yl.lib.sentry.hook.util.PrivacyProxyUtil
 /**
  * @author yulun
  * @since 2022-06-17 17:56
+ * 代理传感器方法
  */
 @Keep
 open class PrivacySensorProxy {
