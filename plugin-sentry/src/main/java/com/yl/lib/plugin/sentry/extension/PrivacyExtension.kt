@@ -14,4 +14,7 @@ open class PrivacyExtension {
 
     // 开启hook反射方法，默认为false
     var hookReflex: Boolean = false
+
+    // 开启hook构造函数，默认为true
+    var hookConstructor: Boolean = true
 }

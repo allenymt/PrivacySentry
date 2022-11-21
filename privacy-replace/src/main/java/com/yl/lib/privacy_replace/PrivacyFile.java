@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.yl.lib.privacy_annotation.PrivacyClassReplace;
+import com.yl.lib.sentry.hook.PrivacySentry;
 import com.yl.lib.sentry.hook.util.PrivacyLog;
+import com.yl.lib.sentry.hook.util.PrivacyProxyUtil;
 
 import java.io.File;
 import java.net.URI;
@@ -38,6 +40,6 @@ public class PrivacyFile extends File {
     }
 
     private void record(String path) {
-        PrivacyLog.Log.i("File-访问文件-path is " + path);
+        PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("PrivacyFile", "访问文件", "path is " + path, PrivacySentry.Privacy.INSTANCE.getBuilder().isVisitorModel(), false);
     }
 }
