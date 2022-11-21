@@ -116,7 +116,7 @@ class SentryTraceMethodAdapter : AdviceAdapter {
     }
     private var find = false
     override fun visitTypeInsn(opcode: Int, type: String?) {
-        if (opcode == Opcodes.NEW && ReplaceClassManager.MANAGER.contains(originClassName = type)) {
+        if (privacyExtension?.hookConstructor == true && opcode == Opcodes.NEW && ReplaceClassManager.MANAGER.contains(originClassName = type)) {
             find = true
             var replaceItem =   ReplaceClassManager.MANAGER.findItemByName(originClassName = type)
             logger.info("visitTypeInsn-ReplaceClassItem - ${replaceItem.toString()}- type is $type")
@@ -158,7 +158,7 @@ class SentryTraceMethodAdapter : AdviceAdapter {
             return
         }
 
-        if (opcodeAndSource == Opcodes.INVOKESPECIAL && find) {
+        if (privacyExtension?.hookConstructor == true &&  opcodeAndSource == Opcodes.INVOKESPECIAL && find) {
             var replaceClassItem =
                 ReplaceClassManager.MANAGER.findItemByName(originClassName = owner)
             logger.info("visitMethodInsn-ReplaceClassItem - ${replaceClassItem.toString()}- owner is $owner")

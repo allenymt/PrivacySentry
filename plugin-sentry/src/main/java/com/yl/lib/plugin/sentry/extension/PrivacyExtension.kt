@@ -17,4 +17,8 @@ open class PrivacyExtension {
 
     // debug是否应用此插件
     var debugEnable: Boolean = true
+
+
+    // 开启hook构造函数，默认为true
+    var hookConstructor: Boolean = true
 }
