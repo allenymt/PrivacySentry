@@ -85,7 +85,7 @@ class PrivacyCollectTransform : Transform {
                             logger,
                             it.file,
                             extension,
-                            runAsm = { input, project ->
+                            runAsm = { input ->
                                 PrivacyClassProcessor.runCollect(
                                     input,
                                     extension,
@@ -106,7 +106,7 @@ class PrivacyCollectTransform : Transform {
                     logger,
                     it.file,
                     extension,
-                    runAsm = { input, project ->
+                    runAsm = { input ->
                         PrivacyClassProcessor.runCollect(
                             input,
                             extension,
@@ -150,7 +150,7 @@ class PrivacyCollectTransform : Transform {
                                 inputDir,
                                 inputFile,
                                 extension,
-                                runAsm = { input, project ->
+                                runAsm = { input ->
                                     PrivacyClassProcessor.runCollect(
                                         input,
                                         extension,
@@ -174,7 +174,7 @@ class PrivacyCollectTransform : Transform {
                             inputDir,
                             file,
                             extension,
-                            runAsm = { input, project ->
+                            runAsm = { input ->
                                 PrivacyClassProcessor.runCollect(
                                     input,
                                     extension,

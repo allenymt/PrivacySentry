@@ -2,12 +2,7 @@ package com.yl.lib.plugin.sentry
 
 import com.android.build.gradle.AppExtension
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
-import com.yl.lib.plugin.sentry.task.ManifestProcessor
-import com.yl.lib.plugin.sentry.task.assets.MoveAssetsTask
-import com.yl.lib.plugin.sentry.transform.HookFieldManager
-import com.yl.lib.plugin.sentry.transform.HookMethodManager
-import com.yl.lib.plugin.sentry.transform.PrivacyCollectTransform
-import com.yl.lib.plugin.sentry.transform.PrivacySentryTransform
+import com.yl.lib.plugin.sentry.transform.*
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

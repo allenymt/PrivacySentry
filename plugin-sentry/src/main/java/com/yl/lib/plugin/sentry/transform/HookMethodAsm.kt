@@ -126,11 +126,6 @@ class SentryTraceMethodAdapter : AdviceAdapter {
             )
             return
         }
-//        if (opcode == NEW && "java/io/File" == type) {
-//            find = true
-//            mv.visitTypeInsn(NEW, "com/yl/lib/privacy_replace/PrivacyFile")
-//            return
-//        }
         super.visitTypeInsn(opcode, type)
     }
 
@@ -179,14 +174,6 @@ class SentryTraceMethodAdapter : AdviceAdapter {
                 return
             }
         }
-
-        //需要排除CustomThread自己
-//        if ("java/io/File" == owner && className != "com/yl/lib/privacy_replace/PrivacyFile" && opcodeAndSource == INVOKESPECIAL && find) {
-//            find = false
-//            mv.visitMethodInsn(opcodeAndSource, "com/yl/lib/privacy_replace/PrivacyFile", name, descriptor, isInterface)
-//            logger.info("asmcode", "className:%s, method:%s, name:%s", className, methodName, name)
-//            return
-//        }
         super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface)
     }
 

@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_mac_address).setOnClickListener {
             var macRaw = PrivacyMethod.PrivacyMethod.getMacRaw(this)
             PrivacyLog.i("macRaw is $macRaw")
-
+            PrivacyTestMacAddress.getMacAddress()
             PrivacyMethod.PrivacyMethod.getIp(this)
         }
 

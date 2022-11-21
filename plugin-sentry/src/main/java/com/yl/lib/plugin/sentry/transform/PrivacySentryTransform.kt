@@ -89,7 +89,7 @@ class PrivacySentryTransform : Transform {
                             logger,
                             it.file,
                             extension,
-                            runAsm = { input, project ->
+                            runAsm = { input ->
                                 PrivacyClassProcessor.runHook(
                                     input,
                                     extension,
@@ -110,7 +110,7 @@ class PrivacySentryTransform : Transform {
                     logger,
                     it.file,
                     extension,
-                    runAsm = { input, project ->
+                    runAsm = { input ->
                         PrivacyClassProcessor.runHook(
                             input,
                             extension,
@@ -153,7 +153,7 @@ class PrivacySentryTransform : Transform {
                                 inputDir,
                                 inputFile,
                                 extension,
-                                runAsm = { input, project ->
+                                runAsm = { input ->
                                     PrivacyClassProcessor.runHook(
                                         input,
                                         extension,
@@ -177,7 +177,7 @@ class PrivacySentryTransform : Transform {
                             inputDir,
                             file,
                             extension,
-                            runAsm = { input, project ->
+                            runAsm = { input ->
                                 PrivacyClassProcessor.runHook(
                                     input,
                                     extension,
