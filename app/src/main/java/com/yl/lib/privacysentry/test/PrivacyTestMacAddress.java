@@ -58,6 +58,6 @@ public class PrivacyTestMacAddress {
 
     public static void testNewFile() {
         String path = "sys/class/net/eth0/address";
-        File f = new File(path);
+        new File(path);
     }
 }

@@ -1,11 +1,13 @@
 package com.yl.lib.plugin.sentry.transform
 
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
-import org.gradle.api.Project
+import org.gradle.api.logging.Logger
 import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
+import org.objectweb.asm.Opcodes
 import org.objectweb.asm.commons.AdviceAdapter
+import kotlin.math.log
 
 /**
  * @author yulun
@@ -20,19 +22,19 @@ class SentryTraceClassAdapter : ClassVisitor {
 
     private var bHookClass = true
 
-    private var project: Project
+    private var logger: Logger
 
     constructor(
         api: Int,
         classVisitor: ClassVisitor?,
         privacyExtension: PrivacyExtension?,
-        project: Project
+        logger: Logger
     ) : super(
         api,
         classVisitor
     ) {
         this.privacyExtension = privacyExtension
-        this.project = project
+        this.logger = logger
     }
 
     override fun visit(
@@ -52,7 +54,8 @@ class SentryTraceClassAdapter : ClassVisitor {
     override fun visitAnnotation(descriptor: String?, visible: Boolean): AnnotationVisitor {
         if (descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassProxy;") == true || HookMethodManager.MANAGER.isProxyClass(
                 className
-            ) || HookFieldManager.MANAGER.isProxyClass(className)
+            ) || HookFieldManager.MANAGER.isProxyClass(className) || descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassReplace;") == true
+            || ReplaceClassManager.MANAGER.isProxyClass(className)
         ) {
             bHookClass = false
         }
@@ -78,7 +81,7 @@ class SentryTraceClassAdapter : ClassVisitor {
                 descriptor,
                 privacyExtension,
                 className,
-                project
+                logger
             )
         }
     }
@@ -90,7 +93,7 @@ class SentryTraceMethodAdapter : AdviceAdapter {
     private var privacyExtension: PrivacyExtension? = null
     private var className: String? = null
     private var methodName: String? = null
-    private var project: Project
+    private var logger: Logger
 
     // 标识当前方法加载的常量是否为敏感方法。一般来说，反射调用某个方法时，会将方法名作为常量加载到栈中，这个时候就能拦截到
     // 如果是先加载常量再通过其他的方法调用反射，一般也会被内敛，这么做是为了减少拦截反射方法的数量
@@ -104,12 +107,31 @@ class SentryTraceMethodAdapter : AdviceAdapter {
         descriptor: String?,
         privacyExtension: PrivacyExtension?,
         className: String,
-        project: Project
+        logger: Logger
     ) : super(api, methodVisitor, access, name, descriptor) {
         this.privacyExtension = privacyExtension
         this.methodName = name
         this.className = className
-        this.project = project
+        this.logger = logger
+    }
+    private var find = false
+    override fun visitTypeInsn(opcode: Int, type: String?) {
+        if (opcode == Opcodes.NEW && ReplaceClassManager.MANAGER.contains(originClassName = type)) {
+            find = true
+            var replaceItem =   ReplaceClassManager.MANAGER.findItemByName(originClassName = type)
+            logger.info("visitTypeInsn-ReplaceClassItem - ${replaceItem.toString()}- type is $type")
+            mv.visitTypeInsn(
+                Opcodes.NEW,
+                ReplaceClassManager.MANAGER.findItemByName(originClassName = type)?.proxyClassName?.replace(".", "/")
+            )
+            return
+        }
+//        if (opcode == NEW && "java/io/File" == type) {
+//            find = true
+//            mv.visitTypeInsn(NEW, "com/yl/lib/privacy_replace/PrivacyFile")
+//            return
+//        }
+        super.visitTypeInsn(opcode, type)
     }
 
     // 访问方法指令
@@ -120,7 +142,8 @@ class SentryTraceMethodAdapter : AdviceAdapter {
         descriptor: String,
         isInterface: Boolean
     ) {
-        var methodItem = HookMethodManager.MANAGER.findHookItemByName(name, owner, descriptor,opcodeAndSource)
+        var methodItem =
+            HookMethodManager.MANAGER.findHookItemByName(name, owner, descriptor, opcodeAndSource)
         if (methodItem != null && shouldHook(name)) {
             ReplaceMethodManger.MANAGER.addReplaceMethodItem(
                 ReplaceMethodItem(
@@ -139,6 +162,31 @@ class SentryTraceMethodAdapter : AdviceAdapter {
             )
             return
         }
+
+        if (opcodeAndSource == Opcodes.INVOKESPECIAL && find) {
+            var replaceClassItem =
+                ReplaceClassManager.MANAGER.findItemByName(originClassName = owner)
+            logger.info("visitMethodInsn-ReplaceClassItem - ${replaceClassItem.toString()}- owner is $owner")
+            if (replaceClassItem != null && !className.equals(replaceClassItem.proxyClassName)) {
+                mv.visitMethodInsn(
+                    opcodeAndSource,
+                    replaceClassItem.proxyClassName.replace(".", "/"),
+                    name,
+                    descriptor,
+                    isInterface
+                )
+                find = false
+                return
+            }
+        }
+
+        //需要排除CustomThread自己
+//        if ("java/io/File" == owner && className != "com/yl/lib/privacy_replace/PrivacyFile" && opcodeAndSource == INVOKESPECIAL && find) {
+//            find = false
+//            mv.visitMethodInsn(opcodeAndSource, "com/yl/lib/privacy_replace/PrivacyFile", name, descriptor, isInterface)
+//            logger.info("asmcode", "className:%s, method:%s, name:%s", className, methodName, name)
+//            return
+//        }
         super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface)
     }
 

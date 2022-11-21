@@ -13,6 +13,7 @@ import java.io.InputStream
 import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
 import java.util.zip.ZipEntry
+import kotlin.math.log
 
 /**
  * @author yulun
@@ -36,7 +37,7 @@ class PrivacyClassProcessor {
                 SentryTraceClassAdapter(
                     Opcodes.ASM7, classWriter, project.extensions.findByType(
                         PrivacyExtension::class.java
-                    ),project
+                    ),project.logger
                 )
             /**
              * ClassReader.SKIP_DEBUG：表示不遍历调试内容，即跳过源文件，源码调试扩展，局部变量表，局部变量类型表和行号表属性，即以下方法既不会被解析也不会被访问（ClassVisitor.visitSource，MethodVisitor.visitLocalVariable，MethodVisitor.visitLineNumber）。使用此标识后，类文件调试信息会被去除，请警记。
@@ -62,7 +63,7 @@ class PrivacyClassProcessor {
                 CollectHookMethodClassAdapter(
                     Opcodes.ASM7, classWriter, project.extensions.findByType(
                         PrivacyExtension::class.java
-                    ),project
+                    ), logger = project.logger
                 )
             /**
              * ClassReader.SKIP_DEBUG：表示不遍历调试内容，即跳过源文件，源码调试扩展，局部变量表，局部变量类型表和行号表属性，即以下方法既不会被解析也不会被访问（ClassVisitor.visitSource，MethodVisitor.visitLocalVariable，MethodVisitor.visitLineNumber）。使用此标识后，类文件调试信息会被去除，请警记。

@@ -2,7 +2,7 @@
 buildscript {
     rootProject.ext.kotlin_version = "1.3.50"
     rootProject.ext.privacy_version = "0.0.20-SNAPSHOT"
-    rootProject.ext.plugin_local_debug = false
+    rootProject.ext.plugin_local_debug = true
     repositories {
         if (rootProject.ext.plugin_local_debug) {
             maven { url uri('plugin-sentry/plugins') }
@@ -18,7 +18,7 @@ buildscript {
         classpath "com.android.tools.build:gradle:3.5.4"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         if (rootProject.ext.plugin_local_debug) {
-            classpath "com.yl.lib.plugin:plugin-sentry:0.0.2.36-SNAPSHOT"
+            classpath "com.yl.lib.plugin:plugin-sentry:0.0.2.46-SNAPSHOT"
         } else {
             classpath "com.wdian.android.lib:privacy-plugin:${rootProject.ext.privacy_version}"
         }

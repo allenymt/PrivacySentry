@@ -6,10 +6,7 @@ import com.android.build.gradle.internal.pipeline.TransformTask
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import com.yl.lib.plugin.sentry.task.ManifestProcessor
 import com.yl.lib.plugin.sentry.task.assets.MoveAssetsTask
-import com.yl.lib.plugin.sentry.transform.HookFieldManager
-import com.yl.lib.plugin.sentry.transform.HookMethodManager
-import com.yl.lib.plugin.sentry.transform.PrivacyCollectTransform
-import com.yl.lib.plugin.sentry.transform.PrivacySentryTransform
+import com.yl.lib.plugin.sentry.transform.*
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.io.File
@@ -27,6 +24,7 @@ class PrivacySentryPlugin : Plugin<Project> {
         }
         HookFieldManager.MANAGER.clear()
         HookMethodManager.MANAGER.clear()
+        ReplaceClassManager.MANAGER.clear()
         var privacyExtension = project.extensions.create("privacy", PrivacyExtension::class.java)
         var android = project.extensions.getByType(AppExtension::class.java)
         // 收集注解信息的任务
