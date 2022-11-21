@@ -46,6 +46,10 @@ class CollectHookMethodClassAdapter : ClassVisitor {
     }
 
     override fun visitAnnotation(descriptor: String?, visible: Boolean): AnnotationVisitor {
+        if (descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassReplace;") == true) {
+            var avr = cv.visitAnnotation(descriptor, visible)
+            return CollectClassAnnotationVisitor(api, avr, className, logger)
+        }
         if (descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassProxy;") == true) {
             bHookClass = true
         }
@@ -96,9 +100,54 @@ class CollectHookMethodClassAdapter : ClassVisitor {
     }
 }
 
+/**
+ * 解析PrivacyClassReplace注解
+ * @property logger Logger
+ * @property className String
+ * @property item ReplaceClassItem?
+ */
+class CollectClassAnnotationVisitor : AnnotationVisitor {
+    private var logger: Logger
+    private var className: String
 
+    constructor(
+        api: Int,
+        annotationVisitor: AnnotationVisitor?,
+        className: String,
+        logger: Logger
+    ) : super(api, annotationVisitor) {
+        this.logger = logger
+        this.className = className
+    }
+
+    var item: ReplaceClassItem? = null
+    override fun visit(name: String?, value: Any?) {
+        super.visit(name, value)
+        if (name.equals("originClass")) {
+            var classSourceName = value.toString()
+            item = ReplaceClassItem(
+                originClassName = classSourceName.substring(1, classSourceName.length - 1),
+                proxyClassName = className
+                )
+            logger.info("CollectClassAnnotationVisitor-ReplaceClassItem - ${item.toString()}")
+        }
+    }
+
+    override fun visitEnd() {
+        super.visitEnd()
+        item?.let {
+            ReplaceClassManager.MANAGER.appendHookItem(item!!)
+        }
+    }
+}
+
+/**
+ * 解析PrivacyClassProxy下的PrivacyMethodProxy注解的方法
+ * @property privacyExtension PrivacyExtension?
+ * @property className String
+ * @property logger Logger
+ */
 class CollectHookMethodAdapter : AdviceAdapter {
-
     private var privacyExtension: PrivacyExtension? = null
     private var className: String
     private var logger: Logger
@@ -140,6 +189,11 @@ class CollectHookMethodAdapter : AdviceAdapter {
 
 }
 
+/**
+ * 解析PrivacyMethodProxy注解
+ * @property hookMethodItem HookMethodItem?
+ * @property logger Logger
+ */
 class CollectMethodHookAnnotationVisitor : AnnotationVisitor {
     private var hookMethodItem: HookMethodItem? = null
     private var logger: Logger
@@ -192,6 +246,12 @@ class CollectMethodHookAnnotationVisitor : AnnotationVisitor {
     }
 }
 
+/**
+ * 解析PrivacyFieldProxy注解的变量
+ * @property className String
+ * @property fieldName String?
+ * @property proxyDescriptor String?
+ */
 class CollectHookFieldVisitor : FieldVisitor {
     private var className: String
     private var fieldName: String?
@@ -227,6 +287,10 @@ class CollectHookFieldVisitor : FieldVisitor {
 
 }
 
+/**
+ * 解析注解PrivacyFieldProxy
+ * @property hookFieldItem HookFieldItem?
+ */
 class CollectFieldHookAnnotationVisitor : AnnotationVisitor {
     private var hookFieldItem: HookFieldItem? = null
 
@@ -254,6 +318,5 @@ class CollectFieldHookAnnotationVisitor : AnnotationVisitor {
         hookFieldItem?.let {
             HookFieldManager.MANAGER.appendHookField(it)
         }
-
     }
 }
