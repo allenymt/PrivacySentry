@@ -114,12 +114,11 @@ class SentryTraceMethodAdapter : AdviceAdapter {
         this.className = className
         this.logger = logger
     }
-    private var find = false
+
     override fun visitTypeInsn(opcode: Int, type: String?) {
         if (privacyExtension?.hookConstructor == true && opcode == Opcodes.NEW && ReplaceClassManager.MANAGER.contains(originClassName = type)) {
-            find = true
             var replaceItem =   ReplaceClassManager.MANAGER.findItemByName(originClassName = type)
-            logger.info("visitTypeInsn-ReplaceClassItem - ${replaceItem.toString()}- type is $type")
+            logger.info("visitTypeInsn-ReplaceClassItem - ${replaceItem.toString()}- type is $type- className is $className - methodName is $methodName")
             mv.visitTypeInsn(
                 Opcodes.NEW,
                 ReplaceClassManager.MANAGER.findItemByName(originClassName = type)?.proxyClassName?.replace(".", "/")
@@ -158,10 +157,10 @@ class SentryTraceMethodAdapter : AdviceAdapter {
             return
         }
 
-        if (privacyExtension?.hookConstructor == true &&  opcodeAndSource == Opcodes.INVOKESPECIAL && find) {
+        if (privacyExtension?.hookConstructor == true &&  opcodeAndSource == Opcodes.INVOKESPECIAL) {
             var replaceClassItem =
                 ReplaceClassManager.MANAGER.findItemByName(originClassName = owner)
-            logger.info("visitMethodInsn-ReplaceClassItem - ${replaceClassItem.toString()}- owner is $owner")
+            logger.info("visitMethodInsn-ReplaceClassItem - ${replaceClassItem.toString()}- owner is $owner - className is $className - methodName is $methodName")
             if (replaceClassItem != null && !className.equals(replaceClassItem.proxyClassName)) {
                 mv.visitMethodInsn(
                     opcodeAndSource,
@@ -170,7 +169,6 @@ class SentryTraceMethodAdapter : AdviceAdapter {
                     descriptor,
                     isInterface
                 )
-                find = false
                 return
             }
         }
