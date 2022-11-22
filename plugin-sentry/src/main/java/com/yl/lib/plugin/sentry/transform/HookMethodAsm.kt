@@ -7,7 +7,6 @@ import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.commons.AdviceAdapter
-import kotlin.math.log
 
 /**
  * @author yulun
@@ -113,15 +112,22 @@ class SentryTraceMethodAdapter : AdviceAdapter {
         this.methodName = name
         this.className = className
         this.logger = logger
+
     }
 
     override fun visitTypeInsn(opcode: Int, type: String?) {
-        if (privacyExtension?.hookConstructor == true && opcode == Opcodes.NEW && ReplaceClassManager.MANAGER.contains(originClassName = type)) {
-            var replaceItem =   ReplaceClassManager.MANAGER.findItemByName(originClassName = type)
-            logger.info("visitTypeInsn-ReplaceClassItem - ${replaceItem.toString()}- type is $type- className is $className - methodName is $methodName")
+        if (privacyExtension?.hookConstructor == true && opcode == Opcodes.NEW && ReplaceClassManager.MANAGER.contains(
+                originClassName = type
+            )
+        ) {
+            var replaceItem = ReplaceClassManager.MANAGER.findItemByName(originClassName = type)
+            logger.info("visitTypeInsn-ReplaceClassItem - ${replaceItem.toString()}- type is $type- className is $className - methodName is $methodName - descriptor is $methodDesc - isConstructor ${"<init>" == name}")
             mv.visitTypeInsn(
                 Opcodes.NEW,
-                ReplaceClassManager.MANAGER.findItemByName(originClassName = type)?.proxyClassName?.replace(".", "/")
+                ReplaceClassManager.MANAGER.findItemByName(originClassName = type)?.proxyClassName?.replace(
+                    ".",
+                    "/"
+                )
             )
             return
         }
@@ -157,10 +163,10 @@ class SentryTraceMethodAdapter : AdviceAdapter {
             return
         }
 
-        if (privacyExtension?.hookConstructor == true &&  opcodeAndSource == Opcodes.INVOKESPECIAL) {
+        if (privacyExtension?.hookConstructor == true && opcodeAndSource == Opcodes.INVOKESPECIAL) {
             var replaceClassItem =
                 ReplaceClassManager.MANAGER.findItemByName(originClassName = owner)
-            logger.info("visitMethodInsn-ReplaceClassItem - ${replaceClassItem.toString()}- owner is $owner - className is $className - methodName is $methodName")
+            logger.info("visitMethodInsn-ReplaceClassItem - ${replaceClassItem.toString()}- owner is $owner - className is $className - methodName is $methodName - - descriptor is $methodDesc - isConstructor ${"<init>" == name}")
             if (replaceClassItem != null && !className.equals(replaceClassItem.proxyClassName)) {
                 mv.visitMethodInsn(
                     opcodeAndSource,
