@@ -117,6 +117,8 @@
     	    hookReflex = true
     	    // debug编译默认开启，支持关闭，感谢run的pr
     	    debugEnable = true
+    	    // 开启hook 替换类，目前支持file
+            hookConstructor = true
         }
 
 ```
