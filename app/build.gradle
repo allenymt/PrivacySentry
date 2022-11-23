@@ -92,5 +92,5 @@ privacy {
     // Debug编译是否应用此插件，默认true
     debugEnable = true
 
-    hookConstructor = true
+//    hookConstructor = true
 }
