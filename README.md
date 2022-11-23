@@ -3,6 +3,10 @@
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
     
 ## 更新日志
+    2022-11-15(1.2.3)
+        1. 升级asm至9.1版本
+        2. 支持类替换，主要是为了拦截构造函数的入参，比如对File的访问，这个功能还是试验期，增加了开关hookConstructor
+
     2022-11-15(1.2.2)
         1. 放开support androidx目录下的类hook
         2. 支持权限请求hook(requestPermissions) https://github.com/allenymt/PrivacySentry/issues/75
