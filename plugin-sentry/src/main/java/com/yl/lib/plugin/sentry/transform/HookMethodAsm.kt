@@ -115,6 +115,7 @@ class SentryTraceMethodAdapter : AdviceAdapter {
 
     }
 
+    var bFindReplace = false
     override fun visitTypeInsn(opcode: Int, type: String?) {
         if (privacyExtension?.hookConstructor == true && opcode == Opcodes.NEW && ReplaceClassManager.MANAGER.contains(
                 originClassName = type
@@ -129,6 +130,8 @@ class SentryTraceMethodAdapter : AdviceAdapter {
                     "/"
                 )
             )
+            logger.info("visitTypeInsn-ReplaceClassItem - ${replaceItem.toString()}- end")
+            bFindReplace = true
             return
         }
         super.visitTypeInsn(opcode, type)
@@ -163,11 +166,12 @@ class SentryTraceMethodAdapter : AdviceAdapter {
             return
         }
 
-        if (privacyExtension?.hookConstructor == true && opcodeAndSource == Opcodes.INVOKESPECIAL) {
+        if (privacyExtension?.hookConstructor == true && name == "<init>" && opcodeAndSource == Opcodes.INVOKESPECIAL && bFindReplace) {
             var replaceClassItem =
                 ReplaceClassManager.MANAGER.findItemByName(originClassName = owner)
-            logger.info("visitMethodInsn-ReplaceClassItem - ${replaceClassItem.toString()}- owner is $owner - className is $className - methodName is $methodName - - descriptor is $methodDesc - isConstructor ${"<init>" == name}")
+            logger.info("visitMethodInsn-find-ReplaceClassItem - ${replaceClassItem.toString()}- owner is $owner - className is $className - methodName is $methodName - - descriptor is $methodDesc - isConstructor ${"<init>" == name}")
             if (replaceClassItem != null && !className.equals(replaceClassItem.proxyClassName)) {
+                logger.info("visitMethodInsn-ReplaceClassItem - ${replaceClassItem.toString()}- owner is $owner - className is $className - methodName is $methodName - - descriptor is $methodDesc - isConstructor ${"<init>" == name}")
                 mv.visitMethodInsn(
                     opcodeAndSource,
                     replaceClassItem.proxyClassName.replace(".", "/"),
@@ -175,18 +179,23 @@ class SentryTraceMethodAdapter : AdviceAdapter {
                     descriptor,
                     isInterface
                 )
+                logger.info("visitMethodInsn-ReplaceClassItem end- ${replaceClassItem.toString()}")
+                bFindReplace = false
                 return
             }
         }
-
-        //需要排除CustomThread自己
-//        if ("java/io/File" == owner && className != "com/yl/lib/privacy_replace/PrivacyFile" && opcodeAndSource == INVOKESPECIAL && find) {
-//            find = false
-//            mv.visitMethodInsn(opcodeAndSource, "com/yl/lib/privacy_replace/PrivacyFile", name, descriptor, isInterface)
-//            logger.info("asmcode", "className:%s, method:%s, name:%s", className, methodName, name)
-//            return
-//        }
         super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface)
+    }
+
+
+    override fun visitFrame(
+        type: Int,
+        numLocal: Int,
+        local: Array<out Any>?,
+        numStack: Int,
+        stack: Array<out Any>?
+    ) {
+        super.visitFrame(type, numLocal, local, numStack, stack)
     }
 
     //访问某个成员变量
