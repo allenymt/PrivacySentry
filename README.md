@@ -286,6 +286,8 @@ public class PrivacyFile extends File {
 
 - 支持敏感字段缓存(磁盘缓存、带有时间限制的磁盘缓存、内存缓存)
 
+- hook替换类 (构造函数)
+
 - 当前运行进程和任务
 
 - 系统剪贴板服务
