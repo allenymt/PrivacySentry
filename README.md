@@ -79,7 +79,7 @@
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
-	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.2.2'
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.2.3'
 	     }
 	}
 	
@@ -99,12 +99,14 @@
         
         dependencies {
             // aar依赖
-            def privacyVersion = "1.2.2"
+            def privacyVersion = "1.2.3"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
 	        //如果不想使用库中本身的代理方法，可以不引入这个aar，自己实现
 	        //也可以引入，个别方法在自己的类中重写即可
             implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
+            // 1.2.3 新增类替换，主要是为了hook构造函数的参数
+            implementation "com.github.allenymt.PrivacySentry:privacy-replace:$privacyVersion"
         }
         
         // 黑名单配置，可以设置这部分包名不会被修改字节码
@@ -225,6 +227,46 @@ open class PrivacyProxyResolver {
     支持多进程，多进程产出的文件名前缀默认增加进程名
 ```
 
+
+```
+    如何配置替换一个类
+    可以参考源码中PrivacyFile的配置，使用PrivacyClassReplace注解，originClass代表你要替换的类，注意要继承originClass的所有构造函数
+    可以配置 hookConstructor = false关闭这个功能
+/**
+ * @author yulun
+ * @since 2022-11-18 15:01
+ * 代理File的构造方法，如果是自定义的file类，需要业务方单独配置自行处理
+ */
+@PrivacyClassReplace(originClass = File.class)
+public class PrivacyFile extends File {
+
+    public PrivacyFile(@NonNull String pathname) {
+        super(pathname);
+        record(pathname);
+    }
+
+    public PrivacyFile(@Nullable String parent, @NonNull String child) {
+        super(parent, child);
+        record(parent + child);
+    }
+
+    public PrivacyFile(@Nullable File parent, @NonNull String child) {
+        super(parent, child);
+        record(parent.getPath() + child);
+    }
+
+    public PrivacyFile(@NonNull URI uri) {
+        super(uri);
+        record(uri.toString());
+    }
+
+    private void record(String path) {
+        PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("PrivacyFile", "访问文件", "path is " + path, PrivacySentry.Privacy.INSTANCE.getBuilder().isVisitorModel(), false);
+    }
+}
+
+
+```
 
 
 ## 隐私方法调用结果产出

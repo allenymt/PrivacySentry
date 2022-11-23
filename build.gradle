@@ -15,9 +15,9 @@ buildscript {
         classpath "com.android.tools.build:gradle:4.2.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         if (rootProject.ext.plugin_local_debug) {
-            classpath "com.yl.lib.plugin:plugin-sentry:0.0.3.3-SNAPSHOT"
+            classpath "com.yl.lib.plugin:plugin-sentry:0.0.3.4-SNAPSHOT"
         } else {
-            classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.2.2'
+            classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.2.3'
         }
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         // NOTE: Do not place your application dependencies here; they belong

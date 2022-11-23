@@ -62,11 +62,13 @@ dependencies {
         implementation project(":privacy-replace")
         implementation project(":privacy-annotation")
     } else {
-        def privacyVersion = "1.2.2"
+        def privacyVersion = "1.2.3"
         implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
         implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
         //  测试自定义拦截就注释掉
         implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
+        // 新增类替换，主要是为了hook构造函数的参数
+        implementation "com.github.allenymt.PrivacySentry:privacy-replace:$privacyVersion"
     }
     implementation(project(path: ':privacy-test')) {
         exclude module: 'privacy-annotation'
@@ -92,5 +94,5 @@ privacy {
     // Debug编译是否应用此插件，默认true
     debugEnable = true
     // 开启hook 替换类，目前支持file
-//    hookConstructor = true
+    hookConstructor = true
 }
