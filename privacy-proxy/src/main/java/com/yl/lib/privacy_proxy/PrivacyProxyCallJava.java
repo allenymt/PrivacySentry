@@ -65,13 +65,13 @@ public class PrivacyProxyCallJava {
                 "isWifiEnabled",
                 true,
                 CacheUtils.Utils.MINUTE * 5,
-                new PrivacyProxyCall$Proxy$isWifiEnabled(manager));
+                new PrivacyProxyCallJava$Proxy$isWifiEnabled(manager));
     }
 
-    public static class PrivacyProxyCall$Proxy$isWifiEnabled extends Lambda<Boolean> implements Function0<Boolean> {
+    public static class PrivacyProxyCallJava$Proxy$isWifiEnabled extends Lambda<Boolean> implements Function0<Boolean> {
         final /* synthetic */ WifiManager $manager;
 
-        PrivacyProxyCall$Proxy$isWifiEnabled(WifiManager wifiManager) {
+        PrivacyProxyCallJava$Proxy$isWifiEnabled(WifiManager wifiManager) {
             super(0);
             this.$manager = wifiManager;
         }
