@@ -271,6 +271,7 @@ class PrivacyMethod {
             try {
                 val wifiManager =
                     context.applicationContext.getSystemService(AppCompatActivity.WIFI_SERVICE) as WifiManager
+                wifiManager.isWifiEnabled
                 if (wifiManager != null) {
                     val wifiInfo = wifiManager.connectionInfo
                     if (wifiInfo != null) {
@@ -425,6 +426,7 @@ class PrivacyMethod {
             //获取剪切板服务
             val cm: ClipboardManager? =
                 context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            cm?.hasPrimaryClip()
             //设置剪切板内容
             cm?.setPrimaryClip(ClipData.newPlainText("data", "yl_vd"))
             val cd: ClipData? = cm?.primaryClip
