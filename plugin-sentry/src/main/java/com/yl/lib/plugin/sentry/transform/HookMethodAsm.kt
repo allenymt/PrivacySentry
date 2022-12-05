@@ -51,10 +51,12 @@ class SentryTraceClassAdapter : ClassVisitor {
     }
 
     override fun visitAnnotation(descriptor: String?, visible: Boolean): AnnotationVisitor {
-        if (descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassProxy;") == true || HookMethodManager.MANAGER.isProxyClass(
-                className
-            ) || HookFieldManager.MANAGER.isProxyClass(className) || descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassReplace;") == true
-            || ReplaceClassManager.MANAGER.isProxyClass(className)
+        if (descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassProxy;") == true ||
+            HookMethodManager.MANAGER.isProxyClass(className) ||
+            HookFieldManager.MANAGER.isProxyClass(className) ||
+            descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassReplace;") == true ||
+            ReplaceClassManager.MANAGER.isProxyClass(className)  ||
+            descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassBlack;") == true
         ) {
             bHookClass = false
         }

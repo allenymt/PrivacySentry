@@ -6,6 +6,7 @@ import android.net.wifi.WifiManager;
 import androidx.annotation.Keep;
 
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode;
+import com.yl.lib.privacy_annotation.PrivacyClassBlack;
 import com.yl.lib.privacy_annotation.PrivacyClassProxy;
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy;
 import com.yl.lib.sentry.hook.PrivacySentry;
@@ -24,6 +25,7 @@ import kotlin.jvm.internal.Lambda;
 /**
  * @author yulun
  * @since 2022-11-30 17:47
+ * kotlin Boolean 和 java boolean需要特殊处理，不然方法代理不了，在这里直接用java更方便
  */
 @PrivacyClassProxy
 @Keep
@@ -65,13 +67,14 @@ public class PrivacyProxyCallJava {
                 "isWifiEnabled",
                 true,
                 CacheUtils.Utils.MINUTE * 5,
-                new PrivacyProxyCallJava$Proxy$isWifiEnabled(manager));
+                new PrivacyProxyCallJavaWifiEnabled(manager));
     }
 
-    public static class PrivacyProxyCallJava$Proxy$isWifiEnabled extends Lambda<Boolean> implements Function0<Boolean> {
+    @PrivacyClassBlack
+    public static class PrivacyProxyCallJavaWifiEnabled extends Lambda<Boolean> implements Function0<Boolean> {
         final /* synthetic */ WifiManager $manager;
 
-        PrivacyProxyCallJava$Proxy$isWifiEnabled(WifiManager wifiManager) {
+        PrivacyProxyCallJavaWifiEnabled(WifiManager wifiManager) {
             super(0);
             this.$manager = wifiManager;
         }
