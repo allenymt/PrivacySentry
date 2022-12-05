@@ -3,6 +3,10 @@
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
     
 ## 更新日志
+    2022-12-05(1.2.4)
+        1. 修复ClipboardManager.hasPrimaryClip 和 WifiManager.isWifiEnabled拦截失败的问题
+        2. 增加注解PrivacyClassBlack，用于标记类不需要拦截
+
     2022-11-15(1.2.3)
         1. 升级asm至9.1版本
         2. 支持类替换，主要是为了拦截构造函数的入参，比如对File的访问，这个功能还是试验期，增加了开关hookConstructor
@@ -79,7 +83,7 @@
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
-	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.2.3'
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.2.4'
 	     }
 	}
 	
@@ -99,7 +103,7 @@
         
         dependencies {
             // aar依赖
-            def privacyVersion = "1.2.3"
+            def privacyVersion = "1.2.4"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
 	        //如果不想使用库中本身的代理方法，可以不引入这个aar，自己实现
