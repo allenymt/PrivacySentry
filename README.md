@@ -3,6 +3,9 @@
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
     
 ## 更新日志
+    2022-12-05(1.2.5)
+        修复值转换的问题
+
     2022-12-05(1.2.4)
         1. 修复ClipboardManager.hasPrimaryClip 和 WifiManager.isWifiEnabled拦截失败的问题
         2. 增加注解PrivacyClassBlack，用于标记类不需要拦截
