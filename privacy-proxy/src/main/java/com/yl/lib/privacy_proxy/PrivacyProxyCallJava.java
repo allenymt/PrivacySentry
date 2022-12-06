@@ -61,12 +61,12 @@ public class PrivacyProxyCallJava {
 
         String key = "isWifiEnabled";
 
-        return Boolean.parseBoolean(CachePrivacyManager.Manager.INSTANCE.loadWithTimeCache(
+        return CachePrivacyManager.Manager.INSTANCE.loadWithTimeMemoryCache(
                 key,
                 "isWifiEnabled",
-                "true",
+                true,
                 CacheUtils.Utils.MINUTE * 5,
-                (new PrivacyProxyCallJavaWifiEnabled(manager))).toString());
+                (new PrivacyProxyCallJavaWifiEnabled(manager)));
     }
 
     @PrivacyClassBlack
@@ -82,6 +82,20 @@ public class PrivacyProxyCallJava {
             return this.$manager.isWifiEnabled();
         }
     }
+
+//    @PrivacyClassBlack
+//    public static class PrivacyProxyCallJavaBooleanTransform extends Lambda<Boolean> implements Function0<Boolean> {
+//        final /* synthetic */ String value;
+//
+//        PrivacyProxyCallJavaBooleanTransform(String value) {
+//            super(0);
+//            this.value = value;
+//        }
+//
+//        public Boolean invoke() {
+//            return Boolean.parseBoolean(value);
+//        }
+//    }
 }
 
 

@@ -24,6 +24,10 @@ class CachePrivacyManager {
             MemoryCache<Any>()
         }
 
+        private val timeMemoryCache: TimeLessMemoryCache<Any> by lazy {
+            TimeLessMemoryCache<Any>()
+        }
+
         fun <T> loadWithMemoryCache(
             key: String,
             methodDocumentDesc: String,
@@ -41,12 +45,55 @@ class CachePrivacyManager {
             )
         }
 
-        fun <T> loadWithDiskCache(
+        fun <T> loadWithTimeMemoryCache(
             key: String,
             methodDocumentDesc: String,
             defaultValue: T,
+            duration: Long = 0,
             getValue: () -> T
         ): T {
+            var result = getCacheParam(key, defaultValue, PrivacyCacheType.TIMELINESS_MEMORY)
+            return handleData(
+                key,
+                methodDocumentDesc,
+                defaultValue,
+                getValue,
+                result,
+                PrivacyCacheType.TIMELINESS_MEMORY,
+                duration
+            )
+        }
+
+        fun loadWithTimeDiskCache(
+            key: String,
+            methodDocumentDesc: String,
+            defaultValue: String,
+            duration: Long = CacheUtils.Utils.MINUTE * 30,
+            getValue: () -> String
+        ): String {
+            var result = getCacheParam(
+                key,
+                defaultValue,
+                PrivacyCacheType.TIMELINESS_DISK
+            )
+            return handleData(
+                key,
+                methodDocumentDesc,
+                defaultValue,
+                getValue,
+                result,
+                PrivacyCacheType.TIMELINESS_DISK,
+                duration
+            )
+        }
+
+        fun loadWithDiskCache(
+            key: String,
+            methodDocumentDesc: String,
+            defaultValue: String,
+//            transform: ((value: T) -> T)? = null,
+            getValue: () -> String
+        ): String {
             var result = getCacheParam(key, defaultValue, PrivacyCacheType.PERMANENT_DISK)
             return handleData(
                 key,
@@ -58,28 +105,7 @@ class CachePrivacyManager {
             )
         }
 
-        fun <T> loadWithTimeCache(
-            key: String,
-            methodDocumentDesc: String,
-            defaultValue: T,
-            duration: Long = CacheUtils.Utils.MINUTE * 30,
-            getValue: () -> T
-        ): T {
-            var transformKey = TimeLessDiskCache.Util.buildKey(key, duration)
-            var result = getCacheParam(
-                transformKey,
-                defaultValue,
-                PrivacyCacheType.TIMELINESS_DISK
-            )
-            return handleData(
-                transformKey,
-                methodDocumentDesc,
-                defaultValue,
-                getValue,
-                result,
-                PrivacyCacheType.TIMELINESS_DISK
-            )
-        }
+
 
         private fun <T> handleData(
             key: String,
@@ -87,7 +113,8 @@ class CachePrivacyManager {
             defaultValue: T,
             getValue: () -> T,
             cacheResult: Pair<Boolean, T>,
-            cacheType: PrivacyCacheType
+            cacheType: PrivacyCacheType,
+            duration: Long = 0
         ): T {
             if (cacheResult.first) {
                 PrivacyProxyUtil.Util.doFilePrinter(key, methodDocumentDesc, bCache = true)
@@ -100,7 +127,7 @@ class CachePrivacyManager {
             } catch (e: Throwable) {
                 e.printStackTrace()
             } finally {
-                putCacheParam(value ?: defaultValue, key, cacheType)
+                putCacheParam(value ?: defaultValue, key, cacheType, duration)
             }
             return value ?: defaultValue
         }
@@ -119,6 +146,10 @@ class CachePrivacyManager {
         ): Pair<Boolean, T> {
             var cacheValue = when (cacheType) {
                 PrivacyCacheType.MEMORY -> memoryCache.get(key, defaultValue as Any)
+                PrivacyCacheType.TIMELINESS_MEMORY -> timeMemoryCache.get(
+                    key,
+                    defaultValue.toString()
+                )
                 PrivacyCacheType.PERMANENT_DISK -> dickCache.get(key, defaultValue.toString())
                 PrivacyCacheType.TIMELINESS_DISK -> timeDiskCache.get(key, defaultValue.toString())
             }
@@ -138,12 +169,22 @@ class CachePrivacyManager {
          * @param value T
          * @param key String
          */
-        private fun <T> putCacheParam(value: T, key: String, cacheType: PrivacyCacheType) {
+        private fun <T> putCacheParam(
+            value: T,
+            key: String,
+            cacheType: PrivacyCacheType,
+            duration: Long = 0
+        ) {
             value?.also {
                 when (cacheType) {
                     PrivacyCacheType.MEMORY -> memoryCache.put(key, value)
+                    PrivacyCacheType.TIMELINESS_MEMORY -> timeMemoryCache.put(
+                        key,
+                        value.toString(),
+                        duration
+                    )
                     PrivacyCacheType.PERMANENT_DISK -> dickCache.put(key, value.toString())
-                    PrivacyCacheType.TIMELINESS_DISK -> timeDiskCache.put(key, value.toString())
+                    PrivacyCacheType.TIMELINESS_DISK -> timeDiskCache.put(key, value.toString(),duration)
                 }
             }
         }

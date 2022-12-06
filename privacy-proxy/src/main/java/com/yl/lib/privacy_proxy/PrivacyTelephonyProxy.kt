@@ -419,7 +419,7 @@ open class PrivacyTelephonyProxy {
             }
 
             synchronized(objectNetworkOperatorLock) {
-                return CachePrivacyManager.Manager.loadWithTimeCache(
+                return CachePrivacyManager.Manager.loadWithTimeMemoryCache(
                     key,
                     "运营商信息-getNetworkOperator()",
                     SIM_STATE_UNKNOWN,

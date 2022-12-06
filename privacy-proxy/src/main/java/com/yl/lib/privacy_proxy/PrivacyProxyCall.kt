@@ -424,13 +424,12 @@ open class PrivacyProxyCall {
 
             var key = "getSSID"
             doFilePrinter("getSSID", "SSID")
-            return CachePrivacyManager.Manager.loadWithTimeCache(
+            return CachePrivacyManager.Manager.loadWithTimeMemoryCache(
                 key,
                 "getSSID",
                 "",
                 duration = CacheUtils.Utils.MINUTE * 5
-            ) { manager.ssid }
-            return manager.ssid
+                ) { manager.ssid }
         }
 
         /**
@@ -451,7 +450,7 @@ open class PrivacyProxyCall {
 
             var key = "getBSSID"
             doFilePrinter("getBSSID", "getBSSID")
-            return CachePrivacyManager.Manager.loadWithTimeCache(
+            return CachePrivacyManager.Manager.loadWithTimeMemoryCache(
                 key,
                 "getBSSID",
                 "",
@@ -476,38 +475,13 @@ open class PrivacyProxyCall {
             }
 
             var key = "getScanResults"
-            return CachePrivacyManager.Manager.loadWithTimeCache(
+            return CachePrivacyManager.Manager.loadWithTimeMemoryCache(
                 key,
                 "getScanResults",
                 emptyList(),
                 duration = CacheUtils.Utils.MINUTE * 5
             ) { manager.scanResults }
         }
-
-        /**
-         * WIFI扫描结果
-         */
-        @JvmStatic
-        @PrivacyMethodProxy(
-            originalClass = WifiManager::class,
-            originalMethod = "isWifiEnabled",
-            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
-        )
-        fun isWifiEnabled(manager: WifiManager): Boolean {
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                doFilePrinter("isWifiEnabled", "读取WiFi状态", bVisitorModel = true)
-                return true
-            }
-
-            var key = "isWifiEnabled"
-            return CachePrivacyManager.Manager.loadWithTimeCache(
-                key,
-                "isWifiEnabled",
-                true,
-                duration = CacheUtils.Utils.MINUTE * 5
-            ) { manager.isWifiEnabled }
-        }
-
 
         /**
          * DHCP信息
@@ -565,7 +539,7 @@ open class PrivacyProxyCall {
                 return null
             }
 
-            var locationStr = CachePrivacyManager.Manager.loadWithTimeCache(
+            var locationStr = CachePrivacyManager.Manager.loadWithTimeDiskCache(
                 key,
                 "上一次的位置信息",
                 ""

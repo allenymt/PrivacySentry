@@ -12,21 +12,6 @@ class TimeLessDiskCache : BasePrivacyCache<String>(PrivacyCacheType.TIMELINESS_D
     // 加个内存级别，避免频繁读sp
     private var paramMap: ConcurrentHashMap<String, String> = ConcurrentHashMap()
 
-    object Util {
-        private var sep = "|"
-        fun buildKey(key: String, duration: Long): String {
-            return "$key$sep$duration"
-        }
-
-        fun parseKey(key: String): Pair<String, Long> {
-            var index = key.lastIndexOf(sep)
-            if (index == -1) {
-                return Pair(key, 0)
-            }
-            return Pair(key.substring(0, index), key.substring(index + 1).toLong())
-        }
-    }
-
     override fun get(key: String, default: String): Pair<Boolean, String?> {
         var value: String = if (paramMap.containsKey(key)) {
             paramMap[key] ?: default
@@ -51,18 +36,20 @@ class TimeLessDiskCache : BasePrivacyCache<String>(PrivacyCacheType.TIMELINESS_D
     }
 
     override fun put(key: String, value: String) {
-        if (TextUtils.isEmpty(key) || value == null) {
-            return
-        }
-        var parseValue  = Util.parseKey(key)
-        var formatValue = CacheUtils.Utils.buildTimeValue(value, parseValue.second)
-        paramMap[key] = formatValue
-        CacheUtils.Utils.saveToSp(
-            parseValue.first,
-            formatValue
-        )
+        put(key, value, 0)
     }
 
 
+    fun put(key: String, value: String, duration: Long) {
+        if (TextUtils.isEmpty(key) || value == null) {
+            return
+        }
+        var formatValue = CacheUtils.Utils.buildTimeValue(value, duration)
+        paramMap[key] = formatValue
+        CacheUtils.Utils.saveToSp(
+            key,
+            formatValue
+        )
+    }
 
 }
