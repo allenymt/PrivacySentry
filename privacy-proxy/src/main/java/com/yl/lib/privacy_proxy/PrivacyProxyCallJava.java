@@ -14,11 +14,9 @@ import com.yl.lib.sentry.hook.cache.CachePrivacyManager;
 import com.yl.lib.sentry.hook.cache.CacheUtils;
 import com.yl.lib.sentry.hook.util.PrivacyClipBoardManager;
 import com.yl.lib.sentry.hook.util.PrivacyProxyUtil;
-import com.yl.lib.sentry.hook.util.PrivacyUtil;
 
 import java.util.Objects;
 
-import kotlin.jvm.JvmStatic;
 import kotlin.jvm.functions.Function0;
 import kotlin.jvm.internal.Lambda;
 
@@ -35,15 +33,15 @@ public class PrivacyProxyCallJava {
             originalMethod = "hasPrimaryClip",
             originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
     )
-    public static boolean hasPrimaryClip(ClipboardManager manager){
+    public static boolean hasPrimaryClip(ClipboardManager manager) {
         if (PrivacySentry.Privacy.INSTANCE.getBuilder().isVisitorModel()) {
             return false;
         }
         if (!PrivacyClipBoardManager.Companion.isReadClipboardEnable()) {
-            PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("hasPrimaryClip", "读取系统剪贴板是否有值-拦截","",false, false);
+            PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("hasPrimaryClip", "读取系统剪贴板是否有值-拦截", "", false, false);
             return false;
         }
-        PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("hasPrimaryClip", "读取系统剪贴板是否有值-hasPrimaryClip","",false, false);
+        PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("hasPrimaryClip", "读取系统剪贴板是否有值-hasPrimaryClip", "", false, false);
         return manager.hasPrimaryClip();
     }
 
@@ -57,17 +55,18 @@ public class PrivacyProxyCallJava {
     )
     public static boolean isWifiEnabled(WifiManager manager) {
         if (Objects.requireNonNull(PrivacySentry.Privacy.INSTANCE.getBuilder()).isVisitorModel() == true) {
-            PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("isWifiEnabled", "读取WiFi状态", "", true,false);
+            PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("isWifiEnabled", "读取WiFi状态", "", true, false);
             return true;
         }
 
         String key = "isWifiEnabled";
-        return CachePrivacyManager.Manager.INSTANCE.loadWithTimeCache(
+
+        return CachePrivacyManager.Manager.INSTANCE.loadWithTimeMemoryCache(
                 key,
                 "isWifiEnabled",
                 true,
                 CacheUtils.Utils.MINUTE * 5,
-                new PrivacyProxyCallJavaWifiEnabled(manager));
+                (new PrivacyProxyCallJavaWifiEnabled(manager)));
     }
 
     @PrivacyClassBlack
@@ -83,6 +82,20 @@ public class PrivacyProxyCallJava {
             return this.$manager.isWifiEnabled();
         }
     }
+
+//    @PrivacyClassBlack
+//    public static class PrivacyProxyCallJavaBooleanTransform extends Lambda<Boolean> implements Function0<Boolean> {
+//        final /* synthetic */ String value;
+//
+//        PrivacyProxyCallJavaBooleanTransform(String value) {
+//            super(0);
+//            this.value = value;
+//        }
+//
+//        public Boolean invoke() {
+//            return Boolean.parseBoolean(value);
+//        }
+//    }
 }
 
 

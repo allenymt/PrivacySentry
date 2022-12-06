@@ -11,6 +11,11 @@ enum class PrivacyCacheType {
     MEMORY,
 
     /**
+     * 内存 with 时间
+     */
+    TIMELINESS_MEMORY,
+
+    /**
      * 磁盘，带有过期时间
      */
     TIMELINESS_DISK,

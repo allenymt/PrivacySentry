@@ -407,7 +407,6 @@ open class PrivacyProxyCall {
             manager.text = clip
         }
 
-        private var objectSsidLock = Object()
         /**
          * WIFI的SSID
          */
@@ -425,20 +424,17 @@ open class PrivacyProxyCall {
 
             var key = "getSSID"
             doFilePrinter("getSSID", "SSID")
-            synchronized(objectSsidLock) {
-                return CachePrivacyManager.Manager.loadWithTimeCache(
-                    key,
-                    "getSSID",
-                    "",
-                    duration = CacheUtils.Utils.MINUTE * 5
+            return CachePrivacyManager.Manager.loadWithTimeMemoryCache(
+                key,
+                "getSSID",
+                "",
+                duration = CacheUtils.Utils.MINUTE * 5
                 ) { manager.ssid }
-            }
-
+            return manager.ssid
         }
 
-        private var objectBSsidLock = Object()
         /**
-         * WIFI的BSSID
+         * WIFI的SSID
          */
         @JvmStatic
         @PrivacyMethodProxy(
@@ -447,6 +443,7 @@ open class PrivacyProxyCall {
             originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
         )
         fun getBSSID(manager: WifiInfo): String? {
+
             if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
                 doFilePrinter("getBSSID", "getBSSID", bVisitorModel = true)
                 return ""
@@ -454,14 +451,13 @@ open class PrivacyProxyCall {
 
             var key = "getBSSID"
             doFilePrinter("getBSSID", "getBSSID")
-            synchronized(objectBSsidLock) {
-                return CachePrivacyManager.Manager.loadWithTimeCache(
-                    key,
-                    "getBSSID",
-                    "",
-                    duration = CacheUtils.Utils.MINUTE * 5
-                ) { manager.ssid }
-            }
+            return CachePrivacyManager.Manager.loadWithTimeMemoryCache(
+                key,
+                "getBSSID",
+                "",
+                duration = CacheUtils.Utils.MINUTE * 5
+            ) { manager.ssid }
+            return manager.bssid
         }
 
         /**
@@ -480,38 +476,13 @@ open class PrivacyProxyCall {
             }
 
             var key = "getScanResults"
-            return CachePrivacyManager.Manager.loadWithTimeCache(
+            return CachePrivacyManager.Manager.loadWithTimeMemoryCache(
                 key,
                 "getScanResults",
                 emptyList(),
                 duration = CacheUtils.Utils.MINUTE * 5
             ) { manager.scanResults }
         }
-
-        /**
-         * WIFI扫描结果
-         */
-        @JvmStatic
-        @PrivacyMethodProxy(
-            originalClass = WifiManager::class,
-            originalMethod = "isWifiEnabled",
-            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
-        )
-        fun isWifiEnabled(manager: WifiManager): Boolean {
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
-                doFilePrinter("isWifiEnabled", "读取WiFi状态", bVisitorModel = true)
-                return true
-            }
-
-            var key = "isWifiEnabled"
-            return CachePrivacyManager.Manager.loadWithTimeCache(
-                key,
-                "isWifiEnabled",
-                true,
-                duration = CacheUtils.Utils.MINUTE * 5
-            ) { manager.isWifiEnabled }
-        }
-
 
         /**
          * DHCP信息
@@ -569,7 +540,7 @@ open class PrivacyProxyCall {
                 return null
             }
 
-            var locationStr = CachePrivacyManager.Manager.loadWithTimeCache(
+            var locationStr = CachePrivacyManager.Manager.loadWithTimeDiskCache(
                 key,
                 "上一次的位置信息",
                 ""
