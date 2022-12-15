@@ -293,6 +293,8 @@ class PrivacyMethod {
             if (TextUtils.isEmpty(pkgName)) {
                 return false
             }
+            context.packageManager.getPackageInfo("com.koudai.weidian.buyer",0)
+
             // 获取所有已安装程序的包信息
             val packages = getInstalledPackages(context)
             for (i in packages.indices) {

@@ -6,10 +6,7 @@ import android.app.ActivityManager
 import android.bluetooth.BluetoothAdapter
 import android.content.*
 import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
+import android.content.pm.*
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.location.Location
@@ -26,6 +23,7 @@ import android.provider.Settings
 import android.telephony.CellInfo
 import android.telephony.TelephonyManager
 import androidx.annotation.Keep
+import androidx.annotation.RequiresApi
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
@@ -172,6 +170,59 @@ open class PrivacyProxyCall {
             return getInstalledApplications(manager, flags);
         }
 
+        @RequiresApi(Build.VERSION_CODES.O)
+        @PrivacyMethodProxy(
+            originalClass = PackageManager::class,
+            originalMethod = "getPackageInfo",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        @JvmStatic
+        fun getPackageInfo(
+            manager: PackageManager, versionedPackage: VersionedPackage,
+            flags: Int
+        ): PackageInfo? {
+
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(
+                    "getPackageInfo",
+                    methodDocumentDesc = "安装包-getPackageInfo",
+                    bVisitorModel = true
+                )
+                return null
+            }
+            doFilePrinter(
+                "getPackageInfo",
+                methodDocumentDesc = "安装包-getPackageInfo-${versionedPackage.packageName}"
+            )
+            return manager.getPackageInfo(versionedPackage, flags)
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        @PrivacyMethodProxy(
+            originalClass = PackageManager::class,
+            originalMethod = "getPackageInfo",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+        )
+        @JvmStatic
+        fun getPackageInfo(
+            manager: PackageManager,packageName: String,
+             flags: Int
+        ): PackageInfo? {
+
+            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+                doFilePrinter(
+                    "getPackageInfo",
+                    methodDocumentDesc = "安装包-getPackageInfo",
+                    bVisitorModel = true
+                )
+                return null
+            }
+            doFilePrinter(
+                "getPackageInfo",
+                methodDocumentDesc = "安装包-getPackageInfo-${packageName}"
+            )
+            return manager.getPackageInfo(packageName, flags)
+        }
 
         // 这个方法比较特殊，是否合规完全取决于intent参数
         // 如果指定了自己的包名，那可以认为是合规的，因为是查自己APP的AC
