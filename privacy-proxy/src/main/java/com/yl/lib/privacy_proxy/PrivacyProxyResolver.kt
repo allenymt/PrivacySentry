@@ -43,7 +43,7 @@ open class PrivacyProxyResolver {
             selectionArgs: Array<String?>?, sortOrder: String?
         ): Cursor? {
             doFilePrinter("query", "查询服务: ${uriToLog(uri)}")
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+            if (PrivacySentry.Privacy.inDangerousState()) {
                 return null
             }
             return contentResolver?.query(uri, projection, selection, selectionArgs, sortOrder)
@@ -64,7 +64,7 @@ open class PrivacyProxyResolver {
             cancellationSignal: CancellationSignal?
         ): Cursor? {
             doFilePrinter("query", "查询服务: ${uriToLog(uri)}")
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+            if (PrivacySentry.Privacy.inDangerousState()) {
                 return null
             }
             return contentResolver?.query(
@@ -92,7 +92,7 @@ open class PrivacyProxyResolver {
             cancellationSignal: CancellationSignal?
         ): Cursor? {
             doFilePrinter("query", "查询服务: ${uriToLog(uri)}")
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+            if (PrivacySentry.Privacy.inDangerousState()) {
                 return null
             }
             return contentResolver?.query(uri, projection, queryArgs, cancellationSignal)
@@ -112,7 +112,7 @@ open class PrivacyProxyResolver {
             values: ContentValues?
         ): Uri? {
             doFilePrinter("insert", "增加服务: ${uriToLog(url)}")
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+            if (PrivacySentry.Privacy.inDangerousState()) {
                 return null
             }
             return contentResolver?.insert(url, values)
@@ -132,7 +132,7 @@ open class PrivacyProxyResolver {
             values: ContentValues?, extras: Bundle?
         ): Uri? {
             doFilePrinter("insert", "增加服务: ${uriToLog(url)}")
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+            if (PrivacySentry.Privacy.inDangerousState()) {
                 return null
             }
             return contentResolver?.insert(url, values, extras)
@@ -152,7 +152,7 @@ open class PrivacyProxyResolver {
             selectionArgs: Array<String?>?
         ): Int? {
             doFilePrinter("update", "更新服务: ${uriToLog(uri)}")
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+            if (PrivacySentry.Privacy.inDangerousState()) {
                 return -1
             }
             return contentResolver?.update(uri, values, where, selectionArgs)
@@ -172,7 +172,7 @@ open class PrivacyProxyResolver {
             values: ContentValues?, extras: Bundle?
         ): Int? {
             doFilePrinter("update", "更新服务: ${uriToLog(uri)}")
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+            if (PrivacySentry.Privacy.inDangerousState()) {
                 return -1
             }
             return contentResolver?.update(uri, values, extras)
@@ -191,7 +191,7 @@ open class PrivacyProxyResolver {
             selectionArgs: Array<String?>?
         ): Int? {
             doFilePrinter("delete", "删除服务: ${uriToLog(url)}")
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+            if (PrivacySentry.Privacy.inDangerousState()) {
                 return -1
             }
             return contentResolver?.delete(url, where, selectionArgs)
@@ -210,7 +210,7 @@ open class PrivacyProxyResolver {
             contentResolver: ContentResolver?, url: Uri, extras: Bundle?
         ): Int? {
             doFilePrinter("delete", "删除服务: ${uriToLog(url)}")
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+            if (PrivacySentry.Privacy.inDangerousState()) {
                 return -1
             }
             return contentResolver?.delete(url, extras)
