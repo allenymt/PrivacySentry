@@ -4,12 +4,14 @@ import android.app.Application
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import com.yl.lib.sentry.hook.cache.DiskCache
 import com.yl.lib.sentry.hook.printer.BaseFilePrinter
 import com.yl.lib.sentry.hook.printer.BasePrinter
 import com.yl.lib.sentry.hook.printer.DefaultFilePrint
 import com.yl.lib.sentry.hook.printer.PrintCallBack
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyUtil
+import com.yl.lib.sentry.hook.util.PrivacyUtil.Util.getApplicationByReflect
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -23,8 +25,11 @@ class PrivacySentry {
         private var mBuilder: PrivacySentryBuilder? = PrivacySentryBuilder()
         private val bInit = AtomicBoolean(false)
         private val bFilePrintFinish = AtomicBoolean(false)
-        private val bShowPrivacy = AtomicBoolean(false)
+        private var bShowPrivacy: AtomicBoolean? = null
         private var ctx: Application? = null
+        private val diskCache: DiskCache by lazy {
+            DiskCache()
+        }
 
         /**
          *  transform简单初始化，需要搭配插件使用
@@ -83,17 +88,22 @@ class PrivacySentry {
          * 记录展示隐私协议，调用时机一般为 隐私协议点击确定的时候，必须调用
          */
         fun updatePrivacyShow() {
-            if (bShowPrivacy.get()) {
+            if (bShowPrivacy?.get() == true) {
                 return
             }
             PrivacyLog.i("call updatePrivacyShow")
-            bShowPrivacy.compareAndSet(false, true)
+            bShowPrivacy?.compareAndSet(false, true)
+            diskCache.put("show_privacy_dialog", "true")
             mBuilder?.getPrinterList()?.filterIsInstance<BaseFilePrinter>()
                 ?.forEach { it.appendData("点击隐私协议确认", "点击隐私协议确认", "点击隐私协议确认") }
         }
 
         fun hasShowPrivacy(): Boolean {
-            return bShowPrivacy.get()
+            if (bShowPrivacy == null) {
+                bShowPrivacy =
+                    AtomicBoolean(diskCache.get("show_privacy_dialog", "false").second == "true")
+            }
+            return bShowPrivacy?.get() ?: false
         }
 
         fun isDebug(): Boolean {
@@ -101,11 +111,18 @@ class PrivacySentry {
         }
 
         fun getContext(): Application? {
-            return ctx ?: null
+            return ctx ?: getApplicationByReflect() ?: null
         }
 
         fun getBuilder(): PrivacySentryBuilder? {
             return mBuilder ?: null
+        }
+
+        fun inDangerousState(): Boolean {
+            if (getBuilder()?.isVisitorModel() == true) {
+                return true
+            }
+            return !hasShowPrivacy()
         }
 
         /**
@@ -129,7 +146,6 @@ class PrivacySentry {
         fun openVisitorModel() {
             mBuilder?.configVisitorModel(true)
         }
-
 
 
         private fun defaultFilePrinter(

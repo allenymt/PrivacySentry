@@ -34,7 +34,7 @@ public class PrivacyProxyCallJava {
             originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
     )
     public static boolean hasPrimaryClip(ClipboardManager manager) {
-        if (PrivacySentry.Privacy.INSTANCE.getBuilder().isVisitorModel()) {
+        if (PrivacySentry.Privacy.INSTANCE.inDangerousState()) {
             return false;
         }
         if (!PrivacyClipBoardManager.Companion.isReadClipboardEnable()) {

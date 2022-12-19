@@ -10,7 +10,9 @@ import com.yl.lib.sentry.hook.util.MainProcessUtil
  */
 class PrivacySentryBuilder {
 
-    var debug: Boolean = true
+    // 默认需要关闭
+    @Volatile
+    var debug: Boolean = false
 
     //日志输出 和 文件输出
     private var mPrinterList: ArrayList<BasePrinter>? = null
@@ -27,11 +29,12 @@ class PrivacySentryBuilder {
     // 是否激活输入日志到文件
     private var enableFileResult: Boolean = true
 
-    // 游客模式，拦截所有敏感方法
+    // 游客模式，拦截所有敏感方法，默认关闭
     @Volatile
-    private var visitorModel: Boolean = true
+    private var visitorModel: Boolean = false
 
     // 可以拦截读取系统剪贴板
+    @Volatile
     private var enableReadClipBoard: Boolean = true
 
     constructor() {

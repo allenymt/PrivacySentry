@@ -1,5 +1,6 @@
 package com.yl.lib.sentry.hook.util
 
+import android.app.Application
 import android.location.Location
 import android.location.LocationManager.GPS_PROVIDER
 import android.text.TextUtils
@@ -106,6 +107,52 @@ class PrivacyUtil {
             }
             return location
         }
+
+        fun getApplicationByReflect(): Application? {
+            return getContextByActivityThread()
+        }
+
+        private fun getContextByActivityThread(): Application? {
+            try {
+                var activityThread = getActivityThreadInActivityThreadStaticField()
+                if (activityThread == null) activityThread =
+                    getActivityThreadInActivityThreadStaticMethod()
+                val declaredField = activityThread?.javaClass?.getDeclaredField("mInitialApplication")
+                declaredField?.isAccessible = true
+                val `object` = declaredField?.get(activityThread)
+                if (`object` is Application) {
+                    return `object`
+                }
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+            return null
+        }
+
+
+        private fun getActivityThreadInActivityThreadStaticField(): Any? {
+            return try {
+                val activityThreadClass = Class.forName("android.app.ActivityThread")
+                val activityThreadField =
+                    activityThreadClass.getDeclaredField("sCurrentActivityThread")
+                activityThreadField.isAccessible = true
+                activityThreadField[null]
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
+        private fun getActivityThreadInActivityThreadStaticMethod(): Any? {
+            return try {
+                val activityThreadClass = Class.forName("android.app.ActivityThread")
+                activityThreadClass.getMethod("currentActivityThread").invoke(null)
+            } catch (e: Exception) {
+               e.printStackTrace()
+                null
+            }
+        }
+
     }
 
 }
