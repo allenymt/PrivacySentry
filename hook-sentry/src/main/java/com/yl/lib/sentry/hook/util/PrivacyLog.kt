@@ -12,7 +12,7 @@ class PrivacyLog {
         private const val TAG = "PrivacyOfficer"
 
         fun e(msg: String) {
-            if (PrivacySentry.Privacy.isDebug()) {
+            if (PrivacySentry.Privacy.isDebug() || PrivacySentry.Privacy.inDangerousState()) {
                 android.util.Log.e(TAG, msg)
             }
         }
