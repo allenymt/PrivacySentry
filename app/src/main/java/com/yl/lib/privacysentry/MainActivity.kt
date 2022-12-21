@@ -243,6 +243,13 @@ class MainActivity : AppCompatActivity() {
             TestInJava.testReflexClipManagerClose()
         }
 
+        AlertDialog.Builder(this).setMessage("确认隐私协议").setPositiveButton(
+            "确定"
+        ) { dialog, which ->
+            PrivacySentry.Privacy.updatePrivacyShow()
+            PrivacySentry.Privacy.closeVisitorModel()
+        }.create().show()
+
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
         var permissions = arrayOf(
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -251,12 +258,7 @@ class MainActivity : AppCompatActivity() {
             requestPermissions(permissions, 1000)
         }
 
-        AlertDialog.Builder(this).setMessage("确认隐私协议").setPositiveButton(
-            "确定"
-        ) { dialog, which ->
-            PrivacySentry.Privacy.updatePrivacyShow()
-            PrivacySentry.Privacy.closeVisitorModel()
-        }.create().show()
+
     }
 
     override fun onRequestPermissionsResult(
