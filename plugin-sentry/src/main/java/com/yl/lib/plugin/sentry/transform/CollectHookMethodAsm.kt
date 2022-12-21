@@ -86,7 +86,7 @@ class CollectHookMethodClassAdapter : ClassVisitor {
         signature: String?,
         value: Any?
     ): FieldVisitor {
-        if (bHookClass) {
+        if (bHookClass && privacyExtension?.hookField == true) {
             var methodVisitor = cv.visitField(access, name, descriptor, signature, value)
             return CollectHookFieldVisitor(
                 api,

@@ -15,7 +15,6 @@ import com.yl.lib.sentry.hook.util.PrivacyLog
  * @sinice 2021-11-19 10:20
  */
 class APP : Application() {
-    var testAppSerial = Build.SERIAL
     override fun onCreate() {
         super.onCreate()
         var str = testJustSerial()
@@ -23,8 +22,10 @@ class APP : Application() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
-        MultiDex.install(this);
-
+        // 注意尽可能在attachBaseContext里第一个调用，因为attachBaseContext之后才能反射拿到ActivityThread的application
+        // 所以如果是在attachBaseContext中，且隐私合规SDK未初始化，不管是不是首次启动，都会认为是危险期，无法调用敏感api
+        PrivacyMethod.PrivacyMethod.getAndroidId(base!!)
+        MultiDex.install(this)
         Thread { initPrivacyTransformComplete() }.start()
 
     }
