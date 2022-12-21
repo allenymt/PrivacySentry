@@ -90,4 +90,5 @@ privacy {
     blackList = []
     hookReflex = true
     hookConstructor = true
+    hookField = true
 }
