@@ -100,8 +100,21 @@ class PrivacySentry {
 
         fun hasShowPrivacy(): Boolean {
             if (bShowPrivacy == null) {
-                bShowPrivacy =
-                    AtomicBoolean(diskCache.get("show_privacy_dialog", "false").second == "true")
+                // getContext() = null 代表什么？
+                // privacy还未初始化，而且是在attachBaseContext里调用
+                if (getContext() == null) {
+                    // 这里返回ture，是尽量不影响三方SDK的使用
+                    return true
+                } else {
+                    bShowPrivacy =
+                        AtomicBoolean(
+                            diskCache.get(
+                                "show_privacy_dialog",
+                                "false"
+                            ).second == "true"
+                        )
+
+                }
             }
             return bShowPrivacy?.get() ?: false
         }
