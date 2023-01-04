@@ -119,10 +119,11 @@ class PrivacySentry {
         }
 
         fun inDangerousState(): Boolean {
-            if (getBuilder()?.isVisitorModel() == true) {
-                return true
-            }
-            return !hasShowPrivacy()
+//            if (getBuilder()?.isVisitorModel() == true) {
+//                return true
+//            }
+//            return !hasShowPrivacy()
+            return false
         }
 
         /**
