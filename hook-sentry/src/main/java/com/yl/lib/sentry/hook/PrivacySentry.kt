@@ -92,7 +92,11 @@ class PrivacySentry {
                 return
             }
             PrivacyLog.i("call updatePrivacyShow")
-            bShowPrivacy?.compareAndSet(false, true)
+            if (bShowPrivacy == null) {
+                bShowPrivacy = AtomicBoolean(true)
+            } else {
+                bShowPrivacy?.compareAndSet(false, true)
+            }
             diskCache.put("show_privacy_dialog", "true")
             mBuilder?.getPrinterList()?.filterIsInstance<BaseFilePrinter>()
                 ?.forEach { it.appendData("点击隐私协议确认", "点击隐私协议确认", "点击隐私协议确认") }
