@@ -679,7 +679,7 @@ open class PrivacyProxyCall {
                 return ByteArray(1)
             }
             var address = manager.address
-            doFilePrinter(key, "ip地址-getAddress-${manager.hostName ?: ""} , address is ${address ?: ""}")
+            doFilePrinter(key, "ip地址-getAddress-${manager.address ?: ""} , address is ${address ?: ""}")
             return address
         }
 
@@ -697,7 +697,7 @@ open class PrivacyProxyCall {
                 return ByteArray(1)
             }
             var address = manager.address
-            doFilePrinter(key, "ip地址-getAddress-${manager.hostName ?: ""} , address is ${address ?: ""} ")
+            doFilePrinter(key, "ip地址-getAddress-${manager.address ?: ""} , address is ${address ?: ""} ")
             return address
         }
 
@@ -716,7 +716,7 @@ open class PrivacyProxyCall {
             }
 
             var address = manager.hostAddress
-            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostName ?: ""} , address is ${address ?: ""}")
+            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostAddress ?: ""} , address is ${address ?: ""}")
             return address
         }
 
@@ -735,7 +735,7 @@ open class PrivacyProxyCall {
             }
 
             var address = manager.hostAddress
-            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostName ?: ""} , address is ${address ?: ""}")
+            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostAddress ?: ""} , address is ${address ?: ""}")
             return address
         }
 

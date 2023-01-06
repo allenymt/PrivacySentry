@@ -95,6 +95,7 @@ public class TestInJava {
                 }
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return "0.0.0.0";
     }
