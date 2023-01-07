@@ -95,5 +95,5 @@ privacy {
     debugEnable = true
     // 开启hook 替换类，目前支持file
     hookConstructor = true
-    hookField = true
+//    hookField = true
 }

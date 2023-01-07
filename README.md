@@ -3,6 +3,13 @@
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
     
 ## 更新日志
+    2023-01-06(1.2.7)
+        1. 修复拦截ip地址时，主线程异常问题
+        2. 默认关闭游客模式，默认关闭debug模式
+        3. 优化部分逻辑
+        4. 注意尽可能在attachBaseContext里第一个调用，因为attachBaseContext之后才能反射拿到ActivityThread的application,所以如果是在attachBaseContext中，
+            且隐私合规SDK未初始化，不管是不是首次启动，都会认为是处在游客模式
+
     2022-12-06(1.2.6.1)
         重构缓存模块，修复部分问题
 
