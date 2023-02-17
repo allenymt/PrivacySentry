@@ -133,14 +133,14 @@ open class PrivacyProxyCall {
             flags: Int
         ): PackageInfo? {
 
-            if (PrivacySentry.Privacy.inDangerousState()) {
-                doFilePrinter(
-                    "getPackageInfo",
-                    methodDocumentDesc = "安装包-getPackageInfo-${versionedPackage.packageName}",
-                    bVisitorModel = true
-                )
-                throw PackageManager.NameNotFoundException("getPackageInfo-${versionedPackage.packageName}")
-            }
+//            if (PrivacySentry.Privacy.inDangerousState()) {
+//                doFilePrinter(
+//                    "getPackageInfo",
+//                    methodDocumentDesc = "安装包-getPackageInfo-${versionedPackage.packageName}",
+//                    bVisitorModel = true
+//                )
+//                throw PackageManager.NameNotFoundException("getPackageInfo-${versionedPackage.packageName}")
+//            }
             doFilePrinter(
                 "getPackageInfo",
                 methodDocumentDesc = "安装包-getPackageInfo-${versionedPackage.packageName}"
@@ -159,14 +159,14 @@ open class PrivacyProxyCall {
             packageName: String,
             flags: Int
         ): PackageInfo? {
-            if (PrivacySentry.Privacy.inDangerousState()) {
-                doFilePrinter(
-                    "getPackageInfo",
-                    methodDocumentDesc = "安装包-getPackageInfo-${packageName}",
-                    bVisitorModel = true
-                )
-                throw PackageManager.NameNotFoundException("getPackageInfo-${packageName}")
-            }
+//            if (PrivacySentry.Privacy.inDangerousState()) {
+//                doFilePrinter(
+//                    "getPackageInfo",
+//                    methodDocumentDesc = "安装包-getPackageInfo-${packageName}",
+//                    bVisitorModel = true
+//                )
+//                throw PackageManager.NameNotFoundException("getPackageInfo-${packageName}")
+//            }
             doFilePrinter(
                 "getPackageInfo",
                 methodDocumentDesc = "安装包-getPackageInfo-${packageName}"
@@ -189,9 +189,9 @@ open class PrivacyProxyCall {
                 "getInstalledPackagesAsUser",
                 methodDocumentDesc = "安装包-getInstalledPackagesAsUser"
             )
-            if (PrivacySentry.Privacy.inDangerousState()) {
-                return emptyList()
-            }
+//            if (PrivacySentry.Privacy.inDangerousState()) {
+//                return emptyList()
+//            }
             return getInstalledPackages(manager, flags);
         }
 
@@ -206,9 +206,9 @@ open class PrivacyProxyCall {
                 "getInstalledApplications",
                 methodDocumentDesc = "安装包-getInstalledApplications"
             )
-            if (PrivacySentry.Privacy.inDangerousState()) {
-                return emptyList()
-            }
+//            if (PrivacySentry.Privacy.inDangerousState()) {
+//                return emptyList()
+//            }
             return manager.getInstalledApplications(flags)
         }
 
@@ -226,9 +226,9 @@ open class PrivacyProxyCall {
                 "getInstalledApplicationsAsUser",
                 methodDocumentDesc = "安装包-getInstalledApplicationsAsUser"
             )
-            if (PrivacySentry.Privacy.inDangerousState()) {
-                return emptyList()
-            }
+//            if (PrivacySentry.Privacy.inDangerousState()) {
+//                return emptyList()
+//            }
             return getInstalledApplications(manager, flags);
         }
 
