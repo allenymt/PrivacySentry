@@ -539,7 +539,7 @@ open class PrivacyProxyCall {
         fun getLastKnownLocation(
             manager: LocationManager, provider: String
         ): Location? {
-            var key = "getLastKnownLocation"
+            var key = "getLastKnownLocation_${provider}"
             if (PrivacySentry.Privacy.inDangerousState()) {
                 doFilePrinter("getLastKnownLocation", "上一次的位置信息", bVisitorModel =  true)
                 // 这里直接写空可能有风险
