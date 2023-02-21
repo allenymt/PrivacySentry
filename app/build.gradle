@@ -62,7 +62,7 @@ dependencies {
         implementation project(":privacy-replace")
         implementation project(":privacy-annotation")
     } else {
-        def privacyVersion = "1.2.7"
+        def privacyVersion = "1.2.8"
         implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
         implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
         //  测试自定义拦截就注释掉
