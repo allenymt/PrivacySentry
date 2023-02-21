@@ -541,7 +541,7 @@ open class PrivacyProxyCall {
         ): Location? {
             var key = "getLastKnownLocation_${provider}"
             if (PrivacySentry.Privacy.inDangerousState()) {
-                doFilePrinter("getLastKnownLocation", "上一次的位置信息", bVisitorModel =  true)
+                doFilePrinter("getLastKnownLocation", "上一次的位置信息", bVisitorModel = true)
                 // 这里直接写空可能有风险
                 return null
             }
@@ -555,6 +555,9 @@ open class PrivacyProxyCall {
             var location: Location? = null
             locationStr.also {
                 location = PrivacyUtil.Util.formatLocation(it)
+            }
+            if (location == null) {
+                return manager.getLastKnownLocation(provider)
             }
             return location
         }
@@ -679,7 +682,10 @@ open class PrivacyProxyCall {
                 return ByteArray(1)
             }
             var address = manager.address
-            doFilePrinter(key, "ip地址-getAddress-${manager.address ?: ""} , address is ${address ?: ""}")
+            doFilePrinter(
+                key,
+                "ip地址-getAddress-${manager.address ?: ""} , address is ${address ?: ""}"
+            )
             return address
         }
 
@@ -697,7 +703,10 @@ open class PrivacyProxyCall {
                 return ByteArray(1)
             }
             var address = manager.address
-            doFilePrinter(key, "ip地址-getAddress-${manager.address ?: ""} , address is ${address ?: ""} ")
+            doFilePrinter(
+                key,
+                "ip地址-getAddress-${manager.address ?: ""} , address is ${address ?: ""} "
+            )
             return address
         }
 
@@ -716,7 +725,10 @@ open class PrivacyProxyCall {
             }
 
             var address = manager.hostAddress
-            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostAddress ?: ""} , address is ${address ?: ""}")
+            doFilePrinter(
+                key,
+                "ip地址-getHostAddress-${manager.hostAddress ?: ""} , address is ${address ?: ""}"
+            )
             return address
         }
 
@@ -726,7 +738,7 @@ open class PrivacyProxyCall {
             originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
         )
         @JvmStatic
-        fun getHostAddress(manager: InetAddress): String?{
+        fun getHostAddress(manager: InetAddress): String? {
             var key = "ip地址-getHostAddress"
 
             if (PrivacySentry.Privacy.inDangerousState()) {
@@ -735,7 +747,10 @@ open class PrivacyProxyCall {
             }
 
             var address = manager.hostAddress
-            doFilePrinter(key, "ip地址-getHostAddress-${manager.hostAddress ?: ""} , address is ${address ?: ""}")
+            doFilePrinter(
+                key,
+                "ip地址-getHostAddress-${manager.hostAddress ?: ""} , address is ${address ?: ""}"
+            )
             return address
         }
 
