@@ -87,7 +87,7 @@ class PrivacyUtil {
             if (location == null) {
                 return ""
             }
-            return "${location?.latitude},${location?.longitude},${location?.altitude},${location?.accuracy},${location?.speed},${location?.bearing}"
+            return "${location?.provider},${location?.latitude},${location?.longitude},${location?.altitude},${location?.accuracy},${location?.speed},${location?.bearing}"
         }
 
         fun formatLocation(locationInfo: String): Location? {
@@ -97,13 +97,13 @@ class PrivacyUtil {
             var location :Location? = null
             val infoArray: Array<String> = locationInfo.split(",").toTypedArray()
             if (infoArray.size > 1) {
-                location = Location(GPS_PROVIDER)
-                location.latitude = infoArray[0].toDouble()
-                location.longitude = infoArray[1].toDouble()
-                location.altitude = infoArray[2].toDouble()
-                location.accuracy = infoArray[3].toFloat()
-                location.speed = infoArray[4].toFloat()
-                location.bearing = infoArray[5].toFloat()
+                location = Location(infoArray[0])
+                location.latitude = infoArray[1].toDouble()
+                location.longitude = infoArray[2].toDouble()
+                location.altitude = infoArray[3].toDouble()
+                location.accuracy = infoArray[4].toFloat()
+                location.speed = infoArray[5].toFloat()
+                location.bearing = infoArray[6].toFloat()
             }
             return location
         }
