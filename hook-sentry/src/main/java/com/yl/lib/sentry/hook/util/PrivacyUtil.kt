@@ -95,15 +95,19 @@ class PrivacyUtil {
                 return null
             }
             var location :Location? = null
-            val infoArray: Array<String> = locationInfo.split(",").toTypedArray()
-            if (infoArray.size > 1) {
-                location = Location(infoArray[0])
-                location.latitude = infoArray[1].toDouble()
-                location.longitude = infoArray[2].toDouble()
-                location.altitude = infoArray[3].toDouble()
-                location.accuracy = infoArray[4].toFloat()
-                location.speed = infoArray[5].toFloat()
-                location.bearing = infoArray[6].toFloat()
+            try{
+                val infoArray: Array<String> = locationInfo.split(",").toTypedArray()
+                if (infoArray.size > 1) {
+                    location = Location(infoArray[0])
+                    location.latitude = infoArray[1].toDouble()
+                    location.longitude = infoArray[2].toDouble()
+                    location.altitude = infoArray[3].toDouble()
+                    location.accuracy = infoArray[4].toFloat()
+                    location.speed = infoArray[5].toFloat()
+                    location.bearing = infoArray[6].toFloat()
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
             }
             return location
         }
