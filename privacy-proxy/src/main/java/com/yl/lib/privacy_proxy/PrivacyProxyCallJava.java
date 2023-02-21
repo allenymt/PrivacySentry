@@ -60,13 +60,13 @@ public class PrivacyProxyCallJava {
         }
 
         String key = "isWifiEnabled";
-
-        return CachePrivacyManager.Manager.INSTANCE.loadWithTimeMemoryCache(
-                key,
-                "isWifiEnabled",
-                true,
-                CacheUtils.Utils.MINUTE * 5,
-                (new PrivacyProxyCallJavaWifiEnabled(manager)));
+        return  manager.isWifiEnabled();
+//        return CachePrivacyManager.Manager.INSTANCE.loadWithTimeMemoryCache(
+//                key,
+//                "isWifiEnabled",
+//                true,
+//                CacheUtils.Utils.MINUTE * 5,
+//                (new PrivacyProxyCallJavaWifiEnabled(manager)));
     }
 
     @PrivacyClassBlack
