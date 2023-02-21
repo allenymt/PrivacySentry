@@ -545,17 +545,17 @@ open class PrivacyProxyCall {
                 return null
             }
 
-            var locationStr = CachePrivacyManager.Manager.loadWithTimeDiskCache(
-                key,
-                "上一次的位置信息",
-                ""
-            ) { PrivacyUtil.Util.formatLocation(manager.getLastKnownLocation(provider)) }
-
-            var location: Location? = null
-            locationStr.also {
-                location = PrivacyUtil.Util.formatLocation(it)
-            }
-            return location
+//            var locationStr = CachePrivacyManager.Manager.loadWithTimeDiskCache(
+//                key,
+//                "上一次的位置信息",
+//                ""
+//            ) { PrivacyUtil.Util.formatLocation(manager.getLastKnownLocation(provider)) }
+//
+//            var location: Location? = null
+//            locationStr.also {
+//                location = PrivacyUtil.Util.formatLocation(it)
+//            }
+            return manager.getLastKnownLocation(provider)
         }
 
 
