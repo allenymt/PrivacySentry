@@ -430,12 +430,12 @@ open class PrivacyProxyCall {
 
             var key = "getSSID"
             doFilePrinter("getSSID", "SSID")
-            return CachePrivacyManager.Manager.loadWithTimeMemoryCache(
-                key,
-                "getSSID",
-                "",
-                duration = CacheUtils.Utils.MINUTE * 5
-                ) { manager.ssid }
+//            return CachePrivacyManager.Manager.loadWithTimeMemoryCache(
+//                key,
+//                "getSSID",
+//                "",
+//                duration = CacheUtils.Utils.MINUTE * 5
+//                ) { manager.ssid }
             return manager.ssid
         }
 
@@ -457,12 +457,12 @@ open class PrivacyProxyCall {
 
             var key = "getBSSID"
             doFilePrinter("getBSSID", "getBSSID")
-            return CachePrivacyManager.Manager.loadWithTimeMemoryCache(
-                key,
-                "getBSSID",
-                "",
-                duration = CacheUtils.Utils.MINUTE * 5
-            ) { manager.ssid }
+//            return CachePrivacyManager.Manager.loadWithTimeMemoryCache(
+//                key,
+//                "getBSSID",
+//                "",
+//                duration = CacheUtils.Utils.MINUTE * 5
+//            ) { manager.ssid }
             return manager.bssid
         }
 
@@ -546,17 +546,17 @@ open class PrivacyProxyCall {
                 return null
             }
 
-//            var locationStr = CachePrivacyManager.Manager.loadWithTimeDiskCache(
-//                key,
-//                "上一次的位置信息",
-//                ""
-//            ) { PrivacyUtil.Util.formatLocation(manager.getLastKnownLocation(provider)) }
-//
-//            var location: Location? = null
-//            locationStr.also {
-//                location = PrivacyUtil.Util.formatLocation(it)
-//            }
-            return manager.getLastKnownLocation(provider)
+            var locationStr = CachePrivacyManager.Manager.loadWithTimeDiskCache(
+                key,
+                "上一次的位置信息",
+                ""
+            ) { PrivacyUtil.Util.formatLocation(manager.getLastKnownLocation(provider)) }
+
+            var location: Location? = null
+            locationStr.also {
+                location = PrivacyUtil.Util.formatLocation(it)
+            }
+            return location
         }
 
 
