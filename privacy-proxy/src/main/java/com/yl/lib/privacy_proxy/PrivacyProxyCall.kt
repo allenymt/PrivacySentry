@@ -677,10 +677,10 @@ open class PrivacyProxyCall {
         fun getAddress(manager: Inet4Address): ByteArray? {
             var key = "ip地址-getAddress"
 
-            if (PrivacySentry.Privacy.inDangerousState()) {
-                doFilePrinter(key, "ip地址-getAddress", bVisitorModel = true)
-                return ByteArray(1)
-            }
+//            if (PrivacySentry.Privacy.inDangerousState()) {
+//                doFilePrinter(key, "ip地址-getAddress", bVisitorModel = true)
+//                return ByteArray(1)
+//            }
             var address = manager.address
             doFilePrinter(
                 key,
@@ -698,10 +698,10 @@ open class PrivacyProxyCall {
         fun getAddress(manager: InetAddress): ByteArray? {
             var key = "ip地址-getAddress"
 
-            if (PrivacySentry.Privacy.inDangerousState()) {
-                doFilePrinter(key, "ip地址-getAddress", bVisitorModel = true)
-                return ByteArray(1)
-            }
+//            if (PrivacySentry.Privacy.inDangerousState()) {
+//                doFilePrinter(key, "ip地址-getAddress", bVisitorModel = true)
+//                return ByteArray(1)
+//            }
             var address = manager.address
             doFilePrinter(
                 key,
@@ -719,10 +719,10 @@ open class PrivacyProxyCall {
         fun getHostAddress(manager: Inet4Address): String? {
             var key = "ip地址-getHostAddress"
 
-            if (PrivacySentry.Privacy.inDangerousState()) {
-                doFilePrinter(key, "ip地址-getHostAddress", bVisitorModel = true)
-                return ""
-            }
+//            if (PrivacySentry.Privacy.inDangerousState()) {
+//                doFilePrinter(key, "ip地址-getHostAddress", bVisitorModel = true)
+//                return ""
+//            }
 
             var address = manager.hostAddress
             doFilePrinter(
@@ -741,10 +741,10 @@ open class PrivacyProxyCall {
         fun getHostAddress(manager: InetAddress): String? {
             var key = "ip地址-getHostAddress"
 
-            if (PrivacySentry.Privacy.inDangerousState()) {
-                doFilePrinter(key, "ip地址-getHostAddress", bVisitorModel = true)
-                return ""
-            }
+//            if (PrivacySentry.Privacy.inDangerousState()) {
+//                doFilePrinter(key, "ip地址-getHostAddress", bVisitorModel = true)
+//                return ""
+//            }
 
             var address = manager.hostAddress
             doFilePrinter(
