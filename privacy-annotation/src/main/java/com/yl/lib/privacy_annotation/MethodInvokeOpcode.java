@@ -22,8 +22,11 @@ public class MethodInvokeOpcode {
 
     // 调用类方法，也就是静态方法
     public static final int INVOKESTATIC = 184;
+
+    // 接口方法
     public static final int INVOKEINTERFACE = 185;
 
+    // 动态方法,支持解释性语言
     public static final int INVOKEDYNAMIC = 186;
 
 }
