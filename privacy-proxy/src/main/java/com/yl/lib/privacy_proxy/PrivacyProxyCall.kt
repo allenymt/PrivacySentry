@@ -391,12 +391,13 @@ open class PrivacyProxyCall {
             originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
         )
         @JvmStatic
-        fun setPrimaryClip(manager: ClipboardManager, clip: ClipData) {
+        fun setPrimaryClip(manager: ClipboardManager, clip: ClipData?) {
             doFilePrinter("setPrimaryClip", "设置剪贴板内容-setPrimaryClip")
             if (PrivacySentry.Privacy.inDangerousState()) {
                 return
             }
-            manager.setPrimaryClip(clip)
+            clip?.let { manager.setPrimaryClip(it) }
+
         }
 
         @PrivacyMethodProxy(
@@ -405,7 +406,7 @@ open class PrivacyProxyCall {
             originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
         )
         @JvmStatic
-        fun setText(manager: ClipboardManager, clip: CharSequence) {
+        fun setText(manager: ClipboardManager, clip: CharSequence?) {
             doFilePrinter("setText", "设置剪贴板内容-setText")
             if (PrivacySentry.Privacy.inDangerousState()) {
                 return
