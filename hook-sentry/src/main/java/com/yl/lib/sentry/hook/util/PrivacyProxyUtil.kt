@@ -16,10 +16,11 @@ class PrivacyProxyUtil {
             bVisitorModel: Boolean = false,
             bCache: Boolean = false
         ) {
-            if (bVisitorModel || PrivacySentry.Privacy.inDangerousState()) {
-                PrivacyLog.e("disable print file: funName is $funName methodDocumentDesc is $methodDocumentDesc,isVisitorModel=true ${PrivacyUtil.Util.getStackTrace()}")
-                return
-            }
+            // 这里不再拦截，交给printer自己拦截
+//            if (bVisitorModel || PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) {
+//                PrivacyLog.e("disable print file: funName is $funName methodDocumentDesc is $methodDocumentDesc,isVisitorModel=true ${PrivacyUtil.Util.getStackTrace()}")
+//                return
+//            }
 
             PrivacySentry.Privacy.getBuilder()?.getPrinterList()?.forEach {
                 it.filePrint(

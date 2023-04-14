@@ -12,6 +12,9 @@ import com.yl.lib.sentry.hook.printer.PrintCallBack
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import com.yl.lib.sentry.hook.util.PrivacyUtil
 import com.yl.lib.sentry.hook.util.PrivacyUtil.Util.getApplicationByReflect
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -72,16 +75,25 @@ class PrivacySentry {
          * 停止文件写入
          */
         fun stop() {
-            if (bFilePrintFinish.compareAndSet(false, true)) {
-                bFilePrintFinish.set(true)
+            if (!isFilePrintFinish()) {
                 PrivacyLog.i("call stopWatch")
+                var filePrinterList =
+                    mBuilder?.getPrinterList()?.filterIsInstance<BaseFilePrinter>()
+                var printerSize = filePrinterList?.size ?: 0
                 mBuilder?.getPrinterList()?.filterIsInstance<BaseFilePrinter>()?.forEach {
                     // 强制写入文件
-                    it.flushToFile()
+                    GlobalScope.launch(Dispatchers.IO) {
+                        it.flushToFile()
+                        printerSize--
+                        if (printerSize == 0) {
+                            bFilePrintFinish.set(true)
+                        }
+                    }
                     // 结果回调
                     mBuilder?.getResultCallBack()?.onResultCallBack(it.resultFileName)
                 }
             }
+
         }
 
         /**
