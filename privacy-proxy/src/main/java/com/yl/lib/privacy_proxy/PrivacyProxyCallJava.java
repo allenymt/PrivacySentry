@@ -1,6 +1,7 @@
 package com.yl.lib.privacy_proxy;
 
 import android.content.ClipboardManager;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
 import androidx.annotation.Keep;
@@ -67,6 +68,16 @@ public class PrivacyProxyCallJava {
 //                true,
 //                CacheUtils.Utils.MINUTE * 5,
 //                (new PrivacyProxyCallJavaWifiEnabled(manager)));
+    }
+
+    @PrivacyMethodProxy(
+            originalClass = WifiInfo.class,
+            originalMethod = "getIpAddress",
+            originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+    )
+    public static int getIpAddress(WifiInfo wifiInfo) {
+        PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("getIpAddress", "读取WifiInfo-getIpAddress", "", false, false);
+        return wifiInfo.getIpAddress();
     }
 
     @PrivacyClassBlack

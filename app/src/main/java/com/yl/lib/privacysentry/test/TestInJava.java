@@ -5,7 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.text.format.Formatter;
 
 import androidx.annotation.RequiresApi;
 
@@ -114,6 +117,7 @@ public class TestInJava {
                 if (info.getType() == ConnectivityManager.TYPE_MOBILE) {
                     return getHostIp();
                 } else if (info.getType() == ConnectivityManager.TYPE_WIFI) {
+                    getIPByWifiInfo(context);
                     return getOutNetIP(); // 外网地址
                 } else if (info.getType() == ConnectivityManager.TYPE_ETHERNET) {
                     // 以太网有限网络
@@ -170,6 +174,13 @@ public class TestInJava {
             PrivacyLog.Log.e("获取IP地址时出现异常，异常信息是：" + e.toString());
         }
         return ipAddress;
+    }
+
+    public static void getIPByWifiInfo(Context context){
+        WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
+        int ipAddress = wifiInfo.getIpAddress();
+        String ip = Formatter.formatIpAddress(ipAddress);
     }
 
     public static void testReflexClipManager() {
