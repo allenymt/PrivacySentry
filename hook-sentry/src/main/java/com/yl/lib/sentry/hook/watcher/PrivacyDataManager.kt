@@ -13,17 +13,28 @@ import java.util.concurrent.CopyOnWriteArrayList
  */
 class PrivacyDataManager {
     object Manager {
-        private var privacyFunBeanList: CopyOnWriteArrayList<PrivacyFunBean> = CopyOnWriteArrayList()
+        private var privacyFunBeanList: CopyOnWriteArrayList<PrivacyFunBean> =
+            CopyOnWriteArrayList()
 
         private var liveItemPrivacy: MutableLiveData<PrivacyFunBean> = MutableLiveData()
 
+        private var stickFunBeanList: CopyOnWriteArrayList<PrivacyFunBean> = CopyOnWriteArrayList()
         fun addData(bean: PrivacyFunBean) {
             assert(bean != null)
             privacyFunBeanList.add(bean)
             liveItemPrivacy.postValue(bean)
         }
 
+        fun addStickData(bean: PrivacyFunBean) {
+            assert(bean != null)
+            stickFunBeanList.add(bean)
+        }
+
         fun getFunBeanList(): CopyOnWriteArrayList<PrivacyFunBean> {
+            if (stickFunBeanList.isNotEmpty()) {
+                privacyFunBeanList.addAll(stickFunBeanList)
+                stickFunBeanList.clear()
+            }
             return privacyFunBeanList
         }
 
