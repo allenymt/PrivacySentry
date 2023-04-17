@@ -71,6 +71,10 @@ class PrivacySentry {
             }
         }
 
+        fun hasInit(): Boolean {
+            return bInit.get()
+        }
+
         /**
          * 停止文件写入
          */

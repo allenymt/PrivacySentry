@@ -26,7 +26,7 @@ class APP : Application() {
         // 所以如果是在attachBaseContext中，且隐私合规SDK未初始化，不管是不是首次启动，都会认为是危险期，无法调用敏感api
         PrivacyMethod.PrivacyMethod.getAndroidId(base!!)
         MultiDex.install(this)
-        Thread { initPrivacyTransformComplete() }.start()
+//        Thread { initPrivacyTransformComplete() }.start()
 
     }
 
