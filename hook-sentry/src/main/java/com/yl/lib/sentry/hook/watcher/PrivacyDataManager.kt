@@ -32,7 +32,7 @@ class PrivacyDataManager {
 
         fun getFunBeanList(): CopyOnWriteArrayList<PrivacyFunBean> {
             if (stickFunBeanList.isNotEmpty()) {
-                privacyFunBeanList.addAll(stickFunBeanList)
+                privacyFunBeanList.addAll(0,stickFunBeanList)
                 stickFunBeanList.clear()
             }
             return privacyFunBeanList
