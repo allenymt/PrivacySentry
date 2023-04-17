@@ -26,7 +26,6 @@ class PrivacyProxyUtil {
             // 这里不再拦截，交给printer自己拦截
             if (!PrivacySentry.Privacy.hasInit()) {
                 PrivacyDataManager.Manager.addStickData(PrivacyFunBean(funName, funAlias, msg, 1))
-                return
             }
 
             PrivacySentry.Privacy.getBuilder()?.getPrinterList()?.forEach {
