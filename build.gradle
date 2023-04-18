@@ -6,10 +6,10 @@ buildscript {
         if (rootProject.ext.plugin_local_debug) {
             maven { url uri('plugin-sentry/plugins') }
         }
+        maven { url 'https://jitpack.io' }
         mavenCentral()
         google()
         jcenter()
-        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.2.0"
@@ -17,7 +17,7 @@ buildscript {
         if (rootProject.ext.plugin_local_debug) {
             classpath "com.yl.lib.plugin:plugin-sentry:0.0.3.5-SNAPSHOT"
         } else {
-            classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.2.9'
+            classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.3.1'
         }
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         // NOTE: Do not place your application dependencies here; they belong
@@ -30,10 +30,10 @@ allprojects {
         if (rootProject.ext.plugin_local_debug) {
             maven { url uri('plugin-sentry/plugins') }
         }
+        maven { url 'https://jitpack.io' }
         mavenCentral()
         google()
         jcenter()
-        maven { url 'https://jitpack.io' }
     }
 }
 
