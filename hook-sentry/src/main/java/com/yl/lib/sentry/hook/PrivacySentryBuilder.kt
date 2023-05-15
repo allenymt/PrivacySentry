@@ -12,7 +12,7 @@ class PrivacySentryBuilder {
 
     // 默认需要关闭
     @Volatile
-    var debug: Boolean = false
+    var debug: Boolean = true
 
     //日志输出 和 文件输出
     private var mPrinterList: ArrayList<BasePrinter>? = null
