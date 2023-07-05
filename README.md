@@ -3,7 +3,9 @@
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
 
 ## 加我个人微信，拉你进社区群，备注来意：PrivacySentry
-<img width="392" alt="image" src="https://github.com/allenymt/PrivacySentry/assets/8003195/173c9d3b-6d7f-4d81-a442-7fd710c7b3b4">
+<img width="458" alt="image" src="https://github.com/allenymt/PrivacySentry/assets/8003195/575487cd-452e-4780-b482-8f15f649c992">
+
+
 
 
 ## 更新日志
