@@ -113,7 +113,7 @@
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
-	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.2.7'
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.3.1'
 	     }
 	}
 	
@@ -133,7 +133,7 @@
         
         dependencies {
             // aar依赖
-            def privacyVersion = "1.2.7"
+            def privacyVersion = "1.3.1"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
 	        //如果不想使用库中本身的代理方法，可以不引入这个aar，自己实现
