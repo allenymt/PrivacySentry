@@ -1,7 +1,10 @@
 # PrivacySentry
     android隐私合规检测，不仅仅是是检测，碰到第三方SDK不好解决的或者修复周期很长的，我们等不了那么长时间，可以通过这个库去动态拦截
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
-    
+
+## 加我个人微信，拉你进社区群，备注来意：PrivacySentry
+![image](https://github.com/allenymt/PrivacySentry/assets/8003195/a35cd3f6-650a-486b-b746-1902b4b4ac6a)
+
 ## 更新日志
     2023-04-18(1.3.1)
         1. 新增wifiinfo.getIPAddress代理
@@ -343,8 +346,6 @@ public class PrivacyFile extends File {
 - 手机可用传感器,传感器注册，传感器列表
 
 - 权限请求
-
-
 
 
 
