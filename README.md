@@ -142,8 +142,10 @@
             def privacyVersion = "1.3.1"
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
-	        //如果不想使用库中本身的代理方法，可以不引入这个aar，自己实现
-	        //也可以引入，个别方法在自己的类中重写即可
+
+             // 代理类的库，如果自己没有代理类，那么必须引用这个aar！！
+             // 如果不想使用库中本身的代理方法，可以不引入这个aar，但是自己必须实现代理类！！
+             // 引入privacy-proxy，也可以自定义类代理方法，优先以业务方定义的为准
             implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
             // 1.2.3 新增类替换，主要是为了hook构造函数的参数
             implementation "com.github.allenymt.PrivacySentry:privacy-replace:$privacyVersion"
