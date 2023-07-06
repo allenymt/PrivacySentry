@@ -147,7 +147,7 @@
              // 如果不想使用库中本身的代理方法，可以不引入这个aar，但是自己必须实现代理类！！
              // 引入privacy-proxy，也可以自定义类代理方法，优先以业务方定义的为准
             implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
-            // 1.2.3 新增类替换，主要是为了hook构造函数的参数
+            // 1.2.3 新增类替换，主要是为了hook构造函数的参数，按业务方需求自己决定
             implementation "com.github.allenymt.PrivacySentry:privacy-replace:$privacyVersion"
         }
         
