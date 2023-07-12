@@ -26,6 +26,8 @@ class TestReflex {
             e.printStackTrace()
         } catch (e: InvocationTargetException) {
             e.printStackTrace()
+        } catch (e: SecurityException){
+            e.printStackTrace()
         }
     }
 
