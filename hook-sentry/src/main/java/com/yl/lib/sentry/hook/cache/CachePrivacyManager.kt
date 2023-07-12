@@ -126,6 +126,7 @@ class CachePrivacyManager {
                 value = getValue()
             } catch (e: Throwable) {
                 e.printStackTrace()
+                throw e
             } finally {
                 putCacheParam(value ?: defaultValue, key, cacheType, duration)
             }
