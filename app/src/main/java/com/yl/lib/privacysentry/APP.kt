@@ -24,6 +24,7 @@ class APP : Application() {
         super.attachBaseContext(base)
         // 注意尽可能在attachBaseContext里第一个调用，因为attachBaseContext之后才能反射拿到ActivityThread的application
         // 所以如果是在attachBaseContext中，且隐私合规SDK未初始化，不管是不是首次启动，都会认为是危险期，无法调用敏感api
+        initPrivacyTransformComplete()
         PrivacyMethod.PrivacyMethod.getAndroidId(base!!)
         MultiDex.install(this)
 //        Thread { initPrivacyTransformComplete() }.start()

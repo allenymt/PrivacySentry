@@ -5,12 +5,12 @@ import android.app.ActivityManager
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.yl.lib.privacy_test.PrivacyProxySelfTest2
 import com.yl.lib.privacy_test.TestMethod
@@ -24,6 +24,7 @@ import com.yl.lib.privacysentry.location.LocationTestActivity
 import com.yl.lib.privacysentry.process.MultiProcessB
 import com.yl.lib.privacysentry.telephony.TelephonyTestActivity
 import com.yl.lib.privacysentry.test.*
+import com.yl.lib.privacysentry.web.PrivacyBrowserFragment
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.util.MainProcessUtil
 import com.yl.lib.sentry.hook.util.PrivacyClipBoardManager
@@ -243,13 +244,6 @@ class MainActivity : AppCompatActivity() {
             TestInJava.testReflexClipManagerClose()
         }
 
-        AlertDialog.Builder(this).setMessage("确认隐私协议").setPositiveButton(
-            "确定"
-        ) { dialog, which ->
-            PrivacySentry.Privacy.updatePrivacyShow()
-            PrivacySentry.Privacy.closeVisitorModel()
-        }.create().show()
-
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
         var permissions = arrayOf(
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -258,7 +252,25 @@ class MainActivity : AppCompatActivity() {
             requestPermissions(permissions, 1000)
         }
 
-        PrivacySentry.Privacy.initTransform(application)
+//        PrivacySentry.Privacy.initTransform(application)
+    }
+
+    fun agreePrivacy(view:View){
+        PrivacySentry.Privacy.updatePrivacyShow()
+        PrivacySentry.Privacy.closeVisitorModel()
+    }
+    fun gotoPrivacyWeb(view: View) {
+        try {
+            val fragment = PrivacyBrowserFragment()
+            val bundle = Bundle()
+            val url = "https://h5.weidian.com/m/browse-mode/#/"
+            bundle.putString("url", url)
+            fragment.setArguments(bundle)
+            val ft = supportFragmentManager.beginTransaction()
+            ft.replace(android.R.id.content, fragment).addToBackStack(null).commit()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onRequestPermissionsResult(
