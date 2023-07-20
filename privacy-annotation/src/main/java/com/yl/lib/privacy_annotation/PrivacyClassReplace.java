@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * @author yulun
  * @since 2022-11-18 14:29
- * 类替换，
+ * 类代理，
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.CLASS)

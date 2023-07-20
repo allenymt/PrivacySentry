@@ -1,9 +1,10 @@
 package com.yl.lib.plugin.sentry.transform
 
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
+import com.yl.lib.plugin.sentry.transform.collect.CollectPrivacyClassVisitor
+import com.yl.lib.plugin.sentry.transform.hook.HookClassVisitor
 import org.apache.commons.io.IOUtils
 import org.gradle.api.Project
-import org.gradle.util.GFileUtils
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.Opcodes
 import java.io.File
@@ -13,7 +14,6 @@ import java.io.InputStream
 import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
 import java.util.zip.ZipEntry
-import kotlin.math.log
 
 /**
  * @author yulun
@@ -34,7 +34,7 @@ class PrivacyClassProcessor {
                 org.objectweb.asm.ClassWriter(org.objectweb.asm.ClassWriter.COMPUTE_MAXS)
             // 定义类访问者
             val classVisitor: ClassVisitor =
-                SentryTraceClassAdapter(
+                HookClassVisitor(
                     Opcodes.ASM7, classWriter, project.extensions.findByType(
                         PrivacyExtension::class.java
                     ),project.logger
@@ -60,7 +60,7 @@ class PrivacyClassProcessor {
                 org.objectweb.asm.ClassWriter(org.objectweb.asm.ClassWriter.COMPUTE_MAXS)
             // 定义类访问者
             val classVisitor: ClassVisitor =
-                CollectHookMethodClassAdapter(
+                CollectPrivacyClassVisitor(
                     Opcodes.ASM7, classWriter, project.extensions.findByType(
                         PrivacyExtension::class.java
                     ), logger = project.logger

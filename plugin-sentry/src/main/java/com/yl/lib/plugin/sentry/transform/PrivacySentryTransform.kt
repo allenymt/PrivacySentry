@@ -4,6 +4,7 @@ import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.utils.FileUtils
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
+import com.yl.lib.plugin.sentry.transform.manager.ReplacedMethodManger
 import org.gradle.api.Project
 import org.gradle.util.GFileUtils
 import java.io.File
@@ -63,9 +64,9 @@ class PrivacySentryTransform : Transform {
             )
         }
         project?.logger?.info("yulun-flushToFile1")
-        // 写入被替换所有的类和文件
+        // 写入被代理所有的类和文件
         privacyExtension.replaceFileName?.let {
-            ReplaceMethodManger.MANAGER.flushToFile(privacyExtension.replaceFileName!!,project!!)
+            ReplacedMethodManger.MANAGER.flushToFile(privacyExtension.replaceFileName!!,project!!)
         }
     }
 

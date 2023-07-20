@@ -12,7 +12,7 @@ open class PrivacyExtension {
     @Deprecated("后续准备放弃，几乎没有业务场景")
     var hookField : Boolean = false
 
-    // 记录所有被替换的方法名+类名,将以单行的形式被写入到文件中
+    // 记录所有被代理的方法名+类名,将以单行的形式被写入到文件中
     // 空=不写入
     var replaceFileName :String? = "methodReplace.json"
 
@@ -23,7 +23,7 @@ open class PrivacyExtension {
     var hookConstructor: Boolean = false
 
     // hook Service的部分代码，修复在MIUI上的自启动问题
-    // 部分Service把自己的Priority设置为1000，这里开启替换功能，可以替换成0
+    // 部分Service把自己的Priority设置为1000，这里开启代理功能，可以代理成0
     var enableReplacePriority = false
     var replacePriority = 0
 

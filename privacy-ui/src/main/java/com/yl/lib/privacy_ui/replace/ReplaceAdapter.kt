@@ -50,7 +50,7 @@ class ReplaceVieHolder : RecyclerView.ViewHolder {
             builder.setItems((data?.originMethodList?.map { it.toString() }
                 ?: listOf()).toTypedArray()
             ) { _, _ ->  }
-            builder.setTitle("替换列表")
+            builder.setTitle("代理列表")
             builder.setPositiveButton("确定") { _, _ -> }
             builder.create().show()
         }
@@ -59,6 +59,6 @@ class ReplaceVieHolder : RecyclerView.ViewHolder {
     fun bindData(data: ReplaceItemList) {
         this.data = data
         tvOriginMethodName?.text = data.proxyMethodName
-        tvCount?.text = "替换次数:${data.count},点击查看详情"
+        tvCount?.text = "代理次数:${data.count},点击查看详情"
     }
 }

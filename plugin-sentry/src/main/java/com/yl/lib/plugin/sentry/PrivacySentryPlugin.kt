@@ -30,7 +30,7 @@ class PrivacySentryPlugin : Plugin<Project> {
         // 收集注解信息的任务
         android?.registerTransform(PrivacyCollectTransform(project))
 
-        // 执行字节码替换的任务
+        // 执行字节码代理的任务
         android?.registerTransform(PrivacySentryTransform(project))
 
         privacyExtension.replaceFileName.let {
@@ -47,7 +47,7 @@ class PrivacySentryPlugin : Plugin<Project> {
         }
     }
 
-    // 把替换的api列表同步到assets目录下，方便查看
+    // 把代理的api列表同步到assets目录下，方便查看
     private fun registerAssetsTask(
         variantName: String,
         pluginHelper: AndroidGradlePluginHelper,
@@ -66,7 +66,7 @@ class PrivacySentryPlugin : Plugin<Project> {
                 ) && task.transform is PrivacySentryTransform
             }
         project.logger.info("project MoveAssetsTask finalizedBy privacySentryTask variantName is ${privacySentryTask.variantName} MoveAssetsTask is $moveTask $variantName after fileName is ${moveTask.fileName} ")
-        // 在任务结束之后执行指定的 Task, 也就是mergeAssetsTask执行完后，执行moveTask，把我们替换的api列表同步到assets目录下
+        // 在任务结束之后执行指定的 Task, 也就是mergeAssetsTask执行完后，执行moveTask，把我们代理的api列表同步到assets目录下
         pluginHelper.mergeAssetsTask.finalizedBy(moveTask)
         // moveTask 在privacySentryTask执行
         moveTask.mustRunAfter(privacySentryTask)

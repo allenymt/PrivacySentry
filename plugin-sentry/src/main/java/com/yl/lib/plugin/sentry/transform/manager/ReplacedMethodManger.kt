@@ -1,4 +1,4 @@
-package com.yl.lib.plugin.sentry.transform
+package com.yl.lib.plugin.sentry.transform.manager
 
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.annotation.JSONField
@@ -10,9 +10,9 @@ import java.io.File
 /**
  * @author yulun
  * @since 2022-06-16 20:06
- * 记录所有被替换的方法和类列表，方便做数据比对
+ * 记录所有被代理的方法和类列表，方便做数据比对
  */
-class ReplaceMethodManger {
+class ReplacedMethodManger {
     object MANAGER {
         private var replaceMethodMap: HashMap<String, ReplaceMethodData> = HashMap()
 

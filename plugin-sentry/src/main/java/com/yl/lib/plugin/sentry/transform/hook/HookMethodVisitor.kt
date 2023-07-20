@@ -1,95 +1,26 @@
-package com.yl.lib.plugin.sentry.transform
+package com.yl.lib.plugin.sentry.transform.hook
 
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
+import com.yl.lib.plugin.sentry.transform.manager.*
 import org.gradle.api.logging.Logger
-import org.objectweb.asm.AnnotationVisitor
-import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.commons.AdviceAdapter
 
 /**
  * @author yulun
- * @sinice 2021-12-21 14:29
+ * @since 2023-07-20 17:30
+ * 方法代理，代理PrivacyClassProxy下的PrivacyMethodProxy注解过的方法
+ * @see com.yl.lib.privacy_annotation.PrivacyMethodProxy
+ * 方法代理支持反射
+
+ * 类代理，代理PrivacyClassReplace注解过的类
+ * @see com.yl.lib.privacy_annotation.PrivacyClassReplace
+ *
+ * 代理PrivacyFieldProxy注解过的字段
+ * @see com.yl.lib.privacy_annotation.PrivacyFieldProxy
  */
-class SentryTraceClassAdapter : ClassVisitor {
-
-
-    private var className: String = ""
-
-    private var privacyExtension: PrivacyExtension? = null
-
-    private var bHookClass = true
-
-    private var logger: Logger
-
-    constructor(
-        api: Int,
-        classVisitor: ClassVisitor?,
-        privacyExtension: PrivacyExtension?,
-        logger: Logger
-    ) : super(
-        api,
-        classVisitor
-    ) {
-        this.privacyExtension = privacyExtension
-        this.logger = logger
-    }
-
-    override fun visit(
-        version: Int,
-        access: Int,
-        name: String,
-        signature: String?,
-        superName: String?,
-        interfaces: Array<out String>?
-    ) {
-        super.visit(version, access, name, signature, superName, interfaces)
-        if (name != null) {
-            className = name.replace("/", ".")
-        }
-    }
-
-    override fun visitAnnotation(descriptor: String?, visible: Boolean): AnnotationVisitor {
-        if (descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassProxy;") == true ||
-            HookMethodManager.MANAGER.isProxyClass(className) ||
-            HookFieldManager.MANAGER.isProxyClass(className) ||
-            descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassReplace;") == true ||
-            ReplaceClassManager.MANAGER.isProxyClass(className)  ||
-            descriptor?.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassBlack;") == true
-        ) {
-            bHookClass = false
-        }
-        return super.visitAnnotation(descriptor, visible)
-    }
-
-    override fun visitMethod(
-        access: Int,
-        name: String?,
-        descriptor: String?,
-        signature: String?,
-        exceptions: Array<out String>?
-    ): MethodVisitor {
-        return if (!bHookClass) {
-            super.visitMethod(access, name, descriptor, signature, exceptions)
-        } else {
-            var methodVisitor = cv.visitMethod(access, name, descriptor, signature, exceptions)
-            SentryTraceMethodAdapter(
-                api,
-                methodVisitor,
-                access,
-                name,
-                descriptor,
-                privacyExtension,
-                className,
-                logger
-            )
-        }
-    }
-}
-
-
-class SentryTraceMethodAdapter : AdviceAdapter {
+class HookMethodVisitor : AdviceAdapter {
 
     private var privacyExtension: PrivacyExtension? = null
     private var className: String? = null
@@ -150,7 +81,7 @@ class SentryTraceMethodAdapter : AdviceAdapter {
         var methodItem =
             HookMethodManager.MANAGER.findHookItemByName(name, owner, descriptor, opcodeAndSource)
         if (methodItem != null && shouldHook(name)) {
-            ReplaceMethodManger.MANAGER.addReplaceMethodItem(
+            ReplacedMethodManger.MANAGER.addReplaceMethodItem(
                 ReplaceMethodItem(
                     className!!,
                     methodName!!,
@@ -243,3 +174,4 @@ class SentryTraceMethodAdapter : AdviceAdapter {
 //    }
 
 }
+
