@@ -28,6 +28,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PrivacySentry">
+        <service
+            android:name=".test.TestWhiteService"
+            android:enabled="true"
+            android:exported="true"
+            android:priority="1000"></service>
+        <service
+            android:name=".test.TestService"
+            android:enabled="true"
+            android:exported="true"
+            android:priority="10"/>
+
         <activity
             android:name=".test.TestFragmentActivity"
             android:exported="false" />

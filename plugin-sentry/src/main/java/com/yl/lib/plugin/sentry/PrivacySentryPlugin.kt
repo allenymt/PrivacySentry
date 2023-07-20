@@ -33,31 +33,6 @@ class PrivacySentryPlugin : Plugin<Project> {
         // 执行字节码替换的任务
         android?.registerTransform(PrivacySentryTransform(project))
 
-        // 暂时先屏蔽上传任务
-        // 注入上传任务，在sentryTransform任务之后执行 ,
-//        project.afterEvaluate {
-//            project.logger.info("project afterEvaluate add  HoutuFileUploadTask")
-//            project.tasks.create("HoutuFileUploadTask",HoutuFileUploadTask::class.java)
-//            android.applicationVariants.forEach { variant ->
-//                var variantName = variant.name.capitalize()
-//                project.logger.info("project variantName is $variantName")
-//                var transformTask = project.tasks.withType(TransformTask::class.java)
-//                var privacySentryTask =
-//                    transformTask.first { task ->
-//                        task.variantName.equals(
-//                            variantName,
-//                            ignoreCase = true
-//                        ) && task.transform is PrivacySentryTransform
-//                    }
-//                project.logger.info("project privacySentryTask is $privacySentryTask")
-//                var houtuFileUploadTask = project.tasks.findByName("HoutuFileUploadTask")
-//                project.logger.info("project houtuFileUploadTask mustRunAfter privacySentryTask houtuFileUploadTask is $houtuFileUploadTask")
-//                privacySentryTask.finalizedBy(houtuFileUploadTask)
-////                houtuFileUploadTask?.mustRunAfter(privacySentryTask)
-//
-//            }
-//        }
-
         privacyExtension.replaceFileName.let {
             // replaceFile 生成完后，把文件挪到assets目录下
             project.tasks.create("MoveAssetsTask", MoveAssetsTask::class.java)
@@ -91,7 +66,9 @@ class PrivacySentryPlugin : Plugin<Project> {
                 ) && task.transform is PrivacySentryTransform
             }
         project.logger.info("project MoveAssetsTask finalizedBy privacySentryTask variantName is ${privacySentryTask.variantName} MoveAssetsTask is $moveTask $variantName after fileName is ${moveTask.fileName} ")
+        // 在任务结束之后执行指定的 Task, 也就是mergeAssetsTask执行完后，执行moveTask，把我们替换的api列表同步到assets目录下
         pluginHelper.mergeAssetsTask.finalizedBy(moveTask)
+        // moveTask 在privacySentryTask执行
         moveTask.mustRunAfter(privacySentryTask)
     }
 
@@ -106,7 +83,11 @@ class PrivacySentryPlugin : Plugin<Project> {
         var processManifestTask = project.tasks.getByName("process${variantName}Manifest")
         processManifestTask?.let {
             it.doLast {
-                ManifestProcessor.Processor.process(manifestFile.absolutePath)
+                ManifestProcessor.Processor.process(
+                    manifestFile.absolutePath,
+                    privacyExtension,
+                    project.logger
+                )
             }
         }
     }
