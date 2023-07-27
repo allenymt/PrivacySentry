@@ -31,4 +31,6 @@ open class PrivacyExtension {
     var enableCloseServiceExport = false
     // Export白名单Service
     var serviceExportPkgWhiteList: Set<String>? = null
+    // hook Service的startCommand方法，修复在MIUI上的自启动问题
+    var enableHookServiceStartCommand = false
 }

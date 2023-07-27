@@ -7,6 +7,9 @@ import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import com.yl.lib.plugin.sentry.task.ManifestProcessor
 import com.yl.lib.plugin.sentry.task.assets.MoveAssetsTask
 import com.yl.lib.plugin.sentry.transform.*
+import com.yl.lib.plugin.sentry.transform.manager.HookFieldManager
+import com.yl.lib.plugin.sentry.transform.manager.HookMethodManager
+import com.yl.lib.plugin.sentry.transform.manager.ReplaceClassManager
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.io.File

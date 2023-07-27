@@ -101,4 +101,6 @@ privacy {
     enableCloseServiceExport = true
     // Export白名单Service
     serviceExportPkgWhiteList = ["white"]
+
+    enableHookServiceStartCommand = true
 }
