@@ -3,8 +3,8 @@
     例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
 
 ## 群二维码
-<img width="290" alt="image" src="https://github.com/allenymt/PrivacySentry/assets/8003195/53bef2df-0d3e-4508-838d-0e46943c5b1f">
 
+<img width="290" alt="image" src="https://github.com/allenymt/PrivacySentry/assets/8003195/4d49d72d-88be-4e41-8575-49363e0894ce">
 
 
 ## 更新日志
