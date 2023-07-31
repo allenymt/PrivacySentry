@@ -199,7 +199,8 @@
 ```
 
 ```
-    在隐私协议确认的时候调用，这一步非常重要！，一定要加
+    如果在日志中发现check!!! 还未展示隐私协议，Illegal print，说明此时还未同意隐私协议，调用了敏感或者违规的api
+    所以在隐私协议确认的时候调用，这一步非常重要！，一定要加，这一步是告知SDK，APP已经同意隐私协议了
     kotlin:PrivacySentry.Privacy.updatePrivacyShow()
     java:PrivacySentry.Privacy.INSTANCE.updatePrivacyShow();
 ```
@@ -320,6 +321,7 @@ public class PrivacyFile extends File {
 -     排查结果可参考目录下的demo_result.xls，排查结果支持两个维度查看，第一是结合隐私协议的展示时机和敏感方法的调用时机，第二是统计所有敏感函数的调用次数
 -     排查结果可观察日志，结果文件会在 /storage/emulated/0/Android/data/yourPackgeName/files/xx.xls，需要手动执行下adb pull
 -     logcat日志查看：TAG名为PrivacyOfficer
+  
 ## 基本原理
 -     编译期注解+hook方案，第一个transform收集需要拦截的敏感函数，第二个transform替换敏感函数，运行期收集日志，同时支持游客模式
 -     为什么不用xposed等框架？ 因为想做本地自动化定期排查，第三方hook框架外部依赖性太大
