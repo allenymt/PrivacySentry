@@ -182,6 +182,8 @@
                         .configResultFileName("buyer_privacy")
                         // 配置游客模式，true打开游客模式，false关闭游客模式
                         .configVisitorModel(false)
+	`		//  debug打开，可以看到logcat的堆栈日志
+			.syncDebug(true)
                         // 配置写入文件日志 , 线上包这个开关不要打开！！！！，true打开文件输入，false关闭文件输入
                         .enableFileResult(true)
                         // 持续写入文件30分钟
