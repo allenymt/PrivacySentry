@@ -21,8 +21,12 @@ class TimeLessMemoryCache<T> : BasePrivacyCache<T>(PrivacyCacheType.TIMELINESS_D
             null
         }
 
-        value?.let {
-            if (System.currentTimeMillis() > timeMap[key]!!) {
+        if (value == null) {
+            return  Pair(false, default)
+        }
+
+        return value.let {
+            if (System.currentTimeMillis() < timeMap[key]!!) {
                 Pair(true, value)
             } else {
                 paramMap.remove(key)
@@ -30,7 +34,6 @@ class TimeLessMemoryCache<T> : BasePrivacyCache<T>(PrivacyCacheType.TIMELINESS_D
                 Pair(false, default)
             }
         }
-        return Pair(false, default)
     }
 
     override fun put(key: String, value: T) {
