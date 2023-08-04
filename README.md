@@ -4,7 +4,7 @@
 
 ## 群二维码
 
-<img width="290" alt="image" src="https://github.com/allenymt/PrivacySentry/assets/8003195/4d49d72d-88be-4e41-8575-49363e0894ce">
+<img width="290" alt="image" src="https://github.com/allenymt/PrivacySentry/assets/8003195/522b3a77-0bd3-48d3-a6c2-ce1e69f0d23f">
 
 
 ## 更新日志
