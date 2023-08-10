@@ -4,7 +4,8 @@
 
 ## 群二维码
 
-<img width="290" alt="image" src="https://github.com/allenymt/PrivacySentry/assets/8003195/522b3a77-0bd3-48d3-a6c2-ce1e69f0d23f">
+加我个人微信，备注来意PrivacySentry, 拉你进社区群
+<img width="290" alt="image" src="https://github.com/allenymt/PrivacySentry/assets/8003195/76f2124e-f58d-4420-ac2d-8d33b1093907">
 
 
 ## 更新日志
