@@ -36,44 +36,6 @@ class HookClassVisitor : ClassVisitor {
     // 遍历过程中 是否找到OnStartCommand的方法
     private var bFindOnStartCommand = false
 
-    /**
-     *  ClassVisitor cv = new ClassVisitor(Opcodes.ASM7, cw) {
-    @Override
-    public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
-    // 如果要新增的方法已经存在，则不需要新增
-    if ("myNewMethod".equals(name)) {
-    return null;
-    }
-    // 生成要新增的方法的字节码，生成对应的 MethodVisitor 对象
-    if ("<init>".equals(name)) {
-    // 如果是构造方法，则在 super() 后面调用 myNewMethod()
-    MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
-    return new MethodVisitor(Opcodes.ASM7, mv) {
-    @Override
-    public void visitInsn(int opcode) {
-    if (opcode == Opcodes.RETURN) {
-    visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/example/MyClass", "myNewMethod", "()V", false);
-    }
-    super.visitInsn(opcode);
-    }
-    };
-    } else {
-    // 如果不是构造方法，则直接生成方法字节码
-    MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
-    return new MethodVisitor(Opcodes.ASM7, mv) {
-    @Override
-    public void visitCode() {
-    super.visitCode();
-    visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/System", "currentTimeMillis", "()J", false);
-    visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/String", "valueOf", "(J)Ljava/lang/String;", false);
-    visitMethodInsn(Opcodes.INVOKESTATIC, "android/util/Log", "d", "(Ljava/lang/String;Ljava/lang/String;)I", false);
-    visitInsn(Opcodes.RETURN);
-    }
-    };
-    }
-    }
-    };
-     */
     constructor(
         api: Int,
         classVisitor: ClassVisitor?,
@@ -98,7 +60,7 @@ class HookClassVisitor : ClassVisitor {
         super.visit(version, access, name, signature, superName, interfaces)
         if (name != null) {
             className = name.replace("/", ".")
-            bIsService = PrivacyPluginUtil.privacyPluginUtil.isService(className, superName?.replace("/", "."),logger)
+            bIsService = PrivacyPluginUtil.privacyPluginUtil.isService(className, superName?.replace("/", "."))
             if (bIsService){
                 logger.info("HookClassVisitor visit ServiceClassName = $className")
             }

@@ -13,24 +13,31 @@ class PrivacyPluginUtil {
 
     }
 
+    var logger: Logger? = null
+        set(value) {
+            field = value
+        }
+
+
     fun isActivity(name: String, superName: String?): Boolean {
-        return name.contains("Activity") || superName?.contains("Activity") == true
+        return lastIndexOfDot(name).contains("Activity") && lastIndexOfDot(
+            superName
+        )?.contains("")
     }
 
-    fun isService(name: String, superName: String?, logger: Logger): Boolean {
-        return lastIndexOfDot(name, logger).contains("Service") && lastIndexOfDot(
-            superName,
-            logger
+    fun isService(name: String, superName: String?): Boolean {
+        return lastIndexOfDot(name).contains("Service") && lastIndexOfDot(
+            superName
         )?.contains("Service")
     }
 
-    private fun lastIndexOfDot(name: String?, logger: Logger): String {
-        logger.info("lastIndexOfDot name = $name")
+    private fun lastIndexOfDot(name: String?): String {
+        logger?.info("lastIndexOfDot name = $name")
         var index = name?.lastIndexOf(".") ?: 0
         if (index == -1) {
             return name ?: ""
         }
-        logger.info(
+        logger?.info(
             "lastIndexOfDot name = $name , index = $index ， result is ${
                 name?.substring(
                     index,
@@ -40,4 +47,33 @@ class PrivacyPluginUtil {
         )
         return name?.substring(index + 1, name.length) ?: ""
     }
+
+    fun ignoreClass(className: String, blackList: Set<String>? = emptySet()): Boolean {
+        val entryName = className.replace("/",".")
+        blackList?.forEach{
+            if (entryName.contains(it))
+                return false
+        }
+        if (!entryName.endsWith(".class")
+//                || entryName.contains("$") // kotlin object编译后都是内部类，因此这里要放开
+            || entryName.endsWith("R.class")
+            || entryName.endsWith("BuildConfig.class")
+            || entryName.contains("android/support/")
+            || entryName.contains("android/arch/")
+            || entryName.contains("android/app/")
+            || entryName.contains("android/material")
+            || entryName.contains("androidx")
+            || entryName.endsWith(".SF")
+            || entryName.contains(".DSA")
+            || entryName.contains(".RSA")
+            || entryName.contains(".MF")
+            ||entryName.contains("META-INF")
+            // 过滤掉库本身
+            || entryName.contains("com/yl/lib/privacy_annotation")
+        ) {
+            return false
+        }
+        return true
+    }
+
 }
