@@ -1,10 +1,9 @@
 # PrivacySentry
-    android隐私合规检测，不仅仅是是检测，碰到第三方SDK不好解决的或者修复周期很长的，我们等不了那么长时间，可以通过这个库去动态拦截
-    例如游客模式，这种通过xposed\epic只能做检测，毕竟xposed\epic不能带到线上，但是asm可以
+    android隐私合规检测工具，可规避应用市场上架合规检测的大部分问题
 
 ## 群二维码
 
-加我个人微信，备注来意PrivacySentry, 拉你进社区群
+加作者个人微信，备注来意PrivacySentry, 进社区群
 <img width="290" alt="image" src="https://github.com/allenymt/PrivacySentry/assets/8003195/76f2124e-f58d-4420-ac2d-8d33b1093907">
 
 
