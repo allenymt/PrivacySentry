@@ -15,6 +15,8 @@ import org.objectweb.asm.tree.MethodInsnNode
 /**
  * @author yulun
  * @since 2023-08-08 10:55
+ * @see com.yl.lib.privacy_annotation.PrivacyMethodProxy
+ * hook方法
  */
 class MethodHookTransform : BaseHookTransform() {
 

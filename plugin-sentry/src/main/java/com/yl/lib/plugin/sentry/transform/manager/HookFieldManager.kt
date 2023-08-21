@@ -28,21 +28,15 @@ open class HookFieldManager {
         }
 
         fun findHookItemByName(
-            fieldName: String
-        ): HookFieldItem? {
-            return findHookItemByName(fieldName, "", "")
-        }
-
-        fun findHookItemByName(
             fieldName: String ?= "", classOwnerName: String? = "",
-            methodReturnDesc: String? = ""
+            fieldDesc: String? = ""
         ): HookFieldItem? {
             if (fieldName == "") {
                 return null
             }
 
             return hookFieldSet.find {
-                isHookFieldItem(it, fieldName ?: "", classOwnerName ?: "", methodReturnDesc ?: "")
+                isHookFieldItem(it, fieldName ?: "", classOwnerName ?: "", fieldDesc ?: "")
             }
         }
 
