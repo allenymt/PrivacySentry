@@ -7,10 +7,10 @@ import com.yl.lib.plugin.sentry.transform.manager.HookFieldItem
 import com.yl.lib.plugin.sentry.transform.manager.HookFieldManager
 import com.yl.lib.plugin.sentry.transform.manager.HookMethodItem
 import com.yl.lib.plugin.sentry.transform.manager.HookMethodManager
-import com.yl.lib.plugin.sentry.util.formatName
-import com.yl.lib.plugin.sentry.util.privacyGetValue
+import com.yl.lib.plugin.sentry.util.*
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import org.gradle.api.Project
+import org.objectweb.asm.Type
 import org.objectweb.asm.tree.ClassNode
 
 /**
@@ -29,7 +29,7 @@ class MethodProxyCollectTransform : AbsClassTransformer() {
         }
 
         klass.invisibleAnnotations?.find {
-            it.desc.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassProxy;")
+            it.desc.privacyClassProxy()
         } ?: return true
 
         return false
@@ -44,30 +44,28 @@ class MethodProxyCollectTransform : AbsClassTransformer() {
         // 收集方法
         klass.methods.filter { methodNode ->
             methodNode.invisibleAnnotations?.find {
-                it.desc.equals("Lcom/yl/lib/privacy_annotation/PrivacyProxyMethod;")
+                it.desc.privacyMethodProxy()
             } != null
         }.forEach { methodNode ->
             var hookMethodItem = HookMethodItem(klass.formatName(), methodNode.name, methodNode.desc)
 
             var annotationNode = methodNode.invisibleAnnotations?.find {
-                it.desc.equals("Lcom/yl/lib/privacy_annotation/PrivacyProxyMethod;")
+                it.desc.privacyMethodProxy()
             }
 
-            var classSourceName = annotationNode?.privacyGetValue<String>("originalClass")
-            hookMethodItem?.originClassName =
-                classSourceName?.substring(1, classSourceName.length - 1)
+            var classSourceName = annotationNode?.privacyGetValue<Type>("originalClass").toString()
+            hookMethodItem.originClassName =
+                classSourceName.substring(1, classSourceName.length - 1)
 
-            hookMethodItem?.ignoreClass =
-                annotationNode?.privacyGetValue<Boolean>("ignoreClass") == true
+            hookMethodItem.ignoreClass = annotationNode?.privacyGetValue<Boolean>("ignoreClass") == true
 
-            hookMethodItem?.originMethodName =
-                annotationNode?.privacyGetValue<String>("originalMethod")
+            hookMethodItem.originMethodName = annotationNode?.privacyGetValue<String>("originalMethod")
 
-            hookMethodItem?.originMethodAccess == annotationNode?.privacyGetValue<Int>("originalClass")
+            hookMethodItem.originMethodAccess = annotationNode?.privacyGetValue<Int>("originalOpcode")
 
 
             if (hookMethodItem.originMethodAccess == MethodInvokeOpcode.INVOKESTATIC) {
-                hookMethodItem.originMethodDesc = hookMethodItem?.proxyMethodDesc
+                hookMethodItem.originMethodDesc = hookMethodItem.proxyMethodDesc
             } else if (hookMethodItem.originMethodAccess == MethodInvokeOpcode.INVOKEVIRTUAL ||
                 hookMethodItem.originMethodAccess == MethodInvokeOpcode.INVOKEINTERFACE ||
                 hookMethodItem.originMethodAccess == MethodInvokeOpcode.INVOKESPECIAL
@@ -79,20 +77,20 @@ class MethodProxyCollectTransform : AbsClassTransformer() {
                         ""
                     )
             }
-            HookMethodManager.MANAGER.appendHookMethod(hookMethodItem!!)
+            HookMethodManager.MANAGER.appendHookMethod(hookMethodItem)
         }
 
         // 收集变量
         klass.fields.filter { fieldNode ->
             fieldNode.invisibleAnnotations?.find {
-                it.desc.equals("Lcom/yl/lib/privacy_annotation/PrivacyProxyField;")
+                it.desc.privacyFieldProxy()
             } != null
         }.forEach { fieldNode ->
             var annotationNode = fieldNode.invisibleAnnotations?.find {
-                it.desc.equals("Lcom/yl/lib/privacy_annotation/PrivacyProxyField;")
+                it.desc.privacyFieldProxy()
             }
 
-            var classSourceName = annotationNode?.privacyGetValue<String>("originalClass")
+            var classSourceName = annotationNode?.privacyGetValue<Type>("originalClass").toString()
             var item = HookFieldItem(
                 proxyClassName = klass.formatName(),
                 proxyFieldDesc =  fieldNode.desc,

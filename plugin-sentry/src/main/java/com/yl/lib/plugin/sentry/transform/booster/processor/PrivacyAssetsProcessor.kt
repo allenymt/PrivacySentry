@@ -5,31 +5,31 @@ import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.pipeline.TransformTask
 import com.didiglobal.booster.gradle.mergedAssets
 import com.didiglobal.booster.gradle.project
-import com.didiglobal.booster.gradle.variantType
 import com.didiglobal.booster.task.spi.VariantProcessor
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import com.yl.lib.plugin.sentry.task.assets.MoveAssetsTask
 import com.yl.lib.plugin.sentry.transform.booster.PrivacyHookTransform
 import com.yl.lib.plugin.sentry.util.privacyPrintln
-import org.gradle.api.Project
-import java.io.File
 
 /**
  * @author yulun
  * @since 2023-08-18 15:08
  */
-class PrivacyAssetsProcessor : VariantProcessor{
+class PrivacyAssetsProcessor : VariantProcessor {
     override fun process(variant: BaseVariant) {
         // privacy插件不支持library单独引用，只支持application引用
-        if (variant is ApplicationVariant){
+        if (variant is ApplicationVariant) {
             "PrivacyAssetsProcessor ${variant.name}".privacyPrintln()
-            var moveTask = variant.project.tasks.create("Privacy${variant.name}AssetsTask", MoveAssetsTask::class.java)
+            var moveTask = variant.project.tasks.create(
+                "Privacy${variant.name}AssetsTask",
+                MoveAssetsTask::class.java
+            )
             "PrivacyAssetsProcessor ${variant.name} MoveAssetsTask is $moveTask".privacyPrintln()
             var privacyExtension = variant.project.extensions.findByType(
                 PrivacyExtension::class.java
             )
             moveTask.fileName = privacyExtension?.replaceFileName ?: ""
-            moveTask.assetsPathList?.addAll(variant.mergedAssets.map { it.absolutePath })
+            moveTask.assetsPathList.add(variant.mergeAssetsProvider.get().outputDir.get().asFile.absolutePath)
             "${moveTask.assetsPathList}".privacyPrintln()
 
             var transformTask = variant.project.tasks.withType(TransformTask::class.java)

@@ -138,5 +138,22 @@ fun String.privacyPrintln() {
     println("[privacy plugin]===>$this")
 }
 
-// todo 增加判断注解类的方法
-//fun
+fun String.privacyClassProxy(): Boolean {
+    return this == "Lcom/yl/lib/privacy_annotation/PrivacyClassProxy;"
+}
+
+fun String.privacyClassBlack(): Boolean {
+    return this == "Lcom/yl/lib/privacy_annotation/PrivacyClassBlack;"
+}
+
+fun String.privacyClassReplace(): Boolean {
+    return this == "Lcom/yl/lib/privacy_annotation/PrivacyClassReplace;"
+}
+
+fun String.privacyFieldProxy(): Boolean {
+    return this == "Lcom/yl/lib/privacy_annotation/PrivacyFieldProxy;"
+}
+
+fun String.privacyMethodProxy(): Boolean {
+    return this == "Lcom/yl/lib/privacy_annotation/PrivacyMethodProxy;"
+}

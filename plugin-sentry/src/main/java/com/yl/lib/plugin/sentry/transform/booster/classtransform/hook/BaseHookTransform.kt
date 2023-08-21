@@ -6,6 +6,9 @@ import com.yl.lib.plugin.sentry.transform.manager.HookFieldManager
 import com.yl.lib.plugin.sentry.transform.manager.HookMethodManager
 import com.yl.lib.plugin.sentry.transform.manager.ReplaceClassManager
 import com.yl.lib.plugin.sentry.util.formatName
+import com.yl.lib.plugin.sentry.util.privacyClassBlack
+import com.yl.lib.plugin.sentry.util.privacyClassProxy
+import com.yl.lib.plugin.sentry.util.privacyClassReplace
 import org.objectweb.asm.tree.ClassNode
 
 /**
@@ -17,9 +20,9 @@ open class BaseHookTransform : AbsClassTransformer() {
         var ignore = super.ignoreClass(context, klass)
         if (!ignore) {
             if (klass.invisibleAnnotations?.find {
-                    it.desc == "Lcom/yl/lib/privacy_annotation/PrivacyClassProxy;" ||
-                            it.desc == "Lcom/yl/lib/privacy_annotation/PrivacyClassReplace;" ||
-                            it.desc == "Lcom/yl/lib/privacy_annotation/PrivacyClassBlack;"
+                    it.desc.privacyClassProxy() ||
+                            it.desc.privacyClassReplace() ||
+                            it.desc.privacyClassBlack()
                 } != null) {
                 return true
             }

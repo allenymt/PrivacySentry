@@ -35,14 +35,16 @@ class ReplacedMethodManger {
                 GFileUtils.mkdirs(resultFile)
             }
 
-            resultFile?.let {
+            resultFile.let {
                 GFileUtils.deleteQuietly(resultFile)
             }
-            GFileUtils.writeFile(
-                objectToJsonString(
-                    replaceMethodMap.toList().sortedByDescending { it.second.count }.toMap()
-                ), resultFile
-            )
+            objectToJsonString(
+                replaceMethodMap.toList().sortedByDescending { it.second.count }.toMap()
+            )?.let {
+                GFileUtils.writeFile(
+                    it, resultFile
+                )
+            }
         }
 
         private fun buildKey(methodItem: ReplaceMethodItem): String {

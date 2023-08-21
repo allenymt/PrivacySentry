@@ -31,13 +31,13 @@ class MethodHookTransform : BaseHookTransform() {
                     node.apply {
                         var methodItem =
                             HookMethodManager.MANAGER.findHookItemByName(
-                                this.name,
-                                this.owner,
-                                this.desc,
-                                this.opcode
+                                node.name,
+                                node.owner,
+                                node.desc,
+                                node.opcode
                             )
                         if (methodItem != null && shouldHook(
-                                name,
+                                node.name,
                                 bLdcHookMethod,
                                 privacyExtension
                             )
@@ -45,7 +45,7 @@ class MethodHookTransform : BaseHookTransform() {
                             ReplacedMethodManger.MANAGER.addReplaceMethodItem(
                                 ReplaceMethodItem(
                                     klass.formatName(),
-                                    methodNode.name,
+                                    node.name,
                                     owner.replace("/", "."),
                                     name
                                 )

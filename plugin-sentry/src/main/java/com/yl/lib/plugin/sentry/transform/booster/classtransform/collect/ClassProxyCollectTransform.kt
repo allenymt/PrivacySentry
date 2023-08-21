@@ -6,8 +6,10 @@ import com.yl.lib.plugin.sentry.transform.booster.asmtransform.AbsClassTransform
 import com.yl.lib.plugin.sentry.transform.manager.ReplaceClassItem
 import com.yl.lib.plugin.sentry.transform.manager.ReplaceClassManager
 import com.yl.lib.plugin.sentry.util.formatName
+import com.yl.lib.plugin.sentry.util.privacyClassReplace
 import com.yl.lib.plugin.sentry.util.privacyGetValue
 import org.gradle.api.Project
+import org.objectweb.asm.Type
 import org.objectweb.asm.tree.ClassNode
 
 /**
@@ -23,7 +25,7 @@ class ClassProxyCollectTransform : AbsClassTransformer() {
             return true
         }
         klass.invisibleAnnotations?.find {
-            it.desc.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassReplace;")
+            it.desc.privacyClassReplace()
         } ?: return true
 
         return false
@@ -36,10 +38,10 @@ class ClassProxyCollectTransform : AbsClassTransformer() {
         klass: ClassNode
     ): ClassNode {
         var annotationNode = klass.invisibleAnnotations?.find {
-            it.desc.equals("Lcom/yl/lib/privacy_annotation/PrivacyClassReplace;")
+            it.desc.privacyClassReplace()
         }
 
-        var classSourceName = annotationNode?.privacyGetValue<String>("originClass")
+        var classSourceName = annotationNode?.privacyGetValue<Type>("originClass").toString()
         var item = ReplaceClassItem(
             originClassName = classSourceName?.substring(1, classSourceName?.length - 1) ?: "",
             proxyClassName = klass.formatName()
