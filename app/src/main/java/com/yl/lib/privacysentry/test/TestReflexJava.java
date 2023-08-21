@@ -74,7 +74,7 @@ public class TestReflexJava {
             Class ctm = Class.forName("android.telephony.TelephonyManager");
             Method method = ctm.getDeclaredMethod("getSubscriberId");
             method.invoke(var2);
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | SecurityException e) {
             e.printStackTrace();
         }
     }
