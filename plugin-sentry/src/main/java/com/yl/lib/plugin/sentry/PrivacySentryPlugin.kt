@@ -1,8 +1,17 @@
 package com.yl.lib.plugin.sentry
 
 import com.android.build.gradle.AppExtension
+import com.didiglobal.booster.gradle.getAndroid
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
-import com.yl.lib.plugin.sentry.transform.*
+import com.yl.lib.plugin.sentry.transform.booster.PrivacyCollectTransform
+import com.yl.lib.plugin.sentry.transform.booster.PrivacyHookTransform
+import com.yl.lib.plugin.sentry.transform.booster.processor.PrivacyAssetsProcessor
+import com.yl.lib.plugin.sentry.transform.booster.processor.PrivacyManifestProcessor
+import com.yl.lib.plugin.sentry.transform.manager.HookFieldManager
+import com.yl.lib.plugin.sentry.transform.manager.HookMethodManager
+import com.yl.lib.plugin.sentry.transform.manager.ReplaceClassManager
+import com.yl.lib.plugin.sentry.util.PrivacyPluginUtil
+import com.yl.lib.plugin.sentry.util.privacyPrintln
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -13,19 +22,31 @@ import org.gradle.api.Project
 class PrivacySentryPlugin : Plugin<Project> {
     override fun apply(project: Project) {
 
-        //只在application下生效
-        if (!project.plugins.hasPlugin("com.android.application")) {
+        var extension = project.extensions.create("privacy", PrivacyExtension::class.java)
+        if (!extension.enablePrivacy) {
             return
         }
-        HookFieldManager.MANAGER.clear()
-        HookMethodManager.MANAGER.clear()
-        ReplaceClassManager.MANAGER.clear()
-        var privacyExtension = project.extensions.create("privacy", PrivacyExtension::class.java)
-        var android = project.extensions.getByType(AppExtension::class.java)
-        // 收集注解信息的任务
-        android?.registerTransform(PrivacyCollectTransform(project.logger, privacyExtension))
+        PrivacyPluginUtil.privacyPluginUtil.logger = project.logger
 
-        // 执行字节码替换的任务
-        android?.registerTransform(PrivacySentryTransform(project.logger, privacyExtension,project.buildDir.absolutePath))
+
+        when {
+            project.plugins.hasPlugin("com.android.application") -> {
+                HookFieldManager.MANAGER.clear()
+                HookMethodManager.MANAGER.clear()
+                ReplaceClassManager.MANAGER.clear()
+                project.getAndroid<AppExtension>().let { androidExt ->
+                    androidExt.registerTransform(PrivacyCollectTransform(project))
+                    androidExt.registerTransform(PrivacyHookTransform(project))
+                    project.gradle.projectsEvaluated {
+                        "===projectsEvaluated===".privacyPrintln()
+                        androidExt.applicationVariants.forEach { variant ->
+                            PrivacyAssetsProcessor().process(variant)
+                            PrivacyManifestProcessor().process(variant)
+                        }
+                    }
+                }
+            }
+
+        }
     }
 }
