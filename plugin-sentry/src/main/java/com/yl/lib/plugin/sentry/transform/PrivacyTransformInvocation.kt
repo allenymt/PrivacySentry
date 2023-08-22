@@ -67,6 +67,12 @@ internal class PrivacyTransformInvocation(
         return project.hasProperty(name)
     }
 
+    override fun <R> registerCollector(collector: Collector<R>) {
+    }
+
+    override fun <R> unregisterCollector(collector: Collector<R>) {
+    }
+
 
     internal fun doFullTransform() = doTransform(this::fullTransform)
 
