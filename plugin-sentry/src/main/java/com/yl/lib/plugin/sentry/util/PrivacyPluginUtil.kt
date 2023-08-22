@@ -18,17 +18,28 @@ class PrivacyPluginUtil {
             field = value
         }
 
+    fun i(info: Any) {
+        logger?.info(info.toString())
+    }
+
+    fun d(info: Any) {
+        logger?.info(info.toString())
+    }
+
+    fun e(info: Any) {
+        logger?.info(info.toString())
+    }
 
     fun isActivity(name: String, superName: String?): Boolean {
-        return lastIndexOfDot(name).contains("Activity") && lastIndexOfDot(
+        return lastIndexOfDot(name).endsWith("Activity") && lastIndexOfDot(
             superName
-        )?.contains("")
+        ).endsWith("")
     }
 
     fun isService(name: String, superName: String?): Boolean {
-        return lastIndexOfDot(name).contains("Service") && lastIndexOfDot(
+        return lastIndexOfDot(name).endsWith("Service") && lastIndexOfDot(
             superName
-        )?.contains("Service")
+        ).endsWith("Service")
     }
 
     private fun lastIndexOfDot(name: String?): String {
@@ -49,8 +60,8 @@ class PrivacyPluginUtil {
     }
 
     fun ignoreClass(className: String, blackList: Set<String>? = emptySet()): Boolean {
-        val entryName = className.replace("/",".")
-        blackList?.forEach{
+        val entryName = className.replace("/", ".")
+        blackList?.forEach {
             if (entryName.contains(it))
                 return false
         }
@@ -67,7 +78,7 @@ class PrivacyPluginUtil {
             || entryName.contains(".DSA")
             || entryName.contains(".RSA")
             || entryName.contains(".MF")
-            ||entryName.contains("META-INF")
+            || entryName.contains("META-INF")
             // 过滤掉库本身
             || entryName.contains("com/yl/lib/privacy_annotation")
         ) {
