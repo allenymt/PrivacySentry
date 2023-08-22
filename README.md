@@ -8,6 +8,11 @@
 
 
 ## 更新日志
+    
+    2023-08-22(1.3.3-灰度版本)
+        1. 重构plugin部分，引入Boost, 适配Agp和Gradle高版本，支持AGP7.0
+        2. 尝试解决小米照明弹自启动的问题
+
     2023-07-12(1.3.2)
         1. 对于hook的方法，内部不再try catch
 
@@ -156,17 +161,31 @@
         // 黑名单配置，可以设置这部分包名不会被修改字节码
         // 项目里如果有引入高德地图，先加黑 blackList = ["com.loc","com.amap.api"], asm的版本有冲突
         // 如果需要生成静态扫描文件， 默认名是replace.json
-        privacy {
+       privacy {
+            // 设置免hook的名单
             blackList = []
-            replaceFileName = "replace.json"
-	        // 开启hook反射
-    	    hookReflex = true
-    	    // debug编译默认开启，支持关闭，感谢run的pr
-    	    debugEnable = true
-    	    // 开启hook 替换类，目前支持file
+            // 开关PrivacySentry插件功能
+            enablePrivacy = true
+            // 开启hook反射的方法
+            hookReflex = true
+            // 开启hook 替换类，目前支持file
             hookConstructor = true
-            // 是否开启hook变量，默认为false
+            // 是否开启hook变量，默认为false，建议弃用
             hookField = true
+        
+        
+            // 以下是为了解决小米照明弹自启动问题的尝试, 如果没有自启动的需求，这里关闭即可
+            // hook Service的部分代码，修复在MIUI上的自启动问题
+            // 部分Service把自己的Priority设置为1000，这里开启代理功能，可以代理成0
+            enableReplacePriority = true
+            replacePriority = 1
+        
+            // 支持关闭Service的Export功能，默认为false，注意部分厂商通道之类的push(xiaomi、vivo、huawei等厂商的pushService)，不能关闭
+            enableCloseServiceExport = true
+            // Export白名单Service, 这里根据厂商的名称设置了白名单
+            serviceExportPkgWhiteList = ["xiaomi","vivo","honor","meizu","oppo","Oppo","Hms","huawei","stp","Honor"]
+            // 修改Service的onStartCommand 返回值修改为START_NOT_STICKY
+            enableHookServiceStartCommand = true
         }
 
 ```
