@@ -95,15 +95,15 @@ privacy {
     hookConstructor = true
     hookField = true
 
-    // hook Service的部分代码，修复在MIUI上的自启动问题
-    // 部分Service把自己的Priority设置为1000，这里开启代理功能，可以代理成0
-    enableReplacePriority = true
-    replacePriority = 1
-
-    // 支持关闭Service的Export功能，默认为false，注意部分厂商通道之类的push，不能关闭
-    enableCloseServiceExport = true
-    // Export白名单Service
-    serviceExportPkgWhiteList = ["white"]
-
-    enableHookServiceStartCommand = true
+//    // hook Service的部分代码，修复在MIUI上的自启动问题
+//    // 部分Service把自己的Priority设置为1000，这里开启代理功能，可以代理成0
+//    enableReplacePriority = true
+//    replacePriority = 1
+//
+//    // 支持关闭Service的Export功能，默认为false，注意部分厂商通道之类的push，不能关闭
+//    enableCloseServiceExport = true
+//    // Export白名单Service
+//    serviceExportPkgWhiteList = ["white"]
+//
+//    enableHookServiceStartCommand = true
 }
