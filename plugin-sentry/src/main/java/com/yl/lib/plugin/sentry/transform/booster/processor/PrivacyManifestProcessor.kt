@@ -6,7 +6,7 @@ import com.didiglobal.booster.gradle.getTaskName
 import com.didiglobal.booster.gradle.project
 import com.didiglobal.booster.task.spi.VariantProcessor
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
-import com.yl.lib.plugin.sentry.task.ManifestProcessorTask
+import com.yl.lib.plugin.sentry.transform.booster.task.ManifestProcessorTask
 import com.yl.lib.plugin.sentry.util.privacyPrintln
 
 /**

@@ -1,4 +1,4 @@
-package com.yl.lib.plugin.sentry.task
+package com.yl.lib.plugin.sentry.transform.booster.task
 
 import com.android.SdkConstants
 import com.android.build.gradle.api.BaseVariant
@@ -16,6 +16,9 @@ import javax.xml.transform.dom.DOMSource
 /**
  * @author yulun
  * @since 2022-11-17 14:04
+ * 处理manifest文件，目前主要针对Service
+ *  1. 关闭Service的Export
+ *  2. 部分Service的priority设置为1000，可以强行替换
  */
 open class ManifestProcessorTask : DefaultTask() {
 

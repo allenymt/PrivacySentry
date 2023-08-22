@@ -13,6 +13,7 @@ import org.objectweb.asm.tree.LdcInsnNode
 /**
  * @author yulun
  * @since 2023-08-08 10:55
+ * 处理Service的onStartCommand方法，把返回值强行修改为
  */
 class ServiceHookTransform : BaseHookTransform() {
 
@@ -30,6 +31,9 @@ class ServiceHookTransform : BaseHookTransform() {
         context: TransformContext,
         klass: ClassNode
     ): ClassNode {
+        if (!privacyExtension.enableHookServiceStartCommand){
+            return klass
+        }
         var onStartCommandMethod = klass.methods.find { it.name == "onStartCommand" }
         if (onStartCommandMethod == null) {
             val onStartCommand = klass.visitMethod(

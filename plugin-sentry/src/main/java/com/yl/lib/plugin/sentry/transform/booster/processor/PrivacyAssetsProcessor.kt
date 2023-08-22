@@ -3,11 +3,10 @@ package com.yl.lib.plugin.sentry.transform.booster.processor
 import com.android.build.gradle.api.ApplicationVariant
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.pipeline.TransformTask
-import com.didiglobal.booster.gradle.mergedAssets
 import com.didiglobal.booster.gradle.project
 import com.didiglobal.booster.task.spi.VariantProcessor
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
-import com.yl.lib.plugin.sentry.task.assets.MoveAssetsTask
+import com.yl.lib.plugin.sentry.transform.booster.task.PrivacyMoveAssetsTask
 import com.yl.lib.plugin.sentry.transform.booster.PrivacyHookTransform
 import com.yl.lib.plugin.sentry.util.privacyPrintln
 
@@ -22,7 +21,7 @@ class PrivacyAssetsProcessor : VariantProcessor {
             "PrivacyAssetsProcessor ${variant.name}".privacyPrintln()
             var moveTask = variant.project.tasks.create(
                 "Privacy${variant.name}AssetsTask",
-                MoveAssetsTask::class.java
+                PrivacyMoveAssetsTask::class.java
             )
             "PrivacyAssetsProcessor ${variant.name} MoveAssetsTask is $moveTask".privacyPrintln()
             var privacyExtension = variant.project.extensions.findByType(

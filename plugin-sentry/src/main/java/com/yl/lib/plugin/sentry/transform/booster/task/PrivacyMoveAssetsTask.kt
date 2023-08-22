@@ -1,4 +1,4 @@
-package com.yl.lib.plugin.sentry.task.assets
+package com.yl.lib.plugin.sentry.transform.booster.task
 
 import com.yl.lib.plugin.sentry.transform.manager.ReplacedMethodManger
 import org.gradle.api.DefaultTask
@@ -11,7 +11,7 @@ import java.io.File
  * @since 2022-06-29 16:06
  * 把扫描生成的静态文件 写到apk assets目录下
  */
-open class MoveAssetsTask : DefaultTask() {
+open class PrivacyMoveAssetsTask : DefaultTask() {
 
     var fileName: String? = null
 

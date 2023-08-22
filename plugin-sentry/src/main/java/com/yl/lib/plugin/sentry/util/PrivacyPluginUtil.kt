@@ -63,16 +63,14 @@ class PrivacyPluginUtil {
         val entryName = className.replace("/", ".")
         blackList?.forEach {
             if (entryName.contains(it))
-                return false
+                return true
         }
-        if (!entryName.endsWith(".class")
-//                || entryName.contains("$") // kotlin object编译后都是内部类，因此这里要放开
-            || entryName.endsWith("R.class")
+        if (entryName.endsWith("R.class")
             || entryName.endsWith("BuildConfig.class")
-            || entryName.contains("android/support/")
-            || entryName.contains("android/arch/")
-            || entryName.contains("android/app/")
-            || entryName.contains("android/material")
+            || entryName.contains("android.support")
+            || entryName.contains("android.arch")
+            || entryName.contains("android.app")
+            || entryName.contains("android.material")
             || entryName.contains("androidx")
             || entryName.endsWith(".SF")
             || entryName.contains(".DSA")
@@ -80,11 +78,11 @@ class PrivacyPluginUtil {
             || entryName.contains(".MF")
             || entryName.contains("META-INF")
             // 过滤掉库本身
-            || entryName.contains("com/yl/lib/privacy_annotation")
+            || entryName.contains("com.yl.lib.privacy_annotation")
         ) {
-            return false
+            return true
         }
-        return true
+        return false
     }
 
 }
