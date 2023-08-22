@@ -1,4 +1,4 @@
-package com.yl.lib.plugin.sentry.transform
+package com.yl.lib.plugin.sentry.transform.manager
 
 /**
  * @author yulun
@@ -10,7 +10,7 @@ open class HookMethodManager {
         private var hookMethodList: HashSet<HookMethodItem> = HashSet()
 
         /**
-         * 检测是否需要替换某个方法
+         * 检测是否需要代理某个方法
          * @param methodName String
          * @param classOwnerName String
          * @param methodReturnDesc String
@@ -37,7 +37,7 @@ open class HookMethodManager {
         }
 
         /**
-         * 找到替换方法
+         * 找到代理方法
          * @param methodName String
          * @param classOwnerName String
          * @param methodReturnDesc String
@@ -58,7 +58,7 @@ open class HookMethodManager {
         }
 
         /**
-         * 判断当前方法是否可以被替换
+         * 判断当前方法是否可以被代理
          * @param hookItem HookMethodItem
          * @param methodName String
          * @param classOwnerName String
@@ -103,7 +103,7 @@ open class HookMethodManager {
         ) {
             if (hookMethodList.contains(hookMethodItem)) {
                 // 这里有两种情况
-                // 1. 先扫描到privacy自身的配置方法，需要替换掉HashSet里的方法
+                // 1. 先扫描到privacy自身的配置方法，需要代理掉HashSet里的方法
                 // 2. 先扫描到业务自身的配置，那过滤掉不处理
                 // 3. 如果业务方重复定义，那就没办法了，最后被扫描到的会被加入
                 var bPrivacyItem =

@@ -1,4 +1,4 @@
-package com.yl.lib.plugin.sentry.transform
+package com.yl.lib.plugin.sentry.transform.manager
 
 /**
  * @author yulun
@@ -8,7 +8,7 @@ open class HookFieldManager {
     object MANAGER {
         private var hookFieldSet: HashSet<HookFieldItem> = HashSet()
         /**
-         * 检测是否需要替换某个变量
+         * 检测是否需要代理某个变量
          * @param fieldName String
          * @param classOwnerName String
          * @param methodReturnDesc String
@@ -28,21 +28,15 @@ open class HookFieldManager {
         }
 
         fun findHookItemByName(
-            fieldName: String
-        ): HookFieldItem? {
-            return findHookItemByName(fieldName, "", "")
-        }
-
-        fun findHookItemByName(
             fieldName: String ?= "", classOwnerName: String? = "",
-            methodReturnDesc: String? = ""
+            fieldDesc: String? = ""
         ): HookFieldItem? {
             if (fieldName == "") {
                 return null
             }
 
             return hookFieldSet.find {
-                isHookFieldItem(it, fieldName ?: "", classOwnerName ?: "", methodReturnDesc ?: "")
+                isHookFieldItem(it, fieldName ?: "", classOwnerName ?: "", fieldDesc ?: "")
             }
         }
 
@@ -102,7 +96,7 @@ open class HookFieldManager {
         ) {
             if (hookFieldSet.contains(hookFieldItem)) {
                 // 这里有两种情况
-                // 1. 先扫描到privacy自身的配置方法，需要替换掉HashSet里的方法
+                // 1. 先扫描到privacy自身的配置方法，需要代理掉HashSet里的方法
                 // 2. 先扫描到业务自身的配置，那过滤掉不处理
                 // 3. 如果业务方重复定义，那就没办法了，最后被扫描到的会被加入
                 var bPrivacyItem =

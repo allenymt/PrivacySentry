@@ -56,6 +56,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation "androidx.multidex:multidex:2.0.1"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
     if (rootProject.ext.plugin_local_debug) {
         implementation project(":hook-sentry")
         implementation project(":privacy-proxy")
@@ -91,4 +94,16 @@ privacy {
     hookReflex = true
     hookConstructor = true
     hookField = true
+
+    // hook Service的部分代码，修复在MIUI上的自启动问题
+    // 部分Service把自己的Priority设置为1000，这里开启代理功能，可以代理成0
+    enableReplacePriority = true
+    replacePriority = 1
+
+    // 支持关闭Service的Export功能，默认为false，注意部分厂商通道之类的push，不能关闭
+    enableCloseServiceExport = true
+    // Export白名单Service
+    serviceExportPkgWhiteList = ["white"]
+
+    enableHookServiceStartCommand = true
 }

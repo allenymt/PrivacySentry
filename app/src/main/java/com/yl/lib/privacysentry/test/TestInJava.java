@@ -38,8 +38,8 @@ public class TestInJava {
 
     // 测试hook http url connection
     // 思考： 如何解决还没有暴露的合规问题？比如某天规则增加了？线上如何做？如何减少调整？你有没有比较好的解决方案?
-    // 由于是基于编译期，那是否可以通过 替换新的产物来解决，通过patch的方式，因为本质上是替换方法的调用
-    // 动态替换拦不了的
+    // 由于是基于编译期，那是否可以通过 代理新的产物来解决，通过patch的方式，因为本质上是代理方法的调用
+    // 动态代理拦不了的
     public static void testHttpUrlConnection() {
 
         URL url = null;

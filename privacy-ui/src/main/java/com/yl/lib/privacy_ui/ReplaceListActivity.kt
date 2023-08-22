@@ -12,7 +12,7 @@ import com.yl.lib.privacy_ui.replace.ReplaceItemList
 import com.yl.lib.privacy_ui.replace.ReplaceViewModel
 
 /**
- * 展示静态替换数据
+ * 展示静态代理数据
  * @property searchBar SearchView?
  * @property recyclerView RecyclerView?
  */

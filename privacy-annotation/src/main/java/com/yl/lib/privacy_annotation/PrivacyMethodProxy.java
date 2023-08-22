@@ -22,6 +22,6 @@ public @interface PrivacyMethodProxy {
     // 默认是MethodInvokeOpcode.INVOKESTATIC
     int originalOpcode() default MethodInvokeOpcode.INVOKESTATIC;
 
-    // 忽略originalClass参数，在校验方法替换时只校验方法名和方法描述信息
+    // 忽略originalClass参数，在校验方法代理时只校验方法名和方法描述信息
     boolean ignoreClass() default false;
 }

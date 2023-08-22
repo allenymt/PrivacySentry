@@ -204,7 +204,7 @@ open class PrivacyProxyResolver {
 -     排查结果可观察日志，结果文件会在 /storage/emulated/0/Android/data/yourPackgeName/cache/xx.xls，需要手动执行下adb pull
 
 ## 基本原理
--     编译期注解+hook方案，第一个transform收集需要拦截的敏感函数，第二个transform替换敏感函数，运行期收集日志，同时支持游客模式
+-     编译期注解+hook方案，第一个transform收集需要拦截的敏感函数，第二个transform代理敏感函数，运行期收集日志，同时支持游客模式
 -     为什么不用xposed等框架？ 因为想做本地自动化定期排查，第三方hook框架外部依赖性太大
 -     为什么不搞基于lint的排查方式？ 工信部对于运行期 敏感函数的调用时机和次数都有限制，代码扫描解决不了这些问题
 

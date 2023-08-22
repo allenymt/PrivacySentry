@@ -1,9 +1,9 @@
-package com.yl.lib.plugin.sentry.transform
+package com.yl.lib.plugin.sentry.transform.manager
 
 /**
  * @author yulun
  * @since 2022-11-18 15:09
- * 类替换，暂时主要用于构造函数替换
+ * 类代理，暂时主要用于构造函数代理
  */
 class ReplaceClassManager {
     object MANAGER {
@@ -49,7 +49,7 @@ class ReplaceClassManager {
         }
 
         /**
-         * 追加待替换的类
+         * 追加待代理的类
          * @param originClassName String
          * @param proxyClassName String
          */
@@ -74,7 +74,7 @@ class ReplaceClassManager {
         ) {
             if (replaceClassSet.contains(replaceClassItem)) {
                 // 这里有两种情况
-                // 1. 先扫描到privacy自身的配置方法，需要替换掉HashSet里的方法
+                // 1. 先扫描到privacy自身的配置方法，需要代理掉HashSet里的方法
                 // 2. 先扫描到业务自身的配置，那过滤掉不处理
                 // 3. 如果业务方重复定义，那就没办法了，最后被扫描到的会被加入
                 var bPrivacyItem =

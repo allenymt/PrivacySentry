@@ -1,7 +1,5 @@
 package com.yl.lib.privacy_proxy;
 
-import android.os.Build;
-
 import androidx.annotation.Keep;
 
 import com.yl.lib.privacy_annotation.PrivacyClassProxy;
