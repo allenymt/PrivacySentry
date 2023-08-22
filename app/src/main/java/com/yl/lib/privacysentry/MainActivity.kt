@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                 "privacySentryInstalled3 is ${
                     PrivacyMethod.PrivacyMethod.isInstalled3(
                         application,
-                        "com.koudai.weidian.buyer"
+                        "com.xx.xx.xx"
                     )
                 }"
             )
