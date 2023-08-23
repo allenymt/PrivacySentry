@@ -4,6 +4,8 @@ import com.didiglobal.booster.annotations.Priority
 import com.didiglobal.booster.transform.TransformContext
 import com.didiglobal.booster.transform.Transformer
 import com.didiglobal.booster.transform.asm.ClassTransformer
+import com.yl.lib.plugin.sentry.util.PrivacyPluginUtil
+import com.yl.lib.plugin.sentry.util.privacyPrintln
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.tree.ClassNode
@@ -46,6 +48,14 @@ class PrivacyBaseTransformer : Transformer {
             threadMxBean.privacySumTime(
                 it
             ) { it.onPostTransform(context) }
+        }
+
+        val w1 = this.durations.keys.map {
+            it.javaClass.name.length
+        }.max() ?: 20
+        this.durations.forEach { (transformer, ns) ->
+            PrivacyPluginUtil.privacyPluginUtil.i("transform time :${transformer.javaClass.name.padEnd(w1 + 1)}: ${ns / 1000000} ms")
+            "transform time :${transformer.javaClass.name.padEnd(w1 + 1)}: ${ns / 1000000} ms".privacyPrintln()
         }
     }
 
