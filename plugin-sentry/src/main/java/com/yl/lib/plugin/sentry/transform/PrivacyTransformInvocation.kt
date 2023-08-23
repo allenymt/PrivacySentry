@@ -2,11 +2,13 @@ package com.yl.lib.plugin.sentry.transform
 
 import com.android.build.api.transform.*
 import com.didiglobal.booster.gradle.*
+import com.didiglobal.booster.kotlinx.NCPU
 import com.didiglobal.booster.transform.*
 import com.didiglobal.booster.transform.util.transform
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import com.yl.lib.plugin.sentry.transform.booster.asmtransform.PrivacyBaseTransform
 import com.yl.lib.plugin.sentry.util.PrivacyExecutorsUtil
+import com.yl.lib.plugin.sentry.util.PrivacyPluginUtil
 import com.yl.lib.plugin.sentry.util.privacyTransform
 import org.gradle.api.Project
 import java.io.File
@@ -114,6 +116,7 @@ internal class PrivacyTransformInvocation(
 
     private fun doTransform(func: () -> Iterable<Runnable>) {
         this.onPreTransform()
+        PrivacyPluginUtil.privacyPluginUtil.i("doTransform NCPU is $NCPU")
         try {
             func().forEach {
                 PrivacyExecutorsUtil.submit(it).get()
