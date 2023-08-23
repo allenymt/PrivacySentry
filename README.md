@@ -35,10 +35,10 @@
 
     2023-01-06(1.2.7)
         1. 修复拦截ip地址时，主线程异常问题
-        2. 默认关闭游客模式，默认关闭debug模式
+        2. 默认关闭debug模式
         3. 优化部分逻辑
         4. 注意尽可能在attachBaseContext里第一个调用，因为attachBaseContext之后才能反射拿到ActivityThread的application,所以如果是在attachBaseContext中，
-            且隐私合规SDK未初始化，不管是不是首次启动，都会认为是处在游客模式
+        
 
     2022-12-06(1.2.6.1)
         重构缓存模块，修复部分问题
@@ -71,7 +71,7 @@
         6. 增加剪切板读取开关，对应到合规库加一个全局开关
         7. 修复SHA-256 digest error问题， https://github.com/allenymt/PrivacySentry/issues/29
         8. 修复问题多线程写入问题：https://github.com/allenymt/PrivacySentry/issues/84
-        9. 默认打开游客模式，记得关闭
+
 
     2022-08-30(1.1.0)
         1. 变量hook支持通过注解配置
@@ -96,7 +96,7 @@
         支持变量hook，主要是Build.SERIAL
     2022-1-18(1.0.2)
         1. 编译期注解+hook方案
-        2. 支持业务方自定义配置拦截，支持游客模式
+        2. 支持业务方自定义配置拦截
     2021-12-26(1.0.0)
         1. Asm修改字节码，hook敏感函数
     2021-12-02(0.0.7)
@@ -199,8 +199,6 @@
     PrivacySentryBuilder builder = new PrivacySentryBuilder()
                         // 自定义文件结果的输出名
                         .configResultFileName("buyer_privacy")
-                        // 配置游客模式，true打开游客模式，false关闭游客模式
-                        .configVisitorModel(false)
 	`		//  debug打开，可以看到logcat的堆栈日志
 			.syncDebug(true)
                         // 配置写入文件日志 , 线上包这个开关不要打开！！！！，true打开文件输入，false关闭文件输入
@@ -226,10 +224,6 @@
     java:PrivacySentry.Privacy.INSTANCE.updatePrivacyShow();
 ```
 
-```
-    关闭游客模式
-    PrivacySentry.Privacy.INSTANCE.closeVisitorModel();
-```
 ```
     支持自定义配置hook函数
     /**
@@ -260,9 +254,6 @@ open class PrivacyProxyResolver {
             selectionArgs: Array<String?>?, sortOrder: String?
         ): Cursor? {
             doFilePrinter("query", "查询服务: ${uriToLog(uri)}") // 输入日志到文件
-            if (PrivacySentry.Privacy.getBuilder()?.isVisitorModel() == true) { //游客模式开关
-                return null
-            }
             return contentResolver?.query(uri, projection, selection, selectionArgs, sortOrder)
         }
   
@@ -344,7 +335,7 @@ public class PrivacyFile extends File {
 -     logcat日志查看：TAG名为PrivacyOfficer
   
 ## 基本原理
--     编译期注解+hook方案，第一个transform收集需要拦截的敏感函数，第二个transform替换敏感函数，运行期收集日志，同时支持游客模式
+-     编译期注解+hook方案，第一个transform收集需要拦截的敏感函数，第二个transform替换敏感函数，运行期收集日志
 -     为什么不用xposed等框架？ 因为想做本地自动化定期排查，第三方hook框架外部依赖性太大
 -     为什么不搞基于lint的排查方式？ 工信部对于运行期 敏感函数的调用时机和次数都有限制，代码扫描解决不了这些问题
 
