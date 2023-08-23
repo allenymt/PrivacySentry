@@ -32,6 +32,6 @@ public class PrivacyFileInputStream extends FileInputStream {
     }
 
     private void record(String path) {
-        PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("FileInputStream", "访问文件", "path is " + path, PrivacySentry.Privacy.INSTANCE.getBuilder().isVisitorModel(), false);
+        PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("FileInputStream", "访问文件", "path is " + path,  false);
     }
 }

@@ -30,6 +30,7 @@ class PrivacySentryBuilder {
     private var enableFileResult: Boolean = true
 
     // 游客模式，拦截所有敏感方法，默认关闭
+    @Deprecated("弃用")
     @Volatile
     private var visitorModel: Boolean = false
 
@@ -101,11 +102,13 @@ class PrivacySentryBuilder {
         return this
     }
 
+    @Deprecated("弃用")
     fun configVisitorModel(visitorModel: Boolean): PrivacySentryBuilder {
         this.visitorModel = visitorModel
         return this
     }
 
+    @Deprecated("弃用")
     fun isVisitorModel(): Boolean {
         return visitorModel
     }

@@ -45,8 +45,6 @@ class APP : Application() {
             .configWatchTime(10 * 60 * 1000)
             // 打开写入文件开关
             .enableFileResult(true)
-            // 打开游客模式
-            .configVisitorModel(false)
             .syncDebug(true)
             // 文件输出后的回调
             .configResultCallBack(object : PrivacyResultCallBack {

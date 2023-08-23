@@ -31,6 +31,6 @@ public class PrivacyFileReader extends FileReader {
     }
 
     private void record(String path) {
-        PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("FileReader", "访问文件", "path is " + path, PrivacySentry.Privacy.INSTANCE.getBuilder().isVisitorModel(), false);
+        PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("FileReader", "访问文件", "path is " + path, false);
     }
 }

@@ -152,9 +152,9 @@ class PrivacySentry {
         }
 
         fun inDangerousState(): Boolean {
-            if (getBuilder()?.isVisitorModel() == true) {
-                return true
-            }
+//            if (getBuilder()?.isVisitorModel() == true) {
+//                return true
+//            }
             return !hasShowPrivacy()
         }
 
@@ -169,6 +169,7 @@ class PrivacySentry {
         /**
          * 关闭游客模式
          */
+        @Deprecated("弃用")
         fun closeVisitorModel() {
             mBuilder?.configVisitorModel(false)
         }
@@ -176,6 +177,7 @@ class PrivacySentry {
         /**
          * 打开游客模式
          */
+        @Deprecated("弃用")
         fun openVisitorModel() {
             mBuilder?.configVisitorModel(true)
         }

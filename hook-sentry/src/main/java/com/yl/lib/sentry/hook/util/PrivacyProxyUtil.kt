@@ -15,7 +15,6 @@ class PrivacyProxyUtil {
             funName: String,
             methodDocumentDesc: String = "",
             args: String? = "",
-            bVisitorModel: Boolean = false,
             bCache: Boolean = false
         ) {
             var funName = funName + "-\n线程名: ${Thread.currentThread().name}"

@@ -55,11 +55,6 @@ public class PrivacyProxyCallJava {
             originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
     )
     public static boolean isWifiEnabled(WifiManager manager) {
-        if (Objects.requireNonNull(PrivacySentry.Privacy.INSTANCE.getBuilder()).isVisitorModel() == true) {
-            PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("isWifiEnabled", "读取WiFi状态", "", true, false);
-            return true;
-        }
-
         String key = "isWifiEnabled";
         return  manager.isWifiEnabled();
 //        return CachePrivacyManager.Manager.INSTANCE.loadWithTimeMemoryCache(
