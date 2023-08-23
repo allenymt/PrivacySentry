@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'privacy-sentry-plugin'
 
+// 注解处理器处理注解
+//apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -47,6 +49,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
@@ -65,6 +71,9 @@ dependencies {
         implementation project(":privacy-replace")
         implementation project(":privacy-annotation")
         implementation project(":privacy-ui")
+
+        // 注解处理器处理注解
+        //kapt project(":privacy-processor")
     } else {
         implementation "com.wdian.android.lib:privacy-hook:${rootProject.ext.privacy_version}"
         implementation "com.wdian.android.lib:privacy-annotation:${rootProject.ext.privacy_version}"

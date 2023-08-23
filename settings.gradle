@@ -7,3 +7,6 @@ include ':privacy-annotation'
 include ':privacy-proxy'
 include ':privacy-ui'
 include ':privacy-replace'
+
+// 注解处理器处理注解
+//include ':privacy-processor'

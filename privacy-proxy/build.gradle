@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-
+// 注解处理器处理注解
+//apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -38,6 +39,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation project(":hook-sentry")
     implementation project(path: ':privacy-annotation')
+    // 注解处理器处理注解
+//    kapt project(":privacy-processor")
 }
 
 if (rootProject.ext.plugin_local_debug) {
