@@ -116,7 +116,7 @@ internal class PrivacyTransformInvocation(
 
     private fun doTransform(func: () -> Iterable<Runnable>) {
         this.onPreTransform()
-        PrivacyPluginUtil.privacyPluginUtil.i("doTransform NCPU is $NCPU")
+        PrivacyPluginUtil.privacyPluginUtil.i("doTransform NCPU is $NCPU, func num is ${func().count()}")
         try {
             func().forEach {
                 PrivacyExecutorsUtil.submit(it).get()
