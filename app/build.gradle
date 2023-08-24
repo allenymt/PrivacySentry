@@ -4,6 +4,7 @@ apply plugin: 'privacy-sentry-plugin'
 
 // 注解处理器处理注解
 //apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -15,6 +16,7 @@ android {
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//
     }
 
     signingConfigs {

@@ -6,14 +6,17 @@ import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import com.yl.lib.plugin.sentry.transform.booster.PrivacyCollectTransform
 import com.yl.lib.plugin.sentry.transform.booster.PrivacyHookTransform
 import com.yl.lib.plugin.sentry.transform.booster.processor.PrivacyAssetsProcessor
+import com.yl.lib.plugin.sentry.transform.booster.processor.PrivacyCollectProcessor
 import com.yl.lib.plugin.sentry.transform.booster.processor.PrivacyManifestProcessor
 import com.yl.lib.plugin.sentry.transform.manager.HookFieldManager
 import com.yl.lib.plugin.sentry.transform.manager.HookMethodManager
 import com.yl.lib.plugin.sentry.transform.manager.ReplaceClassManager
 import com.yl.lib.plugin.sentry.util.PrivacyPluginUtil
 import com.yl.lib.plugin.sentry.util.privacyPrintln
+import com.yl.lib.privacy_annotation.PrivacyClassTestProxy
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import java.util.*
 
 /**
  * @author yulun
@@ -38,6 +41,7 @@ class PrivacySentryPlugin : Plugin<Project> {
                         androidExt.applicationVariants.forEach { variant ->
                             PrivacyAssetsProcessor().process(variant)
                             PrivacyManifestProcessor().process(variant)
+                            PrivacyCollectProcessor().process(variant)
                         }
                     }
                 }

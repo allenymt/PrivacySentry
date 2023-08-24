@@ -1,7 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 // 注解处理器处理注解
-//apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -13,6 +14,11 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
     }
 
     buildTypes {
@@ -41,10 +47,23 @@ dependencies {
     implementation project(path: ':privacy-annotation')
     // 注解处理器处理注解
 //    kapt project(":privacy-processor")
+
+    implementation "com.google.auto.service:auto-service:1.0-rc6"
+    kapt "com.google.auto.service:auto-service:1.0-rc6"
 }
 
 if (rootProject.ext.plugin_local_debug) {
-
+    //本地调试补充
+    apply plugin: 'maven'
+    group = 'com.yl.lib.privacy'
+    version = '0.0.3-SNAPSHOT'
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: uri('../plugin-sentry/plugins'))
+            }
+        }
+    }
 } else {
     apply plugin: 'android.publish'
 }

@@ -6,8 +6,10 @@ import android.os.Build
 import android.telephony.TelephonyManager
 import android.telephony.TelephonyManager.SIM_STATE_UNKNOWN
 import androidx.annotation.Keep
+import com.google.auto.service.AutoService
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
+import com.yl.lib.privacy_annotation.PrivacyClassTestProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
 import com.yl.lib.sentry.hook.PrivacySentry
 import com.yl.lib.sentry.hook.cache.CachePrivacyManager
@@ -20,10 +22,12 @@ import com.yl.lib.sentry.hook.util.PrivacyProxyUtil
  * 代理电话权限的部分敏感API
  */
 @Keep
+@AutoService(PrivacyClassTestProxy::class)
 open class PrivacyTelephonyProxy {
 
     @Keep
     @PrivacyClassProxy
+    @AutoService(PrivacyClassTestProxy::class)
     object TelephonyProxy {
 
         private var objectImeiLock = Object()
