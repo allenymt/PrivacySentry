@@ -44,8 +44,9 @@ class PrivacyAssetsProcessor : VariantProcessor {
             // 在任务结束之后执行指定的 Task, 也就是mergeAssetsTask执行完后，执行moveTask，把我们代理的api列表同步到assets目录下
             variant.project.logger.info("AssetsTask is ${variant.mergeAssetsProvider.get().name}")
             privacySentryTask.finalizedBy(moveTask)
+            moveTask.dependsOn(privacySentryTask)
             // moveTask 在privacySentryTask执行
-//            moveTask.mustRunAfter(variant.mergeAssetsProvider.get())
+            moveTask.mustRunAfter(variant.mergeAssetsProvider.get())
         }
     }
 
