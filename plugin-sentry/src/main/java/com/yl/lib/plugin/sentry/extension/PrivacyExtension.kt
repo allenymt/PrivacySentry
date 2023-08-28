@@ -17,7 +17,7 @@ open class PrivacyExtension {
 
     // 记录所有被代理的方法名+类名,将以单行的形式被写入到文件中
     // 空=不写入
-    var replaceFileName :String? = "methodReplace.json"
+    var replaceFileName :String? = "privacy_hook.json"
 
     // 开启hook反射方法，默认为false
     var hookReflex: Boolean = false

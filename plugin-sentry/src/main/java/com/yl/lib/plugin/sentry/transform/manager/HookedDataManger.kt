@@ -12,10 +12,11 @@ import java.io.File
  * @since 2022-06-16 20:06
  * 记录所有被代理的方法和类列表，方便做数据比对
  */
-class ReplacedMethodManger {
+class HookedDataManger {
     object MANAGER {
         private var replaceMethodMap: HashMap<String, ReplaceMethodData> = HashMap()
 
+        private var hookServiceList: ArrayList<String> = ArrayList()
         fun addReplaceMethodItem(methodItem: ReplaceMethodItem) {
             var key = buildKey(methodItem)
             var replaceMethodData = replaceMethodMap[key]
@@ -26,8 +27,15 @@ class ReplacedMethodManger {
             replaceMethodMap[key] = replaceMethodData
         }
 
+        fun addHookService(serviceName: String) {
+            if (hookServiceList.contains(serviceName)) {
+                return
+            }
+            hookServiceList.add(serviceName)
+        }
+
         fun flushToFile(fileName: String, project: Project) {
-            if (fileName == null || replaceMethodMap.isEmpty()) {
+            if (fileName == null || replaceMethodMap.isEmpty() || hookServiceList.isEmpty()) {
                 return
             }
             var resultFile = File(project.buildDir.absolutePath + File.separator + fileName)
@@ -38,12 +46,15 @@ class ReplacedMethodManger {
             resultFile.let {
                 GFileUtils.deleteQuietly(resultFile)
             }
+
+            var privacyHookData = PrivacyHookData()
+            privacyHookData.replaceMethodMap = replaceMethodMap
+            privacyHookData.hookServiceList = hookServiceList
+
             objectToJsonString(
-                replaceMethodMap.toList().sortedByDescending { it.second.count }.toMap()
-            )?.let {
-                GFileUtils.writeFile(
-                    it, resultFile
-                )
+                privacyHookData
+            ).let { content ->
+                GFileUtils.writeFile(content, resultFile)
             }
         }
 
@@ -66,6 +77,12 @@ class ReplacedMethodManger {
             }
         }
     }
+}
+
+class PrivacyHookData{
+    var replaceMethodMap: HashMap<String, ReplaceMethodData> = HashMap()
+
+    var hookServiceList: ArrayList<String> = ArrayList()
 }
 
 class ReplaceMethodData {

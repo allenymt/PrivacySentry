@@ -6,7 +6,7 @@ import com.didiglobal.booster.gradle.getTaskName
 import com.didiglobal.booster.gradle.project
 import com.didiglobal.booster.task.spi.VariantProcessor
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
-import com.yl.lib.plugin.sentry.transform.booster.task.ManifestProcessorTask
+import com.yl.lib.plugin.sentry.transform.booster.task.PrivacyManifestTask
 import com.yl.lib.plugin.sentry.util.privacyPrintln
 
 /**
@@ -27,7 +27,7 @@ class PrivacyManifestProcessor : VariantProcessor {
                 }
                 val taskName = "update${variant.name.capitalize()}Manifest"
                 var privacyManifestProcessorTask =
-                    variant.project.tasks.create(taskName, ManifestProcessorTask::class.java) {
+                    variant.project.tasks.create(taskName, PrivacyManifestTask::class.java) {
                         it.variant = variant
                         it.privacyExtension = variant.project.extensions.findByType(
                             PrivacyExtension::class.java
