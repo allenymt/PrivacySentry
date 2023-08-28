@@ -3,6 +3,7 @@ package com.yl.lib.plugin.sentry.transform.manager
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.annotation.JSONField
 import com.alibaba.fastjson.serializer.SerializerFeature
+import com.yl.lib.plugin.sentry.util.PrivacyPluginUtil
 import org.gradle.api.Project
 import org.gradle.util.GFileUtils
 import java.io.File
@@ -23,6 +24,7 @@ class HookedDataManger {
             if (replaceMethodData == null) {
                 replaceMethodData = ReplaceMethodData()
             }
+            PrivacyPluginUtil.privacyPluginUtil.i("addReplaceMethodItem methodItem is $methodItem")
             replaceMethodData.addReplaceMethodItem(replaceMethodItem = methodItem)
             replaceMethodMap[key] = replaceMethodData
         }
@@ -31,6 +33,7 @@ class HookedDataManger {
             if (hookServiceList.contains(serviceName)) {
                 return
             }
+            PrivacyPluginUtil.privacyPluginUtil.i("addHookService serviceName is $serviceName")
             hookServiceList.add(serviceName)
         }
 

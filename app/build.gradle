@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply from: 'wdb_build_trace.gradle'
 apply plugin: 'privacy-sentry-plugin'
 
 android {
@@ -47,6 +48,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
@@ -56,6 +61,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation "androidx.multidex:multidex:2.0.1"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
     if (rootProject.ext.plugin_local_debug) {
         implementation project(":hook-sentry")
         implementation project(":privacy-proxy")
@@ -98,9 +106,7 @@ privacy {
     hookConstructor = true
     // 是否开启hook变量，默认为false，建议弃用
     hookField = true
-
-
-    // 以下是为了解决小米照明弹自启动问题的尝试, 如果没有自启动的需求，这里关闭即可
+    enableProcessManifest = false
     // hook Service的部分代码，修复在MIUI上的自启动问题
     // 部分Service把自己的Priority设置为1000，这里开启代理功能，可以代理成0
     enableReplacePriority = true
