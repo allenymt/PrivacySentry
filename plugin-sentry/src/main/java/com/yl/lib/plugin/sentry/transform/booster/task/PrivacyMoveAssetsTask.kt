@@ -1,6 +1,7 @@
 package com.yl.lib.plugin.sentry.transform.booster.task
 
 import com.yl.lib.plugin.sentry.transform.manager.HookedDataManger
+import com.yl.lib.plugin.sentry.util.privacyPrintln
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.gradle.util.GFileUtils
@@ -19,6 +20,7 @@ open class PrivacyMoveAssetsTask : DefaultTask() {
 
     @TaskAction
     fun doFlushProxyMethod() {
+        "MoveAssetsTask-doFlushProxyMethod".privacyPrintln()
         project.logger?.info("MoveAssetsTask-flushToFile")
         // 写入被代理所有的类和文件
         fileName?.let {
