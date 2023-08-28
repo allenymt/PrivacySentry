@@ -1,0 +1,93 @@
+import java.text.SimpleDateFormat
+
+/**
+ * 监控构建耗时
+ *
+ * 记录构建过程中的每个任务的耗时，并写入文件中 .build_history/buildTimeLog_yy_MM_dd_HH_mm_ss.log中
+ */
+
+class BuildTimeListener implements TaskExecutionListener, BuildListener {
+    private final String BUILD_LOG_FILE_DIR = ".build_history"
+    private final String BUILD_LOG_FILE_PATH = "buildTimeLog"
+    private long taskStartTime;
+    private long buildStartTime;
+    private int taskCounts = 0;
+    private StringBuilder sb = new StringBuilder()
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss")
+
+    BuildTimeListener() {
+        buildStartTime = System.currentTimeMillis()
+        //添加一些版本信息
+        sb.append("构建时间：" + sdf.format(new Date()) + "\n")
+        sb.append("开始构建----------------------\n")
+    }
+
+    @Override
+    void buildStarted(Gradle gradle) {
+
+    }
+
+    @Override
+    void settingsEvaluated(Settings settings) {
+
+    }
+
+    @Override
+    void projectsLoaded(Gradle gradle) {
+
+    }
+
+    @Override
+    void projectsEvaluated(Gradle gradle) {
+
+    }
+
+    /**
+     * 构建完成回调
+     * @param result The result of the build. Never null.
+     */
+    @Override
+    void buildFinished(BuildResult result) {
+        if(taskCounts<5) return
+        long buildCost = System.currentTimeMillis() - buildStartTime
+        sb.append("构建结束----------------------\n")
+        sb.append("构建总耗时：" + buildCost + "ms")
+        //输出到文件
+        String text = sb.toString()
+        writeToFile(BUILD_LOG_FILE_PATH, text)
+    }
+
+    /**
+     * 任务执行开始
+     * @param task The task about to be executed. Never null.
+     */
+    @Override
+    void beforeExecute(Task task) {
+        taskStartTime = System.currentTimeMillis();
+    }
+
+    /**
+     * 任务执行结束
+     * @param task The task which was executed. Never null.
+     * @param state The task state. If the task failed with an exception, the exception is available in this
+     */
+    @Override
+    void afterExecute(Task task, TaskState state) {
+        long cost = System.currentTimeMillis() - taskStartTime;
+        System.out.println("任务：" + task.name + "," + task.path + ",耗时：" + cost);
+        sb.append("[" + task.path + "]:" + cost + "ms\n")
+        taskCounts++
+    }
+
+    private void writeToFile(String fname, String text) {
+        File dir = new File(BUILD_LOG_FILE_DIR)
+        if (!dir.exists()) {
+            dir.mkdir()
+        }
+        File file = new File(BUILD_LOG_FILE_DIR + File.separator + fname + "_" + sdf2.format(new Date()) + ".log")
+        file.write(text, true)
+    }
+}
+
+gradle.addListener new BuildTimeListener()
