@@ -1,6 +1,6 @@
 package com.yl.lib.plugin.sentry.transform.booster.task
 
-import com.yl.lib.plugin.sentry.transform.manager.ReplacedMethodManger
+import com.yl.lib.plugin.sentry.transform.manager.HookedDataManger
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.gradle.util.GFileUtils
@@ -22,7 +22,7 @@ open class PrivacyMoveAssetsTask : DefaultTask() {
         project.logger?.info("MoveAssetsTask-flushToFile")
         // 写入被代理所有的类和文件
         fileName?.let {
-            ReplacedMethodManger.MANAGER.flushToFile(it, project)
+            HookedDataManger.MANAGER.flushToFile(it, project)
         }
 
         var originFile = File(project.buildDir.absolutePath + File.separator + fileName)

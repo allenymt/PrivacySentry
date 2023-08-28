@@ -2,7 +2,9 @@ package com.yl.lib.plugin.sentry.transform.booster.classtransform.hook
 
 import com.didiglobal.booster.transform.TransformContext
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
+import com.yl.lib.plugin.sentry.transform.manager.HookedDataManger
 import com.yl.lib.plugin.sentry.util.PrivacyPluginUtil
+import com.yl.lib.plugin.sentry.util.formatName
 import org.gradle.api.Project
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.tree.ClassNode
@@ -34,6 +36,7 @@ class ServiceHookTransform : BaseHookTransform() {
         if (!privacyExtension.enableHookServiceStartCommand){
             return klass
         }
+        HookedDataManger.MANAGER.addHookService(klass.formatName())
         var onStartCommandMethod = klass.methods.find { it.name == "onStartCommand" }
         if (onStartCommandMethod == null) {
             val onStartCommand = klass.visitMethod(

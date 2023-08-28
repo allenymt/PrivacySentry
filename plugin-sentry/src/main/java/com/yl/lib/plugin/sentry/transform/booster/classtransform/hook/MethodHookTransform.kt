@@ -4,7 +4,7 @@ import com.didiglobal.booster.transform.TransformContext
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import com.yl.lib.plugin.sentry.transform.manager.HookMethodManager
 import com.yl.lib.plugin.sentry.transform.manager.ReplaceMethodItem
-import com.yl.lib.plugin.sentry.transform.manager.ReplacedMethodManger
+import com.yl.lib.plugin.sentry.transform.manager.HookedDataManger
 import com.yl.lib.plugin.sentry.util.formatName
 import org.gradle.api.Project
 import org.objectweb.asm.commons.AdviceAdapter
@@ -44,7 +44,7 @@ class MethodHookTransform : BaseHookTransform() {
                                 privacyExtension
                             )
                         ) {
-                            ReplacedMethodManger.MANAGER.addReplaceMethodItem(
+                            HookedDataManger.MANAGER.addReplaceMethodItem(
                                 ReplaceMethodItem(
                                     klass.formatName(),
                                     node.name,

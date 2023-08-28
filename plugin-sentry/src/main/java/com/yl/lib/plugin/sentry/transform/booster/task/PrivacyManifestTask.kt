@@ -20,7 +20,7 @@ import javax.xml.transform.dom.DOMSource
  *  1. 关闭Service的Export
  *  2. 部分Service的priority设置为1000，可以强行替换
  */
-open class ManifestProcessorTask : DefaultTask() {
+open class PrivacyManifestTask : DefaultTask() {
 
     lateinit var variant: BaseVariant
     lateinit var privacyExtension: PrivacyExtension
