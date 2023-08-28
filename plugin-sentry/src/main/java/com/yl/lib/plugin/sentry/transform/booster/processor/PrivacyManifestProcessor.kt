@@ -19,6 +19,12 @@ class PrivacyManifestProcessor : VariantProcessor {
             variant.project.tasks.findByName(
                 variant.getTaskName("process", "Manifest")
             )?.let { manifestTask ->
+                var extension = variant.project.extensions.findByType(
+                    PrivacyExtension::class.java
+                )!!
+                if (!extension.enableProcessManifest) {
+                    return
+                }
                 val taskName = "update${variant.name.capitalize()}Manifest"
                 var privacyManifestProcessorTask =
                     variant.project.tasks.create(taskName, ManifestProcessorTask::class.java) {
