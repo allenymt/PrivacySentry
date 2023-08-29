@@ -10,3 +10,4 @@
 local.properties
 /hook-sentry/~/.m2
 /plugin-sentry/~/.m2/
+.build_history/
