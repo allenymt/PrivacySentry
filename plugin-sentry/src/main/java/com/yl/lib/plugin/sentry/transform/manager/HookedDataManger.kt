@@ -37,11 +37,11 @@ class HookedDataManger {
             hookServiceList.add(serviceName)
         }
 
-        fun flushToFile(fileName: String, project: Project) {
+        fun flushToFile(fileName: String, buildDir:File) {
             if (fileName == null || replaceMethodMap.isEmpty() || hookServiceList.isEmpty()) {
                 return
             }
-            var resultFile = File(project.buildDir.absolutePath + File.separator + fileName)
+            var resultFile = File(buildDir.absolutePath + File.separator + fileName)
             if (resultFile?.parentFile != null && !resultFile.parentFile.exists()) {
                 GFileUtils.mkdirs(resultFile)
             }

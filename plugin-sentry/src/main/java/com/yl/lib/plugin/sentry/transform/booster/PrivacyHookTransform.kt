@@ -2,10 +2,7 @@ package com.yl.lib.plugin.sentry.transform.booster
 
 import com.didiglobal.booster.transform.Transformer
 import com.yl.lib.plugin.sentry.transform.booster.asmtransform.PrivacyBaseTransform
-import com.yl.lib.plugin.sentry.transform.booster.classtransform.hook.ClassProxyTransform
-import com.yl.lib.plugin.sentry.transform.booster.classtransform.hook.FieldProxyTransform
-import com.yl.lib.plugin.sentry.transform.booster.classtransform.hook.MethodHookTransform
-import com.yl.lib.plugin.sentry.transform.booster.classtransform.hook.ServiceHookTransform
+import com.yl.lib.plugin.sentry.transform.booster.classtransform.hook.*
 import com.yl.lib.plugin.sentry.transform.booster.transformer.PrivacyBaseTransformer
 import org.gradle.api.Project
 
@@ -21,7 +18,8 @@ class PrivacyHookTransform (project:Project) : PrivacyBaseTransform(project){
                     MethodHookTransform(),
                     FieldProxyTransform(),
                     ClassProxyTransform(),
-                    ServiceHookTransform()
+                    ServiceHookTransform(),
+                    FlushHookDataTransform()
                 )
             )
         )
