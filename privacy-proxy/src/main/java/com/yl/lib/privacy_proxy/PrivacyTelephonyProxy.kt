@@ -99,6 +99,8 @@ open class PrivacyTelephonyProxy {
 
         var objectDeviceIdLock = Object()
 
+
+        // 配置代理拦截获取设备ID
         @PrivacyMethodProxy(
             originalClass = TelephonyManager::class,
             originalMethod = "getDeviceId",
@@ -107,6 +109,7 @@ open class PrivacyTelephonyProxy {
         @JvmStatic
         fun getDeviceId(manager: TelephonyManager): String? {
             var key = "TelephonyManager-getDeviceId"
+            // 在用户同意协议之前，拦截获取
             if (PrivacySentry.Privacy.inDangerousState()) {
                 PrivacyProxyUtil.Util.doFilePrinter(key, "IMEI-getDeviceId()", bVisitorModel = true)
                 return ""
@@ -116,6 +119,7 @@ open class PrivacyTelephonyProxy {
                 return ""
             }
 
+            // 如果没有获得电话权限，拦截获取
             if (!PrivacyProxyUtil.Util.checkPermission(Manifest.permission.READ_PHONE_STATE)) {
                 PrivacyProxyUtil.Util.doFilePrinter(key, "IMEI-getDeviceId()-无权限")
                 return ""

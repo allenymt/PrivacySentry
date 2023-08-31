@@ -105,7 +105,7 @@ privacy {
     hookConstructor = true
     hookField = true
 
-    enableProcessManifest = false
+    enableProcessManifest = true
     // hook Service的部分代码，修复在MIUI上的自启动问题
     // 部分Service把自己的Priority设置为1000，这里开启代理功能，可以代理成0
     enableReplacePriority = true
@@ -117,4 +117,11 @@ privacy {
     serviceExportPkgWhiteList = ["white"]
 
     enableHookServiceStartCommand = true
+}
+
+project.afterEvaluate {
+    project.gradle.taskGraph.whenReady {
+        println("=======> print allTasks")
+        println(project.gradle.taskGraph.allTasks)
+    }
 }

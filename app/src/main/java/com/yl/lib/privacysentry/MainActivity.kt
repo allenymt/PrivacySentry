@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
                 TestInJava.testHttpUrlConnection()
             }
+
+            ReflexObjectUtil.test("android.miui.AppOpsUtils")
         }
 
         findViewById<Button>(R.id.btn_mac_address).setOnClickListener {
