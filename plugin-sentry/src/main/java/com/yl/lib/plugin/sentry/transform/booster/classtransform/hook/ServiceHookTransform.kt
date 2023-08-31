@@ -5,6 +5,7 @@ import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import com.yl.lib.plugin.sentry.transform.manager.HookedDataManger
 import com.yl.lib.plugin.sentry.util.PrivacyPluginUtil
 import com.yl.lib.plugin.sentry.util.formatName
+import com.yl.lib.plugin.sentry.util.formatSuperName
 import org.gradle.api.Project
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.tree.ClassNode
@@ -22,7 +23,7 @@ class ServiceHookTransform : BaseHookTransform() {
     override fun ignoreClass(context: TransformContext, klass: ClassNode): Boolean {
         var ignore = super.ignoreClass(context, klass)
         if (!ignore) {
-            ignore = !PrivacyPluginUtil.privacyPluginUtil.isService(klass.name, klass.superName)
+            ignore = !PrivacyPluginUtil.privacyPluginUtil.isService(klass.formatName(), klass.formatSuperName())
         }
         return ignore
     }

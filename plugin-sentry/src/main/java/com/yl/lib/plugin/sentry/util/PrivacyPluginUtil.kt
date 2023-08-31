@@ -37,9 +37,9 @@ class PrivacyPluginUtil {
     }
 
     fun isService(name: String, superName: String?): Boolean {
-        return lastIndexOfDot(name).endsWith("Service") && lastIndexOfDot(
+        return (lastIndexOfDot(name).endsWith("Service") || lastIndexOfDot(
             superName
-        ).endsWith("Service")
+        ).endsWith("Service"))
     }
 
     private fun lastIndexOfDot(name: String?): String {
