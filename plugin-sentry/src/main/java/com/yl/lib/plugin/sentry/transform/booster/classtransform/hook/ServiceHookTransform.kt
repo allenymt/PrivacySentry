@@ -1,6 +1,7 @@
 package com.yl.lib.plugin.sentry.transform.booster.classtransform.hook
 
 import com.didiglobal.booster.transform.TransformContext
+import com.didiglobal.booster.transform.asm.isInterface
 import com.yl.lib.plugin.sentry.extension.PrivacyExtension
 import com.yl.lib.plugin.sentry.transform.manager.HookedDataManger
 import com.yl.lib.plugin.sentry.util.PrivacyPluginUtil
@@ -22,6 +23,9 @@ class ServiceHookTransform : BaseHookTransform() {
 
     override fun ignoreClass(context: TransformContext, klass: ClassNode): Boolean {
         var ignore = super.ignoreClass(context, klass)
+        if (klass.isInterface) {
+            return true
+        }
         if (!ignore) {
             ignore = !PrivacyPluginUtil.privacyPluginUtil.isService(klass.formatName(), klass.formatSuperName())
         }
