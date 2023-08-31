@@ -22,6 +22,7 @@ import com.yl.lib.privacysentry.calendar.CalenderActivity
 import com.yl.lib.privacysentry.contact.ContactActivity
 import com.yl.lib.privacysentry.location.LocationTestActivity
 import com.yl.lib.privacysentry.process.MultiProcessB
+import com.yl.lib.privacysentry.process.MultiProcessC
 import com.yl.lib.privacysentry.telephony.TelephonyTestActivity
 import com.yl.lib.privacysentry.test.*
 import com.yl.lib.privacysentry.web.PrivacyBrowserFragment
@@ -134,6 +135,9 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_test_processB).setOnClickListener {
             startService(Intent(this, MultiProcessB::class.java))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                startService(Intent(this, MultiProcessC::class.java))
+            }
         }
 
         findViewById<Button>(R.id.btn_test_lib_method).setOnClickListener {

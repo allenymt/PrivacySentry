@@ -133,6 +133,9 @@ fun ClassNode.formatName(): String {
     return this.name.replace("/", ".")
 }
 
+fun ClassNode.formatSuperName(): String {
+    return this.superName.replace("/", ".")
+}
 
 fun String.privacyPrintln() {
     println("[privacy plugin]===>$this")

@@ -32,11 +32,11 @@ class MultiProcessC : JobService() {
 //    }
 
     override fun onStartJob(params: JobParameters?): Boolean {
-        TODO("Not yet implemented")
+        return  true
     }
 
     override fun onStopJob(params: JobParameters?): Boolean {
-        TODO("Not yet implemented")
+        return  true
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
