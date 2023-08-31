@@ -119,3 +119,10 @@ privacy {
     // 修改Service的onStartCommand 返回值修改为START_NOT_STICKY
     enableHookServiceStartCommand = true
 }
+
+project.afterEvaluate {
+    project.gradle.taskGraph.whenReady {
+        println("=======> print allTasks")
+        println(project.gradle.taskGraph.allTasks)
+    }
+}

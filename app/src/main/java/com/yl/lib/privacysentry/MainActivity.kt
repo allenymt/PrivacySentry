@@ -7,8 +7,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
 import com.yl.lib.privacy_test.PrivacyProxySelfTest2
 import com.yl.lib.privacy_test.TestMethod
 import com.yl.lib.privacy_test.TestMethodInJava
@@ -37,8 +40,7 @@ class MainActivity : AppCompatActivity() {
 
             Thread{
                 TestInJava.testHttpUrlConnection()
-            }.start()
-
+            }
         }
 
         findViewById<Button>(R.id.btn_mac_address).setOnClickListener {

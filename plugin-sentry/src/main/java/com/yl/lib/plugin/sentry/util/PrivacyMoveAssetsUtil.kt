@@ -36,7 +36,7 @@ open class PrivacyMoveAssetsUtil{
                 var assetsFile = File(assetsPath+ File.separator+ fileName)
                 PrivacyPluginUtil.privacyPluginUtil.i("MoveAssetsTask assetsPath  is ${assetsPath}")
                 assetsFile.let {
-                    GFileUtils.deleteFileQuietly(assetsFile)
+                    GFileUtils.deleteQuietly(assetsFile)
                 }
                 PrivacyPluginUtil.privacyPluginUtil.i("MoveAssetsTask originFile is ${originFile.absolutePath} assetsPath is $assetsPath")
                 GFileUtils.copyFile(originFile, assetsFile)

@@ -753,6 +753,7 @@ open class PrivacyProxyCall {
             return address
         }
 
+        // 拦截获取敏感字段 Android_id
         @PrivacyMethodProxy(
             originalClass = Settings.Secure::class,
             originalMethod = "getString",
@@ -767,6 +768,8 @@ open class PrivacyProxyCall {
                     type
                 )
             }
+
+            // 在用户同意协议之前，拦截获取Android_id
             if (PrivacySentry.Privacy.inDangerousState()) {
                 doFilePrinter(
                     "getString",
@@ -775,6 +778,8 @@ open class PrivacyProxyCall {
                 )
                 return ""
             }
+
+            // 控制读取频率，增加多线程磁盘缓存，保证APP只读取一次Android_id，防止三方SDK或者多次启动频繁读取Android_id
             synchronized(objectAndroidIdLock) {
                 return CachePrivacyManager.Manager.loadWithDiskCache(
                     key,
