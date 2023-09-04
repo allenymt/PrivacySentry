@@ -425,7 +425,7 @@ open class PrivacyProxyCall {
         )
         fun getSSID(manager: WifiInfo): String? {
             if (PrivacySentry.Privacy.inDangerousState()) {
-                doFilePrinter("getSSID", "SSID", bVisitorModel = true)
+                doFilePrinter("getSSID", "SSID")
                 return ""
             }
 
@@ -452,7 +452,7 @@ open class PrivacyProxyCall {
         fun getBSSID(manager: WifiInfo): String? {
 
             if (PrivacySentry.Privacy.inDangerousState()) {
-                doFilePrinter("getBSSID", "getBSSID", bVisitorModel = true)
+                doFilePrinter("getBSSID", "getBSSID")
                 return ""
             }
 
@@ -478,7 +478,7 @@ open class PrivacyProxyCall {
         )
         fun getScanResults(manager: WifiManager): List<ScanResult>? {
             if (PrivacySentry.Privacy.inDangerousState()) {
-                doFilePrinter("getScanResults", "WIFI扫描结果", bVisitorModel = true)
+                doFilePrinter("getScanResults", "WIFI扫描结果")
                 return emptyList()
             }
 
@@ -542,7 +542,7 @@ open class PrivacyProxyCall {
         ): Location? {
             var key = "getLastKnownLocation_${provider}"
             if (PrivacySentry.Privacy.inDangerousState()) {
-                doFilePrinter("getLastKnownLocation", "上一次的位置信息", bVisitorModel = true)
+                doFilePrinter("getLastKnownLocation", "上一次的位置信息")
                 // 这里直接写空可能有风险
                 return null
             }
@@ -602,8 +602,7 @@ open class PrivacyProxyCall {
             if (PrivacySentry.Privacy.inDangerousState()) {
                 doFilePrinter(
                     key,
-                    "mac地址-getMacAddress",
-                    bVisitorModel = true
+                    "mac地址-getMacAddress"
                 )
                 return ""
             }
@@ -630,8 +629,7 @@ open class PrivacyProxyCall {
             if (PrivacySentry.Privacy.inDangerousState()) {
                 doFilePrinter(
                     key,
-                    "mac地址-getHardwareAddress",
-                    bVisitorModel = true
+                    "mac地址-getHardwareAddress"
                 )
                 return ByteArray(1)
             }
@@ -656,7 +654,7 @@ open class PrivacyProxyCall {
             var key = "BluetoothAdapter-getAddress"
 
             if (PrivacySentry.Privacy.inDangerousState()) {
-                doFilePrinter(key, "蓝牙地址-getAddress", bVisitorModel = true)
+                doFilePrinter(key, "蓝牙地址-getAddress")
                 return ""
             }
             synchronized(objectBluetoothLock) {
@@ -679,7 +677,7 @@ open class PrivacyProxyCall {
             var key = "ip地址-getAddress"
 
 //            if (PrivacySentry.Privacy.inDangerousState()) {
-//                doFilePrinter(key, "ip地址-getAddress", bVisitorModel = true)
+//                doFilePrinter(key, "ip地址-getAddress")
 //                return ByteArray(1)
 //            }
             var address = manager.address
@@ -700,7 +698,7 @@ open class PrivacyProxyCall {
             var key = "ip地址-getAddress"
 
 //            if (PrivacySentry.Privacy.inDangerousState()) {
-//                doFilePrinter(key, "ip地址-getAddress", bVisitorModel = true)
+//                doFilePrinter(key, "ip地址-getAddress")
 //                return ByteArray(1)
 //            }
             var address = manager.address
@@ -721,7 +719,7 @@ open class PrivacyProxyCall {
             var key = "ip地址-getHostAddress"
 
 //            if (PrivacySentry.Privacy.inDangerousState()) {
-//                doFilePrinter(key, "ip地址-getHostAddress", bVisitorModel = true)
+//                doFilePrinter(key, "ip地址-getHostAddress")
 //                return ""
 //            }
 
@@ -743,7 +741,7 @@ open class PrivacyProxyCall {
             var key = "ip地址-getHostAddress"
 
 //            if (PrivacySentry.Privacy.inDangerousState()) {
-//                doFilePrinter(key, "ip地址-getHostAddress", bVisitorModel = true)
+//                doFilePrinter(key, "ip地址-getHostAddress")
 //                return ""
 //            }
 
@@ -773,8 +771,7 @@ open class PrivacyProxyCall {
                 doFilePrinter(
                     "getString",
                     "系统信息",
-                    args = type,
-                    bVisitorModel = true
+                    args = type
                 )
                 return ""
             }
@@ -813,7 +810,7 @@ open class PrivacyProxyCall {
             var result = ""
             var key = "getSerial"
             if (PrivacySentry.Privacy.inDangerousState()) {
-                doFilePrinter("getSerial", "Serial", bVisitorModel = true)
+                doFilePrinter("getSerial", "Serial")
                 return ""
             }
             synchronized(objectSNLock) {
@@ -841,7 +838,7 @@ open class PrivacyProxyCall {
             var result: File? = null
             var key = "externalStorageDirectory"
             if (PrivacySentry.Privacy.inDangerousState()) {
-                doFilePrinter("getExternalStorageDirectory", key, bVisitorModel = true)
+                doFilePrinter("getExternalStorageDirectory", key)
             }
             synchronized(objectExternalStorageDirectoryLock) {
                 result = CachePrivacyManager.Manager.loadWithMemoryCache<File>(

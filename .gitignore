@@ -10,3 +10,5 @@
 local.properties
 /plugin-sentry/~/.m2/
 /privacy-ui
+/privacy-processor
+/.build_history

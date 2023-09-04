@@ -112,8 +112,7 @@ open class PrivacySensorProxy {
             if (PrivacySentry.Privacy.inDangerousState()) {
                 PrivacyProxyUtil.Util.doFilePrinter(
                     "getSensorList-$type",
-                    "获取${logPair.first}-${logPair.second}",
-                    bVisitorModel = true
+                    "获取${logPair.first}-${logPair.second}"
                 )
                 return emptyList()
             }

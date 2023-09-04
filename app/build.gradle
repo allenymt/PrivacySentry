@@ -91,7 +91,7 @@ privacy {
     // 设置免hook的名单
     blackList = []
     // 开关PrivacySentry插件功能
-    enablePrivacy = true
+//    enablePrivacy = true
     // 开启hook反射的方法
     hookReflex = true
     // 开启hook 替换类，目前支持file

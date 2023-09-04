@@ -42,7 +42,7 @@ open class PrivacyTelephonyProxy {
         fun getMeid(manager: TelephonyManager): String? {
             var key = "meid"
             if (PrivacySentry.Privacy.inDangerousState()) {
-                PrivacyProxyUtil.Util.doFilePrinter(key, "移动设备标识符-getMeid()", bVisitorModel = true)
+                PrivacyProxyUtil.Util.doFilePrinter(key, "移动设备标识符-getMeid()")
                 return ""
             }
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -75,7 +75,7 @@ open class PrivacyTelephonyProxy {
         fun getMeid(manager: TelephonyManager, index: Int): String? {
             var key = "meid"
             if (PrivacySentry.Privacy.inDangerousState()) {
-                PrivacyProxyUtil.Util.doFilePrinter(key, "移动设备标识符-getMeid()", bVisitorModel = true)
+                PrivacyProxyUtil.Util.doFilePrinter(key, "移动设备标识符-getMeid()")
                 return ""
             }
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -108,7 +108,7 @@ open class PrivacyTelephonyProxy {
         fun getDeviceId(manager: TelephonyManager): String? {
             var key = "TelephonyManager-getDeviceId"
             if (PrivacySentry.Privacy.inDangerousState()) {
-                PrivacyProxyUtil.Util.doFilePrinter(key, "IMEI-getDeviceId()", bVisitorModel = true)
+                PrivacyProxyUtil.Util.doFilePrinter(key, "IMEI-getDeviceId()")
                 return ""
             }
 
@@ -141,8 +141,7 @@ open class PrivacyTelephonyProxy {
             if (PrivacySentry.Privacy.inDangerousState()) {
                 PrivacyProxyUtil.Util.doFilePrinter(
                     key,
-                    "IMEI-getDeviceId(I)",
-                    bVisitorModel = true
+                    "IMEI-getDeviceId(I)"
                 )
                 return ""
             }
@@ -176,8 +175,7 @@ open class PrivacyTelephonyProxy {
             if (PrivacySentry.Privacy.inDangerousState()) {
                 PrivacyProxyUtil.Util.doFilePrinter(
                     key,
-                    "IMSI-getSubscriberId(I)",
-                    bVisitorModel = true
+                    "IMSI-getSubscriberId(I)"
                 )
                 return ""
             }
@@ -220,7 +218,7 @@ open class PrivacyTelephonyProxy {
             var key = "TelephonyManager-getImei"
 
             if (PrivacySentry.Privacy.inDangerousState()) {
-                PrivacyProxyUtil.Util.doFilePrinter(key, "IMEI-getImei()", bVisitorModel = true)
+                PrivacyProxyUtil.Util.doFilePrinter(key, "IMEI-getImei()")
                 return ""
             }
 
@@ -251,7 +249,7 @@ open class PrivacyTelephonyProxy {
         fun getImei(manager: TelephonyManager, index: Int): String? {
             var key = "TelephonyManager-getImei-$index"
             if (PrivacySentry.Privacy.inDangerousState()) {
-                PrivacyProxyUtil.Util.doFilePrinter(key, "设备id-getImei(I)", bVisitorModel = true)
+                PrivacyProxyUtil.Util.doFilePrinter(key, "设备id-getImei(I)")
                 return ""
             }
 
@@ -286,8 +284,7 @@ open class PrivacyTelephonyProxy {
             if (PrivacySentry.Privacy.inDangerousState()) {
                 PrivacyProxyUtil.Util.doFilePrinter(
                     key,
-                    "SIM卡-getSimSerialNumber()",
-                    bVisitorModel = true
+                    "SIM卡-getSimSerialNumber()"
                 )
                 return ""
             }
@@ -332,7 +329,7 @@ open class PrivacyTelephonyProxy {
             var key = "TelephonyManager-getLine1Number"
 
             if (PrivacySentry.Privacy.inDangerousState()) {
-                PrivacyProxyUtil.Util.doFilePrinter(key, "手机号-getLine1Number", bVisitorModel = true)
+                PrivacyProxyUtil.Util.doFilePrinter(key, "手机号-getLine1Number")
                 return ""
             }
             synchronized(objectPhoneNumberLock) {
@@ -357,8 +354,7 @@ open class PrivacyTelephonyProxy {
             if (PrivacySentry.Privacy.inDangerousState()) {
                 PrivacyProxyUtil.Util.doFilePrinter(
                     key,
-                    "运营商信息-getSimOperator()",
-                    bVisitorModel = true
+                    "运营商信息-getSimOperator()"
                 )
                 return ""
             }
@@ -385,8 +381,7 @@ open class PrivacyTelephonyProxy {
             if (PrivacySentry.Privacy.inDangerousState()) {
                 PrivacyProxyUtil.Util.doFilePrinter(
                     key,
-                    "运营商信息-getNetworkOperator()",
-                    bVisitorModel = true
+                    "运营商信息-getNetworkOperator()"
                 )
                 return ""
             }
@@ -412,8 +407,7 @@ open class PrivacyTelephonyProxy {
             if (PrivacySentry.Privacy.inDangerousState()) {
                 PrivacyProxyUtil.Util.doFilePrinter(
                     key,
-                    "运营商信息-getNetworkOperator()",
-                    bVisitorModel = true
+                    "运营商信息-getNetworkOperator()"
                 )
                 return SIM_STATE_UNKNOWN
             }

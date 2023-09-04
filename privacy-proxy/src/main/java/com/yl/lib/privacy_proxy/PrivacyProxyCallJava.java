@@ -39,10 +39,10 @@ public class PrivacyProxyCallJava {
             return false;
         }
         if (!PrivacyClipBoardManager.Companion.isReadClipboardEnable()) {
-            PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("hasPrimaryClip", "读取系统剪贴板是否有值-拦截", "", false, false);
+            PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("hasPrimaryClip", "读取系统剪贴板是否有值-拦截", "", false);
             return false;
         }
-        PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("hasPrimaryClip", "读取系统剪贴板是否有值-hasPrimaryClip", "", false, false);
+        PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("hasPrimaryClip", "读取系统剪贴板是否有值-hasPrimaryClip", "", false);
         return manager.hasPrimaryClip();
     }
 
@@ -71,7 +71,7 @@ public class PrivacyProxyCallJava {
             originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
     )
     public static int getIpAddress(WifiInfo wifiInfo) {
-        PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("getIpAddress", "读取WifiInfo-getIpAddress", "", false, false);
+        PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("getIpAddress", "读取WifiInfo-getIpAddress", "", false);
         return wifiInfo.getIpAddress();
     }
 
