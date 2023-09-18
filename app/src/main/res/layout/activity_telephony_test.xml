@@ -49,6 +49,12 @@
                 android:layout_height="wrap_content"
                 android:text="测试sim卡操作码？" />
 
+            <Button
+                android:id="@+id/btn_sim_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试sim状态码？" />
+
         </LinearLayout>
 
     </ScrollView>

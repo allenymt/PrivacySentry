@@ -481,7 +481,7 @@ open class PrivacyProxyCall {
                 doFilePrinter("getScanResults", "WIFI扫描结果")
                 return emptyList()
             }
-
+            doFilePrinter("getScanResults", "WIFI扫描结果")
             var key = "getScanResults"
             return CachePrivacyManager.Manager.loadWithTimeMemoryCache(
                 key,
