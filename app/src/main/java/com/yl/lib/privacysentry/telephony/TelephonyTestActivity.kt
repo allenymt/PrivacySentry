@@ -45,6 +45,11 @@ class TelephonyTestActivity : AppCompatActivity() {
             PrivacyLog.i("networkOperator is $networkOperator")
         }
 
+        findViewById<Button>(R.id.btn_sim_state).setOnClickListener {
+            var simOperator = PrivacyMethod.PrivacyMethod.getSimState(this)
+            PrivacyLog.i("simOperator is $simOperator")
+        }
+
         //Android Q开始，READ_PHONE_STATE 不再有用，不用全局弹框
         var permissions = arrayOf(
             Manifest.permission.READ_PHONE_STATE

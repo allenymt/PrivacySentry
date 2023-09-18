@@ -16,15 +16,18 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventCallback
 import android.hardware.SensorManager
+import android.net.wifi.ScanResult
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Environment
 import android.provider.Settings
 import android.telephony.TelephonyManager
+import android.telephony.TelephonyManager.SIM_STATE_UNKNOWN
 import android.text.TextUtils
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import com.yl.lib.privacysentry.MainActivity
 import com.yl.lib.sentry.hook.util.PrivacyLog
 import java.io.File
@@ -201,6 +204,24 @@ class PrivacyMethod {
             }
             return simOperator
         }
+
+        fun getSimState(context: Context?): Int {
+            if (context == null) {
+                return SIM_STATE_UNKNOWN
+            }
+            var simState  = SIM_STATE_UNKNOWN
+//            try {
+
+                val mTelephonyMgr = context
+                    .getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+                simState =
+                    mTelephonyMgr.simState
+//            } catch (e: Throwable) {
+//                e.printStackTrace()
+//            }
+            return simState
+        }
+
 
         fun getNetworkOperator(context: Context?): String? {
             if (context == null) {
@@ -591,6 +612,20 @@ class PrivacyMethod {
             val perm =
                 context.checkCallingOrSelfPermission("android.permission.WRITE_EXTERNAL_STORAGE")
             return perm == PackageManager.PERMISSION_GRANTED
+        }
+
+        fun getScanResults(context: Context){
+            val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager?
+            val scanResults: List<ScanResult> = wifiManager!!.scanResults
+            for (scanResult in scanResults) {
+                val ssid: String = scanResult.SSID // Wi-Fi 名称
+                val bssid: String = scanResult.BSSID // Wi-Fi MAC 地址
+                val level: Int = scanResult.level // 信号强度
+                val frequency: Int = scanResult.frequency // 频率
+                val capabilities: String = scanResult.capabilities // 加密类型
+                // 处理扫描结果
+                PrivacyLog.i("getScanResults ssid is :$ssid,bssid is :$bssid,level is :$level,frequency is :$frequency,capabilities is :$capabilities")
+            }
         }
     }
 }

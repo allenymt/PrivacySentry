@@ -149,7 +149,7 @@ class CachePrivacyManager {
                 PrivacyCacheType.MEMORY -> memoryCache.get(key, defaultValue as Any)
                 PrivacyCacheType.TIMELINESS_MEMORY -> timeMemoryCache.get(
                     key,
-                    defaultValue.toString()
+                    defaultValue as Any
                 )
                 PrivacyCacheType.PERMANENT_DISK -> dickCache.get(key, defaultValue.toString())
                 PrivacyCacheType.TIMELINESS_DISK -> timeDiskCache.get(key, defaultValue.toString())
@@ -181,7 +181,7 @@ class CachePrivacyManager {
                     PrivacyCacheType.MEMORY -> memoryCache.put(key, value)
                     PrivacyCacheType.TIMELINESS_MEMORY -> timeMemoryCache.put(
                         key,
-                        value.toString(),
+                        value as Any,
                         duration
                     )
                     PrivacyCacheType.PERMANENT_DISK -> dickCache.put(key, value.toString())

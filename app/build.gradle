@@ -101,6 +101,9 @@ dependencies {
 privacy {
     // 设置免hook的名单
     blackList = []
+    // 开关PrivacySentry插件功能
+//    enablePrivacy = true
+    // 开启hook反射的方法
     hookReflex = true
     hookConstructor = true
     hookField = true
