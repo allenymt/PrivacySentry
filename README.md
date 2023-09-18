@@ -9,6 +9,11 @@
 
 ## 更新日志
     
+    2023-09-18(1.3.4)
+        1. 修复内存缓存数据转换问题
+        2. 增加部分demo
+        3. 修复getSimState闪退：https://github.com/allenymt/PrivacySentry/issues/116
+
     2023-08-22(1.3.3-灰度版本)
         1. 重构plugin部分，引入Boost, 适配Agp和Gradle高版本，支持AGP7.0
         2. 尝试解决小米照明弹自启动的问题
