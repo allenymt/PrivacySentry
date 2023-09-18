@@ -106,6 +106,10 @@ privacy {
     hookConstructor = true
     // 是否开启hook变量，默认为false，建议弃用
     hookField = true
+
+
+    //*************以下是分割线，主要是对Service的自启动优化处理****************
+    // 处理Manifest文件，主要是处理Service的Priority ， 关闭Service的Export
     enableProcessManifest = false
     // hook Service的部分代码，修复在MIUI上的自启动问题
     // 部分Service把自己的Priority设置为1000，这里开启代理功能，可以代理成0
@@ -116,8 +120,8 @@ privacy {
     enableCloseServiceExport = true
     // Export白名单Service, 这里根据厂商的名称设置了白名单
     serviceExportPkgWhiteList = ["xiaomi","vivo","honor","meizu","oppo","Oppo","Hms","huawei","stp","Honor"]
-    // 修改Service的onStartCommand 返回值修改为START_NOT_STICKY
-    enableHookServiceStartCommand = true
+    // 修改Service的onStartCommand 返回值修改为START_NOT_STICKY， 默认是false
+    enableHookServiceStartCommand = false
 }
 
 project.afterEvaluate {
