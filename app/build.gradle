@@ -103,9 +103,9 @@ privacy {
     // 开启hook反射的方法
     hookReflex = true
     // 开启hook 替换类，目前支持file
-    hookConstructor = true
+    hookConstructor = false
     // 是否开启hook变量，默认为false，建议弃用
-    hookField = true
+    hookField = false
 
 
     //*************以下是分割线，主要是对Service的自启动优化处理****************
