@@ -38,10 +38,12 @@ class HookedDataManger {
         }
 
         fun flushToFile(fileName: String, buildDir:File) {
-            if (fileName == null || replaceMethodMap.isEmpty() || hookServiceList.isEmpty()) {
+            if (fileName == null || (replaceMethodMap.isEmpty() && hookServiceList.isEmpty())) {
+                PrivacyPluginUtil.privacyPluginUtil.i("flushToFile but data is empty ")
                 return
             }
             var resultFile = File(buildDir.absolutePath + File.separator + fileName)
+            PrivacyPluginUtil.privacyPluginUtil.i("flushToFile fileName is ${resultFile.absolutePath}")
             if (resultFile?.parentFile != null && !resultFile.parentFile.exists()) {
                 GFileUtils.mkdirs(resultFile)
             }
@@ -57,6 +59,7 @@ class HookedDataManger {
             objectToJsonString(
                 privacyHookData
             ).let { content ->
+                PrivacyPluginUtil.privacyPluginUtil.i("flushToFile writeFile is ${resultFile.absolutePath}")
                 GFileUtils.writeFile(content, resultFile)
             }
         }
