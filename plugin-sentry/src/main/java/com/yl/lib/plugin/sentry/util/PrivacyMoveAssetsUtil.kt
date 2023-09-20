@@ -21,7 +21,7 @@ open class PrivacyMoveAssetsUtil{
         var buildDir:File?=null
 
         fun doFlushProxyData() {
-            PrivacyPluginUtil.privacyPluginUtil.i("MoveAssetsTask-flushToFile")
+            PrivacyPluginUtil.privacyPluginUtil.i("MoveAssetsTask-flushToFile-$fileName-$buildDir")
             // 写入被代理所有的类和文件
             fileName?.let {
                 HookedDataManger.MANAGER.flushToFile(it, buildDir!!)
