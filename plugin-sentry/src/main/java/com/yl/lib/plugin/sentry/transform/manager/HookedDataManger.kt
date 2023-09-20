@@ -38,7 +38,7 @@ class HookedDataManger {
         }
 
         fun flushToFile(fileName: String, buildDir:File) {
-            if (fileName == null || replaceMethodMap.isEmpty() || hookServiceList.isEmpty()) {
+            if (fileName == null || (replaceMethodMap.isEmpty() && hookServiceList.isEmpty())) {
                 PrivacyPluginUtil.privacyPluginUtil.i("flushToFile but data is empty ")
                 return
             }
