@@ -38,8 +38,4 @@ dependencies {
 }
 
 
-if (rootProject.ext.plugin_local_debug) {
-
-} else {
-    apply plugin: 'android.publish'
-}
+apply from: '../upload.gradle'

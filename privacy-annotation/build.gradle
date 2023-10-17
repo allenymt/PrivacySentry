@@ -7,18 +7,4 @@ java {
 }
 
 
-if (rootProject.ext.plugin_local_debug) {
-    //本地调试补充
-    apply plugin: 'maven'
-    group = 'com.yl.lib.privacy'
-    version = '0.0.2-SNAPSHOT'
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                repository(url: uri('../plugin-sentry/plugins'))
-            }
-        }
-    }
-} else {
-    apply plugin: 'android.publish'
-}
+apply from: '../upload.gradle'
