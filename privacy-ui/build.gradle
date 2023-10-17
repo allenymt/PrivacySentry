@@ -46,8 +46,4 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'//viewModelScope
 }
 
-if (rootProject.ext.plugin_local_debug) {
-
-} else {
-    apply plugin: 'android.publish'
-}
+apply from: '../upload.gradle'

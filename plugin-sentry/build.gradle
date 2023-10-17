@@ -1,6 +1,18 @@
 apply plugin: 'kotlin'
-apply plugin: 'java'
 apply plugin: 'groovy'
+
+sourceSets {
+    main {
+        java {
+            srcDirs += []
+        }
+        kotlin {
+            srcDirs += ['src/main/kotlin', 'src/main/java']
+        }
+    }
+
+
+}
 
 compileKotlin {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
@@ -14,8 +26,8 @@ dependencies {
 
     def booster_version = '4.13.0'
     // Booster V7.1
-    implementation "com.didiglobal.booster:booster-api:$booster_version"
-    implementation "com.didiglobal.booster:booster-transform-asm:$booster_version"
+    api "com.didiglobal.booster:booster-api:$booster_version"
+    api "com.didiglobal.booster:booster-transform-asm:$booster_version"
 
 
     implementation "com.alibaba:fastjson:1.1.68.android"
@@ -26,20 +38,22 @@ dependencies {
 //    implementation 'org.apache.httpcomponents:httpclient:4.5.12'
 }
 
-if (rootProject.ext.plugin_local_debug) {
-    // 插件本地调试补充
-    apply plugin: 'maven'
-    group = 'com.yl.lib.plugin'
-    version = '2.0.0-SNAPSHOT'
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                repository(url: uri('plugins'))
-            }
-        }
-    }
-} else {
-    apply plugin: 'android.publish'
-}
+
+//if (rootProject.ext.plugin_local_debug) {
+//    // 插件本地调试补充
+//    apply plugin: 'maven'
+//    group = 'com.yl.lib.plugin'
+//    version = '2.0.0-SNAPSHOT'
+//    uploadArchives {
+//        repositories {
+//            mavenDeployer {
+//                repository(url: uri('plugins'))
+//            }
+//        }
+//    }
+//} else {
+//    apply plugin: 'android.publish'
+//}
+apply from: '../upload.gradle'
 
 

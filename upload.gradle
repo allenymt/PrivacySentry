@@ -1,0 +1,8 @@
+def local_debug = rootProject.ext.plugin_local_debug
+
+if (local_debug){
+    apply from: '../upload_private.gradle'
+}
+else{
+    apply plugin: 'android.publish'
+}
