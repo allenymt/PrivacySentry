@@ -1,4 +1,5 @@
 apply plugin: 'kotlin'
+apply plugin: 'java'
 apply plugin: 'groovy'
 
 compileKotlin {
@@ -13,8 +14,8 @@ dependencies {
 
     def booster_version = '4.13.0'
     // Booster V7.1
-    api "com.didiglobal.booster:booster-api:$booster_version"
-    api "com.didiglobal.booster:booster-transform-asm:$booster_version"
+    implementation "com.didiglobal.booster:booster-api:$booster_version"
+    implementation "com.didiglobal.booster:booster-transform-asm:$booster_version"
 
 
     implementation "com.alibaba:fastjson:1.1.68.android"
