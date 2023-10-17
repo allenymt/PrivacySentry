@@ -5,7 +5,7 @@ apply plugin: 'maven-publish'
 
 Properties properties = new Properties()
 properties.load(project.file('gradle.properties').newDataInputStream())
-
+print("upload private config")
 task packageSourcesJar(type: Jar) {
     classifier 'sources'
     if (project.name == "privacy-annotation" || project.name == "plugin-sentry"){
