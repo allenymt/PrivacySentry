@@ -2,14 +2,10 @@
 buildscript {
     rootProject.ext.kotlin_version = "1.3.61"
     rootProject.ext.privacy_version = "1.0.1-SNAPSHOT"
-
     rootProject.ext.plugin_local_debug = false
-    // 当plugin_local_debug设置为true时，必须指定本地仓库路径，且必须是绝对路径
-    rootProject.ext.LOCAL_REPOSITORY_URL = "/Users/yulun/GitHub/PrivacySentry/plugin-sentry/plugins"
     repositories {
         if (rootProject.ext.plugin_local_debug) {
-            print("import ${rootProject.ext.LOCAL_REPOSITORY_URL}")
-            mavenLocal { url uri(rootProject.ext.LOCAL_REPOSITORY_URL) }
+            maven { url uri('plugin-sentry/plugins') }
         }
         maven {
             url 'http://nexus.vdian.net/repository/android/'
@@ -21,7 +17,11 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:3.5.4"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "com.wdian.android.lib:privacy-plugin:${rootProject.ext.privacy_version}"
+        if (rootProject.ext.plugin_local_debug) {
+            classpath "com.yl.lib.plugin:plugin-sentry:2.0.0-SNAPSHOT"
+        } else {
+            classpath "com.wdian.android.lib:privacy-plugin:${rootProject.ext.privacy_version}"
+        }
         classpath('com.vdian.android.lib:gradle-publish:1.5.8') { changing = true }
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -31,7 +31,7 @@ buildscript {
 allprojects {
     repositories {
         if (rootProject.ext.plugin_local_debug) {
-            mavenLocal { url uri(rootProject.ext.LOCAL_REPOSITORY_URL) }
+            maven { url uri('plugin-sentry/plugins') }
         }
         maven {
             url 'http://nexus.vdian.net/repository/android/'
@@ -49,35 +49,5 @@ task clean(type: Delete) {
 gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
         options.compilerArgs << "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
-    }
-}
-
-
-
-task checkUploadConfig4Local() {
-    doLast {
-        //配置检查
-        if (rootProject.ext.plugin_local_debug==false) {
-            throw new RuntimeException("执行当前打包上传任务必须修改 rootProject.ext.plugin_local_debug = true。")
-        }
-        //仓库检查
-        def repositories = new ArrayList<String>()
-
-        rootProject.repositories.forEach {
-            if (it instanceof MavenArtifactRepository) {
-                repositories.add((it as MavenArtifactRepository).url.toString())
-            }
-        }
-
-        //相关模块检查
-        def modules = new ArrayList<String>()
-
-        rootProject.allprojects.forEach {
-            modules.add(it.name)
-        }
-
-        if (!modules.contains("plugin-sentry")) {
-            throw new RuntimeException("找不到plugin-sentry")
-        }
     }
 }

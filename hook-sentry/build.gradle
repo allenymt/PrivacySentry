@@ -48,4 +48,18 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
-apply from: '../upload.gradle'
+if (rootProject.ext.plugin_local_debug) {
+    // 插件本地调试补充
+    apply plugin: 'maven'
+    group = 'com.yl.lib.privacy'
+    version = '0.0.1-SNAPSHOT'
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: uri('../plugin-sentry/plugins'))
+            }
+        }
+    }
+} else {
+    apply plugin: 'android.publish'
+}
