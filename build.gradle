@@ -21,7 +21,7 @@ buildscript {
         classpath "com.android.tools.build:gradle:4.1.3"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.wdian.android.lib:privacy-plugin:${rootProject.ext.privacy_version}"
-        classpath('com.vdian.android.lib:gradle-publish:1.0.0-apg4.x-SNAPSHOT') { changing = true }
+        classpath('com.vdian.android.lib:gradle-publish:1.6.2.11.1-arg4-SNAPSHOT') { changing = true }
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
