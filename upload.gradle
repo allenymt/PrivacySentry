@@ -6,4 +6,10 @@ if (local_debug){
 } else{
     apply plugin: 'android.publish'
     print("local_debug is false")
+    release {
+        git {
+            requireBranch = 'agp_4x' // 构建需要的分支
+            pushToRemote = 'origin' // push的远端
+        }
+    }
 }

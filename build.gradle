@@ -18,7 +18,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:3.5.4"
+        classpath "com.android.tools.build:gradle:4.1.3"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.wdian.android.lib:privacy-plugin:${rootProject.ext.privacy_version}"
         classpath('com.vdian.android.lib:gradle-publish:1.5.8') { changing = true }
