@@ -376,7 +376,8 @@ public class PrivacyFile extends File {
 
 - 权限请求
 
-
+## 常见的合规字段整理
+IMEI、MAC地址、MEID、IMSI、SN、ICCID等设备唯一标识符，Android ID、WiFi（WiFi名称、WiFi MAC地址以及设备扫描到的所有WiFi信息），SIM卡信息（IMSI、SIM卡序列号ICCID、手机号、运营商信息），应用安装列表（设备所有已安装应用的包名和应用名），传感器（传感器列表、加速度传感器、温度传感器等），蓝牙信息（设备蓝牙地址和设备扫描到的蓝牙设备信息），基站定位、GPS（用户地理位置信息），账户（各类应用注册的不同账号信息）、剪切板、IP地址、硬件序列号、SDCard信息（公有目录）
 
 
 ## 结语
