@@ -248,6 +248,10 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    fun testGetOaid(view: View) {
+        TestOaidGetter.getOaid(this);
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

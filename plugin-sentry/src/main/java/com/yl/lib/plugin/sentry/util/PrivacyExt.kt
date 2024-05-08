@@ -78,10 +78,11 @@ fun ZipFile.privacyTransform(
             })
     )
     //将jar包里的文件序列化输出
-    entries().asSequence().forEach { entry ->
+    entries().asSequence().filterNot {
+        it.name.startsWith("META-INF/") && it.name.substringAfterLast('.') in JAR_SIGNATURE_EXTENSIONS
+    }.forEach { entry ->
         if (!entries.contains(entry.name)) {
             val zae = entryFactory(entry)
-
             val stream = InputStreamSupplier {
                 when (entry.name.substringAfterLast('.', "")) {
                     "class" -> getInputStream(entry).use { src ->
@@ -99,7 +100,7 @@ fun ZipFile.privacyTransform(
             creator.addArchiveEntry(zae, stream)
             entries.add(entry.name)
         } else {
-            System.err.println("Duplicated jar entry: ${this.name}!/${entry.name}")
+            System.err.println("Duplicated jar entry1: ${this.name}!/${entry.name}")
         }
     }
     val zip = ZipArchiveOutputStream(output)
@@ -111,11 +112,12 @@ fun ZipFile.privacyTransform(
             zipStream.close()
 //            e.printStackTrace()
 //            "e===>${e.message}".println()
-            System.err.println("Duplicated jar entry: ${this.name}!")
+            System.err.println("Duplicated jar entry2: ${this.name}!")
         }
     }
 }
 
+private val JAR_SIGNATURE_EXTENSIONS = setOf("SF", "RSA", "DSA", "EC")
 
 fun <R> AnnotationNode.privacyGetValue(name: String = "value"): R? =
     values?.withIndex()?.iterator()?.let {

@@ -1,0 +1,2 @@
+com/yl/lib/privacy_ui/BuildConfig.java
+ com.yl.lib.privacy_ui.BuildConfig

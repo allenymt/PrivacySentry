@@ -1,0 +1,16 @@
+R_DEF: Internal format may change without notice
+local
+id content
+id function_name_tv
+id origin_count_tv
+id origin_method_tv
+id permission_desc_tv
+id permission_tv
+id search_bar
+id time_tv
+layout activity_permission_list
+layout activity_real_time_privacy_item
+layout activity_replace_list
+layout permission_item_view
+layout real_tile_item_view
+layout replace_item_view

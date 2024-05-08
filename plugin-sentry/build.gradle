@@ -13,7 +13,7 @@ dependencies {
     implementation project(path: ':privacy-annotation')
     compileOnly 'com.android.tools.build:gradle:4.2.0'
 
-    def booster_version = '4.13.0'
+    def booster_version = '4.14.0'
     // Booster V7.1
     implementation "com.didiglobal.booster:booster-api:$booster_version"
     implementation "com.didiglobal.booster:booster-transform-asm:$booster_version"

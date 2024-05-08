@@ -1,0 +1,39 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.yl.lib.privacy_ui"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="19"
+8-->/Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+9        android:targetSdkVersion="29" />
+9-->/Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+10
+11    <application>
+11-->/Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:5:5-17:19
+12        <activity
+12-->/Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:6:9-8:40
+13            android:name="com.yl.lib.privacy_ui.RealTimePrivacyItemActivity"
+13-->/Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:7:13-56
+14            android:exported="false" />
+14-->/Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:8:13-37
+15        <activity
+15-->/Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:9:9-12:75
+16            android:name="com.yl.lib.privacy_ui.ReplaceListActivity"
+16-->/Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:10:13-48
+17            android:exported="false"
+17-->/Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:11:13-37
+18            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+18-->/Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:12:13-72
+19        <activity
+19-->/Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:13:9-16:75
+20            android:name="com.yl.lib.privacy_ui.PermissionListActivity"
+20-->/Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:14:13-51
+21            android:exported="false"
+21-->/Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:15:13-37
+22            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+22-->/Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:16:13-72
+23    </application>
+24
+25</manifest>

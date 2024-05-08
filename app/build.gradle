@@ -55,6 +55,7 @@ android {
 }
 
 dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.3.1'
@@ -92,6 +93,7 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
 }
 
 
@@ -102,10 +104,11 @@ privacy {
     enablePrivacy = true
     // 开启hook反射的方法
     hookReflex = true
-    // 开启hook 替换类，目前支持file
-    hookConstructor = false
-    // 是否开启hook变量，默认为false，建议弃用
-    hookField = false
+    //  配置反射拦截 反射获取小米系统的oaid、aaid、vaid,例如极光、个推、穿山甲等SDK都有获取
+    reflexMap = ["com.android.id.impl.IdProviderImpl":["getOAID","getAAID","getVAID"]]
+
+    hookConstructor = true
+    hookField = true
 
 
     //*************以下是分割线，主要是对Service的自启动优化处理****************
@@ -118,10 +121,10 @@ privacy {
 
     // 支持关闭Service的Export功能，默认为false，注意部分厂商通道之类的push(xiaomi、vivo、huawei等厂商的pushService)，不能关闭
     enableCloseServiceExport = true
-    // Export白名单Service, 这里根据厂商的名称设置了白名单
-    serviceExportPkgWhiteList = ["xiaomi","vivo","honor","meizu","oppo","Oppo","Hms","huawei","stp","Honor"]
-    // 修改Service的onStartCommand 返回值修改为START_NOT_STICKY， 默认是false
-    enableHookServiceStartCommand = false
+    // Export白名单Service
+    serviceExportPkgWhiteList = ["white"]
+
+    enableHookServiceStartCommand = true
 }
 
 project.afterEvaluate {

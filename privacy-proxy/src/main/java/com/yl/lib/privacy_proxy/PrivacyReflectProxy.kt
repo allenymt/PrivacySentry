@@ -7,6 +7,8 @@ import androidx.annotation.Keep
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy
+import com.yl.lib.sentry.hook.cache.CachePrivacyManager
+import com.yl.lib.sentry.hook.util.PrivacyProxyUtil
 import java.lang.reflect.Method
 import java.net.NetworkInterface
 
@@ -100,6 +102,21 @@ open class PrivacyReflectProxy {
                 }
             }
 
+            // 针对OAID AAID VAID的方法，特殊处理，不做映射了
+            var methodName = method.name.toUpperCase()
+            if (methodName.contains("OAID") || methodName.contains("AAID") || methodName.contains("VAID")){
+                val cacheKey = obj?.javaClass?.name +"_"+ method.name
+                PrivacyProxyUtil.Util.doFilePrinter("methodName", cacheKey)
+                return CachePrivacyManager.Manager.loadWithMemoryCache(
+                    cacheKey,
+                    cacheKey,
+                    ""
+                ) { method.invoke(obj, *args) }
+            }
+
+            if (obj?.javaClass?.name?.equals("com.android.id.impl.IdProviderImpl") == true){
+                return method.invoke(obj, *args)
+            }
             return method.invoke(obj, *args)
         }
     }

@@ -606,7 +606,10 @@ open class PrivacyProxyCall {
                 )
                 return ""
             }
-
+            doFilePrinter(
+                key,
+                "mac地址-getMacAddress"
+            )
             synchronized(objectMacLock) {
                 return CachePrivacyManager.Manager.loadWithDiskCache(
                     key,
@@ -633,6 +636,10 @@ open class PrivacyProxyCall {
                 )
                 return ByteArray(1)
             }
+            doFilePrinter(
+                key,
+                "mac地址-getHardwareAddress"
+            )
             synchronized(objectHardMacLock) {
                 return CachePrivacyManager.Manager.loadWithDiskCache(
                     key,
@@ -657,6 +664,7 @@ open class PrivacyProxyCall {
                 doFilePrinter(key, "蓝牙地址-getAddress")
                 return ""
             }
+            doFilePrinter(key, "蓝牙地址-getAddress")
             synchronized(objectBluetoothLock) {
                 return CachePrivacyManager.Manager.loadWithMemoryCache(
                     key,
@@ -778,7 +786,11 @@ open class PrivacyProxyCall {
                 )
                 return ""
             }
-
+            doFilePrinter(
+                "getString",
+                "系统信息_android_id",
+                args = type
+            )
             // 控制读取频率，增加多线程磁盘缓存，保证APP只读取一次Android_id，防止三方SDK或者多次启动频繁读取Android_id
             synchronized(objectAndroidIdLock) {
                 return CachePrivacyManager.Manager.loadWithDiskCache(
@@ -818,6 +830,7 @@ open class PrivacyProxyCall {
                 doFilePrinter("getSerial", "Serial")
                 return ""
             }
+            doFilePrinter("getSerial", "Serial")
             synchronized(objectSNLock) {
                 return CachePrivacyManager.Manager.loadWithDiskCache(
                     key,
@@ -845,6 +858,7 @@ open class PrivacyProxyCall {
             if (PrivacySentry.Privacy.inDangerousState()) {
                 doFilePrinter("getExternalStorageDirectory", key)
             }
+            doFilePrinter("getExternalStorageDirectory", key)
             synchronized(objectExternalStorageDirectoryLock) {
                 result = CachePrivacyManager.Manager.loadWithMemoryCache<File>(
                     key,

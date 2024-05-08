@@ -121,8 +121,16 @@ open class HookMethodManager {
 
         //判断加载的字符串常量
         fun findByClsOrMethod(
-            name: String
+            name: String,
+            reflexMap: Map<String, List<String>>?
         ): Boolean {
+            if (reflexMap?.isEmpty() == false){
+                if (reflexMap.any {
+                        it.value.contains(name)
+                    }) {
+                    return true
+                }
+            }
             return hookMethodList.find {
                 name.contains(it.originClassName ?: "")  ||  name.contains(it.originMethodName ?: "")
             } !=null

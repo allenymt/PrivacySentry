@@ -64,7 +64,7 @@ class MethodHookTransform : BaseHookTransform() {
                     node.apply {
                         if (cst is String && !bLdcHookMethod) {
                             bLdcHookMethod =
-                                HookMethodManager.MANAGER.findByClsOrMethod(cst as String)
+                                HookMethodManager.MANAGER.findByClsOrMethod(cst as String,privacyExtension.reflexMap)
                         }
                     }
                 }
@@ -81,7 +81,6 @@ class MethodHookTransform : BaseHookTransform() {
     ): Boolean {
         // 反射需要特殊处理下，避免hook所有的反射方法
         return if (methodName == "invoke") {
-//            log("shouldHook bLdcHookMethod is $bLdcHookMethod hookReflex is ${privacyExtension?.hookReflex}")
             bLdcHookMethod && privacyExtension.hookReflex
         } else {
             true

@@ -1,0 +1,61 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:2:1-19:12
+INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:2:1-19:12
+INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:2:1-19:12
+INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:2:1-19:12
+INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:2:1-19:12
+INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:2:1-19:12
+INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:2:1-19:12
+	package
+		ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:3:5-36
+		INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+		INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+		ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:2:1-19:12
+		INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+		ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:2:1-19:12
+		INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:2:11-69
+application
+ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:5:5-17:19
+activity#com.yl.lib.privacy_ui.RealTimePrivacyItemActivity
+ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:6:9-8:40
+	android:exported
+		ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:8:13-37
+	android:name
+		ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:7:13-56
+activity#com.yl.lib.privacy_ui.ReplaceListActivity
+ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:9:9-12:75
+	android:exported
+		ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:11:13-37
+	android:theme
+		ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:12:13-72
+	android:name
+		ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:10:13-48
+activity#com.yl.lib.privacy_ui.PermissionListActivity
+ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:13:9-16:75
+	android:exported
+		ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:15:13-37
+	android:theme
+		ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:16:13-72
+	android:name
+		ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml:14:13-51
+uses-sdk
+INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+		ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+		INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+		ADDED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
+		INJECTED from /Users/yulun/GitHub/PrivacySentry/privacy-ui/src/main/AndroidManifest.xml
