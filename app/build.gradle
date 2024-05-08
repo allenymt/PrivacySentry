@@ -105,7 +105,7 @@ privacy {
     // 开启hook反射的方法
     hookReflex = true
     //  配置反射拦截 反射获取小米系统的oaid、aaid、vaid,例如极光、个推、穿山甲等SDK都有获取
-    reflexMap = ["com.android.id.impl.IdProviderImpl":["getOAID","getAAID","getVAID"]]
+//    reflexMap = ["com.android.id.impl.IdProviderImpl":["getOAID","getAAID","getVAID"]]
 
     hookConstructor = true
     hookField = true
