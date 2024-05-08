@@ -10,7 +10,7 @@
 ## 更新日志
     2024-05-08(1.3.5)
         1. 修复读取小米系统oaid，反射的方法代理失败的问题
-        2. 修复SHA-256 digest error问题，例如引用bcpprov jar
+        2. 修复SHA-256 digest error问题，例如引用bcprov jar
 
     2023-09-18(1.3.4.2)
         1. 修复Service自启动的尝试
