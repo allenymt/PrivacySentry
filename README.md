@@ -1,8 +1,8 @@
 # PrivacySentry
     android隐私合规检测工具，可规避应用市场上架合规检测的大部分问题
-
+	
 ## 群二维码
-
+支持agp8.0以下，agp 8.0还未适配
 加作者个人微信，备注来意PrivacySentry, 进社区群
 <img width="290" alt="image" src="https://github.com/allenymt/PrivacySentry/assets/8003195/76f2124e-f58d-4420-ac2d-8d33b1093907">
 
