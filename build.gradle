@@ -17,7 +17,7 @@ buildscript {
         if (rootProject.ext.plugin_local_debug) {
             classpath "com.yl.lib.plugin:plugin-sentry:2.0.0-SNAPSHOT"
         } else {
-            classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.3.5'
+            classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.3.6'
         }
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         // NOTE: Do not place your application dependencies here; they belong
