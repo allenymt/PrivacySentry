@@ -1,15 +1,22 @@
 package com.yl.lib.privacysentry.test;
 
 import android.app.ActivityManager;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode;
 import com.yl.lib.privacy_annotation.PrivacyClassProxy;
 import com.yl.lib.privacy_annotation.PrivacyMethodProxy;
 import com.yl.lib.sentry.hook.PrivacySentry;
 import com.yl.lib.sentry.hook.printer.BasePrinter;
+import com.yl.lib.sentry.hook.util.PrivacyProxyUtil;
 import com.yl.lib.sentry.hook.util.PrivacyUtil;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import kotlin.jvm.JvmStatic;
 
 /**
  * @author yulun
@@ -24,6 +31,15 @@ public class PrivacyProxyCallJava {
     ) {
         doFilePrinter("getRunningTasks", "获取当前运行中的任务", "");
         return manager.getRunningTasks(maxNum);
+    }
+
+    @PrivacyMethodProxy(
+            originalClass = SharedPreferences.Editor.class,
+            originalMethod = "putString",
+            originalOpcode = MethodInvokeOpcode.INVOKEINTERFACE
+    )
+    public static SharedPreferences.Editor putString(SharedPreferences.Editor editor, String var1,String var2) {
+       return editor.putString(var1, var2);
     }
 
     private static void doFilePrinter(

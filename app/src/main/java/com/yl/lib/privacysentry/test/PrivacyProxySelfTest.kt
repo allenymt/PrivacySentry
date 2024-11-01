@@ -1,6 +1,7 @@
 package com.yl.lib.privacysentry.test
 
 import android.app.ActivityManager
+import android.content.SharedPreferences
 import androidx.annotation.Keep
 import com.yl.lib.privacy_annotation.MethodInvokeOpcode
 import com.yl.lib.privacy_annotation.PrivacyClassProxy
@@ -42,6 +43,18 @@ class PrivacyProxySelfTest {
         fun connect(httpURLConnection: HttpURLConnection) {
             PrivacyLog.i("HttpURLConnection connect")
             httpURLConnection.connect()
+        }
+
+        @PrivacyMethodProxy(
+            originalClass = SharedPreferences.Editor::class,
+            originalMethod = "apply",
+            originalOpcode = MethodInvokeOpcode.INVOKEINTERFACE
+        )
+        @JvmStatic
+        fun apply(
+            editor: SharedPreferences.Editor
+        ): Unit {
+            editor.apply()
         }
     }
 }

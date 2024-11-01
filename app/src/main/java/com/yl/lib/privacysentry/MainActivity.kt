@@ -42,6 +42,11 @@ class MainActivity : AppCompatActivity() {
             Thread{
                 TestInJava.testHttpUrlConnection()
             }
+
+            val preferences = getSharedPreferences("my_preferences", MODE_PRIVATE)
+            val editor = preferences.edit()
+            editor.putString("key", "value")
+            editor.apply()
         }
 
         findViewById<Button>(R.id.btn_mac_address).setOnClickListener {
