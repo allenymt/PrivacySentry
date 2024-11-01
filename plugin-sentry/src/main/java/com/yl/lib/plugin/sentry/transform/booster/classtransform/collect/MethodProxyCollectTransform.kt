@@ -72,7 +72,7 @@ class MethodProxyCollectTransform : AbsClassTransformer() {
             ) {
                 // 如果是调用实例方法，代理方法的描述会比原始方法多了一个实例，这里需要裁剪，方便做匹配 、、、
                 hookMethodItem.originMethodDesc =
-                    hookMethodItem.proxyMethodDesc.replace(
+                    hookMethodItem.proxyMethodDesc.replaceFirst(
                         "L${hookMethodItem.originClassName};",
                         ""
                     )
