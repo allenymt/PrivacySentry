@@ -24,18 +24,25 @@ open class PrivacyExtension {
     var reflexMap: Map<String, List<String>>? = null
 
     // 开启hook构造函数，默认为false
+    @Deprecated("放弃维护")
     var hookConstructor: Boolean = false
 
+    @Deprecated("放弃维护")
     var enableProcessManifest : Boolean = false
     // hook Service的部分代码，修复在MIUI上的自启动问题
     // 部分Service把自己的Priority设置为1000，这里开启代理功能，可以代理成0
+    @Deprecated("放弃维护")
     var enableReplacePriority = false
+    @Deprecated("放弃维护")
     var replacePriority = 0
 
     // 支持关闭Service的Export功能，默认为false，注意部分厂商通道之类的push，不能关闭
+    @Deprecated("放弃维护")
     var enableCloseServiceExport = false
     // Export白名单Service
+    @Deprecated("放弃维护")
     var serviceExportPkgWhiteList: Set<String>? = null
     // hook Service的startCommand方法，修复在MIUI上的自启动问题
+    @Deprecated("放弃维护")
     var enableHookServiceStartCommand = false
 }

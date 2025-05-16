@@ -29,95 +29,95 @@ import java.util.zip.ZipFile
  * @since 2023-08-09 17:17
  */
 
-fun File.privacyTransform(output: File, transformer: (ByteArray) -> ByteArray) {
-    when {
-        isDirectory -> this.toURI().let { base ->
-            this.search().parallelStream().forEach {
-                it.transform(File(output, base.relativize(it.toURI()).path), transformer)
-            }
-        }
-        isFile -> when (extension.toLowerCase()) {
-            "jar" -> JarFile(this).use {
-                it.privacyTransform(output, ::JarArchiveEntry, transformer)
-            }
-            "class" -> this.inputStream().use {
-                it.transform(transformer).redirect(output)
-            }
-            else -> this.copyTo(output, true)
-        }
-        else -> throw IOException("Unexpected file: ${this.canonicalPath}")
-    }
+//fun File.privacyTransform(output: File, transformer: (ByteArray) -> ByteArray) {
+//    when {
+//        isDirectory -> this.toURI().let { base ->
+//            this.search().parallelStream().forEach {
+//                it.transform(File(output, base.relativize(it.toURI()).path), transformer)
+//            }
+//        }
+//        isFile -> when (extension.toLowerCase()) {
+//            "jar" -> JarFile(this).use {
+//                it.privacyTransform(output, ::JarArchiveEntry, transformer)
+//            }
+//            "class" -> this.inputStream().use {
+//                it.transform(transformer).redirect(output)
+//            }
+//            else -> this.copyTo(output, true)
+//        }
+//        else -> throw IOException("Unexpected file: ${this.canonicalPath}")
+//    }
+//
+//}
 
-}
-
-fun ZipFile.privacyTransform(
-    output: File,
-    entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
-    transformer: (ByteArray) -> ByteArray = { it -> it }
-) = output.touch().outputStream().buffered().use {
-    this.privacyTransform(it, entryFactory, transformer)
-}
+//fun ZipFile.privacyTransform(
+//    output: File,
+//    entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
+//    transformer: (ByteArray) -> ByteArray = { it -> it }
+//) = output.touch().outputStream().buffered().use {
+//    this.privacyTransform(it, entryFactory, transformer)
+//}
 
 
-fun ZipFile.privacyTransform(
-    output: OutputStream,
-    entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
-    transformer: (ByteArray) -> ByteArray = { it -> it }
-) {
-    val entries = mutableSetOf<String>()
-    val creator = ParallelScatterZipCreator(
-        ThreadPoolExecutor(
-            NCPU,
-            NCPU,
-            0L,
-            TimeUnit.MILLISECONDS,
-            LinkedBlockingQueue<Runnable>(),
-            Executors.defaultThreadFactory(),
-            RejectedExecutionHandler { runnable, _ ->
-                runnable.run()
-            })
-    )
-    //将jar包里的文件序列化输出
-    entries().asSequence().filterNot {
-        it.name.startsWith("META-INF/") && it.name.substringAfterLast('.') in JAR_SIGNATURE_EXTENSIONS
-    }.forEach { entry ->
-        if (!entries.contains(entry.name)) {
-            val zae = entryFactory(entry)
-            val stream = InputStreamSupplier {
-                when (entry.name.substringAfterLast('.', "")) {
-                    "class" -> getInputStream(entry).use { src ->
-                        try {
-                            src.transform(transformer).inputStream()
-                        } catch (e: Throwable) {
-                            System.err.println("Broken class: ${this.name}!/${entry.name}")
-                            getInputStream(entry)
-                        }
-                    }
-                    else -> getInputStream(entry)
-                }
-            }
+//fun ZipFile.privacyTransform(
+//    output: OutputStream,
+//    entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
+//    transformer: (ByteArray) -> ByteArray = { it -> it }
+//) {
+//    val entries = mutableSetOf<String>()
+//    val creator = ParallelScatterZipCreator(
+//        ThreadPoolExecutor(
+//            NCPU,
+//            NCPU,
+//            0L,
+//            TimeUnit.MILLISECONDS,
+//            LinkedBlockingQueue<Runnable>(),
+//            Executors.defaultThreadFactory(),
+//            RejectedExecutionHandler { runnable, _ ->
+//                runnable.run()
+//            })
+//    )
+//    //将jar包里的文件序列化输出
+//    entries().asSequence().filterNot {
+//        it.name.startsWith("META-INF/") && it.name.substringAfterLast('.') in JAR_SIGNATURE_EXTENSIONS
+//    }.forEach { entry ->
+//        if (!entries.contains(entry.name)) {
+//            val zae = entryFactory(entry)
+//            val stream = InputStreamSupplier {
+//                when (entry.name.substringAfterLast('.', "")) {
+//                    "class" -> getInputStream(entry).use { src ->
+//                        try {
+//                            src.transform(transformer).inputStream()
+//                        } catch (e: Throwable) {
+//                            System.err.println("Broken class: ${this.name}!/${entry.name}")
+//                            getInputStream(entry)
+//                        }
+//                    }
+//                    else -> getInputStream(entry)
+//                }
+//            }
+//
+//            creator.addArchiveEntry(zae, stream)
+//            entries.add(entry.name)
+//        } else {
+//            System.err.println("Duplicated jar entry1: ${this.name}!/${entry.name}")
+//        }
+//    }
+//    val zip = ZipArchiveOutputStream(output)
+//    zip.use { zipStream ->
+//        try {
+//            creator.writeTo(zipStream)
+//            zipStream.close()
+//        } catch (e: Exception) {
+//            zipStream.close()
+////            e.printStackTrace()
+////            "e===>${e.message}".println()
+//            System.err.println("Duplicated jar entry2: ${this.name}!")
+//        }
+//    }
+//}
 
-            creator.addArchiveEntry(zae, stream)
-            entries.add(entry.name)
-        } else {
-            System.err.println("Duplicated jar entry1: ${this.name}!/${entry.name}")
-        }
-    }
-    val zip = ZipArchiveOutputStream(output)
-    zip.use { zipStream ->
-        try {
-            creator.writeTo(zipStream)
-            zipStream.close()
-        } catch (e: Exception) {
-            zipStream.close()
-//            e.printStackTrace()
-//            "e===>${e.message}".println()
-            System.err.println("Duplicated jar entry2: ${this.name}!")
-        }
-    }
-}
-
-private val JAR_SIGNATURE_EXTENSIONS = setOf("SF", "RSA", "DSA", "EC")
+//private val JAR_SIGNATURE_EXTENSIONS = setOf("SF", "RSA", "DSA", "EC")
 
 fun <R> AnnotationNode.privacyGetValue(name: String = "value"): R? =
     values?.withIndex()?.iterator()?.let {

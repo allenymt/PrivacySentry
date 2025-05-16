@@ -43,7 +43,7 @@ class ClassProxyCollectTransform : AbsClassTransformer() {
 
         var classSourceName = annotationNode?.privacyGetValue<Type>("originClass").toString()
         var item = ReplaceClassItem(
-            originClassName = classSourceName?.substring(1, classSourceName?.length - 1) ?: "",
+            originClassName = classSourceName?.substring(1, classSourceName?.length?.minus(1) ?: 1) ?: "",
             proxyClassName = klass.formatName()
         )
         ReplaceClassManager.MANAGER.appendHookItem(item)

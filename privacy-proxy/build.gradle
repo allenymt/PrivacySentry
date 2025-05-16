@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-
+    namespace "com.yl.lib.privacy_proxy"
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 30
@@ -40,4 +40,4 @@ dependencies {
     implementation project(path: ':privacy-annotation')
 }
 
-apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.github.dcendents.android-maven'

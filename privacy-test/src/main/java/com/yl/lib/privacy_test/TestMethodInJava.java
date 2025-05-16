@@ -15,6 +15,11 @@ public class TestMethodInJava {
         return androidId;
     }
 
+    public static String getAndroidId2(Context context) {
+        String androidId = "" + Settings.Secure.getString(context.getContentResolver(), "android_id");
+        return androidId;
+    }
+
     public static String getAndroidIdSystem(Context context) {
         String androidId = "" + Settings.System.getString(context.getContentResolver(), "android_id");
         return androidId;

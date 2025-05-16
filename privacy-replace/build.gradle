@@ -5,7 +5,7 @@ plugins {
 
 android {
     compileSdkVersion 30
-
+    namespace "com.yl.lib.privacy_replace"
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 30
@@ -37,4 +37,4 @@ dependencies {
     implementation project(path: ':privacy-annotation')
 }
 
-apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.github.dcendents.android-maven'

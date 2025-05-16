@@ -130,7 +130,7 @@ open class PrivacySensorProxy {
             sensor?.let {
                 var sensorType: String? = ""
                 var sensorDesc: String? = ""
-                var logPair = transformSensorTypeToString(sensor?.type)
+                var logPair = transformSensorTypeToString(sensor?.type ?: 0)
                 sensorType = logPair.first
                 sensorDesc = logPair.second
                 PrivacyProxyUtil.Util.doFilePrinter(
