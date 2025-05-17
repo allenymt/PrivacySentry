@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 //apply plugin: 'privacy-sentry-plugin'
 
 android {
-    compileSdkVersion 35
+    compileSdkVersion 34
     buildToolsVersion "34.0.0"
     namespace "com.yl.lib.privacysentry"
     defaultConfig {
         applicationId "com.yl.lib.privacysentry"
         minSdkVersion 19
-        targetSdkVersion 35
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
         multiDexEnabled true

@@ -30,7 +30,7 @@ allprojects {
         if (rootProject.ext.plugin_local_debug) {
             maven { url uri('plugin-sentry/plugins') }
         }
-//        maven { url 'https://jitpack.io' }
+//       maven { url 'https://jitpack.io' }
 //        mavenCentral()
 //        google()
 //        jcenter()

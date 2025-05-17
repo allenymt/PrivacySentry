@@ -1,0 +1,938 @@
+Build starting...
+Build image: default
+Start: Fri May 16 02:38:37 UTC 2025 123250ada517
+Git:
+1.3.7_v820_beta2-0-g2264e16
+commit 2264e1679212469ceb9fad13e2c55817967e0925
+Author: yulun 
+Date:   Fri May 16 10:38:13 2025 +0800
+
+    fix  error
+
+
+Init SDKMan
+Running JDK install command:
+sdk install java 17.0.12-oracle;sdk use java 17.0.12-oracle
+[1;33mWe periodically need to update the local cache. Please run:[0m
+
+  $ sdk update
+
+[1;36mBroadcasts discontinued. Please follow @sdkman_ on Twitter for announcements.[0m
+
+Downloading: java 17.0.12-oracle
+
+In progress...
+
+
+Repackaging Java 17.0.12-oracle...
+
+Done repackaging...
+
+[1;32mInstalling: java 17.0.12-oracle[0m
+[1;32mDone installing![0m
+
+
+[1;32mSetting java 17.0.12-oracle as default.[0m
+[1;33mWe periodically need to update the local cache. Please run:[0m
+
+  $ sdk update
+
+
+[1;32mUsing java version 17.0.12-oracle in this shell.[0m
+Found Android manifest
+Android SDK version: 30. Build tools: 30.0.3
+Installing Android platform 30
+Installing Build-tools 30.0.3 
+Found gradle
+Gradle build script
+Gradle wrapper found
+Init SDKMan
+Found gradle version: 8.2.
+Using gradle wrapper
+Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8 -Dhttps.protocols=TLSv1.2
+Downloading https://services.gradle.org/distributions/gradle-8.2-bin.zip
+.10%.20%.30%.40%.50%.60%.70%.80%.90%.100%
+
+------------------------------------------------------------
+Gradle 8.2
+------------------------------------------------------------
+
+Build time:   2023-06-30 18:02:30 UTC
+Revision:     5f4a070a62a31a17438ac998c2b849f4f6892877
+
+Kotlin:       1.8.20
+Groovy:       3.0.17
+Ant:          Apache Ant(TM) version 1.10.13 compiled on January 4 2023
+JVM:          17.0.12 (Oracle Corporation 17.0.12+8-LTS-286)
+OS:           Linux 4.14.63-xxxx-std-ipv6-64 amd64
+
+0m3.842s
+Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8 -Dhttps.protocols=TLSv1.2
+java version "17.0.12" 2024-07-16 LTS
+Java(TM) SE Runtime Environment (build 17.0.12+8-LTS-286)
+Java HotSpot(TM) 64-Bit Server VM (build 17.0.12+8-LTS-286, mixed mode, sharing)
+Getting tasks: ./gradlew tasks --all
+Found tasks
+Tasks: publishToMavenLocal,
+Found javadoc task
+
+Running: ./gradlew clean -Pgroup=com.github.allenymt -Pversion=1.3.7_v820_beta2 -xtest -xlint assemble publishToMavenLocal
+
+WARNING: We recommend using a newer Android Gradle plugin to use compileSdk = 35
+
+This Android Gradle plugin (8.2.0) was tested up to compileSdk = 34.
+
+You are strongly encouraged to update your project to use a newer
+Android Gradle plugin that has been tested with compileSdk = 35.
+
+If you are already using the latest version of the Android Gradle plugin,
+you may need to wait until a newer version with support for compileSdk = 35 is available.
+
+To suppress this warning, add/update
+    android.suppressUnsupportedCompileSdk=35
+to this project's gradle.properties.
+Checking the license for package Android SDK Build-Tools 34 in /opt/android-sdk-linux/licenses
+License for package Android SDK Build-Tools 34 accepted.
+Preparing "Install Android SDK Build-Tools 34 v.34.0.0".
+"Install Android SDK Build-Tools 34 v.34.0.0" ready.
+Installing Android SDK Build-Tools 34 in /opt/android-sdk-linux/build-tools/34.0.0
+"Install Android SDK Build-Tools 34 v.34.0.0" complete.
+"Install Android SDK Build-Tools 34 v.34.0.0" finished.
+Checking the license for package Android SDK Platform 35 in /opt/android-sdk-linux/licenses
+License for package Android SDK Platform 35 accepted.
+Preparing "Install Android SDK Platform 35 (revision 2)".
+"Install Android SDK Platform 35 (revision 2)" ready.
+Installing Android SDK Platform 35 in /opt/android-sdk-linux/platforms/android-35
+"Install Android SDK Platform 35 (revision 2)" complete.
+"Install Android SDK Platform 35 (revision 2)" finished.
+WARNING: The specified Android SDK Build Tools version (30.0.3) is ignored, as it is below the minimum supported version (34.0.0) for Android Gradle Plugin 8.2.0.
+Android SDK Build Tools 34.0.0 will be used.
+To suppress this warning, remove "buildToolsVersion '30.0.3'" from your build.gradle file, as each version of the Android Gradle Plugin now has a default version of the build tools.
+WARNING: The specified Android SDK Build Tools version (30.0.3) is ignored, as it is below the minimum supported version (34.0.0) for Android Gradle Plugin 8.2.0.
+Android SDK Build Tools 34.0.0 will be used.
+To suppress this warning, remove "buildToolsVersion '30.0.3'" from your build.gradle file, as each version of the Android Gradle Plugin now has a default version of the build tools.
+Checking the license for package Android SDK Platform 30 in /opt/android-sdk-linux/licenses
+License for package Android SDK Platform 30 accepted.
+Preparing "Install Android SDK Platform 30 (revision 3)".
+"Install Android SDK Platform 30 (revision 3)" ready.
+Installing Android SDK Platform 30 in /opt/android-sdk-linux/platforms/android-30
+"Install Android SDK Platform 30 (revision 3)" complete.
+"Install Android SDK Platform 30 (revision 3)" finished.
+=======> print allTasks
+[task ':clean', task ':app:clean', task ':hook-sentry:clean', task ':plugin-sentry:clean', task ':privacy-annotation:clean', task ':privacy-proxy:clean', task ':privacy-replace:clean', task ':privacy-test:clean', task ':app:preBuild', task ':app:preDebugBuild', task ':app:mergeDebugNativeDebugMetadata', task ':privacy-test:preBuild', task ':privacy-test:preDebugBuild', task ':privacy-test:writeDebugAarMetadata', task ':app:checkDebugAarMetadata', task ':app:generateDebugResValues', task ':privacy-test:generateDebugResValues', task ':privacy-test:generateDebugResources', task ':privacy-test:packageDebugResources', task ':app:mapDebugSourceSetPaths', task ':app:generateDebugResources', task ':app:mergeDebugResources', task ':app:packageDebugResources', task ':app:parseDebugLocalResources', task ':app:createDebugCompatibleScreenManifests', task ':app:extractDeepLinksDebug', task ':privacy-test:extractDeepLinksDebug', task ':privacy-test:processDebugManifest', task ':app:processDebugMainManifest', task ':app:processDebugManifest', task ':app:processDebugManifestForPackage', task ':privacy-test:compileDebugLibraryResources', task ':privacy-test:parseDebugLocalResources', task ':privacy-test:generateDebugRFile', task ':app:processDebugResources', task ':privacy-annotation:compileKotlin', task ':privacy-annotation:compileJava', task ':privacy-annotation:processResources', task ':privacy-annotation:classes', task ':privacy-annotation:jar', task ':privacy-annotation:inspectClassesForKotlinIC', task ':privacy-test:compileDebugKotlin', task ':privacy-test:javaPreCompileDebug', task ':privacy-test:compileDebugJavaWithJavac', task ':privacy-test:bundleLibCompileToJarDebug', task ':app:compileDebugKotlin', task ':app:javaPreCompileDebug', task ':app:compileDebugJavaWithJavac', task ':app:mergeDebugShaders', task ':app:compileDebugShaders', task ':app:generateDebugAssets', task ':privacy-test:mergeDebugShaders', task ':privacy-test:compileDebugShaders', task ':privacy-test:generateDebugAssets', task ':privacy-test:packageDebugAssets', task ':app:mergeDebugAssets', task ':app:compressDebugAssets', task ':app:processDebugJavaRes', task ':privacy-test:processDebugJavaRes', task ':app:mergeDebugJavaResource', task ':privacy-test:bundleLibRuntimeToJarDebug', task ':app:checkDebugDuplicateClasses', task ':app:desugarDebugFileDependencies', task ':app:dexBuilderDebug', task ':app:mergeDexDebug', task ':app:mergeDebugJniLibFolders', task ':privacy-test:mergeDebugJniLibFolders', task ':privacy-test:mergeDebugNativeLibs', task ':privacy-test:copyDebugJniLibsProjectOnly', task ':app:mergeDebugNativeLibs', task ':app:stripDebugDebugSymbols', task ':app:validateSigningDebug', task ':app:writeDebugAppMetadata', task ':app:writeDebugSigningConfigVersions', task ':app:packageDebug', task ':app:createDebugApkListingFileRedirect', task ':app:assembleDebug', task ':app:preReleaseBuild', task ':app:mergeReleaseNativeDebugMetadata', task ':privacy-test:preReleaseBuild', task ':privacy-test:writeReleaseAarMetadata', task ':app:checkReleaseAarMetadata', task ':app:generateReleaseResValues', task ':privacy-test:generateReleaseResValues', task ':privacy-test:generateReleaseResources', task ':privacy-test:packageReleaseResources', task ':app:mapReleaseSourceSetPaths', task ':app:generateReleaseResources', task ':app:mergeReleaseResources', task ':app:packageReleaseResources', task ':app:parseReleaseLocalResources', task ':app:createReleaseCompatibleScreenManifests', task ':app:extractDeepLinksRelease', task ':privacy-test:extractDeepLinksRelease', task ':privacy-test:processReleaseManifest', task ':app:processReleaseMainManifest', task ':app:processReleaseManifest', task ':app:processReleaseManifestForPackage', task ':privacy-test:compileReleaseLibraryResources', task ':privacy-test:parseReleaseLocalResources', task ':privacy-test:generateReleaseRFile', task ':app:processReleaseResources', task ':privacy-test:compileReleaseKotlin', task ':privacy-test:javaPreCompileRelease', task ':privacy-test:compileReleaseJavaWithJavac', task ':privacy-test:bundleLibCompileToJarRelease', task ':app:compileReleaseKotlin', task ':app:javaPreCompileRelease', task ':app:compileReleaseJavaWithJavac', task ':app:mergeReleaseShaders', task ':app:compileReleaseShaders', task ':app:generateReleaseAssets', task ':privacy-test:mergeReleaseShaders', task ':privacy-test:compileReleaseShaders', task ':privacy-test:generateReleaseAssets', task ':privacy-test:packageReleaseAssets', task ':app:mergeReleaseAssets', task ':app:compressReleaseAssets', task ':privacy-test:mergeReleaseGeneratedProguardFiles', task ':privacy-test:exportReleaseConsumerProguardFiles', task ':app:checkReleaseDuplicateClasses', task ':privacy-test:prepareReleaseArtProfile', task ':app:mergeReleaseArtProfile', task ':privacy-test:bundleLibRuntimeToJarRelease', task ':app:expandReleaseArtProfileWildcards', task ':app:extractProguardFiles', task ':app:mergeReleaseGeneratedProguardFiles', task ':app:processReleaseJavaRes', task ':privacy-test:processReleaseJavaRes', task ':app:mergeReleaseJavaResource', task ':app:minifyReleaseWithR8', task ':app:mergeReleaseJniLibFolders', task ':privacy-test:mergeReleaseJniLibFolders', task ':privacy-test:mergeReleaseNativeLibs', task ':privacy-test:copyReleaseJniLibsProjectOnly', task ':app:mergeReleaseNativeLibs', task ':app:stripReleaseDebugSymbols', task ':app:validateSigningRelease', task ':app:writeReleaseAppMetadata', task ':app:writeReleaseSigningConfigVersions', task ':app:packageRelease', task ':app:createReleaseApkListingFileRedirect', task ':app:assembleRelease', task ':app:assemble', task ':hook-sentry:preBuild', task ':hook-sentry:preDebugBuild', task ':hook-sentry:mergeDebugJniLibFolders', task ':hook-sentry:mergeDebugNativeLibs', task ':hook-sentry:stripDebugDebugSymbols', task ':hook-sentry:copyDebugJniLibsProjectAndLocalJars', task ':hook-sentry:generateDebugResValues', task ':hook-sentry:generateDebugResources', task ':hook-sentry:packageDebugResources', task ':hook-sentry:parseDebugLocalResources', task ':hook-sentry:processDebugManifest', task ':hook-sentry:generateDebugRFile', task ':hook-sentry:compileDebugKotlin', task ':hook-sentry:extractDebugAnnotations', task ':hook-sentry:extractDeepLinksForAarDebug', task ':hook-sentry:javaPreCompileDebug', task ':hook-sentry:compileDebugJavaWithJavac', task ':hook-sentry:mergeDebugGeneratedProguardFiles', task ':hook-sentry:mergeDebugConsumerProguardFiles', task ':hook-sentry:mergeDebugShaders', task ':hook-sentry:compileDebugShaders', task ':hook-sentry:generateDebugAssets', task ':hook-sentry:packageDebugAssets', task ':hook-sentry:prepareDebugArtProfile', task ':hook-sentry:prepareLintJarForPublish', task ':hook-sentry:processDebugJavaRes', task ':hook-sentry:mergeDebugJavaResource', task ':hook-sentry:syncDebugLibJars', task ':hook-sentry:writeDebugAarMetadata', task ':hook-sentry:bundleDebugAar', task ':hook-sentry:assembleDebug', task ':hook-sentry:preReleaseBuild', task ':hook-sentry:mergeReleaseJniLibFolders', task ':hook-sentry:mergeReleaseNativeLibs', task ':hook-sentry:stripReleaseDebugSymbols', task ':hook-sentry:copyReleaseJniLibsProjectAndLocalJars', task ':hook-sentry:generateReleaseResValues', task ':hook-sentry:extractDeepLinksForAarRelease', task ':hook-sentry:generateReleaseResources', task ':hook-sentry:packageReleaseResources', task ':hook-sentry:parseReleaseLocalResources', task ':hook-sentry:processReleaseManifest', task ':hook-sentry:generateReleaseRFile', task ':hook-sentry:compileReleaseKotlin', task ':hook-sentry:extractReleaseAnnotations', task ':hook-sentry:javaPreCompileRelease', task ':hook-sentry:compileReleaseJavaWithJavac', task ':hook-sentry:mergeReleaseGeneratedProguardFiles', task ':hook-sentry:mergeReleaseConsumerProguardFiles', task ':hook-sentry:mergeReleaseShaders', task ':hook-sentry:compileReleaseShaders', task ':hook-sentry:generateReleaseAssets', task ':hook-sentry:packageReleaseAssets', task ':hook-sentry:prepareReleaseArtProfile', task ':hook-sentry:processReleaseJavaRes', task ':hook-sentry:mergeReleaseJavaResource', task ':hook-sentry:syncReleaseLibJars', task ':hook-sentry:writeReleaseAarMetadata', task ':hook-sentry:bundleReleaseAar', task ':hook-sentry:mapReleaseSourceSetPaths', task ':hook-sentry:mergeReleaseResources', task ':hook-sentry:verifyReleaseResources', task ':hook-sentry:assembleRelease', task ':hook-sentry:assemble', task ':plugin-sentry:kaptGenerateStubsKotlin', task ':plugin-sentry:kaptKotlin', task ':plugin-sentry:compileKotlin', task ':plugin-sentry:compileJava', task ':plugin-sentry:compileGroovy', task ':plugin-sentry:processResources', task ':plugin-sentry:classes', task ':plugin-sentry:jar', task ':plugin-sentry:inspectClassesForKotlinIC', task ':plugin-sentry:assemble', task ':privacy-annotation:assemble', task ':privacy-proxy:preBuild', task ':privacy-proxy:preDebugBuild', task ':privacy-proxy:mergeDebugJniLibFolders', task ':privacy-proxy:mergeDebugNativeLibs', task ':privacy-proxy:stripDebugDebugSymbols', task ':privacy-proxy:copyDebugJniLibsProjectAndLocalJars', task ':hook-sentry:bundleLibCompileToJarDebug', task ':privacy-proxy:generateDebugResValues', task ':privacy-proxy:generateDebugResources', task ':privacy-proxy:packageDebugResources', task ':privacy-proxy:parseDebugLocalResources', task ':privacy-proxy:processDebugManifest', task ':privacy-proxy:generateDebugRFile', task ':privacy-proxy:compileDebugKotlin', task ':privacy-proxy:extractDebugAnnotations', task ':privacy-proxy:extractDeepLinksForAarDebug', task ':privacy-proxy:javaPreCompileDebug', task ':privacy-proxy:compileDebugJavaWithJavac', task ':privacy-proxy:mergeDebugGeneratedProguardFiles', task ':privacy-proxy:mergeDebugConsumerProguardFiles', task ':privacy-proxy:mergeDebugShaders', task ':privacy-proxy:compileDebugShaders', task ':privacy-proxy:generateDebugAssets', task ':privacy-proxy:packageDebugAssets', task ':privacy-proxy:prepareDebugArtProfile', task ':privacy-proxy:prepareLintJarForPublish', task ':privacy-proxy:processDebugJavaRes', task ':privacy-proxy:mergeDebugJavaResource', task ':privacy-proxy:syncDebugLibJars', task ':privacy-proxy:writeDebugAarMetadata', task ':privacy-proxy:bundleDebugAar', task ':privacy-proxy:assembleDebug', task ':privacy-proxy:preReleaseBuild', task ':privacy-proxy:mergeReleaseJniLibFolders', task ':privacy-proxy:mergeReleaseNativeLibs', task ':privacy-proxy:stripReleaseDebugSymbols', task ':privacy-proxy:copyReleaseJniLibsProjectAndLocalJars', task ':privacy-proxy:generateReleaseResValues', task ':privacy-proxy:extractDeepLinksForAarRelease', task ':hook-sentry:bundleLibCompileToJarRelease', task ':privacy-proxy:generateReleaseResources', task ':privacy-proxy:packageReleaseResources', task ':privacy-proxy:parseReleaseLocalResources', task ':privacy-proxy:processReleaseManifest', task ':privacy-proxy:generateReleaseRFile', task ':privacy-proxy:compileReleaseKotlin', task ':privacy-proxy:extractReleaseAnnotations', task ':privacy-proxy:javaPreCompileRelease', task ':privacy-proxy:compileReleaseJavaWithJavac', task ':privacy-proxy:mergeReleaseGeneratedProguardFiles', task ':privacy-proxy:mergeReleaseConsumerProguardFiles', task ':privacy-proxy:mergeReleaseShaders', task ':privacy-proxy:compileReleaseShaders', task ':privacy-proxy:generateReleaseAssets', task ':privacy-proxy:packageReleaseAssets', task ':privacy-proxy:prepareReleaseArtProfile', task ':privacy-proxy:processReleaseJavaRes', task ':privacy-proxy:mergeReleaseJavaResource', task ':privacy-proxy:syncReleaseLibJars', task ':privacy-proxy:writeReleaseAarMetadata', task ':privacy-proxy:bundleReleaseAar', task ':hook-sentry:compileReleaseLibraryResources', task ':privacy-proxy:mapReleaseSourceSetPaths', task ':privacy-proxy:mergeReleaseResources', task ':privacy-proxy:verifyReleaseResources', task ':privacy-proxy:assembleRelease', task ':privacy-proxy:assemble', task ':privacy-replace:preBuild', task ':privacy-replace:preDebugBuild', task ':privacy-replace:mergeDebugJniLibFolders', task ':privacy-replace:mergeDebugNativeLibs', task ':privacy-replace:stripDebugDebugSymbols', task ':privacy-replace:copyDebugJniLibsProjectAndLocalJars', task ':privacy-replace:generateDebugResValues', task ':privacy-replace:generateDebugResources', task ':privacy-replace:packageDebugResources', task ':privacy-replace:parseDebugLocalResources', task ':privacy-replace:processDebugManifest', task ':privacy-replace:generateDebugRFile', task ':privacy-replace:compileDebugKotlin', task ':privacy-replace:extractDebugAnnotations', task ':privacy-replace:extractDeepLinksForAarDebug', task ':privacy-replace:javaPreCompileDebug', task ':privacy-replace:compileDebugJavaWithJavac', task ':privacy-replace:mergeDebugGeneratedProguardFiles', task ':privacy-replace:mergeDebugConsumerProguardFiles', task ':privacy-replace:mergeDebugShaders', task ':privacy-replace:compileDebugShaders', task ':privacy-replace:generateDebugAssets', task ':privacy-replace:packageDebugAssets', task ':privacy-replace:prepareDebugArtProfile', task ':privacy-replace:prepareLintJarForPublish', task ':privacy-replace:processDebugJavaRes', task ':privacy-replace:mergeDebugJavaResource', task ':privacy-replace:syncDebugLibJars', task ':privacy-replace:writeDebugAarMetadata', task ':privacy-replace:bundleDebugAar', task ':privacy-replace:assembleDebug', task ':privacy-replace:preReleaseBuild', task ':privacy-replace:mergeReleaseJniLibFolders', task ':privacy-replace:mergeReleaseNativeLibs', task ':privacy-replace:stripReleaseDebugSymbols', task ':privacy-replace:copyReleaseJniLibsProjectAndLocalJars', task ':privacy-replace:generateReleaseResValues', task ':privacy-replace:extractDeepLinksForAarRelease', task ':privacy-replace:generateReleaseResources', task ':privacy-replace:packageReleaseResources', task ':privacy-replace:parseReleaseLocalResources', task ':privacy-replace:processReleaseManifest', task ':privacy-replace:generateReleaseRFile', task ':privacy-replace:compileReleaseKotlin', task ':privacy-replace:extractReleaseAnnotations', task ':privacy-replace:javaPreCompileRelease', task ':privacy-replace:compileReleaseJavaWithJavac', task ':privacy-replace:mergeReleaseGeneratedProguardFiles', task ':privacy-replace:mergeReleaseConsumerProguardFiles', task ':privacy-replace:mergeReleaseShaders', task ':privacy-replace:compileReleaseShaders', task ':privacy-replace:generateReleaseAssets', task ':privacy-replace:packageReleaseAssets', task ':privacy-replace:prepareReleaseArtProfile', task ':privacy-replace:processReleaseJavaRes', task ':privacy-replace:mergeReleaseJavaResource', task ':privacy-replace:syncReleaseLibJars', task ':privacy-replace:writeReleaseAarMetadata', task ':privacy-replace:bundleReleaseAar', task ':privacy-replace:mapReleaseSourceSetPaths', task ':privacy-replace:mergeReleaseResources', task ':privacy-replace:verifyReleaseResources', task ':privacy-replace:assembleRelease', task ':privacy-replace:assemble', task ':privacy-test:stripDebugDebugSymbols', task ':privacy-test:copyDebugJniLibsProjectAndLocalJars', task ':privacy-test:extractDebugAnnotations', task ':privacy-test:extractDeepLinksForAarDebug', task ':privacy-test:mergeDebugGeneratedProguardFiles', task ':privacy-test:mergeDebugConsumerProguardFiles', task ':privacy-test:prepareDebugArtProfile', task ':privacy-test:prepareLintJarForPublish', task ':privacy-test:mergeDebugJavaResource', task ':privacy-test:syncDebugLibJars', task ':privacy-test:bundleDebugAar', task ':privacy-test:assembleDebug', task ':privacy-test:stripReleaseDebugSymbols', task ':privacy-test:copyReleaseJniLibsProjectAndLocalJars', task ':privacy-test:extractDeepLinksForAarRelease', task ':privacy-test:extractReleaseAnnotations', task ':privacy-test:mergeReleaseConsumerProguardFiles', task ':privacy-test:mergeReleaseJavaResource', task ':privacy-test:syncReleaseLibJars', task ':privacy-test:bundleReleaseAar', task ':privacy-test:mapReleaseSourceSetPaths', task ':privacy-test:mergeReleaseResources', task ':privacy-test:verifyReleaseResources', task ':privacy-test:assembleRelease', task ':privacy-test:assemble', task ':plugin-sentry:publishToMavenLocal', task ':privacy-annotation:publishToMavenLocal']
+> Task :clean UP-TO-DATE
+> Task :app:clean UP-TO-DATE
+> Task :hook-sentry:clean UP-TO-DATE
+> Task :plugin-sentry:clean UP-TO-DATE
+> Task :privacy-annotation:clean UP-TO-DATE
+> Task :privacy-proxy:clean UP-TO-DATE
+> Task :privacy-replace:clean UP-TO-DATE
+> Task :privacy-test:clean UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :privacy-test:preBuild UP-TO-DATE
+> Task :privacy-test:preDebugBuild UP-TO-DATE
+> Task :app:generateDebugResValues
+> Task :privacy-test:generateDebugResValues
+> Task :privacy-test:generateDebugResources
+> Task :privacy-test:writeDebugAarMetadata
+> Task :privacy-test:packageDebugResources
+> Task :app:checkDebugAarMetadata
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:mergeDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :privacy-test:extractDeepLinksDebug
+> Task :app:parseDebugLocalResources
+
+> Task :privacy-test:processDebugManifest
+package="com.yl.lib.privacy_test" found in source AndroidManifest.xml: /home/jitpack/build/privacy-test/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.yl.lib.privacy_test" from the source AndroidManifest.xml: /home/jitpack/build/privacy-test/src/main/AndroidManifest.xml.
+
+> Task :privacy-test:compileDebugLibraryResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :privacy-test:parseDebugLocalResources
+> Task :privacy-annotation:compileKotlin NO-SOURCE
+> Task :privacy-test:generateDebugRFile
+> Task :privacy-annotation:compileJava
+> Task :privacy-annotation:processResources NO-SOURCE
+> Task :privacy-annotation:classes
+> Task :privacy-annotation:jar
+> Task :privacy-annotation:inspectClassesForKotlinIC
+> Task :privacy-test:javaPreCompileDebug
+> Task :app:processDebugManifestForPackage
+> Task :app:javaPreCompileDebug
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :privacy-test:mergeDebugShaders
+> Task :privacy-test:compileDebugShaders NO-SOURCE
+> Task :privacy-test:generateDebugAssets UP-TO-DATE
+> Task :privacy-test:packageDebugAssets
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:processDebugResources
+> Task :app:checkDebugDuplicateClasses
+> Task :app:mergeDebugJniLibFolders
+> Task :privacy-test:mergeDebugJniLibFolders
+> Task :privacy-test:mergeDebugNativeLibs NO-SOURCE
+> Task :app:validateSigningDebug
+> Task :privacy-test:copyDebugJniLibsProjectOnly
+> Task :app:writeDebugAppMetadata
+> Task :app:mergeDebugNativeLibs NO-SOURCE
+> Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :privacy-test:preReleaseBuild UP-TO-DATE
+> Task :privacy-test:writeReleaseAarMetadata
+> Task :app:generateReleaseResValues
+> Task :app:checkReleaseAarMetadata
+> Task :privacy-test:generateReleaseResValues
+> Task :privacy-test:generateReleaseResources
+> Task :privacy-test:packageReleaseResources
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :privacy-test:extractDeepLinksRelease
+> Task :app:parseReleaseLocalResources
+
+> Task :privacy-test:processReleaseManifest
+package="com.yl.lib.privacy_test" found in source AndroidManifest.xml: /home/jitpack/build/privacy-test/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.yl.lib.privacy_test" from the source AndroidManifest.xml: /home/jitpack/build/privacy-test/src/main/AndroidManifest.xml.
+
+> Task :privacy-test:compileReleaseLibraryResources
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :privacy-test:javaPreCompileRelease
+> Task :privacy-test:parseReleaseLocalResources
+> Task :app:javaPreCompileRelease
+> Task :app:mergeReleaseShaders
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :privacy-test:generateReleaseRFile
+> Task :privacy-test:mergeReleaseShaders
+> Task :privacy-test:compileReleaseShaders NO-SOURCE
+> Task :privacy-test:generateReleaseAssets UP-TO-DATE
+> Task :privacy-test:packageReleaseAssets
+> Task :app:mergeReleaseAssets
+> Task :app:compressReleaseAssets
+> Task :privacy-test:prepareReleaseArtProfile
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:extractProguardFiles
+> Task :app:mergeReleaseJniLibFolders
+> Task :privacy-test:mergeReleaseJniLibFolders
+> Task :privacy-test:mergeReleaseNativeLibs NO-SOURCE
+> Task :app:mergeReleaseArtProfile
+> Task :app:validateSigningRelease
+> Task :privacy-test:copyReleaseJniLibsProjectOnly
+> Task :app:writeReleaseAppMetadata
+> Task :app:mergeReleaseNativeLibs NO-SOURCE
+> Task :app:stripReleaseDebugSymbols NO-SOURCE
+> Task :app:writeReleaseSigningConfigVersions
+> Task :hook-sentry:preBuild UP-TO-DATE
+> Task :hook-sentry:preDebugBuild UP-TO-DATE
+> Task :hook-sentry:mergeDebugJniLibFolders
+> Task :hook-sentry:mergeDebugNativeLibs NO-SOURCE
+> Task :app:processReleaseManifestForPackage
+> Task :hook-sentry:stripDebugDebugSymbols NO-SOURCE
+> Task :hook-sentry:copyDebugJniLibsProjectAndLocalJars
+> Task :hook-sentry:generateDebugResValues
+> Task :hook-sentry:generateDebugResources
+> Task :app:mergeReleaseResources
+> Task :hook-sentry:packageDebugResources
+> Task :hook-sentry:parseDebugLocalResources
+> Task :hook-sentry:extractDeepLinksForAarDebug
+
+> Task :hook-sentry:processDebugManifest
+package="com.yl.lib.sentry.hook" found in source AndroidManifest.xml: /home/jitpack/build/hook-sentry/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.yl.lib.sentry.hook" from the source AndroidManifest.xml: /home/jitpack/build/hook-sentry/src/main/AndroidManifest.xml.
+
+> Task :hook-sentry:javaPreCompileDebug
+> Task :hook-sentry:mergeDebugShaders
+> Task :hook-sentry:compileDebugShaders NO-SOURCE
+> Task :hook-sentry:generateDebugAssets UP-TO-DATE
+> Task :hook-sentry:packageDebugAssets
+> Task :hook-sentry:prepareDebugArtProfile
+> Task :hook-sentry:preReleaseBuild UP-TO-DATE
+> Task :hook-sentry:generateDebugRFile
+> Task :hook-sentry:prepareLintJarForPublish
+> Task :hook-sentry:writeDebugAarMetadata
+> Task :hook-sentry:mergeReleaseJniLibFolders
+> Task :app:processReleaseResources
+
+> Task :privacy-test:compileReleaseKotlin
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:50:42 'getDeviceId(): String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:77:42 'getDeviceId(Int): String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:82:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:111:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:135:25 Elvis operator (?:) always returns the left operand of non-nullable type TelephonyManager
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:142:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:165:25 Elvis operator (?:) always returns the left operand of non-nullable type TelephonyManager
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:172:26 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:193:21 Condition 'wifiManager != null' is always 'true'
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:292:17 Variable 'clipStr' is never used
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:301:17 Variable 'runningAppProcesses' is never used
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:308:17 Variable 'runningAppProcesses' is never used
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:309:18 'getRunningTasks(Int): (Mutable)List<ActivityManager.RunningTaskInfo!>!' is deprecated. Deprecated in Java
+
+> Task :privacy-test:compileDebugKotlin
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:50:42 'getDeviceId(): String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:77:42 'getDeviceId(Int): String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:82:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:111:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:135:25 Elvis operator (?:) always returns the left operand of non-nullable type TelephonyManager
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:142:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:165:25 Elvis operator (?:) always returns the left operand of non-nullable type TelephonyManager
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:172:26 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:193:21 Condition 'wifiManager != null' is always 'true'
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:292:17 Variable 'clipStr' is never used
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:301:17 Variable 'runningAppProcesses' is never used
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:308:17 Variable 'runningAppProcesses' is never used
+w: file:///home/jitpack/build/privacy-test/src/main/java/com/yl/lib/privacy_test/TestMethod.kt:309:18 'getRunningTasks(Int): (Mutable)List<ActivityManager.RunningTaskInfo!>!' is deprecated. Deprecated in Java
+
+> Task :privacy-test:compileDebugJavaWithJavac
+
+> Task :privacy-test:processDebugJavaRes
+> Task :privacy-test:bundleLibRuntimeToJarDebug
+> Task :privacy-test:bundleLibCompileToJarDebug
+
+> Task :privacy-test:compileReleaseJavaWithJavac
+
+> Task :privacy-test:mergeReleaseGeneratedProguardFiles
+> Task :privacy-test:bundleLibCompileToJarRelease
+> Task :privacy-test:exportReleaseConsumerProguardFiles
+> Task :privacy-test:bundleLibRuntimeToJarRelease
+> Task :privacy-test:processReleaseJavaRes
+> Task :hook-sentry:mergeReleaseNativeLibs NO-SOURCE
+> Task :hook-sentry:stripReleaseDebugSymbols NO-SOURCE
+> Task :hook-sentry:copyReleaseJniLibsProjectAndLocalJars
+> Task :hook-sentry:generateReleaseResValues
+> Task :hook-sentry:extractDeepLinksForAarRelease
+> Task :hook-sentry:generateReleaseResources
+> Task :hook-sentry:packageReleaseResources
+> Task :hook-sentry:parseReleaseLocalResources
+> Task :hook-sentry:javaPreCompileRelease
+
+> Task :hook-sentry:processReleaseManifest
+package="com.yl.lib.sentry.hook" found in source AndroidManifest.xml: /home/jitpack/build/hook-sentry/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.yl.lib.sentry.hook" from the source AndroidManifest.xml: /home/jitpack/build/hook-sentry/src/main/AndroidManifest.xml.
+
+> Task :hook-sentry:mergeReleaseShaders
+> Task :hook-sentry:compileReleaseShaders NO-SOURCE
+> Task :hook-sentry:generateReleaseAssets UP-TO-DATE
+> Task :hook-sentry:generateReleaseRFile
+> Task :hook-sentry:packageReleaseAssets
+> Task :hook-sentry:prepareReleaseArtProfile
+> Task :hook-sentry:writeReleaseAarMetadata
+> Task :hook-sentry:mapReleaseSourceSetPaths
+> Task :hook-sentry:mergeReleaseResources
+> Task :hook-sentry:verifyReleaseResources
+> Task :app:desugarDebugFileDependencies
+
+> Task :hook-sentry:compileDebugKotlin
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/PrivacySentry.kt:147:53 Right operand of elvis operator (?:) is useless if it is null
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/PrivacySentry.kt:151:29 Right operand of elvis operator (?:) is useless if it is null
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/PrivacySentry.kt:174:23 'configVisitorModel(Boolean): PrivacySentryBuilder' is deprecated. 弃用
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/PrivacySentry.kt:182:23 'configVisitorModel(Boolean): PrivacySentryBuilder' is deprecated. 弃用
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/PrivacySentryBuilder.kt:107:14 'visitorModel: Boolean' is deprecated. 弃用
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/PrivacySentryBuilder.kt:113:16 'visitorModel: Boolean' is deprecated. 弃用
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/CachePrivacyManager.kt:158:46 Unchecked cast: Any? to T
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/CachePrivacyManager.kt:164:35 Unchecked cast: Any? to T
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/CacheUtils.kt:65:20 Condition 'value != null' is always 'true'
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/CacheUtils.kt:78:27 Variable 'success' initializer is redundant
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/DiskCache.kt:22:55 Unchecked cast: Pair<Boolean, Any?> to Pair<Boolean, String?>
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/MemoryCache.kt:17:38 No cast needed
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/TimeLessDiskCache.kt:27:14 Unnecessary safe call on a non-null receiver of type String
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/TimeLessDiskCache.kt:44:39 Condition 'value == null' is always 'false'
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:39:68 Type WritableFont.BoldStyle! is inaccessible in this context due to: public/*package*/ open class BoldStyle defined in jxl.write.WritableFont
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:45:68 Type WritableFont.BoldStyle! is inaccessible in this context due to: public/*package*/ open class BoldStyle defined in jxl.write.WritableFont
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:92:22 Unsafe use of a nullable receiver of type File?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:93:21 Unsafe use of a nullable receiver of type File?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:140:49 Type mismatch: inferred type is String? but String was expected
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:142:62 Type mismatch: inferred type is String? but String was expected
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:145:57 No cast needed
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:149:40 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:151:63 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:154:63 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/printer/DefaultFilePrint.kt:54:16 Condition 'resultFileName != null' is always 'true'
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/printer/DefaultFilePrint.kt:83:13 Condition 'funName == null' is always 'false'
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/printer/DefaultFilePrint.kt:83:32 Condition 'funAlias == null' is always 'false'
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/printer/DefaultFilePrint.kt:100:34 Unnecessary safe call on a non-null receiver of type kotlin.collections.HashMap<String, PrivacyFunBean> /* = java.util.HashMap<String, PrivacyFunBean> */
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/printer/PrivacyFunBean.kt:59:33 Unnecessary safe call on a non-null receiver of type String?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyClipBoardManager.kt:43:79 Unnecessary safe call on a non-null receiver of type Pair<Boolean, String?>
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyProxyUtil.kt:20:17 Name shadowed: funName
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:60:48 Unnecessary safe call on a non-null receiver of type Int
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:90:31 Unnecessary safe call on a non-null receiver of type Location?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:90:53 Unnecessary safe call on a non-null receiver of type Location?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:90:75 Unnecessary safe call on a non-null receiver of type Location?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:90:98 Unnecessary safe call on a non-null receiver of type Location?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:90:120 Unnecessary safe call on a non-null receiver of type Location?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:90:142 Unnecessary safe call on a non-null receiver of type Location?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:90:161 Unnecessary safe call on a non-null receiver of type Location?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/ReflectUtils.kt:19:49 Type mismatch: inferred type is Class<in Any!>? but Class<*> was expected
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/ReflectUtils.kt:22:54 Unchecked cast: Any! to T
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/ReflectUtils.kt:44:54 Unchecked cast: Any! to T
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/watcher/PrivacyDataManager.kt:23:20 Condition 'bean != null' is always 'true'
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/watcher/PrivacyDataManager.kt:29:20 Condition 'bean != null' is always 'true'
+
+> Task :hook-sentry:compileReleaseKotlin
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/PrivacySentry.kt:147:53 Right operand of elvis operator (?:) is useless if it is null
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/PrivacySentry.kt:151:29 Right operand of elvis operator (?:) is useless if it is null
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/PrivacySentry.kt:174:23 'configVisitorModel(Boolean): PrivacySentryBuilder' is deprecated. 弃用
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/PrivacySentry.kt:182:23 'configVisitorModel(Boolean): PrivacySentryBuilder' is deprecated. 弃用
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/PrivacySentryBuilder.kt:107:14 'visitorModel: Boolean' is deprecated. 弃用
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/PrivacySentryBuilder.kt:113:16 'visitorModel: Boolean' is deprecated. 弃用
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/CachePrivacyManager.kt:158:46 Unchecked cast: Any? to T
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/CachePrivacyManager.kt:164:35 Unchecked cast: Any? to T
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/CacheUtils.kt:65:20 Condition 'value != null' is always 'true'
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/CacheUtils.kt:78:27 Variable 'success' initializer is redundant
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/DiskCache.kt:22:55 Unchecked cast: Pair<Boolean, Any?> to Pair<Boolean, String?>
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/MemoryCache.kt:17:38 No cast needed
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/TimeLessDiskCache.kt:27:14 Unnecessary safe call on a non-null receiver of type String
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/cache/TimeLessDiskCache.kt:44:39 Condition 'value == null' is always 'false'
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:39:68 Type WritableFont.BoldStyle! is inaccessible in this context due to: public/*package*/ open class BoldStyle defined in jxl.write.WritableFont
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:45:68 Type WritableFont.BoldStyle! is inaccessible in this context due to: public/*package*/ open class BoldStyle defined in jxl.write.WritableFont
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:92:22 Unsafe use of a nullable receiver of type File?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:93:21 Unsafe use of a nullable receiver of type File?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:140:49 Type mismatch: inferred type is String? but String was expected
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:142:62 Type mismatch: inferred type is String? but String was expected
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:145:57 No cast needed
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:149:40 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:151:63 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/excel/ExcelUtil.kt:154:63 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/printer/DefaultFilePrint.kt:54:16 Condition 'resultFileName != null' is always 'true'
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/printer/DefaultFilePrint.kt:83:13 Condition 'funName == null' is always 'false'
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/printer/DefaultFilePrint.kt:83:32 Condition 'funAlias == null' is always 'false'
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/printer/DefaultFilePrint.kt:100:34 Unnecessary safe call on a non-null receiver of type kotlin.collections.HashMap<String, PrivacyFunBean> /* = java.util.HashMap<String, PrivacyFunBean> */
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/printer/PrivacyFunBean.kt:59:33 Unnecessary safe call on a non-null receiver of type String?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyClipBoardManager.kt:43:79 Unnecessary safe call on a non-null receiver of type Pair<Boolean, String?>
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyProxyUtil.kt:20:17 Name shadowed: funName
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:60:48 Unnecessary safe call on a non-null receiver of type Int
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:90:31 Unnecessary safe call on a non-null receiver of type Location?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:90:53 Unnecessary safe call on a non-null receiver of type Location?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:90:75 Unnecessary safe call on a non-null receiver of type Location?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:90:98 Unnecessary safe call on a non-null receiver of type Location?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:90:120 Unnecessary safe call on a non-null receiver of type Location?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:90:142 Unnecessary safe call on a non-null receiver of type Location?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/PrivacyUtil.kt:90:161 Unnecessary safe call on a non-null receiver of type Location?
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/ReflectUtils.kt:19:49 Type mismatch: inferred type is Class<in Any!>? but Class<*> was expected
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/ReflectUtils.kt:22:54 Unchecked cast: Any! to T
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/util/ReflectUtils.kt:44:54 Unchecked cast: Any! to T
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/watcher/PrivacyDataManager.kt:23:20 Condition 'bean != null' is always 'true'
+w: file:///home/jitpack/build/hook-sentry/src/main/java/com/yl/lib/sentry/hook/watcher/PrivacyDataManager.kt:29:20 Condition 'bean != null' is always 'true'
+
+> Task :plugin-sentry:kaptGenerateStubsKotlin
+
+> Task :app:compileDebugKotlin
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/APP.kt:20:13 Variable 'str' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/APP.kt:62:13 Variable 'serialNum' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/APP.kt:62:42 'SERIAL: String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/MainActivity.kt:228:17 Variable 'ap' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/MainActivity.kt:241:13 Parameter 'dialog' is never used, could be renamed to _
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/MainActivity.kt:241:21 Parameter 'which' is never used, could be renamed to _
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/MainActivity.kt:243:35 'closeVisitorModel(): Unit' is deprecated. 弃用
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/MainActivity.kt:259:21 Parameter 'view' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/MainActivity.kt:278:23 Variable 'btnText' initializer is redundant
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/calendar/CalendarManager.kt:171:24 Condition 'accountUri == null' is always 'false'
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/calendar/CalendarManager.kt:250:17 Condition 'null == eventUri' is always 'false'
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/calendar/CalendarManager.kt:269:21 Condition 'null == reminderUri' is always 'false'
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/calendar/CalendarManager.kt:635:17 Condition 'null == cursor' is always 'false'
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/calendar/CalenderActivity.kt:39:13 Identity equality for arguments of types Int and Int is deprecated
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/contact/ContactActivity.kt:33:13 Identity equality for arguments of types Int and Int is deprecated
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/contact/ContactActivity.kt:39:17 Variable 'permissions' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/process/MultiProcessB.kt:4:20 'IntentService' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/process/MultiProcessB.kt:15:23 'constructor IntentService(String!)' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/process/MultiProcessB.kt:15:23 'IntentService' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/process/MultiProcessB.kt:31:22 'onStartCommand(Intent!, Int, Int): Int' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/process/MultiProcessC.kt:4:20 'IntentService' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:63:38 'getDeviceId(): String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:67:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:89:46 'getDeviceId(Int): String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:95:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:117:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:146:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:170:25 Elvis operator (?:) always returns the left operand of non-nullable type TelephonyManager
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:177:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:212:29 Variable 'simState' initializer is redundant
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:259:21 Elvis operator (?:) always returns the left operand of non-nullable type TelephonyManager
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:265:26 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:287:34 'getDefaultAdapter(): BluetoothAdapter!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:296:21 Condition 'wifiManager != null' is always 'true'
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:297:48 'getter for connectionInfo: WifiInfo!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:345:38 Parameter 'context' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:345:56 Parameter 'permission' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:455:17 'setter for text: CharSequence!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:457:17 'getter for text: CharSequence!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:460:17 Variable 'clipStr' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:469:17 Variable 'runningAppProcesses' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:476:17 Variable 'runningAppProcesses' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:477:18 'getRunningTasks(Int): (Mutable)List<ActivityManager.RunningTaskInfo!>!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:494:34 'SERIAL: String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:499:49 Variable 'sensorManager' initializer is redundant
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:500:50 Variable 'callback' initializer is redundant
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:504:35 Variable 'sensor' initializer is redundant
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:581:17 Variable 'newPath' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:590:30 Variable 'dir' initializer is redundant
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:621:47 'SSID: String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyProxySelfTest.kt:33:28 'getRunningTasks(Int): (Mutable)List<ActivityManager.RunningTaskInfo!>!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/TestReflex.kt:40:26 Type mismatch: inferred type is Class<in Any!>? but Class<*> was expected
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/ui/main/TestPermissionFragment.kt:47:15 'onActivityCreated(Bundle?): Unit' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/ui/main/TestPermissionFragment.kt:52:9 'requestPermissions(Array<(out) String!>, Int): Unit' is deprecated. Deprecated in Java
+
+> Task :app:compileReleaseKotlin
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/APP.kt:20:13 Variable 'str' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/APP.kt:62:13 Variable 'serialNum' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/APP.kt:62:42 'SERIAL: String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/MainActivity.kt:228:17 Variable 'ap' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/MainActivity.kt:241:13 Parameter 'dialog' is never used, could be renamed to _
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/MainActivity.kt:241:21 Parameter 'which' is never used, could be renamed to _
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/MainActivity.kt:243:35 'closeVisitorModel(): Unit' is deprecated. 弃用
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/MainActivity.kt:259:21 Parameter 'view' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/MainActivity.kt:278:23 Variable 'btnText' initializer is redundant
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/calendar/CalendarManager.kt:171:24 Condition 'accountUri == null' is always 'false'
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/calendar/CalendarManager.kt:250:17 Condition 'null == eventUri' is always 'false'
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/calendar/CalendarManager.kt:269:21 Condition 'null == reminderUri' is always 'false'
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/calendar/CalendarManager.kt:635:17 Condition 'null == cursor' is always 'false'
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/calendar/CalenderActivity.kt:39:13 Identity equality for arguments of types Int and Int is deprecated
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/contact/ContactActivity.kt:33:13 Identity equality for arguments of types Int and Int is deprecated
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/contact/ContactActivity.kt:39:17 Variable 'permissions' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/process/MultiProcessB.kt:4:20 'IntentService' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/process/MultiProcessB.kt:15:23 'constructor IntentService(String!)' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/process/MultiProcessB.kt:15:23 'IntentService' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/process/MultiProcessB.kt:31:22 'onStartCommand(Intent!, Int, Int): Int' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/process/MultiProcessC.kt:4:20 'IntentService' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:63:38 'getDeviceId(): String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:67:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:89:46 'getDeviceId(Int): String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:95:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:117:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:146:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:170:25 Elvis operator (?:) always returns the left operand of non-nullable type TelephonyManager
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:177:25 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:212:29 Variable 'simState' initializer is redundant
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:259:21 Elvis operator (?:) always returns the left operand of non-nullable type TelephonyManager
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:265:26 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:287:34 'getDefaultAdapter(): BluetoothAdapter!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:296:21 Condition 'wifiManager != null' is always 'true'
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:297:48 'getter for connectionInfo: WifiInfo!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:345:38 Parameter 'context' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:345:56 Parameter 'permission' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:455:17 'setter for text: CharSequence!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:457:17 'getter for text: CharSequence!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:460:17 Variable 'clipStr' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:469:17 Variable 'runningAppProcesses' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:476:17 Variable 'runningAppProcesses' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:477:18 'getRunningTasks(Int): (Mutable)List<ActivityManager.RunningTaskInfo!>!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:494:34 'SERIAL: String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:499:49 Variable 'sensorManager' initializer is redundant
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:500:50 Variable 'callback' initializer is redundant
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:504:35 Variable 'sensor' initializer is redundant
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:581:17 Variable 'newPath' is never used
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:590:30 Variable 'dir' initializer is redundant
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyMethod.kt:621:47 'SSID: String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/PrivacyProxySelfTest.kt:33:28 'getRunningTasks(Int): (Mutable)List<ActivityManager.RunningTaskInfo!>!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/TestReflex.kt:40:26 Type mismatch: inferred type is Class<in Any!>? but Class<*> was expected
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/ui/main/TestPermissionFragment.kt:47:15 'onActivityCreated(Bundle?): Unit' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/app/src/main/java/com/yl/lib/privacysentry/test/ui/main/TestPermissionFragment.kt:52:9 'requestPermissions(Array<(out) String!>, Int): Unit' is deprecated. Deprecated in Java
+
+> Task :hook-sentry:extractDebugAnnotations
+
+> Task :app:compileDebugJavaWithJavac
+
+> Task :app:processDebugJavaRes
+> Task :app:mergeDebugJavaResource
+> Task :app:dexBuilderDebug
+
+> Task :app:compileReleaseJavaWithJavac
+
+> Task :app:mergeReleaseGeneratedProguardFiles
+> Task :app:processReleaseJavaRes
+> Task :hook-sentry:compileDebugJavaWithJavac NO-SOURCE
+> Task :hook-sentry:mergeDebugGeneratedProguardFiles
+> Task :hook-sentry:mergeDebugConsumerProguardFiles
+> Task :hook-sentry:processDebugJavaRes
+> Task :hook-sentry:mergeDebugJavaResource
+> Task :hook-sentry:extractReleaseAnnotations
+> Task :hook-sentry:syncDebugLibJars
+> Task :hook-sentry:bundleDebugAar
+> Task :hook-sentry:assembleDebug
+> Task :hook-sentry:compileReleaseJavaWithJavac NO-SOURCE
+> Task :hook-sentry:mergeReleaseGeneratedProguardFiles
+> Task :hook-sentry:mergeReleaseConsumerProguardFiles
+> Task :hook-sentry:processReleaseJavaRes
+> Task :hook-sentry:mergeReleaseJavaResource
+> Task :app:expandReleaseArtProfileWildcards
+> Task :app:mergeReleaseJavaResource
+
+> Task :plugin-sentry:kaptKotlin
+Annotation processors discovery from compile classpath is deprecated.
+Set 'kapt.include.compile.classpath=false' to disable discovery.
+Run the build with '--info' for more details.
+
+> Task :hook-sentry:syncReleaseLibJars
+> Task :hook-sentry:bundleReleaseAar
+> Task :hook-sentry:assembleRelease
+> Task :hook-sentry:assemble
+> Task :plugin-sentry:processResources
+> Task :privacy-annotation:assemble
+> Task :privacy-proxy:preBuild UP-TO-DATE
+> Task :privacy-proxy:preDebugBuild UP-TO-DATE
+> Task :privacy-proxy:mergeDebugJniLibFolders
+> Task :privacy-proxy:mergeDebugNativeLibs NO-SOURCE
+> Task :privacy-proxy:stripDebugDebugSymbols NO-SOURCE
+> Task :privacy-proxy:copyDebugJniLibsProjectAndLocalJars
+> Task :privacy-proxy:generateDebugResValues
+> Task :privacy-proxy:generateDebugResources
+> Task :hook-sentry:bundleLibCompileToJarDebug
+> Task :privacy-proxy:packageDebugResources
+> Task :privacy-proxy:extractDeepLinksForAarDebug
+
+> Task :privacy-proxy:processDebugManifest
+package="com.yl.lib.privacy_proxy" found in source AndroidManifest.xml: /home/jitpack/build/privacy-proxy/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.yl.lib.privacy_proxy" from the source AndroidManifest.xml: /home/jitpack/build/privacy-proxy/src/main/AndroidManifest.xml.
+
+> Task :privacy-proxy:parseDebugLocalResources
+> Task :privacy-proxy:javaPreCompileDebug
+> Task :privacy-proxy:mergeDebugShaders
+> Task :privacy-proxy:compileDebugShaders NO-SOURCE
+> Task :privacy-proxy:generateDebugAssets UP-TO-DATE
+> Task :privacy-proxy:packageDebugAssets
+> Task :privacy-proxy:generateDebugRFile
+> Task :privacy-proxy:prepareDebugArtProfile
+> Task :app:mergeDexDebug
+> Task :privacy-proxy:prepareLintJarForPublish
+> Task :privacy-proxy:preReleaseBuild UP-TO-DATE
+> Task :privacy-proxy:writeDebugAarMetadata
+> Task :privacy-proxy:mergeReleaseJniLibFolders
+> Task :privacy-proxy:mergeReleaseNativeLibs NO-SOURCE
+> Task :privacy-proxy:stripReleaseDebugSymbols NO-SOURCE
+> Task :privacy-proxy:copyReleaseJniLibsProjectAndLocalJars
+> Task :privacy-proxy:generateReleaseResValues
+> Task :privacy-proxy:extractDeepLinksForAarRelease
+> Task :privacy-proxy:generateReleaseResources
+> Task :hook-sentry:bundleLibCompileToJarRelease
+> Task :privacy-proxy:packageReleaseResources
+
+> Task :privacy-proxy:processReleaseManifest
+package="com.yl.lib.privacy_proxy" found in source AndroidManifest.xml: /home/jitpack/build/privacy-proxy/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.yl.lib.privacy_proxy" from the source AndroidManifest.xml: /home/jitpack/build/privacy-proxy/src/main/AndroidManifest.xml.
+
+> Task :privacy-proxy:parseReleaseLocalResources
+> Task :privacy-proxy:javaPreCompileRelease
+> Task :privacy-proxy:mergeReleaseShaders
+> Task :privacy-proxy:compileReleaseShaders NO-SOURCE
+> Task :privacy-proxy:generateReleaseAssets UP-TO-DATE
+> Task :privacy-proxy:generateReleaseRFile
+> Task :privacy-proxy:packageReleaseAssets
+> Task :privacy-proxy:prepareReleaseArtProfile
+> Task :privacy-proxy:writeReleaseAarMetadata
+> Task :hook-sentry:compileReleaseLibraryResources
+> Task :privacy-proxy:mapReleaseSourceSetPaths
+> Task :privacy-proxy:mergeReleaseResources
+> Task :privacy-replace:preBuild UP-TO-DATE
+> Task :privacy-replace:preDebugBuild UP-TO-DATE
+> Task :privacy-replace:mergeDebugJniLibFolders
+> Task :privacy-replace:mergeDebugNativeLibs NO-SOURCE
+> Task :privacy-replace:stripDebugDebugSymbols NO-SOURCE
+> Task :privacy-replace:copyDebugJniLibsProjectAndLocalJars
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+> Task :privacy-replace:generateDebugResValues
+> Task :privacy-replace:generateDebugResources
+> Task :privacy-replace:packageDebugResources
+> Task :privacy-replace:parseDebugLocalResources
+> Task :privacy-replace:extractDeepLinksForAarDebug
+> Task :privacy-replace:mergeDebugShaders
+> Task :privacy-replace:compileDebugShaders NO-SOURCE
+> Task :privacy-replace:generateDebugAssets UP-TO-DATE
+
+> Task :privacy-replace:processDebugManifest
+package="com.yl.lib.privacy_replace" found in source AndroidManifest.xml: /home/jitpack/build/privacy-replace/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.yl.lib.privacy_replace" from the source AndroidManifest.xml: /home/jitpack/build/privacy-replace/src/main/AndroidManifest.xml.
+
+> Task :privacy-replace:javaPreCompileDebug
+> Task :privacy-replace:packageDebugAssets
+> Task :privacy-replace:prepareDebugArtProfile
+> Task :privacy-replace:prepareLintJarForPublish
+> Task :privacy-replace:generateDebugRFile
+> Task :privacy-replace:writeDebugAarMetadata
+> Task :privacy-replace:compileDebugKotlin NO-SOURCE
+> Task :privacy-replace:extractDebugAnnotations
+> Task :privacy-proxy:verifyReleaseResources
+> Task :privacy-replace:compileDebugJavaWithJavac
+> Task :privacy-replace:mergeDebugGeneratedProguardFiles
+> Task :privacy-replace:mergeDebugConsumerProguardFiles
+> Task :privacy-replace:processDebugJavaRes NO-SOURCE
+> Task :privacy-replace:preReleaseBuild UP-TO-DATE
+> Task :privacy-replace:mergeReleaseJniLibFolders
+> Task :privacy-replace:mergeDebugJavaResource
+> Task :privacy-replace:mergeReleaseNativeLibs NO-SOURCE
+> Task :privacy-replace:syncDebugLibJars
+> Task :privacy-replace:bundleDebugAar
+> Task :privacy-replace:assembleDebug
+> Task :privacy-replace:stripReleaseDebugSymbols NO-SOURCE
+> Task :privacy-replace:generateReleaseResValues
+> Task :privacy-replace:extractDeepLinksForAarRelease
+> Task :privacy-replace:copyReleaseJniLibsProjectAndLocalJars
+> Task :privacy-replace:generateReleaseResources
+> Task :privacy-replace:packageReleaseResources
+> Task :privacy-replace:parseReleaseLocalResources
+> Task :privacy-replace:javaPreCompileRelease
+> Task :privacy-replace:mergeReleaseShaders
+
+> Task :privacy-replace:processReleaseManifest
+package="com.yl.lib.privacy_replace" found in source AndroidManifest.xml: /home/jitpack/build/privacy-replace/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.yl.lib.privacy_replace" from the source AndroidManifest.xml: /home/jitpack/build/privacy-replace/src/main/AndroidManifest.xml.
+
+> Task :privacy-replace:compileReleaseShaders NO-SOURCE
+> Task :privacy-replace:generateReleaseAssets UP-TO-DATE
+> Task :privacy-replace:generateReleaseRFile
+> Task :privacy-replace:packageReleaseAssets
+> Task :privacy-replace:compileReleaseKotlin NO-SOURCE
+> Task :privacy-replace:extractReleaseAnnotations
+> Task :privacy-replace:compileReleaseJavaWithJavac
+> Task :privacy-replace:mergeReleaseGeneratedProguardFiles
+> Task :privacy-replace:mergeReleaseConsumerProguardFiles
+> Task :privacy-replace:prepareReleaseArtProfile
+> Task :privacy-replace:processReleaseJavaRes NO-SOURCE
+> Task :privacy-replace:mergeReleaseJavaResource
+> Task :privacy-replace:writeReleaseAarMetadata
+> Task :privacy-replace:syncReleaseLibJars
+> Task :privacy-replace:bundleReleaseAar
+> Task :privacy-replace:mapReleaseSourceSetPaths
+
+> Task :privacy-proxy:compileDebugKotlin
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyPermissionProxy.kt:37:98 Unnecessary safe call on a non-null receiver of type Array<String?>
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyPermissionProxy.kt:61:98 Unnecessary safe call on a non-null receiver of type Array<String?>
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:14:25 'WifiConfiguration' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:66:28 'getRunningTasks(Int): (Mutable)List<ActivityManager.RunningTaskInfo!>!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:84:28 'getRecentTasks(Int, Int): (Mutable)List<ActivityManager.RecentTaskInfo!>!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:186:13 Parameter 'userId' is never used
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:223:13 Parameter 'userId' is never used
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:253:19 Unnecessary safe call on a non-null receiver of type Intent
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:254:23 Unnecessary safe call on a non-null receiver of type Intent
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:257:23 Unnecessary safe call on a non-null receiver of type Intent
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:260:23 Unnecessary safe call on a non-null receiver of type Intent
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:263:23 Unnecessary safe call on a non-null receiver of type Intent
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:279:80 Unnecessary safe call on a non-null receiver of type kotlin.text.StringBuilder /* = java.lang.StringBuilder */
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:385:28 'getter for text: CharSequence!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:414:21 'setter for text: CharSequence!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:432:17 Variable 'key' is never used
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:459:17 Variable 'key' is never used
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:521:63 'WifiConfiguration' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:526:28 'getConfiguredNetworks(): (Mutable)List<WifiConfiguration!>!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:556:39 Variable 'location' initializer is redundant
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:827:17 Variable 'result' is never used
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:843:31 'SERIAL: String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:868:33 'getExternalStorageDirectory(): File!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyResolver.kt:225:17 Condition 'url == null' is always 'false'
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyReflectProxy.kt:106:42 'toUpperCase(): String' is deprecated. Use uppercase() instead.
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacySensorProxy.kt:131:43 Variable 'sensorType' initializer is redundant
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacySensorProxy.kt:132:43 Variable 'sensorDesc' initializer is redundant
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacySensorProxy.kt:133:65 Unnecessary safe call on a non-null receiver of type Sensor?
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacySensorProxy.kt:158:24 'TYPE_ORIENTATION: Int' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyTelephonyProxy.kt:75:48 Parameter 'index' is never used
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyTelephonyProxy.kt:132:29 'getDeviceId(): String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyTelephonyProxy.kt:166:29 'getDeviceId(Int): String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyTelephonyProxy.kt:211:56 Parameter 'index' is never used
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyTelephonyProxy.kt:318:59 Parameter 'index' is never used
+
+> Task :privacy-proxy:compileReleaseKotlin
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyPermissionProxy.kt:37:98 Unnecessary safe call on a non-null receiver of type Array<String?>
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyPermissionProxy.kt:61:98 Unnecessary safe call on a non-null receiver of type Array<String?>
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:14:25 'WifiConfiguration' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:66:28 'getRunningTasks(Int): (Mutable)List<ActivityManager.RunningTaskInfo!>!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:84:28 'getRecentTasks(Int, Int): (Mutable)List<ActivityManager.RecentTaskInfo!>!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:186:13 Parameter 'userId' is never used
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:223:13 Parameter 'userId' is never used
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:253:19 Unnecessary safe call on a non-null receiver of type Intent
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:254:23 Unnecessary safe call on a non-null receiver of type Intent
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:257:23 Unnecessary safe call on a non-null receiver of type Intent
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:260:23 Unnecessary safe call on a non-null receiver of type Intent
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:263:23 Unnecessary safe call on a non-null receiver of type Intent
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:279:80 Unnecessary safe call on a non-null receiver of type kotlin.text.StringBuilder /* = java.lang.StringBuilder */
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:385:28 'getter for text: CharSequence!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:414:21 'setter for text: CharSequence!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:432:17 Variable 'key' is never used
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:459:17 Variable 'key' is never used
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:521:63 'WifiConfiguration' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:526:28 'getConfiguredNetworks(): (Mutable)List<WifiConfiguration!>!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:556:39 Variable 'location' initializer is redundant
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:827:17 Variable 'result' is never used
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:843:31 'SERIAL: String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyCall.kt:868:33 'getExternalStorageDirectory(): File!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyProxyResolver.kt:225:17 Condition 'url == null' is always 'false'
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyReflectProxy.kt:106:42 'toUpperCase(): String' is deprecated. Use uppercase() instead.
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacySensorProxy.kt:131:43 Variable 'sensorType' initializer is redundant
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacySensorProxy.kt:132:43 Variable 'sensorDesc' initializer is redundant
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacySensorProxy.kt:133:65 Unnecessary safe call on a non-null receiver of type Sensor?
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacySensorProxy.kt:158:24 'TYPE_ORIENTATION: Int' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyTelephonyProxy.kt:75:48 Parameter 'index' is never used
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyTelephonyProxy.kt:132:29 'getDeviceId(): String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyTelephonyProxy.kt:166:29 'getDeviceId(Int): String!' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyTelephonyProxy.kt:211:56 Parameter 'index' is never used
+w: file:///home/jitpack/build/privacy-proxy/src/main/java/com/yl/lib/privacy_proxy/PrivacyTelephonyProxy.kt:318:59 Parameter 'index' is never used
+
+> Task :plugin-sentry:compileKotlin
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/PrivacySentryPlugin.kt:10:37 'BaseVariant' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/PrivacySentryPlugin.kt:85:31 'getAndroid(): T' is deprecated. Deprecated
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/PrivacySentryPlugin.kt:89:31 'BaseVariant' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/PrivacySentryPlugin.kt:90:29 'BaseVariant' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/PrivacySentryPlugin.kt:90:54 'BaseVariant' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/PrivacySentryPlugin.kt:93:31 'process(BaseVariant): Unit' is deprecated. BaseVariant is deprecated,  please use process(variant: Variant) method instead
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/classtransform/collect/ClassProxyCollectTransform.kt:46:46 Unnecessary safe call on a non-null receiver of type String
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/classtransform/collect/ClassProxyCollectTransform.kt:46:76 Unnecessary safe call on a non-null receiver of type String
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/classtransform/collect/ClassProxyCollectTransform.kt:46:101 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/classtransform/collect/MethodProxyCollectTransform.kt:98:50 Unnecessary safe call on a non-null receiver of type String
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/classtransform/collect/MethodProxyCollectTransform.kt:98:93 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/classtransform/hook/ClassProxyTransform.kt:26:31 'hookConstructor: Boolean' is deprecated. 放弃维护
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/classtransform/hook/FieldProxyTransform.kt:24:31 'hookField: Boolean' is deprecated. 后续准备放弃，几乎没有业务场景
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/classtransform/hook/ServiceHookTransform.kt:41:31 'enableHookServiceStartCommand: Boolean' is deprecated. 放弃维护
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/processor/PrivacyAssetsProcessor.kt:3:37 'ApplicationVariant' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/processor/PrivacyAssetsProcessor.kt:4:37 'BaseVariant' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/processor/PrivacyAssetsProcessor.kt:17:18 This declaration overrides deprecated member but not marked as deprecated itself. This deprecation won't be inherited in future releases. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/processor/PrivacyAssetsProcessor.kt:17:35 'BaseVariant' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/processor/PrivacyAssetsProcessor.kt:19:24 'ApplicationVariant' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/processor/PrivacyManifestProcessor.kt:10:37 'ApplicationVariant' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/processor/PrivacyManifestProcessor.kt:11:37 'BaseVariant' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/processor/PrivacyManifestProcessor.kt:29:36 'enableProcessManifest: Boolean' is deprecated. 放弃维护
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/processor/PrivacyManifestProcessor.kt:32:58 'capitalize(): String' is deprecated. Use replaceFirstChar instead.
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/task/PrivacyManifestTask.kt:65:58 'enableReplacePriority: Boolean' is deprecated. 放弃维护
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/task/PrivacyManifestTask.kt:73:71 'replacePriority: Int' is deprecated. 放弃维护
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/task/PrivacyManifestTask.kt:82:66 'replacePriority: Int' is deprecated. 放弃维护
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/task/PrivacyManifestTask.kt:88:58 'enableCloseServiceExport: Boolean' is deprecated. 放弃维护
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/task/PrivacyManifestTask.kt:90:62 'serviceExportPkgWhiteList: Set<String>?' is deprecated. 放弃维护
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/task/PrivacyManifestTask.kt:140:29 'toUpperCase(): String' is deprecated. Use uppercase() instead.
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/booster/task/PrivacyManifestTask.kt:140:55 'toUpperCase(): String' is deprecated. Use uppercase() instead.
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/manager/HookedDataManger.kt:8:24 'GFileUtils' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/manager/HookedDataManger.kt:41:17 Condition 'fileName == null' is always 'false'
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/manager/HookedDataManger.kt:47:27 Unnecessary safe call on a non-null receiver of type File
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/manager/HookedDataManger.kt:48:17 'GFileUtils' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/manager/HookedDataManger.kt:52:17 'GFileUtils' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/transform/manager/HookedDataManger.kt:63:17 'GFileUtils' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/util/PrivacyExt.kt:127:44 Unchecked cast: Any! to R
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/util/PrivacyMoveAssetsUtil.kt:4:24 'GFileUtils' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/util/PrivacyMoveAssetsUtil.kt:39:21 'GFileUtils' is deprecated. Deprecated in Java
+w: file:///home/jitpack/build/plugin-sentry/src/main/java/com/yl/lib/plugin/sentry/util/PrivacyMoveAssetsUtil.kt:42:17 'GFileUtils' is deprecated. Deprecated in Java
+
+> Task :privacy-replace:mergeReleaseResources
+> Task :plugin-sentry:compileJava NO-SOURCE
+> Task :plugin-sentry:compileGroovy NO-SOURCE
+> Task :plugin-sentry:classes
+> Task :plugin-sentry:jar
+> Task :plugin-sentry:inspectClassesForKotlinIC
+> Task :plugin-sentry:assemble
+> Task :privacy-proxy:extractDebugAnnotations
+> Task :privacy-proxy:compileDebugJavaWithJavac
+> Task :privacy-proxy:mergeDebugGeneratedProguardFiles
+> Task :privacy-proxy:mergeDebugConsumerProguardFiles
+> Task :privacy-proxy:processDebugJavaRes
+> Task :privacy-proxy:mergeDebugJavaResource
+> Task :privacy-proxy:extractReleaseAnnotations
+> Task :privacy-proxy:syncDebugLibJars
+> Task :privacy-proxy:bundleDebugAar
+> Task :privacy-proxy:assembleDebug
+> Task :privacy-proxy:compileReleaseJavaWithJavac
+> Task :privacy-proxy:mergeReleaseGeneratedProguardFiles
+> Task :privacy-proxy:mergeReleaseConsumerProguardFiles
+> Task :privacy-proxy:processReleaseJavaRes
+> Task :privacy-proxy:mergeReleaseJavaResource
+> Task :privacy-proxy:syncReleaseLibJars
+> Task :privacy-proxy:bundleReleaseAar
+> Task :privacy-proxy:assembleRelease
+> Task :privacy-proxy:assemble
+> Task :privacy-test:stripDebugDebugSymbols NO-SOURCE
+> Task :privacy-test:extractDebugAnnotations
+> Task :privacy-test:extractDeepLinksForAarDebug
+> Task :privacy-test:mergeDebugGeneratedProguardFiles
+> Task :privacy-test:mergeDebugConsumerProguardFiles
+> Task :privacy-test:prepareDebugArtProfile
+> Task :privacy-test:stripReleaseDebugSymbols NO-SOURCE
+> Task :privacy-test:extractDeepLinksForAarRelease
+> Task :privacy-test:extractReleaseAnnotations
+> Task :privacy-test:mergeReleaseConsumerProguardFiles
+> Task :privacy-test:mapReleaseSourceSetPaths
+> Task :privacy-test:mergeReleaseJavaResource
+> Task :privacy-test:prepareLintJarForPublish
+> Task :privacy-test:copyDebugJniLibsProjectAndLocalJars
+> Task :privacy-test:mergeDebugJavaResource
+> Task :privacy-test:copyReleaseJniLibsProjectAndLocalJars
+> Task :privacy-test:mergeReleaseResources
+> Task :privacy-test:syncDebugLibJars
+> Task :privacy-test:bundleDebugAar
+> Task :privacy-test:assembleDebug
+> Task :privacy-test:syncReleaseLibJars
+> Task :privacy-test:bundleReleaseAar
+> Task :plugin-sentry:publishToMavenLocal UP-TO-DATE
+> Task :privacy-annotation:publishToMavenLocal UP-TO-DATE
+> Task :privacy-test:verifyReleaseResources
+> Task :privacy-test:assembleRelease
+> Task :privacy-test:assemble
+> Task :privacy-replace:verifyReleaseResources
+> Task :privacy-replace:assembleRelease
+> Task :privacy-replace:assemble
+> Task :app:minifyReleaseWithR8
+> Task :app:packageRelease
+> Task :app:createReleaseApkListingFileRedirect
+> Task :app:assembleRelease
+> Task :app:assemble
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.2/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 2m 7s
+279 actionable tasks: 271 executed, 8 up-to-date
+Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8 -Dhttps.protocols=TLSv1.2
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8 -Dhttps.protocols=TLSv1.2
+Archive: PrivacySentry:privacy-annotation:unspecified
+Archive: PrivacySentry:hook-sentry:unspecified
+Archive: PrivacySentry:privacy-proxy:unspecified
+Archive: PrivacySentry:plugin-sentry:unspecified
+Archive: PrivacySentry:privacy-replace:unspecified
+Archive: PrivacySentry:privacy-test:unspecified
+Build tool exit code: 0
+Looking for artifacts...
+Looking for pom.xml in build directory and ~/.m2
+Found artifact: PrivacySentry:privacy-annotation:unspecified
+Found artifact: PrivacySentry:hook-sentry:unspecified
+Found artifact: PrivacySentry:privacy-proxy:unspecified
+Found artifact: PrivacySentry:plugin-sentry:unspecified
+Found artifact: PrivacySentry:privacy-replace:unspecified
+Found artifact: PrivacySentry:privacy-test:unspecified
+2025-05-16T02:42:11.002359652Z
+Exit code: 0
+
+No build artifacts found
+Expected artifacts in: $HOME/.m2/repository/PrivacySentry/privacy-replace/unspecified
+
