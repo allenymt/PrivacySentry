@@ -8,6 +8,9 @@
 
 
 ## 更新日志
+    2025-05-18(1.3.7_v820_beta4)
+        1. 支持agp8.0+
+
     2024-11-01(1.3.6)
         1. 2e10b0b6 修复T.(args..):T 函数 hook失败的问题
 
@@ -141,7 +144,7 @@
 	buildscript {
 	     dependencies {
 	         // 添加插件依赖
-	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.3.4.2'
+	         classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.3.7_v820_beta4'
 	     }
 	}
 	
@@ -161,15 +164,16 @@
         
         dependencies {
             // aar依赖
-            def privacyVersion = "1.3.4.2"
+            def privacyVersion = "1.3.7_v820_beta4"
+            // 必须引用
             implementation "com.github.allenymt.PrivacySentry:hook-sentry:$privacyVersion"
+            // 必须引用
             implementation "com.github.allenymt.PrivacySentry:privacy-annotation:$privacyVersion"
 
-             // 代理类的库，如果自己没有代理类，那么必须引用这个aar！！
-             // 如果不想使用库中本身的代理方法，可以不引入这个aar，但是自己必须实现代理类！！
-             // 引入privacy-proxy，也可以自定义类代理方法，优先以业务方定义的为准
+            // 建议引用，配置了常用的敏感函数拦截
             implementation "com.github.allenymt.PrivacySentry:privacy-proxy:$privacyVersion"
-            // 1.2.3 新增类替换，主要是为了hook构造函数的参数，按业务方需求自己决定
+            
+            // 废弃
             implementation "com.github.allenymt.PrivacySentry:privacy-replace:$privacyVersion"
         }
         
@@ -186,32 +190,8 @@
                 hookReflex = false
                 //  配置反射拦截 反射获取小米系统的oaid、aaid、vaid,例如极光、个推、穿山甲等SDK都有获取
                 reflexMap = ["com.android.id.impl.IdProviderImpl":["getOAID","getAAID","getVAID"]]
-            
-                // 默认为false,按需打开
-                hookConstructor = false
-                // 默认为false,按需打开
-                hookField = false
-            
-            
-                //*************以下是分割线，主要是对Service的自启动优化处理,默认为false,按需打开****************
-                // 处理Manifest文件，主要是处理Service的Priority ， 关闭Service的Export
-                enableProcessManifest = false
-                // hook Service的部分代码，修复在MIUI上的自启动问题
-                // 部分Service把自己的Priority设置为1000，这里开启代理功能，可以代理成0
-                enableReplacePriority = false
-                replacePriority = 1
-            
-                // 支持关闭Service的Export功能，默认为false，注意部分厂商通道之类的push(xiaomi、vivo、huawei等厂商的pushService)，不能关闭
-                enableCloseServiceExport = false
-                // Export白名单Service
-                serviceExportPkgWhiteList = ["white"]
-                enableHookServiceStartCommand = false
         }
 
-```
-
-```
-    初始化方法最好在attachBaseContext中第一个调用！！！(1.3.1开始不需要了，可以晚点初始化，不影响检测结果)
 ```
 
 ```
@@ -305,49 +285,6 @@ open class PrivacyProxyResolver {
 ```
     支持多进程，多进程产出的文件名前缀默认增加进程名
 ```
-
-
-```
-    如何配置替换一个类
-    可以参考源码中PrivacyFile的配置，使用PrivacyClassReplace注解，originClass代表你要替换的类，注意要继承originClass的所有构造函数
-    可以配置 hookConstructor = false关闭这个功能
-/**
- * @author yulun
- * @since 2022-11-18 15:01
- * 代理File的构造方法，如果是自定义的file类，需要业务方单独配置自行处理
- */
-@PrivacyClassReplace(originClass = File.class)
-public class PrivacyFile extends File {
-
-    public PrivacyFile(@NonNull String pathname) {
-        super(pathname);
-        record(pathname);
-    }
-
-    public PrivacyFile(@Nullable String parent, @NonNull String child) {
-        super(parent, child);
-        record(parent + child);
-    }
-
-    public PrivacyFile(@Nullable File parent, @NonNull String child) {
-        super(parent, child);
-        record(parent.getPath() + child);
-    }
-
-    public PrivacyFile(@NonNull URI uri) {
-        super(uri);
-        record(uri.toString());
-    }
-
-    private void record(String path) {
-        PrivacyProxyUtil.Util.INSTANCE.doFilePrinter("PrivacyFile", "访问文件", "path is " + path, PrivacySentry.Privacy.INSTANCE.getBuilder().isVisitorModel(), false);
-    }
-}
-
-
-```
-
-
 ## 隐私方法调用结果产出
 -     支持hook调用堆栈至文件，默认的时间为1分钟，支持自定义设置时间。
 -     排查结果可参考目录下的demo_result.xls，排查结果支持两个维度查看，第一是结合隐私协议的展示时机和敏感方法的调用时机，第二是统计所有敏感函数的调用次数
@@ -391,6 +328,13 @@ public class PrivacyFile extends File {
 ## 常见的合规字段整理
 IMEI、MAC地址、MEID、IMSI、SN、ICCID等设备唯一标识符，Android ID、WiFi（WiFi名称、WiFi MAC地址以及设备扫描到的所有WiFi信息），SIM卡信息（IMSI、SIM卡序列号ICCID、手机号、运营商信息），应用安装列表（设备所有已安装应用的包名和应用名），传感器（传感器列表、加速度传感器、温度传感器等），蓝牙信息（设备蓝牙地址和设备扫描到的蓝牙设备信息），基站定位、GPS（用户地理位置信息），账户（各类应用注册的不同账号信息）、剪切板、IP地址、硬件序列号、SDCard信息（公有目录）
 
+## 打个赏吧~
+![支付宝]()
+
+![微信]()
 
 ## 结语
     整体代码很简单，有问题可以直接提~ (兄弟们，走过路过请给个star~~~)
+
+
+

@@ -14,7 +14,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:8.2.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-//        classpath "com.github.allenymt.PrivacySentry:plugin-sentry:${rootProject.ext.publish_config["version"]}"
+        classpath "com.github.allenymt.PrivacySentry:plugin-sentry:${rootProject.ext.publish_config["version"]}"
     }
 }
 
