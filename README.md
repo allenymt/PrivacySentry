@@ -4,6 +4,7 @@
 ## 群二维码
 支持agp8.0以下，agp 8.0还未适配
 加作者个人微信，备注来意PrivacySentry, 进社区群
+
 <img width="290" alt="image" src="https://github.com/allenymt/PrivacySentry/assets/8003195/76f2124e-f58d-4420-ac2d-8d33b1093907">
 
 
@@ -330,9 +331,11 @@ open class PrivacyProxyResolver {
 IMEI、MAC地址、MEID、IMSI、SN、ICCID等设备唯一标识符，Android ID、WiFi（WiFi名称、WiFi MAC地址以及设备扫描到的所有WiFi信息），SIM卡信息（IMSI、SIM卡序列号ICCID、手机号、运营商信息），应用安装列表（设备所有已安装应用的包名和应用名），传感器（传感器列表、加速度传感器、温度传感器等），蓝牙信息（设备蓝牙地址和设备扫描到的蓝牙设备信息），基站定位、GPS（用户地理位置信息），账户（各类应用注册的不同账号信息）、剪切板、IP地址、硬件序列号、SDCard信息（公有目录）
 
 ## 打个赏吧~
-![支付宝]<img width="290" alt="image" src="https://github.com/user-attachments/assets/4d966c38-e1cb-44cd-bff3-09efed7b16a6")
 
-![微信]<img width="290" alt="image" src="https://github.com/user-attachments/assets/08d2be37-13a5-4fe9-a137-774734399dd4")
+<img width="290" alt="image" src="https://github.com/user-attachments/assets/4d966c38-e1cb-44cd-bff3-09efed7b16a6">
+
+
+<img width="290" alt="image" src="https://github.com/user-attachments/assets/1b7c628f-dc72-45b6-8ff6-161a1c90d463">
 
 ## 结语
     整体代码很简单，有问题可以直接提~ (兄弟们，走过路过请给个star~~~)
