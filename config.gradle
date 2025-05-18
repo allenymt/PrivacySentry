@@ -1,0 +1,10 @@
+ext {
+    publish_config = [
+            version : '1.3.7_v820_beta4'
+    ]
+    build = [
+            local_debug: true,
+            local_debug_dir : "${rootProject.projectDir}/local",
+    ]
+
+}

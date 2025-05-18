@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'maven-publish'
+apply from: '../publish.gradle'  // Changed from 'maven' to 'maven-publish'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -39,5 +39,3 @@ dependencies {
     implementation project(":hook-sentry")
     implementation project(path: ':privacy-annotation')
 }
-
-//apply plugin: 'com.github.dcendents.android-maven'

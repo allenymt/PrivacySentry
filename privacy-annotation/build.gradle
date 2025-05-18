@@ -1,28 +1,8 @@
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
-apply plugin: 'maven-publish'  // Changed from 'maven' to 'maven-publish'
+apply from: '../publish.gradle'  // Changed from 'maven' to 'maven-publish'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-if (rootProject.ext.plugin_local_debug) {
-    group = 'com.yl.lib.privacy'
-    version = '0.0.2-SNAPSHOT'
-    
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                from components.java
-            }
-        }
-        repositories {
-            maven {
-                url = uri('../plugin-sentry/plugins')
-            }
-        }
-    }
-} else {
-//    apply plugin: 'com.github.dcendents.android-maven'
 }

@@ -3,7 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'maven-publish'
 }
-
+apply from: '../publish.gradle'  // Changed from 'maven' to 'maven-publish'
 android {
     compileSdkVersion 30
     namespace "com.yl.lib.privacy_replace"

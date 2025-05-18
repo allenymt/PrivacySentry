@@ -49,3 +49,4 @@ dependencies {
 }
 
 //apply plugin: 'com.github.dcendents.android-maven'
+apply from: '../publish.gradle'  // Changed from 'maven' to 'maven-publish'

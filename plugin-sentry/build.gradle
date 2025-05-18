@@ -2,7 +2,8 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'java'
 apply plugin: 'groovy'
-apply plugin: 'maven-publish'  // Changed from 'maven' to 'maven-publish'
+//apply plugin: 'maven-publish'  // Changed from 'maven' to 'maven-publish'
+apply from: '../publish.gradle'  // Changed from 'maven' to 'maven-publish'
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
@@ -31,25 +32,19 @@ dependencies {
 //    implementation 'org.apache.httpcomponents:httpclient:4.5.12'
 }
 
-if (rootProject.ext.plugin_local_debug) {
-    // Plugin local debug supplement
-    group = 'com.yl.lib.plugin'
-    version = '2.0.1-SNAPSHOT'
-    
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                from components.java
-            }
-        }
-        repositories {
-            maven {
-                url = uri('plugins')
-            }
-        }
-    }
-} else {
-//    apply plugin: 'com.github.dcendents.android-maven'
-}
+//if (rootProject.ext.build.local_debug) {
+//    publishing {
+//        publications {
+//            maven(MavenPublication) {
+//                from components.java
+//            }
+//        }
+//        repositories {
+//            maven {
+//                url = uri('plugins')
+//            }
+//        }
+//    }
+//}
 
 
