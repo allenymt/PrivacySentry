@@ -2,18 +2,23 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'java'
 apply plugin: 'groovy'
+//apply plugin: 'maven-publish'  // Changed from 'maven' to 'maven-publish'
+apply from: '../publish.gradle'  // Changed from 'maven' to 'maven-publish'
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 compileKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_17
 }
 
 dependencies {
     compileOnly gradleApi()//gradle sdk
     compileOnly localGroovy()
     implementation project(path: ':privacy-annotation')
-    compileOnly 'com.android.tools.build:gradle:4.2.0'
+    compileOnly 'com.android.tools.build:gradle:8.0.0'
 
-    def booster_version = '4.14.0'
+    def booster_version = '5.1.0'
     // Booster V7.1
     implementation "com.didiglobal.booster:booster-api:$booster_version"
     implementation "com.didiglobal.booster:booster-transform-asm:$booster_version"
@@ -27,20 +32,19 @@ dependencies {
 //    implementation 'org.apache.httpcomponents:httpclient:4.5.12'
 }
 
-if (rootProject.ext.plugin_local_debug) {
-    // 插件本地调试补充
-    apply plugin: 'maven'
-    group = 'com.yl.lib.plugin'
-    version = '2.0.0-SNAPSHOT'
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                repository(url: uri('plugins'))
-            }
-        }
-    }
-} else {
-    apply plugin: 'com.github.dcendents.android-maven'
-}
+//if (rootProject.ext.build.local_debug) {
+//    publishing {
+//        publications {
+//            maven(MavenPublication) {
+//                from components.java
+//            }
+//        }
+//        repositories {
+//            maven {
+//                url = uri('plugins')
+//            }
+//        }
+//    }
+//}
 
 

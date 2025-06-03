@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-
+    namespace "com.yl.lib.sentry.hook"
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 30
@@ -48,4 +48,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
-apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.github.dcendents.android-maven'
+apply from: '../publish.gradle'  // Changed from 'maven' to 'maven-publish'

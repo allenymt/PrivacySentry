@@ -1,0 +1,24 @@
+apply plugin: 'maven-publish'
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'com.github.allenymt.PrivacySentry'
+            artifactId = project.ARTIFACT_ID
+            version = rootProject.ext.publish_config["version"]
+            afterEvaluate {
+                if(project.ARTIFACT_ID == "plugin-sentry" || project.ARTIFACT_ID == "privacy-annotation") {
+                    from components.java
+                } else {
+                    from components.release
+                }
+            }
+        }
+    }
+    if (rootProject.ext.build.local_debug) {
+        repositories {
+            maven {
+                url = uri(rootProject.ext.build.local_debug_dir)
+            }
+        }
+    }
+}

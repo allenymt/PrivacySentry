@@ -52,7 +52,7 @@ class TestMethod {
             } catch (e: Throwable) {
 //                e.printStackTrace()
             }
-            return imei ?: ""
+            return imei
         }
 
 
