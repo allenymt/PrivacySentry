@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrivacySentry 架构深度分析</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --bg-color: #f8f9fa;
+            --code-bg: #282c34;
+            --border-color: #dee2e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+                         'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.8;
+            color: var(--primary-color);
+            background-color: var(--bg-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        nav h3 {
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+            font-size: 1.2em;
+        }
+
+        nav ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+
+        nav a {
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 8px 12px;
+            display: block;
+            border-radius: 4px;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        nav a:hover {
+            background: var(--bg-color);
+            border-left-color: var(--secondary-color);
+            padding-left: 16px;
+        }
+
+        section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            font-size: 1.6em;
+            margin: 30px 0 15px;
+        }
+
+        h4 {
+            color: var(--primary-color);
+            font-size: 1.3em;
+            margin: 25px 0 12px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        pre {
+            background: var(--code-bg);
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        p code, li code {
+            background: #f4f4f4;
+            color: var(--accent-color);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background: var(--secondary-color);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:hover {
+            background: var(--bg-color);
+        }
+
+        .highlight-box {
+            background: #fff3cd;
+            border-left: 4px solid var(--warning-color);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid var(--success-color);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .diagram {
+            background: white;
+            border: 2px solid var(--border-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .badge-primary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .badge-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .badge-warning {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .badge-danger {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            nav ul {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--secondary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .scroll-top:hover {
+            background: var(--primary-color);
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>PrivacySentry 架构深度分析</h1>
+            <p>Android 隐私合规检测工具的完整技术解析</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h3>📑 目录导航</h3>
+            <ul>
+                <li><a href="#summary">执行摘要</a></li>
+                <li><a href="#part1">第一部分：架构总体设计</a></li>
+                <li><a href="#part2">第二部分：注解层详细分析</a></li>
+                <li><a href="#part3">第三部分：插件层详细分析</a></li>
+                <li><a href="#part4">第四部分：Hook 层详细分析</a></li>
+                <li><a href="#part5">第五部分：代理层详细分析</a></li>
+                <li><a href="#part6">第六部分：完整数据流分析</a></li>
+                <li><a href="#part7">第七部分：关键交互关系</a></li>
+                <li><a href="#part8">第八部分：高级特性</a></li>
+                <li><a href="#part9">第九部分：生成的产物分析</a></li>
+                <li><a href="#part10">第十部分：工作流程示例</a></li>
+                <li><a href="#part11">第十一部分：架构优势和设计模式</a></li>
+                <li><a href="#part12">第十二部分：使用建议和最佳实践</a></li>
+            </ul>
+        </nav>
+
+        <section id="summary">
+            <h2>执行摘要</h2>
+            <p>PrivacySentry 是一套完整的 Android 隐私合规检测解决方案，采用<strong>编译期注解 + 字节码插桩 + 运行时 Hook</strong> 的三层架构设计。总共包含 67 个 Kotlin/Java 文件，通过 ASM 和 Booster 框架在编译期对敏感 API 调用进行拦截和代理，运行时记录完整的隐私合规数据。</p>
+
+            <h3>核心技术栈</h3>
+            <ul>
+                <li><span class="badge badge-primary">Gradle Plugin</span> 基于 AGP 8.0+</li>
+                <li><span class="badge badge-primary">字节码操作</span> ASM 9.1</li>
+                <li><span class="badge badge-primary">Transform 框架</span> Booster</li>
+                <li><span class="badge badge-primary">语言</span> Kotlin 1.8.10 + Java 8</li>
+                <li><span class="badge badge-primary">最低支持</span> Android API 19</li>
+            </ul>
+        </section>
+
+        <section id="part1">
+            <h2>第一部分：架构总体设计</h2>
+
+            <h3>1.1 四层架构模型</h3>
+            <div class="diagram">
+┌─────────────────────────────────────────────────────────────┐
+│  4. 代理层 (privacy-proxy)                                  │
+│  - 预置的 API 拦截实现                                      │
+│  - 使用注解声明拦截规则                                    │
+└─────────────────────────────────────────────────────────────┘
+                           ↑
+┌─────────────────────────────────────────────────────────────┐
+│  3. Hook 层 (hook-sentry)                                   │
+│  - 运行时 SDK 初始化和管理                                  │
+│  - 缓存机制（内存、磁盘）                                  │
+│  - 日志收集和文件输出                                      │
+└─────────────────────────────────────────────────────────────┘
+                           ↑
+┌─────────────────────────────────────────────────────────────┐
+│  2. 插件层 (plugin-sentry)                                  │
+│  - Gradle 编译期 Transform 执行                             │
+│  - ASM 字节码操作和修改                                     │
+│  - Booster 框架集成                                        │
+└─────────────────────────────────────────────────────────────┘
+                           ↑
+┌─────────────────────────────────────────────────────────────┐
+│  1. 注解层 (privacy-annotation)                             │
+│  - 编译期注解定义                                          │
+│  - 运行时不可见 (@Retention(CLASS))                        │
+└─────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>1.2 项目模块说明</h3>
+            <table>
+                <tr>
+                    <th>模块</th>
+                    <th>路径</th>
+                    <th>职责</th>
+                    <th>关键类</th>
+                </tr>
+                <tr>
+                    <td><strong>privacy-annotation</strong></td>
+                    <td>/privacy-annotation</td>
+                    <td>注解定义</td>
+                    <td>@PrivacyMethodProxy, @PrivacyClassProxy</td>
+                </tr>
+                <tr>
+                    <td><strong>plugin-sentry</strong></td>
+                    <td>/plugin-sentry</td>
+                    <td>Gradle 插件和字节码转换</td>
+                    <td>PrivacySentryPlugin, Transform 类</td>
+                </tr>
+                <tr>
+                    <td><strong>hook-sentry</strong></td>
+                    <td>/hook-sentry</td>
+                    <td>运行时 SDK 和日志收集</td>
+                    <td>PrivacySentry, 缓存管理器</td>
+                </tr>
+                <tr>
+                    <td><strong>privacy-proxy</strong></td>
+                    <td>/privacy-proxy</td>
+                    <td>预置的拦截实现</td>
+                    <td>PrivacyProxyCall, 各种 Proxy 类</td>
+                </tr>
+                <tr>
+                    <td><strong>privacy-replace</strong></td>
+                    <td>/privacy-replace</td>
+                    <td>类替换功能（已废弃）</td>
+                    <td>-</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="part2">
+            <h2>第二部分：注解层详细分析</h2>
+
+            <h3>2.1 核心注解系统</h3>
+            <p><strong>文件位置</strong>: <code>privacy-annotation/src/main/java/com/yl/lib/privacy_annotation/</code></p>
+
+            <h4>2.1.1 @PrivacyMethodProxy - 方法代理注解</h4>
+            <pre><code>@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.CLASS)
+public @interface PrivacyMethodProxy {
+    Class originalClass();              // 原始类
+    String originalMethod() default ""; // 原始方法名
+    int originalOpcode() default MethodInvokeOpcode.INVOKESTATIC;
+    boolean ignoreClass() default false;
+}</code></pre>
+
+            <div class="info-box">
+                <strong>用途</strong>: 标记需要代理的方法。编译期插件通过该注解收集需要拦截的方法列表。
+            </div>
+
+            <h4>关键字段说明</h4>
+            <ul>
+                <li><code>originalClass</code>: 要拦截的目标类</li>
+                <li><code>originalMethod</code>: 要拦截的目标方法名</li>
+                <li><code>originalOpcode</code>: 调用方式（静态/虚实例/接口等）</li>
+                <li><code>ignoreClass</code>: 允许只按方法名和签名匹配</li>
+            </ul>
+
+            <h4>2.1.2 MethodInvokeOpcode 定义</h4>
+            <table>
+                <tr>
+                    <th>Opcode</th>
+                    <th>值</th>
+                    <th>含义</th>
+                    <th>使用场景</th>
+                </tr>
+                <tr>
+                    <td><code>INVOKEVIRTUAL</code></td>
+                    <td>182</td>
+                    <td>调用实例方法</td>
+                    <td>普通实例方法</td>
+                </tr>
+                <tr>
+                    <td><code>INVOKESPECIAL</code></td>
+                    <td>183</td>
+                    <td>调用特殊方法</td>
+                    <td>私有方法、构造函数</td>
+                </tr>
+                <tr>
+                    <td><code>INVOKESTATIC</code></td>
+                    <td>184</td>
+                    <td>调用静态方法</td>
+                    <td>静态方法</td>
+                </tr>
+                <tr>
+                    <td><code>INVOKEINTERFACE</code></td>
+                    <td>185</td>
+                    <td>调用接口方法</td>
+                    <td>接口实现</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="part3">
+            <h2>第三部分：插件层详细分析</h2>
+
+            <h3>3.1 Gradle 插件入口</h3>
+            <p><strong>文件</strong>: <code>PrivacySentryPlugin.kt</code></p>
+
+            <pre><code>class PrivacySentryPlugin : Plugin&lt;Project&gt; {
+    override fun apply(project: Project) {
+        // 1. 创建配置扩展点
+        var extension = project.extensions.create("privacy", PrivacyExtension::class.java)
+
+        if (!extension.enablePrivacy) {
+            return  // 功能关闭时直接返回
+        }
+
+        // 2. 只对 App 插件生效
+        if (project.plugins.hasPlugin(AppPlugin::class.java)) {
+            // 3. 清空历史数据
+            HookMethodManager.MANAGER.clear()
+            HookFieldManager.MANAGER.clear()
+
+            // 4. 注册 Transform
+            registerTransform(project)
+
+            // 5. 设置 Manifest 和 Assets 处理任务
+            setupTasks(project)
+        }
+    }
+}</code></pre>
+
+            <h3>3.2 两阶段 Transform 架构</h3>
+            <div class="diagram">
+编译期流程：
+┌──────────────────────────────────┐
+│  输入：所有 .class 文件和 Jar    │
+└──────────────┬───────────────────┘
+               │
+        ┌──────▼─────────────┐
+        │  第一阶段（预处理） │
+        │  Pre-Transform     │
+        └──────┬─────────────┘
+               │
+    ┌──────────┴──────────────┐
+    │                         │
+┌───▼────────────────┐   ┌───▼──────────────────┐
+│MethodProxy         │   │ ClassProxy           │
+│ CollectTransform   │   │ CollectTransform     │
+│ (收集方法拦截规则) │   │ (收集类替换规则)    │
+└───┬────────────────┘   └───┬──────────────────┘
+    │                         │
+    │ 结果写入：              │
+    │ HookMethodManager       │ ReplaceClassManager
+    │
+        ┌──────▼────────────────┐
+        │  第二阶段（执行替换）  │
+        │  Transform            │
+        └──────┬────────────────┘
+               │
+    ┌──────────┼──────────────┬──────────────┐
+    │          │              │              │
+┌───▼───┐ ┌───▼───┐ ┌───────▼──┐ ┌────────▼───┐
+│Method │ │Field  │ │ Class    │ │ Service    │
+│Hook   │ │Proxy  │ │ Proxy    │ │ Hook       │
+└───┬───┘ └───┬───┘ └───────┬──┘ └────────┬───┘
+    │         │            │             │
+    └─────────┴─��──────────┴─────────────┘
+               │
+        ┌──────▼──────────┐
+        │ FlushHookData   │
+        │ Transform       │
+        └────────┬────────┘
+                 │
+    ┌────────────▼──────────────┐
+    │ 输出：修改后的 .class 和  │
+    │ privacy_hook.json         │
+    └───────────────────────────┘
+            </div>
+
+            <h3>3.3 字节码替换原理</h3>
+            <p><strong>原始代码</strong>:</p>
+            <pre><code>ActivityManager manager = ...;
+List&lt;RunningTaskInfo&gt; tasks = manager.getRunningTasks(maxNum);</code></pre>
+
+            <p><strong>原始字节码</strong>:</p>
+            <pre><code>ALOAD 1              // 加载 manager 对象
+ILOAD 2              // 加载 maxNum 参数
+INVOKEVIRTUAL ActivityManager.getRunningTasks</code></pre>
+
+            <p><strong>替换后的字节码</strong>:</p>
+            <pre><code>ALOAD 1              // 加载 manager 对象
+ILOAD 2              // 加载 maxNum ��数
+INVOKESTATIC PrivacyProxyCall$Proxy.getRunningTasks</code></pre>
+        </section>
+
+        <section id="part4">
+            <h2>第四部分：Hook 层详细分析</h2>
+
+            <h3>4.1 运行时 SDK 初始化</h3>
+            <p><strong>文件</strong>: <code>hook-sentry/src/main/java/com/yl/lib/sentry/hook/PrivacySentry.kt</code></p>
+
+            <div class="highlight-box">
+                <strong>⚠️ 初始化时机</strong>: 建议在 <code>Application.attachBaseContext()</code> 中第一个调用
+            </div>
+
+            <pre><code>class MyApplication : Application() {
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+
+        // 必须最先初始化
+        PrivacySentry.Privacy.init(
+            this,
+            PrivacySentryBuilder()
+                .enableFileResult(true)
+                .syncDebug(true)
+                .configWatchTime(30 * 60 * 1000)
+        )
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        // 隐私协议确认后调用
+        showPrivacyDialog {
+            PrivacySentry.Privacy.updatePrivacyShow()
+        }
+    }
+}</code></pre>
+
+            <h3>4.2 三层缓存架构</h3>
+            <div class="diagram">
+┌───────────────────────────────────────────┐
+│ CachePrivacyManager（统一入口）           │
+└───────────────┬─────────────────────────────┘
+                │
+    ┌───────────┼───────────┬───────────┐
+    │           │           │           │
+    ▼           ▼           ▼           ▼
+┌─────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
+│ Memory  │ │TimeLess  │ │Permanent │ │TimeLess  │
+│ Cache   │ │Memory    │ │ Disk     │ │ Disk     │
+│         │ │Cache     │ │ Cache    │ │ Cache    │
+└────┬────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘
+     │           │            │           │
+     └───────────┴────────────┴───────────┘
+                │
+     ┌──────────▼──────────┐
+     │ SharedPreferences   │
+     │ (磁盘持久化)       │
+     └─────────────────────┘
+            </div>
+
+            <h3>4.3 缓存类型和使用场景</h3>
+            <table>
+                <tr>
+                    <th>缓存类型</th>
+                    <th>生命周期</th>
+                    <th>使用场景</th>
+                    <th>实现类</th>
+                </tr>
+                <tr>
+                    <td><strong>内存缓存</strong></td>
+                    <td>进程级别</td>
+                    <td>IMEI、IMSI、MEID、Serial 等设备标识</td>
+                    <td>MemoryCache</td>
+                </tr>
+                <tr>
+                    <td><strong>时效内存缓存</strong></td>
+                    <td>时间限制</td>
+                    <td>位置信息、WiFi 信息</td>
+                    <td>TimeLessMemoryCache</td>
+                </tr>
+                <tr>
+                    <td><strong>永久磁盘缓存</strong></td>
+                    <td>持久化</td>
+                    <td>Android ID、设备名等不可变字段</td>
+                    <td>DiskCache</td>
+                </tr>
+                <tr>
+                    <td><strong>时效磁盘缓存</strong></td>
+                    <td>磁盘+时效</td>
+                    <td>需要定期刷新的敏感信息</td>
+                    <td>TimeLessDiskCache</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="part5">
+            <h2>第五部分：代理层详细分析</h2>
+
+            <h3>5.1 支持的敏感 API 类别</h3>
+            <table>
+                <tr>
+                    <th>类别</th>
+                    <th>API 示例</th>
+                    <th>��截方式</th>
+                </tr>
+                <tr>
+                    <td><strong>任务管理</strong></td>
+                    <td>ActivityManager.getRunningTasks()</td>
+                    <td>返回空列表/代理</td>
+                </tr>
+                <tr>
+                    <td><strong>剪贴板</strong></td>
+                    <td>ClipboardManager.getPrimaryClip()</td>
+                    <td>代理访问</td>
+                </tr>
+                <tr>
+                    <td><strong>蓝牙</strong></td>
+                    <td>BluetoothAdapter.getAddress()</td>
+                    <td>代理访问</td>
+                </tr>
+                <tr>
+                    <td><strong>WiFi</strong></td>
+                    <td>WifiManager.getConnectionInfo()</td>
+                    <td>代理访问</td>
+                </tr>
+                <tr>
+                    <td><strong>位置</strong></td>
+                    <td>LocationManager.getLastKnownLocation()</td>
+                    <td>缓存+代理</td>
+                </tr>
+                <tr>
+                    <td><strong>设备标识</strong></td>
+                    <td>Build.getSerial()</td>
+                    <td>缓存+代理</td>
+                </tr>
+                <tr>
+                    <td><strong>应用列表</strong></td>
+                    <td>PackageManager.getInstalledPackages()</td>
+                    <td>返回空列表</td>
+                </tr>
+                <tr>
+                    <td><strong>通话信息</strong></td>
+                    <td>TelephonyManager.getDeviceId()</td>
+                    <td>缓存+代理</td>
+                </tr>
+                <tr>
+                    <td><strong>传感器</strong></td>
+                    <td>SensorManager.registerListener()</td>
+                    <td>记录日志</td>
+                </tr>
+                <tr>
+                    <td><strong>权限</strong></td>
+                    <td>requestPermissions()</td>
+                    <td>记录日志</td>
+                </tr>
+            </table>
+
+            <h3>5.2 代理实现示例</h3>
+            <pre><code>@PrivacyClassProxy
+object PrivacyProxyCall {
+    @PrivacyMethodProxy(
+        originalClass = ActivityManager::class,
+        originalMethod = "getRunningTasks",
+        originalOpcode = MethodInvokeOpcode.INVOKEVIRTUAL
+    )
+    @JvmStatic
+    fun getRunningTasks(
+        manager: ActivityManager,
+        maxNum: Int
+    ): List&lt;RunningTaskInfo&gt; {
+        doFilePrinter("getRunningTasks", "当前运行中的任务")
+
+        // 核心逻辑：根据隐私协议状态决定返回值
+        if (PrivacySentry.Privacy.inDangerousState()) {
+            return emptyList()  // 危险状态返回空
+        }
+
+        return manager.getRunningTasks(maxNum)
+    }
+}</code></pre>
+        </section>
+
+        <section id="part6">
+            <h2>第六部分：完整数据流分析</h2>
+
+            <h3>6.1 从注解定义到字节码替换的完整流程</h3>
+            <div class="diagram">
+开发阶段
+────────────────────────────────
+│
+1️⃣ 开发者编写代理方法
+   ├─ 使用 @PrivacyClassProxy 标注类
+   ├─ 使用 @PrivacyMethodProxy 标注方法
+   └─ 编译生成 class 文件（带注解元数据）
+        │
+        ▼
+编译期间
+────────────────────────────────
+│
+2️⃣ Gradle 执行 PrivacySentryPlugin
+   ├─ 清空历史 Manager
+   └─ 注册 Transform 任务
+        │
+        ▼
+3️⃣ 第一阶段：预处理 (Pre-Transform)
+   ├─ MethodProxyCollectTransform
+   │  ├─ 扫描所有 class 文件
+   │  ├─ 找到 @PrivacyClassProxy 的类
+   │  ├─ 提取 @PrivacyMethodProxy 注解信息
+   │  └─ 存储到 HookMethodManager
+   │
+   └─ ClassProxyCollectTransform
+      └─ 存储到 ReplaceClassManager
+        │
+        ▼
+4️⃣ 第二阶段：执行替换 (Transform)
+   ├─ MethodHookTransform
+   │  ├─ 遍历应用代码中的所有方法调用
+   │  ├─ 在 HookMethodManager 中查询
+   │  ├─ 修改字节码调用
+   │  └─ 记录到 HookedDataManger
+   │
+   └─ FlushHookDataTransform
+      └─ 生成 privacy_hook.json
+        │
+        ▼
+运行期间
+────────────────────────────────
+│
+5️⃣ 应用启动 → SDK 初始化
+   └─ 用户同意隐私协议
+      └─ 业务代码调用敏感 API
+         └─ 执行代理方法
+            └─ 记录日志并输出
+            </div>
+        </section>
+
+        <section id="part7">
+            <h2>第七部分：关键交互关系</h2>
+
+            <h3>7.1 模块间的依赖关系</h3>
+            <div class="diagram">
+privacy-annotation (底层)
+        ↑
+        │ 依赖（注解定义）
+        │
+plugin-sentry ◄──── Booster 框架
+        │            ASM 库
+        │ 生成
+        ▼
+privacy_hook.json
+        │
+        ▼ 加载
+    应用 APK
+        │
+        ├─ 包含修改后的 bytecode
+        └─ 包含 privacy_hook.json
+        │
+        ▼
+hook-sentry (运行时)
+        │ 依赖
+        ├─ privacy-annotation
+        └─ privacy-proxy
+            </div>
+        </section>
+
+        <section id="part8">
+            <h2>第八部分：高级特性</h2>
+
+            <h3>8.1 反射 Hook</h3>
+            <p>支持拦截通过反射方式调用的敏感方法：</p>
+            <pre><code>privacy {
+    hookReflex = true
+    reflexMap = [
+        "com.android.id.impl.IdProviderImpl": [
+            "getOAID",   // 小米设备的广告 ID
+            "getAAID",
+            "getVAID"
+        ]
+    ]
+}</code></pre>
+
+            <h3>8.2 多进程支持</h3>
+            <p>自动为不同进程生成独立的日志文件：</p>
+            <pre><code>// 结果文件位置
+/storage/emulated/0/Android/data/{packageName}/files/privacy/
+├─ privacy_result.xls          (主进程)
+├─ com.example.service_result.xls  (Service 进程)
+└─ com.example.worker_result.xls   (其他进程)</code></pre>
+
+            <h3>8.3 粘性数据</h3>
+            <div class="info-box">
+                <strong>粘性数据 (Sticky Data)</strong>: 处理 SDK 初始化晚于敏感 API 调用的场景，确保不遗漏任何调用记录。
+            </div>
+
+            <h3>8.4 黑名单配置</h3>
+            <pre><code>privacy {
+    blackList = [
+        "com.loc",              // 高德地图（ASM 冲突）
+        "com.amap.api",
+        "io.openinstall.sdk"
+    ]
+}</code></pre>
+        </section>
+
+        <section id="part9">
+            <h2>第九部分：生成的产物分析</h2>
+
+            <h3>9.1 privacy_hook.json 结构</h3>
+            <pre><code>{
+    "hookServiceList": [
+        "com.example.TestService"
+    ],
+
+    "replaceMethodMap": {
+        "android.app.ActivityManager.getRunningAppProcesses": {
+            "count": 3,
+            "originMethodList": [...]
+        }
+    }
+}</code></pre>
+
+            <h3>9.2 Excel 输出文件</h3>
+            <p><strong>文件位置</strong>: <code>/storage/emulated/0/Android/data/{packageName}/files/privacy/</code></p>
+
+            <h4>Sheet 1：隐私合规明细</h4>
+            <table>
+                <tr>
+                    <th>调用时间</th>
+                    <th>别名</th>
+                    <th>函数名</th>
+                    <th>调用堆栈</th>
+                </tr>
+                <tr>
+                    <td>2024-12-30 10:25:15</td>
+                    <td>当前运行中的任务</td>
+                    <td>getRunningTasks</td>
+                    <td>com.example.MainActivity.onCreate() ...</td>
+                </tr>
+            </table>
+
+            <h4>Sheet 2：调用次数统计</h4>
+            <table>
+                <tr>
+                    <th>别名</th>
+                    <th>函数名</th>
+                    <th>调用堆栈</th>
+                    <th>调用次数</th>
+                </tr>
+                <tr>
+                    <td>当前运行中的任务</td>
+                    <td>getRunningTasks</td>
+                    <td>com.example.MainActivity.onCreate()</td>
+                    <td>3</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="part10">
+            <h2>第十部分：完整工作流程示例</h2>
+
+            <h3>示例：拦截 Build.getSerial() 调用</h3>
+
+            <h4>步骤 1：定义代理方法</h4>
+            <pre><code>@PrivacyClassProxy
+object PrivacyProxyCall {
+    @PrivacyMethodProxy(
+        originalClass = android.os.Build::class,
+        originalMethod = "getSerial",
+        originalOpcode = MethodInvokeOpcode.INVOKESTATIC
+    )
+    @JvmStatic
+    fun getSerial(): String? {
+        doFilePrinter("getSerial", "读取Serial")
+
+        if (PrivacySentry.Privacy.inDangerousState()) {
+            return ""
+        }
+
+        return Build.getSerial()
+    }
+}</code></pre>
+
+            <h4>步骤 2：编译期收集</h4>
+            <p><code>MethodProxyCollectTransform</code> 扫描并收集代理方法信息</p>
+
+            <h4>步骤 3：编译期替换</h4>
+            <p><code>MethodHookTransform</code> 修改字节码调用</p>
+
+            <h4>步骤 4：运行时执行</h4>
+            <pre><code>// 1. SDK 初始化
+PrivacySentry.Privacy.init(application, builder)
+
+// 2. 用户同意隐私协议
+PrivacySentry.Privacy.updatePrivacyShow()
+
+// 3. 业务代码调用
+val serial = Build.getSerial()  // 实际调用代理方法</code></pre>
+        </section>
+
+        <section id="part11">
+            <h2>第十一部分：架构优势和设计模式</h2>
+
+            <h3>11.1 采用的设计模式</h3>
+            <table>
+                <tr>
+                    <th>模式</th>
+                    <th>位置</th>
+                    <th>用途</th>
+                </tr>
+                <tr>
+                    <td><strong>代理模式</strong></td>
+                    <td>privacy-proxy</td>
+                    <td>代理敏感 API 调用</td>
+                </tr>
+                <tr>
+                    <td><strong>工厂模式</strong></td>
+                    <td>CachePrivacyManager</td>
+                    <td>创建不同类型的缓存</td>
+                </tr>
+                <tr>
+                    <td><strong>单例模式</strong></td>
+                    <td>Manager 对象</td>
+                    <td>全局唯一的管理器</td>
+                </tr>
+                <tr>
+                    <td><strong>观察者模式</strong></td>
+                    <td>PrivacyDataManager</td>
+                    <td>LiveData 通知数据变化</td>
+                </tr>
+                <tr>
+                    <td><strong>策略模式</strong></td>
+                    <td>BasePrinter</td>
+                    <td>不同的输出策略</td>
+                </tr>
+            </table>
+
+            <h3>11.2 关键架构优势</h3>
+            <div class="success-box">
+                <h4>✅ 核心优势</h4>
+                <ul>
+                    <li><strong>编译期处理</strong>：相比 Xposed 不需要 Root，零运行时 overhead</li>
+                    <li><strong>完整方案</strong>：识别 → 拦截 → 记录 → 报告的完整链路</li>
+                    <li><strong>灵活扩展</strong>：支持自定义代理、黑名单、反射拦截</li>
+                    <li><strong>高效缓存</strong>：三层缓存策略满足不同场景</li>
+                    <li><strong>多进程支持</strong>：自动处理多进程数据隔离</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="part12">
+            <h2>第十二部分：使用建议和最佳实践</h2>
+
+            <h3>12.1 集成步骤</h3>
+
+            <h4>1. 在根 build.gradle 中添加插件依赖</h4>
+            <pre><code>buildscript {
+    dependencies {
+        classpath 'com.github.allenymt.PrivacySentry:plugin-sentry:1.3.7_v820_beta4'
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}</code></pre>
+
+            <h4>2. 在 App build.gradle 中应用插件</h4>
+            <pre><code>apply plugin: 'privacy-sentry-plugin'
+
+dependencies {
+    implementation "com.github.allenymt.PrivacySentry:hook-sentry:1.3.7_v820_beta4"
+    implementation "com.github.allenymt.PrivacySentry:privacy-annotation:1.3.7_v820_beta4"
+    implementation "com.github.allenymt.PrivacySentry:privacy-proxy:1.3.7_v820_beta4"
+}
+
+privacy {
+    enablePrivacy = true
+    blackList = []
+}</code></pre>
+
+            <h4>3. 初始化 SDK</h4>
+            <pre><code>class MyApplication : Application() {
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+
+        PrivacySentry.Privacy.init(
+            this,
+            PrivacySentryBuilder()
+                .syncDebug(true)
+                .enableFileResult(true)
+                .configWatchTime(30 * 60 * 1000)
+        )
+    }
+}</code></pre>
+
+            <h3>12.2 调试技巧</h3>
+            <ul>
+                <li><strong>查看 Logcat</strong>: <code>adb logcat | grep "PrivacyOfficer"</code></li>
+                <li><strong>拉取文件</strong>: <code>adb pull /storage/emulated/0/Android/data/{packageName}/files/privacy/</code></li>
+                <li><strong>查看配置</strong>: <code>cat privacy_hook.json | jq</code></li>
+            </ul>
+
+            <h3>12.3 性能考量</h3>
+            <table>
+                <tr>
+                    <th>指标</th>
+                    <th>影响</th>
+                </tr>
+                <tr>
+                    <td>编译时间</td>
+                    <td>增加 &lt; 2 秒</td>
+                </tr>
+                <tr>
+                    <td>APK 包体积</td>
+                    <td>增加 ~200KB</td>
+                </tr>
+                <tr>
+                    <td>运行时性能</td>
+                    <td>零额外开销</td>
+                </tr>
+                <tr>
+                    <td>内存占用</td>
+                    <td>缓存数据占用，可定期清理</td>
+                </tr>
+            </table>
+
+            <h3>12.4 常见问题</h3>
+            <div class="highlight-box">
+                <h4>Q: 为什么某些敏感 API 调用没有被拦截？</h4>
+                <p>A: 检查以下几点：</p>
+                <ul>
+                    <li>是否添加了代理实现</li>
+                    <li>检查黑名单配置</li>
+                    <li>检查是否同意了隐私协议</li>
+                    <li>查看 privacy_hook.json 是否包含该 API</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Q: 为什么应用闪退？</h4>
+                <p>A: 可能原因：</p>
+                <ul>
+                    <li>privacy-proxy 中的代理实现有 bug</li>
+                    <li>ASM 库版本冲突（特别是高德地图）</li>
+                    <li>尝试添加到黑名单</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>总结</h2>
+            <div class="success-box">
+                <p>PrivacySentry 是一套<strong>设计精妙的隐私合规解决方案</strong>，通过以下特点提供完整的隐私检测能力：</p>
+                <ul>
+                    <li><span class="badge badge-success">✅</span> 四层架构 - 从注解定义到运行时拦截的完整链路</li>
+                    <li><span class="badge badge-success">✅</span> 两阶段 Transform - 先收集再替换，模块化清晰</li>
+                    <li><span class="badge badge-success">✅</span> 智能缓存 - 多种缓存策略满足不同场景</li>
+                    <li><span class="badge badge-success">✅</span> 完整日志 - Excel 报表化的统计分析</li>
+                    <li><span class="badge badge-success">✅</span> 隐私协议状态管理 - 根据用户同意状态动态返回数据</li>
+                    <li><span class="badge badge-success">✅</span> 多进程支持 - 自动处理多进程的数据隔离</li>
+                </ul>
+                <p><strong>关键数据流</strong>：注解 → 编译期收集 → 字节码替换 → 运行时拦截 → 日志收集 → Excel 输出</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>文档版本</strong>: v1.0</p>
+            <p><strong>最后更新</strong>: 2024-12-30</p>
+            <p><strong>项目版本</strong>: PrivacySentry 1.3.7_v820_beta4</p>
+        </div>
+    </footer>
+
+    <div class="scroll-top" id="scrollTop" onclick="scrollToTop()">
+        ↑
+    </div>
+
+    <script>
+        // Scroll to top button
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.getElementById('scrollTop');
+            if (window.pageYOffset > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
